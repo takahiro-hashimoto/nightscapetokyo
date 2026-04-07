@@ -82,7 +82,7 @@ export default function SearchResults({
             </div>
             <div className="spot-card-body">
               <div className="spot-card-meta">
-                <span className="spot-card-category">
+                <span className="badge spot-card-category">
                   {spot.category.name}
                 </span>
                 <div className="spot-card-rating">
@@ -92,7 +92,7 @@ export default function SearchResults({
               </div>
               <h3 className="spot-card-title">{spot.name}</h3>
               {spot.matchedFields.length > 0 && (
-                <p className="spot-card-match">
+                <p className="badge spot-card-match">
                   {matchHitTemplate.replace("{fields}", spot.matchedFields.join("・"))}
                 </p>
               )}

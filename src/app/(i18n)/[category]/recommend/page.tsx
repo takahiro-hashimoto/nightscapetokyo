@@ -222,7 +222,7 @@ export default async function RecommendPageI18n({ params }: Props) {
               </div>
               <div className="spot-card-body">
                 <div className="spot-card-meta">
-                  <span className="spot-card-category">
+                  <span className="badge spot-card-category">
                     {spot.category.name}
                   </span>
                   <div className="spot-card-rating">

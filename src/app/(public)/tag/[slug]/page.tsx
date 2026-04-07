@@ -368,9 +368,9 @@ export default async function TagPage({ params }: Props) {
             <h2 className="area-section-heading" id="faq-heading">{tagName}の夜景スポットに関するFAQ</h2>
             <dl className="area-faq-list">
               {faqs.map((faq, i) => (
-                <div key={i} className="area-faq-item">
-                  <dt className="area-faq-question">{faq.question}</dt>
-                  <dd className="area-faq-answer">{faq.answer}</dd>
+                <div key={i} className="faq-item">
+                  <dt className="faq-q">{faq.question}</dt>
+                  <dd className="faq-a">{faq.answer}</dd>
                 </div>
               ))}
             </dl>

@@ -20,7 +20,9 @@ import {
   getAreasTranslated,
   getPurposeTags,
   getTotalSpotCount,
+  getMapSpotsByCategory,
 } from "@/lib/supabase/queries";
+import AreaMapLoader from "@/components/map/AreaMapLoader";
 import {
   SITE_URL,
   ALL_LOCALE_SLUGS,
@@ -291,10 +293,11 @@ export default async function AreaPage({ params }: Props) {
   // ── 通常のエリアページ ──
   if (NON_AREA_SLUGS.includes(categorySlug)) notFound();
 
-  const [cat, spots, availableLocales] = await Promise.all([
+  const [cat, spots, availableLocales, mapSpots] = await Promise.all([
     getCategoryBySlug(categorySlug),
     getSpotsByCategory(categorySlug),
     getAvailableAreaLocales(categorySlug),
+    getMapSpotsByCategory(categorySlug),
   ]);
 
   if (!cat) notFound();
@@ -344,15 +347,23 @@ export default async function AreaPage({ params }: Props) {
           </section>
         )}
 
+        {/* エリアマップ */}
+        {mapSpots.length > 0 && (
+          <section className="content-card card-padding" id="map" aria-labelledby="map-heading">
+            <h2 className="area-section-heading" id="map-heading">{cat.name}の夜景スポットマップ</h2>
+            <AreaMapLoader spots={mapSpots} areaName={cat.name} />
+          </section>
+        )}
+
         {/* エリアFAQ */}
         {faqs.length > 0 && (
           <section className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
             <h2 className="area-section-heading" id="faq-heading">{cat.name}の夜景スポットに関するFAQ</h2>
             <dl className="area-faq-list">
               {faqs.map((faq, i) => (
-                <div key={i} className="area-faq-item">
-                  <dt className="area-faq-question">{faq.question}</dt>
-                  <dd className="area-faq-answer">{faq.answer}</dd>
+                <div key={i} className="faq-item">
+                  <dt className="faq-q">{faq.question}</dt>
+                  <dd className="faq-a">{faq.answer}</dd>
                 </div>
               ))}
             </dl>

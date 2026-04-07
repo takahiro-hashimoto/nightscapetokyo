@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  User,
-  Camera,
-  Award,
-  Newspaper,
-  BookOpen,
-  Mail,
-} from "lucide-react";
-import Breadcrumb from "@/components/layout/Breadcrumb";
+import { Camera, Award, Newspaper, BookOpen, Mail } from "lucide-react";
+import ArticleLayout from "@/components/layout/ArticleLayout";
+import SetHtmlLang from "@/components/layout/SetHtmlLang";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import {
   ALL_LOCALE_SLUGS,
@@ -21,6 +15,7 @@ import {
 /* ─── 翻訳ラベル ─── */
 type AboutLabels = {
   title: string;
+  summary: string;
   description: string;
   profile: string;
   profileItems: { label: string; value: string }[];
@@ -39,6 +34,7 @@ type AboutLabels = {
 const ABOUT_LABELS: Record<string, AboutLabels> = {
   en: {
     title: "About Us",
+    summary: "Learn about Takahiro, the operator of Tokyo Night View Guide — profile, achievements, and camera equipment.",
     description: "Learn about Takahiro, the operator of Tokyo Night View Guide — profile, achievements, and camera equipment.",
     profile: "About the Operator",
     profileItems: [
@@ -68,6 +64,7 @@ const ABOUT_LABELS: Record<string, AboutLabels> = {
   },
   ko: {
     title: "운영자 소개",
+    summary: "도쿄 야경 가이드 운영자 타카히로의 프로필, 활동 실적, 촬영 장비를 소개합니다.",
     description: "도쿄 야경 가이드 운영자 타카히로의 프로필, 활동 실적, 촬영 장비를 소개합니다.",
     profile: "운영자 소개",
     profileItems: [
@@ -79,7 +76,7 @@ const ABOUT_LABELS: Record<string, AboutLabels> = {
     ],
     bio: [
       "도쿄의 IT 기업에서 웹 디렉터로 근무하면서 도쿄의 야경 명소에 대한 정보를 발신하고 있습니다.",
-      "도쿄 타워가 보이는 야경 명소와 워터프론트 야경 명소를 특히 좋아합니다. 도쿄 도내의 주요 야경 명소는 거의 모두 방문했습니다.",
+      "도쿄 타워가 보이는 야경 명소와 워터프론트 야경 명소를 특히 좋아합니다.",
     ],
     equipment: "촬영 장비",
     equipmentDesc: "야경 촬영에 사용하는 카메라·렌즈 목록입니다.",
@@ -88,15 +85,16 @@ const ABOUT_LABELS: Record<string, AboutLabels> = {
     media: "미디어 게재",
     story: "야경 촬영을 시작한 계기",
     storyTexts: [
-      "도쿄 야경에 매료된 것은 2012년경, 취업 활동으로 도쿄를 방문했을 때입니다. 심야 버스로 도착해 새벽 수도고속도로 양옆에 늘어선 고층 빌딩의 웅장한 풍경에 감동했습니다.",
-      "나고야에서 취직 후에도 그 풍경을 잊지 못해 카메라 장비를 구입하고 매년 겨울 도쿄의 야경을 촬영하는 것이 연례행사가 되었습니다.",
-      "2022년 도쿄로 이직한 것을 계기로 그동안 촬영한 사진을 정리하여 본 사이트를 개설했습니다. 현재 200곳 이상의 야경 명소를 소개하고 있으며, 도쿄의 밤 풍경을 기록하는 것이 라이프워크가 되었습니다.",
+      "도쿄 야경에 매료된 것은 2012년경, 취업 활동으로 도쿄를 방문했을 때입니다.",
+      "나고야에서 취직 후에도 그 풍경을 잊지 못해 매년 겨울 도쿄의 야경을 촬영하는 것이 연례행사가 되었습니다.",
+      "2022년 도쿄로 이직한 것을 계기로 본 사이트를 개설했습니다. 현재 200곳 이상의 야경 명소를 소개하고 있습니다.",
     ],
     contactHeading: "촬영 의뢰나 사진 소재 구매는 부담 없이 문의해 주세요.",
     contactCta: "문의하기 · 촬영 의뢰",
   },
   tw: {
     title: "關於本站",
+    summary: "東京夜景導覽營運者Takahiro的介紹、活動實績及攝影器材。",
     description: "東京夜景導覽營運者Takahiro的介紹、活動實績及攝影器材。",
     profile: "關於營運者",
     profileItems: [
@@ -108,7 +106,7 @@ const ABOUT_LABELS: Record<string, AboutLabels> = {
     ],
     bio: [
       "在東京的IT企業擔任網頁總監，同時分享東京夜景景點資訊。",
-      "特別喜歡能看到東京鐵塔的夜景景點和海濱夜景。東京都內主要夜景景點幾乎全部走訪過。",
+      "特別喜歡能看到東京鐵塔的夜景景點和海濱夜景。",
     ],
     equipment: "攝影器材",
     equipmentDesc: "拍攝夜景使用的相機和鏡頭。",
@@ -117,15 +115,16 @@ const ABOUT_LABELS: Record<string, AboutLabels> = {
     media: "媒體刊載",
     story: "開始拍攝夜景的契機",
     storyTexts: [
-      "2012年左右在求職過程中造訪東京時，被首都高速公路旁高樓林立的壯觀夜景所深深吸引。",
-      "在名古屋工作後仍無法忘懷那些景色，於是購入攝影器材，每年冬天到東京拍攝夜景成為固定行程。",
-      "2022年轉職到東京後，整理多年來拍攝的照片開設了本站。目前已收錄超過200個夜景景點，記錄東京夜色已成為生活中的重要部分。",
+      "2012年左右在求職過程中造訪東京時，被壯觀的夜景深深吸引。",
+      "在名古屋工作後每年冬天到東京拍攝夜景成為固定行程。",
+      "2022年轉職到東京後開設了本站，目前已收錄超過200個夜景景點。",
     ],
     contactHeading: "攝影委託或照片素材購買，歡迎隨時聯繫。",
     contactCta: "聯絡我們 · 攝影委託",
   },
   cn: {
     title: "关于本站",
+    summary: "东京夜景导航运营者Takahiro的介绍、活动实绩及摄影器材。",
     description: "东京夜景导航运营者Takahiro的介绍、活动实绩及摄影器材。",
     profile: "关于运营者",
     profileItems: [
@@ -137,7 +136,7 @@ const ABOUT_LABELS: Record<string, AboutLabels> = {
     ],
     bio: [
       "在东京的IT企业担任网页总监，同时分享东京夜景景点信息。",
-      "特别喜欢能看到东京塔的夜景景点和海滨夜景。东京都内主要夜景景点几乎全部走访过。",
+      "特别喜欢能看到东京塔的夜景景点和海滨夜景。",
     ],
     equipment: "摄影器材",
     equipmentDesc: "拍摄夜景使用的相机和镜头。",
@@ -146,9 +145,9 @@ const ABOUT_LABELS: Record<string, AboutLabels> = {
     media: "媒体刊载",
     story: "开始拍摄夜景的契机",
     storyTexts: [
-      "2012年左右在求职过程中造访东京时，被首都高速公路旁高楼林立的壮观夜景深深吸引。",
-      "在名古屋工作后仍无法忘怀那些景色，于是购入摄影器材，每年冬天到东京拍摄夜景成为固定行程。",
-      "2022年转职到东京后，整理多年来拍摄的照片开设了本站。目前已收录超过200个夜景景点，记录东京夜色已成为生活中的重要部分。",
+      "2012年左右在求职过程中造访东京时，被壮观的夜景深深吸引。",
+      "在名古屋工作后每年冬天到东京拍摄夜景成为固定行程。",
+      "2022年转职到东京后开设了本站，目前已收录超过200个夜景景点。",
     ],
     contactHeading: "摄影委托或照片素材购买，欢迎随时联系。",
     contactCta: "联系我们 · 摄影委托",
@@ -176,43 +175,35 @@ const EQUIPMENT = [
 ];
 
 const ACHIEVEMENTS = [
-  { title: "株式会社TOKYO TOWER PC版トップページのタイムラプス映像を撮影", image: "/images/about/tokyo-tower.jpg" },
-  { title: "ザ・プリンス パークタワー東京 プロモーション用写真を撮影", image: "/images/about/prince-park-tower.jpg" },
-  { title: "ザ・プリンス パークタワー東京 リニューアルプロジェクト用写真撮影", image: "/images/about/prince-renewal.jpg" },
-  { title: "名古屋プリンスホテルスカイタワー 客室からの眺望を撮影", image: "/images/about/nagoya-prince.jpg" },
-  { title: "動画コンテスト「港、動く 15秒の物語」審査員", image: "/images/about/minato-ugoku.jpg" },
-  { title: "日本電設工業株式会社 Webサイトのメインビジュアルを納品", image: "/images/about/densetsuko.jpg" },
-  { title: "AIROS Skyview ヘリコプター遊覧 PR記事を作成", image: "/images/about/airos.jpg" },
-  { title: "レストランルーク「SKY TERRACE」取材記事を担当", image: "/images/about/restaurant-luke.jpg" },
-  { title: "第8回東京大回廊写真コンテスト 出光美術館賞を受賞", image: "/images/about/photo-contest.jpg" },
-  { title: "BS TBS タイムラプス映像を提供", image: "/images/about/bs-tbs.jpg" },
-  { title: "NHK総合 タイムラプス映像を提供", image: "/images/about/nhk.jpg" },
-  { title: "テレビ朝日「ザワつく!金曜日」写真素材を提供", image: "/images/about/tv-asahi.jpg" },
-  { title: "朝日新聞コラムにインタビュー記事が掲載", image: "/images/about/asahi.jpg" },
+  { title: "Tokyo Tower — timelapse for official website", image: "/images/about/tokyo-tower.jpg" },
+  { title: "The Prince Park Tower Tokyo — promotional photos", image: "/images/about/prince-park-tower.jpg" },
+  { title: "The Prince Park Tower Tokyo — 20th anniversary renovation", image: "/images/about/prince-renewal.jpg" },
+  { title: "Nagoya Prince Hotel Sky Tower — room view photos", image: "/images/about/nagoya-prince.jpg" },
+  { title: "\"Minato, Ugoku\" video contest — jury member", image: "/images/about/minato-ugoku.jpg" },
+  { title: "Nippon Densetsu Kogyo — website main visual", image: "/images/about/densetsuko.jpg" },
+  { title: "AIROS Skyview — helicopter tour PR article", image: "/images/about/airos.jpg" },
+  { title: "Restaurant LUKE \"SKY TERRACE\" — coverage article", image: "/images/about/restaurant-luke.jpg" },
+  { title: "8th Tokyo Daikairou Photo Contest — Idemitsu Museum Award", image: "/images/about/photo-contest.jpg" },
+  { title: "BS TBS — timelapse footage", image: "/images/about/bs-tbs.jpg" },
+  { title: "NHK — timelapse footage", image: "/images/about/nhk.jpg" },
+  { title: "TV Asahi \"Zawatsuku! Friday\" — photo materials", image: "/images/about/tv-asahi.jpg" },
+  { title: "Asahi Shimbun — interview article", image: "/images/about/asahi.jpg" },
 ];
 
-const MEDIA_JA = [
-  "ライフスタイル比較メディア「Abemaチョイス」の記事の監修",
-  "家電・ガジェット紹介メディア「Picky's」のおすすめの雲台を紹介する記事の監修",
-  "AI総研のオウンドメディアにておすすめのWebメディアとして紹介",
-  "月刊GoodsPress 2024年3月号にインタビュー記事が掲載",
-];
+/* ─── Page ─── */
+type Props = { params: Promise<{ category: string }> };
 
-/* ─── Static params ─── */
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((lang) => ({ category: lang }));
 }
 
-/* ─── Metadata ─── */
-type Props = { params: Promise<{ category: string }> };
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { category: locale } = await params;
-  const labels = ABOUT_LABELS[locale];
-  if (!labels) return {};
+  const { category } = await params;
+  const locale = category;
+  const l = ABOUT_LABELS[locale] ?? ABOUT_LABELS.en;
   return {
-    title: labels.title,
-    description: labels.description,
+    title: l.title,
+    description: l.description,
     alternates: {
       languages: buildAreaHreflangAlternates(SITE_URL, "about", ALL_LOCALE_SLUGS),
     },
@@ -221,32 +212,41 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export const revalidate = 3600;
 
-/* ─── Page ─── */
 export default async function AboutPageI18n({ params }: Props) {
-  const { category: locale } = await params;
-  const labels = ABOUT_LABELS[locale];
-  if (!labels) return null;
+  const { category } = await params;
+  const locale = category;
+  const l = ABOUT_LABELS[locale] ?? ABOUT_LABELS.en;
 
   return (
     <>
+      <SetHtmlLang locale={locale === "tw" ? "zh-TW" : locale === "cn" ? "zh-CN" : locale} />
       <LanguageSwitcher
         currentLocale={locale}
         categorySlug="about"
         availableLocales={ALL_LOCALE_SLUGS}
         localeLabels={LOCALE_LABELS}
       />
-      <article className="home-section" style={{ paddingTop: 0 }}>
-        <div className="home-container">
-          <Breadcrumb items={[{ label: labels.title }]} locale={locale} />
-
-          {/* ── ヒーロー ── */}
-          <div className="content-card about-hero-card" style={{ marginTop: 24 }}>
+      <ArticleLayout locale={locale}
+        title={l.title}
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        }
+        summary={l.summary}
+        breadcrumb={[{ label: l.title }]}
+      >
+        {/* ── Profile ── */}
+        <div className="content-card card-padding article-body">
+          <h2>{l.profile}</h2>
+          <div className="about-hero-card">
             <div className="about-hero-avatar">
               <Image src="/images/about/profile.jpg" alt="Takahiro" width={140} height={140} />
             </div>
             <div className="about-hero-info">
-              <h1>Takahiro</h1>
-              <p>{labels.profileItems[1].value}</p>
+              <h3 style={{ fontSize: 20, margin: "0 0 4px" }}>Takahiro</h3>
+              <p>{l.profileItems[1].value}</p>
               <div className="about-sns-row">
                 {SNS_LINKS.map((sns) => (
                   <a key={sns.name} href={sns.href} target="_blank" rel="noopener noreferrer" aria-label={sns.name}>
@@ -258,98 +258,93 @@ export default async function AboutPageI18n({ params }: Props) {
               </div>
             </div>
           </div>
-
-          {/* ── プロフィール ── */}
-          <div className="content-card card-padding">
-            <h2>
-              <span className="heading-icon"><User size={18} /></span>
-              {labels.profile}
-            </h2>
-            <table className="info-table">
-              <tbody>
-                {labels.profileItems.map((row) => (
-                  <tr key={row.label}><th>{row.label}</th><td>{row.value}</td></tr>
-                ))}
-              </tbody>
-            </table>
-            <div style={{ marginTop: 24 }}>
-              {labels.bio.map((text, i) => (
-                <p key={i} className="about-section-text">{text}</p>
+          <table className="info-table">
+            <tbody>
+              {l.profileItems.map((row) => (
+                <tr key={row.label}><th>{row.label}</th><td>{row.value}</td></tr>
               ))}
-            </div>
-          </div>
-
-          {/* ── 撮影機材 ── */}
-          <div className="content-card card-padding">
-            <h2>
-              <span className="heading-icon"><Camera size={18} /></span>
-              {labels.equipment}
-            </h2>
-            <p className="about-section-text">{labels.equipmentDesc}</p>
-            <ul className="about-equipment-list">
-              {EQUIPMENT.map((item) => (
-                <li key={item}><Camera size={14} color="#64748b" />{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          {/* ── 活動実績 ── */}
-          <div className="content-card card-padding">
-            <h2>
-              <span className="heading-icon"><Award size={18} /></span>
-              {labels.achievements}
-            </h2>
-            <p className="about-section-text" style={{ marginBottom: 24 }}>{labels.achievementsDesc}</p>
-            <div className="about-achievement-grid">
-              {ACHIEVEMENTS.map((a) => (
-                <div key={a.title} className="about-achievement-item">
-                  <div className="achievement-image">
-                    <Image src={a.image} alt={a.title} fill sizes="100px" style={{ objectFit: "cover" }} />
-                  </div>
-                  <div className="achievement-body">
-                    <h3>{a.title}</h3>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ── メディア掲載 ── */}
-          <div className="content-card card-padding">
-            <h2>
-              <span className="heading-icon"><Newspaper size={18} /></span>
-              {labels.media}
-            </h2>
-            <ul className="about-media-list">
-              {MEDIA_JA.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          {/* ── きっかけ ── */}
-          <div className="content-card card-padding">
-            <h2>
-              <span className="heading-icon"><BookOpen size={18} /></span>
-              {labels.story}
-            </h2>
-            {labels.storyTexts.map((text, i) => (
+            </tbody>
+          </table>
+          <div style={{ marginTop: 24 }}>
+            {l.bio.map((text, i) => (
               <p key={i} className="about-section-text">{text}</p>
             ))}
           </div>
-
-          {/* ── CTA ── */}
-          <div className="content-card about-cta">
-            <p className="about-section-text" style={{ marginBottom: 20, textAlign: "center" }}>
-              {labels.contactHeading}
-            </p>
-            <Link href="/contact">
-              <Mail size={18} />
-              {labels.contactCta}
-            </Link>
-          </div>
         </div>
-      </article>
+
+        {/* ── Equipment ── */}
+        <div className="content-card card-padding article-body">
+          <h2>
+            <span className="heading-icon"><Camera size={18} /></span>
+            {l.equipment}
+          </h2>
+          <p className="about-section-text">{l.equipmentDesc}</p>
+          <ul className="about-equipment-list">
+            {EQUIPMENT.map((item) => (
+              <li key={item}><Camera size={14} color="#64748b" />{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        {/* ── Achievements ── */}
+        <div className="content-card card-padding article-body">
+          <h2>
+            <span className="heading-icon"><Award size={18} /></span>
+            {l.achievements}
+          </h2>
+          <p className="about-section-text" style={{ marginBottom: 24 }}>{l.achievementsDesc}</p>
+          {ACHIEVEMENTS.map((a) => (
+            <div key={a.title} className="about-achievement-card">
+              <h3 className="about-achievement-title">{a.title}</h3>
+              <div className="about-achievement-image">
+                <Image
+                  src={a.image}
+                  alt={a.title}
+                  width={960}
+                  height={640}
+                  style={{ width: "100%", height: "auto", borderRadius: 8 }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Media ── */}
+        <div className="content-card card-padding article-body">
+          <h2>
+            <span className="heading-icon"><Newspaper size={18} /></span>
+            {l.media}
+          </h2>
+          <ul>
+            <li>Abema Choice — article supervision</li>
+            <li>Picky&apos;s — camera platform article supervision</li>
+            <li>AI Research Institute — featured as recommended web media</li>
+            <li>GoodsPress Magazine — interview article</li>
+          </ul>
+        </div>
+
+        {/* ── Story ── */}
+        <div className="content-card card-padding article-body">
+          <h2>
+            <span className="heading-icon"><BookOpen size={18} /></span>
+            {l.story}
+          </h2>
+          {l.storyTexts.map((text, i) => (
+            <p key={i} className="about-section-text">{text}</p>
+          ))}
+        </div>
+
+        {/* ── CTA ── */}
+        <div className="content-card about-cta">
+          <p className="about-section-text" style={{ marginBottom: 20, textAlign: "center" }}>
+            {l.contactHeading}
+          </p>
+          <Link href={`/${category}/contact`}>
+            <Mail size={18} />
+            {l.contactCta}
+          </Link>
+        </div>
+      </ArticleLayout>
     </>
   );
 }

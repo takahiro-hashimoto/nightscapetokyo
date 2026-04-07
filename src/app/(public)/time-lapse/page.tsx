@@ -175,7 +175,7 @@ function YouTubeEmbed({ video }: { video: Video }) {
         />
       </div>
       {video.caption && (
-        <figcaption className="tl-video-caption">
+        <figcaption className="video-caption">
           {video.captionLink ? (
             <Link href={video.captionLink}>{video.caption}</Link>
           ) : (

@@ -5,7 +5,7 @@ import {
   CircleHelp,
   Train,
   Clock,
-  MessageCircle,
+
 } from "lucide-react";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import SpotHero from "@/components/spot/SpotHero";
@@ -18,8 +18,9 @@ import SpotFaq from "@/components/spot/SpotFaq";
 import SpotHotel from "@/components/spot/SpotHotel";
 import SpotEvent from "@/components/spot/SpotEvent";
 import SpotBestTime from "@/components/spot/SpotBestTime";
-import SpotReview from "@/components/spot/SpotReview";
+
 import SpotRelated from "@/components/spot/SpotRelated";
+import SpotRecommended from "@/components/spot/SpotRecommended";
 import SpotShare from "@/components/spot/SpotShare";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
@@ -34,8 +35,9 @@ type Props = {
   categorySlug: string;
   spotSlug: string;
   availableLocales: string[];
-  showReview?: boolean;
+
   relatedSpots?: SpotListItem[];
+  recommendedSpots?: SpotListItem[];
 };
 
 /** JSON-LD 構造化データを生成 */
@@ -142,8 +144,9 @@ export default function SpotArticle({
   categorySlug,
   spotSlug,
   availableLocales,
-  showReview = true,
+
   relatedSpots = [],
+  recommendedSpots = [],
 }: Props) {
   const al = labels.anchor;
   const fl = labels.footer;
@@ -163,7 +166,7 @@ export default function SpotArticle({
     { id: "info", label: al.info, icon: Info, show: true },
     { id: "access", label: al.access, icon: Train, show: !!(spot.station || spot.parking || spot.map) },
     { id: "besttime", label: al.besttime, icon: Clock, show: true },
-    ...(showReview ? [{ id: "review", label: al.review, icon: MessageCircle, show: true }] : []),
+
     { id: "faq", label: al.faq, icon: CircleHelp, show: spot.faqs.length > 0 },
   ].filter((link) => link.show);
 
@@ -289,15 +292,7 @@ export default function SpotArticle({
             labels={labels.bestTime}
           />
 
-          {showReview && (
-            <SpotReview
-              spotName={spot.name}
-              reviews={spot.reviews}
-              labels={labels.review}
-            />
-          )}
-
-          <SpotFaq faqs={spot.faqs} labels={labels.faq} />
+<SpotFaq faqs={spot.faqs} labels={labels.faq} />
 
           <footer className="article-footer-meta" itemProp="author" itemScope itemType="https://schema.org/Person">
             <span className="meta-author">
@@ -330,7 +325,14 @@ export default function SpotArticle({
           <SpotRelated
             spots={relatedSpots}
             areaName={spot.category.name}
+            areaSlug={spot.category.slug}
             labels={labels.related}
+            localeSlug={currentLocale}
+          />
+
+          <SpotRecommended
+            spots={recommendedSpots}
+            labels={labels.recommend}
             localeSlug={currentLocale}
           />
 

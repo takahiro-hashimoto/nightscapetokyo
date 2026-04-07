@@ -7,10 +7,12 @@ import {
   getAllSpotSlugs,
   getAvailableTranslations,
   getRelatedSpots,
+  getRecommendedSpotsByTags,
   getSpotsByCategoryTranslated,
   getCategoryBySlug,
   getTranslatedAreaSlugs,
   getAvailableAreaLocales,
+  getMapSpotsByCategory,
 } from "@/lib/supabase/queries";
 import { ALL_LOCALE_SLUGS, SITE_URL, buildAreaHreflangAlternates, LOCALE_LABELS } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
@@ -104,10 +106,11 @@ export default async function SpotOrAreaPage({ params }: Props) {
 
   // 翻訳エリアページ: /en/chiyoda, /ko/minato, etc.
   if (ALL_LOCALE_SLUGS.includes(category)) {
-    const [cat, spots, availableLocales] = await Promise.all([
+    const [cat, spots, availableLocales, mapSpots] = await Promise.all([
       getCategoryBySlug(slug),
       getSpotsByCategoryTranslated(slug, category),
       getAvailableAreaLocales(slug),
+      getMapSpotsByCategory(slug),
     ]);
     if (!cat) notFound();
 
@@ -122,6 +125,7 @@ export default async function SpotOrAreaPage({ params }: Props) {
         spots={spots}
         areaLabels={labels.areaPage}
         availableLocales={availableLocales}
+        mapSpots={mapSpots}
       />
     );
   }
@@ -130,9 +134,11 @@ export default async function SpotOrAreaPage({ params }: Props) {
   const spot = await getSpotBySlug(category, slug);
   if (!spot) notFound();
 
-  const [translations, relatedSpots] = await Promise.all([
+  const tagIds = spot.tags.map((t) => t.id);
+  const [translations, relatedSpots, recommendedSpots] = await Promise.all([
     getAvailableTranslations(spot.id),
     getRelatedSpots(spot.category_id, spot.id, 8),
+    getRecommendedSpotsByTags(spot.id, spot.category_id, tagIds, 8),
   ]);
   const labels = getComponentLabels("ja");
 
@@ -144,8 +150,9 @@ export default async function SpotOrAreaPage({ params }: Props) {
       categorySlug={category}
       spotSlug={slug}
       availableLocales={translations.map((t) => t.locale)}
-      showReview={true}
+
       relatedSpots={relatedSpots}
+      recommendedSpots={recommendedSpots}
     />
   );
 }

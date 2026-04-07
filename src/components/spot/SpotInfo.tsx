@@ -82,7 +82,7 @@ export default function SpotInfo({
       value: address,
       itemProp: "address",
     },
-    { icon: <Clock size={16} />, label: l.hours, value: hours, itemProp: "openingHours" },
+    { icon: <Clock size={16} />, label: l.hours, value: hours, itemProp: "openingHours", isHtml: true },
     { icon: <CalendarOff size={16} />, label: l.holiday, value: holiday },
     { icon: <Ticket size={16} />, label: l.fee, value: money, isHtml: true },
     { icon: <ArrowUpFromDot size={16} />, label: l.height, value: height },

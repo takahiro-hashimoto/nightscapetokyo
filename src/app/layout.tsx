@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { SITE_URL } from "@/lib/types";
 import "./globals.css";
 
@@ -33,6 +34,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <link
+          rel="preload"
+          href="/css/non-critical.min.css"
+          as="style"
+        />
+        <Script
+          id="css-loader"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `var l=document.createElement('link');l.rel='stylesheet';l.href='/css/non-critical.min.css';document.head.appendChild(l);`,
+          }}
+        />
+      </head>
       <body className="antialiased min-h-screen flex flex-col">
         {children}
       </body>
