@@ -1,3 +1,5 @@
+import type React from "react";
+
 /**
  * 各コンポーネントで使用するUIラベルの多言語定義
  * 全言語（ja, en, ko, tw, cn）を一元管理する。
@@ -85,7 +87,12 @@ export type AnchorLabels = {
 };
 
 export type RelatedLabels = {
-  heading: (area: string) => string;
+  heading: (area: React.ReactNode) => React.ReactNode;
+  more: (area: string) => string;
+};
+
+export type RecommendLabels = {
+  heading: string;
 };
 
 export type ShareLabels = {
@@ -166,6 +173,8 @@ export type AreaPageLabels = {
   faqFree: (area: string, freeNames: string) => { q: string; a: string };
   faqBestTime: (area: string) => { q: string; a: string };
   imageAlt: (name: string) => string;
+  mapHeading: (area: string) => string;
+  mapCount: (area: string, n: number) => string;
 };
 
 export type SearchPageLabels = {
@@ -188,6 +197,12 @@ export type SearchPageLabels = {
   matchHit: (fields: string) => string;
 };
 
+export type NotFoundLabels = {
+  title: string;
+  desc: string;
+  button: string;
+};
+
 export type ComponentLabels = {
   seoH1: (name: string) => string;
   seoDescription: (name: string, area: string, type: string) => string;
@@ -202,12 +217,14 @@ export type ComponentLabels = {
   faq: FaqLabels;
   movie: MovieLabels;
   related: RelatedLabels;
+  recommend: RecommendLabels;
   share: ShareLabels;
   anchor: AnchorLabels;
   footer: FooterLabels;
   areaPage: AreaPageLabels;
   homePage: HomePageLabels;
   searchPage: SearchPageLabels;
+  notFound: NotFoundLabels;
 };
 
 const LABELS: Record<string, ComponentLabels> = {
@@ -283,6 +300,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     related: {
       heading: (area) => `${area}の夜景スポット`,
+      more: (area) => `${area}の夜景スポットをもっと見る`,
+    },
+    recommend: {
+      heading: "あなたにおすすめの夜景スポット",
     },
     share: {
       heading: "この記事が役に立ったらシェアしてください",
@@ -344,6 +365,8 @@ const LABELS: Record<string, ComponentLabels> = {
         a: `日没後30分、空にまだ色が残る「ブルーアワー」が最も美しい時間帯です。東京の日没は冬は16:30頃、夏は19:00頃と季節で変わります。各スポットページの日没計算機をご活用ください。`,
       }),
       imageAlt: (name) => `${name}の夜景`,
+      mapHeading: (area) => `${area}の夜景スポットマップ`,
+      mapCount: (area, n) => `${area}エリアの夜景スポット ${n}件`,
     },
     homePage: {
       seoTitle: (year) => `【${year}年最新】東京の夜景スポットを定番から穴場まで200以上掲載 | 東京夜景ナビ`,
@@ -415,6 +438,11 @@ const LABELS: Record<string, ComponentLabels> = {
       fieldTag: "タグ",
       fieldCategory: "エリア",
       matchHit: (fields) => `${fields}にヒット`,
+    },
+    notFound: {
+      title: "ページが見つかりませんでした",
+      desc: "お探しのページは移動または削除された可能性があります。",
+      button: "トップページに戻る",
     },
   },
   en: {
@@ -489,6 +517,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     related: {
       heading: (area) => `Night View Spots in ${area}`,
+      more: (area) => `See more spots in ${area}`,
+    },
+    recommend: {
+      heading: "Recommended Night View Spots for You",
     },
     share: {
       heading: "Found this helpful? Share it!",
@@ -550,6 +582,8 @@ const LABELS: Record<string, ComponentLabels> = {
         a: `The best time is 30 minutes after sunset when the sky still has color ("blue hour"). In Tokyo, sunset varies from around 4:30 PM in winter to 7:00 PM in summer. Use our sunset calculator on each spot page for exact times.`,
       }),
       imageAlt: (name) => `Night view of ${name}`,
+      mapHeading: (area) => `${area} Night View Map`,
+      mapCount: (area, n) => `${n} night view spots in ${area}`,
     },
     homePage: {
       seoTitle: (year) => `Best Tokyo Night View Spots (${year}) — 200+ Iconic & Hidden Gems | Tokyo Night View Guide`,
@@ -644,6 +678,11 @@ const LABELS: Record<string, ComponentLabels> = {
       fieldCategory: "Area",
       matchHit: (fields) => `Matched in ${fields}`,
     },
+    notFound: {
+      title: "Page Not Found",
+      desc: "The page you are looking for may have been moved or deleted.",
+      button: "Back to Home",
+    },
   },
   ko: {
     seoH1: (name) => `${name} 가는 길・영업시간・야경 볼거리 가이드`,
@@ -717,6 +756,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     related: {
       heading: (area) => `${area}의 야경 스폿`,
+      more: (area) => `${area}의 야경 스폿 더보기`,
+    },
+    recommend: {
+      heading: "추천 야경 스폿",
     },
     share: {
       heading: "이 기사가 도움이 되셨다면 공유해 주세요",
@@ -778,6 +821,8 @@ const LABELS: Record<string, ComponentLabels> = {
         a: `일몰 30분 후 하늘에 아직 색이 남아 있는 "블루아워"가 최적입니다. 도쿄의 일몰은 겨울 오후 4시 30분경, 여름 오후 7시경으로 계절에 따라 달라집니다. 각 스폿 페이지의 일몰 계산기를 활용하세요.`,
       }),
       imageAlt: (name) => `${name}의 야경`,
+      mapHeading: (area) => `${area} 야경 스폿 지도`,
+      mapCount: (area, n) => `${area} 야경 스폿 ${n}곳`,
     },
     homePage: {
       seoTitle: (year) => `도쿄 야경 명소 추천 ${year} — 관광・촬영에 딱! 200곳 이상 수록 | 도쿄 야경 가이드`,
@@ -872,6 +917,11 @@ const LABELS: Record<string, ComponentLabels> = {
       fieldCategory: "지역",
       matchHit: (fields) => `${fields}에서 일치`,
     },
+    notFound: {
+      title: "페이지를 찾을 수 없습니다",
+      desc: "찾으시는 페이지가 이동되었거나 삭제되었을 수 있습니다.",
+      button: "홈으로 돌아가기",
+    },
   },
   tw: {
     seoH1: (name) => `${name}的交通方式・營業時間・夜景看點指南`,
@@ -945,6 +995,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     related: {
       heading: (area) => `${area}的夜景景點`,
+      more: (area) => `查看更多${area}的夜景景點`,
+    },
+    recommend: {
+      heading: "為您推薦的夜景景點",
     },
     share: {
       heading: "覺得這篇文章有幫助嗎？請分享",
@@ -1006,6 +1060,8 @@ const LABELS: Record<string, ComponentLabels> = {
         a: `日落後30分鐘、天空還帶著色彩的「藍色時刻」最美！東京的日落時間冬天約下午4:30、夏天約晚上7:00，依季節變化。各景點頁面都有日落時間計算器可以參考。`,
       }),
       imageAlt: (name) => `${name}的夜景`,
+      mapHeading: (area) => `${area}夜景景點地圖`,
+      mapCount: (area, n) => `${area}共有 ${n} 個夜景景點`,
     },
     homePage: {
       seoTitle: (year) => `東京夜景景點推薦（${year}最新）— 觀光・攝影必去！收錄200處以上 | 東京夜景導覽`,
@@ -1100,6 +1156,11 @@ const LABELS: Record<string, ComponentLabels> = {
       fieldCategory: "地區",
       matchHit: (fields) => `${fields}中匹配`,
     },
+    notFound: {
+      title: "找不到頁面",
+      desc: "您尋找的頁面可能已被移動或刪除。",
+      button: "返回首頁",
+    },
   },
   cn: {
     seoH1: (name) => `${name}的交通方式・营业时间・夜景看点指南`,
@@ -1173,6 +1234,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     related: {
       heading: (area) => `${area}的夜景景点`,
+      more: (area) => `查看更多${area}的夜景景点`,
+    },
+    recommend: {
+      heading: "为您推荐的夜景景点",
     },
     share: {
       heading: "觉得这篇文章有帮助吗？请分享",
@@ -1234,6 +1299,8 @@ const LABELS: Record<string, ComponentLabels> = {
         a: `日落后30分钟、天空还带着色彩的"蓝色时刻"最美！东京的日落时间冬天约下午4:30、夏天约晚上7:00，随季节变化。各景点页面都有日落时间计算器可以参考。`,
       }),
       imageAlt: (name) => `${name}的夜景`,
+      mapHeading: (area) => `${area}夜景景点地图`,
+      mapCount: (area, n) => `${area}共有 ${n} 个夜景景点`,
     },
     homePage: {
       seoTitle: (year) => `东京夜景景点推荐（${year}最新）— 观光・摄影必去！收录200处以上 | 东京夜景导览`,
@@ -1327,6 +1394,11 @@ const LABELS: Record<string, ComponentLabels> = {
       fieldTag: "标签",
       fieldCategory: "地区",
       matchHit: (fields) => `${fields}中匹配`,
+    },
+    notFound: {
+      title: "找不到页面",
+      desc: "您寻找的页面可能已被移动或删除。",
+      button: "返回首页",
     },
   },
 };

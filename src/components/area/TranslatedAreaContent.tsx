@@ -1,10 +1,12 @@
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
+import AreaMapLoader from "@/components/map/AreaMapLoader";
 import SetHtmlLang from "@/components/layout/SetHtmlLang";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import type { SpotListItem } from "@/lib/types";
 import { SITE_URL, LOCALE_LABELS } from "@/lib/types";
 import type { AreaPageLabels } from "@/lib/i18n-labels";
+import type { MapSpotItem } from "@/lib/supabase/queries";
 
 type Props = {
   localeSlug: string;
@@ -13,6 +15,7 @@ type Props = {
   spots: SpotListItem[];
   areaLabels: AreaPageLabels;
   availableLocales: string[];
+  mapSpots?: MapSpotItem[];
 };
 
 /** FAQ自動生成 */
@@ -76,6 +79,7 @@ export default function TranslatedAreaContent({
   spots,
   areaLabels: al,
   availableLocales,
+  mapSpots = [],
 }: Props) {
   const faqs = generateAreaFaq(al, areaName, spots);
 
@@ -143,14 +147,27 @@ export default function TranslatedAreaContent({
           </section>
         )}
 
+        {mapSpots.length > 0 && (
+          <section className="content-card card-padding" id="map" aria-labelledby="map-heading">
+            <h2 className="area-section-heading" id="map-heading">{al.mapHeading(areaName)}</h2>
+            <AreaMapLoader
+              spots={mapSpots}
+              areaName={areaName}
+              localeSlug={localeSlug}
+              countLabel={al.mapCount(areaName, mapSpots.length)}
+              nameOverrides={Object.fromEntries(spots.map((s) => [s.slug, s.name]))}
+            />
+          </section>
+        )}
+
         {faqs.length > 0 && (
           <section className="content-card card-padding area-faq" aria-label="FAQ">
             <h2 className="area-section-heading">{al.faqHeading(areaName)}</h2>
             <dl className="area-faq-list">
               {faqs.map((faq, i) => (
-                <div key={i} className="area-faq-item">
-                  <dt className="area-faq-question">{faq.question}</dt>
-                  <dd className="area-faq-answer">{faq.answer}</dd>
+                <div key={i} className="faq-item">
+                  <dt className="faq-q">{faq.question}</dt>
+                  <dd className="faq-a">{faq.answer}</dd>
                 </div>
               ))}
             </dl>

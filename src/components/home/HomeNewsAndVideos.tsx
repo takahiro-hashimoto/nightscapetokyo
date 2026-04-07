@@ -64,7 +64,7 @@ export default function HomeNewsAndVideos({ recentSpots }: Props) {
                       allowFullScreen
                     />
                   </div>
-                  <p className="video-desc">{v.desc}</p>
+                  <p className="video-caption">{v.desc}</p>
                 </div>
               ))}
             </div>

@@ -46,16 +46,16 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
 
   return (
     <>
-      <div className="area-toolbar" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 0", fontSize: 14 }}>
-        <span style={{ fontWeight: 600, color: "#333" }}>
+      <div className="search-toolbar">
+        <span className="search-toolbar-count">
           {countText}
         </span>
-        <label style={{ display: "flex", alignItems: "center", gap: 4, color: "#666", fontSize: 14 }}>
+        <label className="area-sort-label">
           {sortLabel}
           <select
             value={sortKey}
             onChange={(e) => setSortKey(e.target.value as SortKey)}
-            style={{ border: "1px solid #e2e8f0", borderRadius: 6, padding: "6px 12px", fontSize: 14, color: "#333", background: "#fff", cursor: "pointer" }}
+            className="area-sort-select"
           >
             <option value="rating">{sortRating}</option>
             <option value="updated">{sortUpdated}</option>
@@ -84,6 +84,7 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
               </div>
               <div className="spot-card-body">
                 <div className="spot-card-meta">
+                  <span className="badge spot-card-category">{spot.category.name}</span>
                   <div className="spot-card-rating" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
                     <meta itemProp="ratingValue" content={spot.rating_avg.toFixed(1)} />
                     <meta itemProp="bestRating" content="5" />

@@ -7,18 +7,23 @@ import type { RelatedLabels } from "@/lib/i18n-labels";
 type Props = {
   spots: SpotListItem[];
   areaName: string;
+  areaSlug: string;
   labels: RelatedLabels;
   localeSlug?: string | null;
 };
 
-export default function SpotRelated({ spots, areaName, labels, localeSlug }: Props) {
+export default function SpotRelated({ spots, areaName, areaSlug, labels, localeSlug }: Props) {
   if (spots.length === 0) return null;
+
+  const areaHref = localeSlug ? `/${localeSlug}/${areaSlug}` : `/${areaSlug}`;
 
   return (
     <section className="related-section">
-      <h3 className="related-heading">{labels.heading(areaName)}</h3>
+      <h3 className="related-heading">
+        {labels.heading(<Link href={areaHref} className="related-heading-link">{areaName}</Link>)}
+      </h3>
       <div className="ranking-grid ranking-grid-4">
-        {spots.map((spot, i) => (
+        {spots.map((spot) => (
           <Link
             key={spot.id}
             href={localeSlug ? `/${localeSlug}/${spot.category.slug}/${spot.slug}` : `/${spot.category.slug}/${spot.slug}`}
@@ -36,7 +41,7 @@ export default function SpotRelated({ spots, areaName, labels, localeSlug }: Pro
             </div>
             <div className="spot-card-body">
               <div className="spot-card-meta">
-                <span className="spot-card-category">
+                <span className="badge spot-card-category">
                   {spot.category.name}
                 </span>
                 <div className="spot-card-rating">
@@ -44,7 +49,7 @@ export default function SpotRelated({ spots, areaName, labels, localeSlug }: Pro
                   <span>{spot.rating_avg.toFixed(1)}</span>
                 </div>
               </div>
-              <h3 className="spot-card-title">{spot.name}</h3>
+              <p className="spot-card-title">{spot.name}</p>
               <p className="spot-card-lead">{spot.lead}</p>
             </div>
           </Link>

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  User,
   Camera,
   Award,
   Newspaper,
@@ -10,8 +9,9 @@ import {
   Mail,
   ExternalLink,
 } from "lucide-react";
-import Breadcrumb from "@/components/layout/Breadcrumb";
-import { SITE_URL, ALL_LOCALE_SLUGS, buildAreaHreflangAlternates } from "@/lib/types";
+import ArticleLayout from "@/components/layout/ArticleLayout";
+import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 
 const TITLE = "運営者情報";
 const DESCRIPTION =
@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-/* ── SNS（Footer と同じ） ── */
+/* ── SNS ── */
 const SNS_LINKS = [
   { name: "YouTube", href: "https://www.youtube.com/@nightscape-tokyo?sub_confirmation=1", icon: "M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" },
   { name: "X", href: "https://twitter.com/takahiro__1202", icon: "M18.9 1.2h3.7l-8 9.2L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4z" },
@@ -304,203 +304,212 @@ const MEDIA: MediaItem[] = [
 
 export default function AboutPage() {
   return (
-    <article className="home-section" style={{ paddingTop: 0 }}>
-      <div className="home-container">
-        <Breadcrumb items={[{ label: TITLE }]} />
+    <>
+      <LanguageSwitcher currentLocale="ja" categorySlug="about" availableLocales={ALL_LOCALE_SLUGS} localeLabels={LOCALE_LABELS} />
+      <ArticleLayout
+      title={TITLE}
+      icon={
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      }
+      summary="東京夜景ナビの運営者タカヒロのプロフィール・活動実績・撮影機材について紹介します。"
+      breadcrumb={[
+        
+        { label: TITLE },
+      ]}
+    >
+      {/* ── 運営者について ── */}
+      <div className="content-card card-padding article-body">
+        <h2>運営者について</h2>
 
-        {/* ── 運営者について ── */}
-        <div className="content-card card-padding" style={{ marginTop: 24 }}>
-          <h2>
-            <span className="heading-icon"><User size={18} /></span>
-            運営者について
-          </h2>
-
-          <div className="about-hero-card">
-            <div className="about-hero-avatar">
-              <Image
-                src="/images/about/profile.jpg"
-                alt="タカヒロ"
-                width={140}
-                height={140}
-              />
-            </div>
-            <div className="about-hero-info">
-              <h1>タカヒロ</h1>
-              <p>Webディレクター / ブロガー / フォトグラファー</p>
-              <p>東京夜景ナビ 運営者</p>
-              <div className="about-sns-row">
-                {SNS_LINKS.map((sns) => (
-                  <a
-                    key={sns.name}
-                    href={sns.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={sns.name}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path d={sns.icon} />
-                    </svg>
-                  </a>
-                ))}
-              </div>
-            </div>
+        <div className="about-hero-card">
+          <div className="about-hero-avatar">
+            <Image
+              src="/images/about/profile.jpg"
+              alt="タカヒロ"
+              width={140}
+              height={140}
+            />
           </div>
-          <table className="info-table">
-            <tbody>
-              {PROFILE.map((row) => (
-                <tr key={row.label}>
-                  <th>{row.label}</th>
-                  <td>{row.value}</td>
-                </tr>
+          <div className="about-hero-info">
+            <h3 style={{ fontSize: 20, margin: "0 0 4px" }}>タカヒロ</h3>
+            <p>Webディレクター / ブロガー / フォトグラファー</p>
+            <p>東京夜景ナビ 運営者</p>
+            <div className="about-sns-row">
+              {SNS_LINKS.map((sns) => (
+                <a
+                  key={sns.name}
+                  href={sns.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={sns.name}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d={sns.icon} />
+                  </svg>
+                </a>
               ))}
-            </tbody>
-          </table>
-          <div style={{ marginTop: 24 }}>
-            <p className="about-section-text">
-              東京都内にあるIT企業でWebディレクターとして働く傍ら、東京の夜景スポットについて情報発信をしています。
-            </p>
-            <p className="about-section-text">
-              <strong>東京タワーが見える夜景スポット</strong>や<strong>ウォーターフロントの夜景スポット</strong>が大好きです。
-            </p>
-            <p className="about-section-text">
-              東京都内のメジャーな夜景スポットはほぼ制覇しており、最近は「<a href="/tag/hotel">夜景が綺麗な都内のホテル</a>」に宿泊して客室からの眺めを堪能するのがマイブーム。
-            </p>
-            <p className="about-section-text">
-              本サイトの他にも「<a href="https://digital-style.jp/" target="_blank" rel="noopener noreferrer">ガジェットレビューブログ・デジスタ</a>」、「<a href="https://used-lab.jp" target="_blank" rel="noopener noreferrer">ユーズドラボ</a>」、「<a href="https://biz-shelf.com" target="_blank" rel="noopener noreferrer">ビズシェルフ</a>」を運営していたり、カメラマン、Webコンサルタントとしても活動しています。
-            </p>
+            </div>
           </div>
         </div>
-
-        {/* ── 撮影機材 ── */}
-        <div className="content-card card-padding">
-          <h2>
-            <span className="heading-icon"><Camera size={18} /></span>
-            撮影機材について
-          </h2>
-          <p className="about-section-text">
-            夜景写真の撮影には下記のようなアイテムを使用しています。
-          </p>
-          <p className="about-section-text">
-            これらの機材の詳細は「<a href="https://nightscape.tokyo/article/my-photographic-equipment/" target="_blank" rel="noopener noreferrer">夜景フォトグラファーの愛用する撮影機材まとめ</a>」で詳しく解説しているので、気になった方はぜひチェックしてみてください。
-          </p>
-          <ul className="about-equipment-list">
-            {EQUIPMENT.map((item) => (
-              <li key={item.name}>
-                <Camera size={14} color="#64748b" />
-                <a href={item.href} target="_blank" rel="noopener noreferrer">{item.name}</a>
-              </li>
+        <table className="info-table">
+          <tbody>
+            {PROFILE.map((row) => (
+              <tr key={row.label}>
+                <th>{row.label}</th>
+                <td>{row.value}</td>
+              </tr>
             ))}
-          </ul>
-        </div>
-
-        {/* ── 活動実績 ── */}
-        <div className="content-card card-padding">
-          <h2>
-            <span className="heading-icon"><Award size={18} /></span>
-            活動実績
-          </h2>
-          <p className="about-section-text" style={{ marginBottom: 24 }}>
-            本サイトを通じてご依頼いただいたお仕事などの活動実績を一部ご紹介します。
-          </p>
-
-          {ACHIEVEMENTS.map((a) => (
-            <div key={a.title} className="about-achievement-card">
-              <h3 className="about-achievement-title">{a.title}</h3>
-              <div className="about-achievement-image">
-                <Image
-                  src={a.image}
-                  alt={a.imageAlt}
-                  width={960}
-                  height={640}
-                  style={{ width: "100%", height: "auto", borderRadius: 8 }}
-                />
-              </div>
-              {a.description.map((p, i) => (
-                <p key={i} className="about-section-text">{p}</p>
-              ))}
-              <a
-                href={a.link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="about-ref-card"
-              >
-                {a.link.thumbnail && (
-                  <div className="about-ref-thumb">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={a.link.thumbnail} alt="" />
-                  </div>
-                )}
-                <div className="about-ref-body">
-                  <span className="about-ref-title">{a.link.title}</span>
-                  {a.link.siteName && (
-                    <span className="about-ref-site">{a.link.siteName}</span>
-                  )}
-                  {a.link.excerpt && (
-                    <span className="about-ref-excerpt">{a.link.excerpt}</span>
-                  )}
-                </div>
-                <ExternalLink size={14} className="about-ref-icon" />
-              </a>
-            </div>
-          ))}
-        </div>
-
-        {/* ── メディア掲載 ── */}
-        <div className="content-card card-padding">
-          <h2>
-            <span className="heading-icon"><Newspaper size={18} /></span>
-            メディア掲載
-          </h2>
-          {MEDIA.map((item) => (
-            <div key={item.linkHref} className="about-media-item">
-              <p className="about-section-text">{item.description}</p>
-              <a
-                href={item.linkHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="about-media-link"
-              >
-                <ExternalLink size={14} />
-                <span>{item.linkTitle}</span>
-              </a>
-            </div>
-          ))}
-        </div>
-
-        {/* ── きっかけ ── */}
-        <div className="content-card card-padding">
-          <h2>
-            <span className="heading-icon"><BookOpen size={18} /></span>
-            東京の夜景を撮り始めたきっかけ
-          </h2>
+          </tbody>
+        </table>
+        <div style={{ marginTop: 24 }}>
           <p className="about-section-text">
-            東京の夜景の魅力に取り憑かれたのは2012年ごろ。就職活動で何度か東京に足を運ぶ機会があったのですが、当時はお金がなかったのでもっぱら深夜バスが主な交通手段でした。
+            東京都内にあるIT企業でWebディレクターとして働く傍ら、東京の夜景スポットについて情報発信をしています。
           </p>
           <p className="about-section-text">
-            夜に地元の名古屋を出て朝方に窓の外を眺めると、そこには首都高速道路の両脇に高層ビル群が立ち並ぶダイナミックな光景が広がっていました。美しい早朝の茜色の空も相まって「こんなに美しい景色が東京にはあるんだ…。」と感動したのを覚えています。
+            <strong>東京タワーが見える夜景スポット</strong>や<strong>ウォーターフロントの夜景スポット</strong>が大好きです。
           </p>
           <p className="about-section-text">
-            その後名古屋の企業に新卒として働き始めましたが、就職活動で見た東京の街並みが忘れられず、給料を貯めてカメラ機材を購入し、毎年冬に東京の夜景スポットを撮り歩くのが恒例行事になりました。
+            東京都内のメジャーな夜景スポットはほぼ制覇しており、最近は「<a href="/tag/hotel">夜景が綺麗な都内のホテル</a>」に宿泊して客室からの眺めを堪能するのがマイブーム。
           </p>
           <p className="about-section-text">
-            2022年には東京の会社に転職。それをきっかけに今まで撮り溜めていた夜景スポットの写真を整理して本サイトを開設しました。一年に数回東京を訪れるだけでは撮りに行けないマイナーな夜景スポットにも気軽に訪問できるようになり、掲載している夜景スポットは200を超えるまでに。
+            本サイトの他にも「<a href="https://digital-style.jp/" target="_blank" rel="noopener noreferrer">ガジェットレビューブログ・デジスタ</a>」、「<a href="https://used-lab.jp" target="_blank" rel="noopener noreferrer">ユーズドラボ</a>」、「<a href="https://biz-shelf.com" target="_blank" rel="noopener noreferrer">ビズシェルフ</a>」を運営していたり、カメラマン、Webコンサルタントとしても活動しています。
           </p>
-          <p className="about-section-text">
-            ありがたいことにカメラマンとしての仕事を依頼いただく機会も増え、東京の夜の街並みを撮り歩くのがライフワークの一つとなっています。これからもどんどん発展していく東京の街並みを記録していきたいと思っています。
-          </p>
-        </div>
-
-        {/* ── お問い合わせ CTA ── */}
-        <div className="content-card about-cta">
-          <p className="about-section-text" style={{ marginBottom: 20, textAlign: "center" }}>
-            夜景撮影のご依頼や写真素材等の購入はお気軽にお問い合わせください。
-          </p>
-          <Link href="/contact">
-            <Mail size={18} />
-            お問い合わせ・撮影依頼
-          </Link>
         </div>
       </div>
-    </article>
+
+      {/* ── 撮影機材 ── */}
+      <div className="content-card card-padding article-body">
+        <h2>
+          <span className="heading-icon"><Camera size={18} /></span>
+          撮影機材について
+        </h2>
+        <p className="about-section-text">
+          夜景写真の撮影には下記のようなアイテムを使用しています。
+        </p>
+        <p className="about-section-text">
+          これらの機材の詳細は「<a href="https://nightscape.tokyo/article/my-photographic-equipment/" target="_blank" rel="noopener noreferrer">夜景フォトグラファーの愛用する撮影機材まとめ</a>」で詳しく解説しているので、気になった方はぜひチェックしてみてください。
+        </p>
+        <ul className="about-equipment-list">
+          {EQUIPMENT.map((item) => (
+            <li key={item.name}>
+              <Camera size={14} color="#64748b" />
+              <a href={item.href} target="_blank" rel="noopener noreferrer">{item.name}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* ── 活動実績 ── */}
+      <div className="content-card card-padding article-body">
+        <h2>
+          <span className="heading-icon"><Award size={18} /></span>
+          活動実績
+        </h2>
+        <p className="about-section-text" style={{ marginBottom: 24 }}>
+          本サイトを通じてご依頼いただいたお仕事などの活動実績を一部ご紹介します。
+        </p>
+
+        {ACHIEVEMENTS.map((a) => (
+          <div key={a.title} className="about-achievement-card">
+            <h3 className="about-achievement-title">{a.title}</h3>
+            <div className="about-achievement-image">
+              <Image
+                src={a.image}
+                alt={a.imageAlt}
+                width={960}
+                height={640}
+                style={{ width: "100%", height: "auto", borderRadius: 8 }}
+              />
+            </div>
+            {a.description.map((p, i) => (
+              <p key={i} className="about-section-text">{p}</p>
+            ))}
+            <a
+              href={a.link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="about-ref-card"
+            >
+              {a.link.thumbnail && (
+                <div className="about-ref-thumb">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={a.link.thumbnail} alt="" />
+                </div>
+              )}
+              <div className="about-ref-body">
+                <span className="about-ref-title">{a.link.title}</span>
+                {a.link.siteName && (
+                  <span className="about-ref-site">{a.link.siteName}</span>
+                )}
+                {a.link.excerpt && (
+                  <span className="about-ref-excerpt">{a.link.excerpt}</span>
+                )}
+              </div>
+              <ExternalLink size={14} className="about-ref-icon" />
+            </a>
+          </div>
+        ))}
+      </div>
+
+      {/* ── メディア掲載 ── */}
+      <div className="content-card card-padding article-body">
+        <h2>
+          <span className="heading-icon"><Newspaper size={18} /></span>
+          メディア掲載
+        </h2>
+        {MEDIA.map((item) => (
+          <div key={item.linkHref} className="about-media-item">
+            <p className="about-section-text">{item.description}</p>
+            <a
+              href={item.linkHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="about-media-link"
+            >
+              <ExternalLink size={14} />
+              <span>{item.linkTitle}</span>
+            </a>
+          </div>
+        ))}
+      </div>
+
+      {/* ── きっかけ ── */}
+      <div className="content-card card-padding article-body">
+        <h2>
+          <span className="heading-icon"><BookOpen size={18} /></span>
+          東京の夜景を撮り始めたきっかけ
+        </h2>
+        <p className="about-section-text">
+          東京の夜景の魅力に取り憑かれたのは2012年ごろ。就職活動で何度か東京に足を運ぶ機会があったのですが、当時はお金がなかったのでもっぱら深夜バスが主な交通手段でした。
+        </p>
+        <p className="about-section-text">
+          夜に地元の名古屋を出て朝方に窓の外を眺めると、そこには首都高速道路の両脇に高層ビル群が立ち並ぶダイナミックな光景が広がっていました。美しい早朝の茜色の空も相まって「こんなに美しい景色が東京にはあるんだ…。」と感動したのを覚えています。
+        </p>
+        <p className="about-section-text">
+          その後名古屋の企業に新卒として働き始めましたが、就職活動で見た東京の街並みが忘れられず、給料を貯めてカメラ機材を購入し、毎年冬に東京の夜景スポットを撮り歩くのが恒例行事になりました。
+        </p>
+        <p className="about-section-text">
+          2022年には東京の会社に転職。それをきっかけに今まで撮り溜めていた夜景スポットの写真を整理して本サイトを開設しました。一年に数回東京を訪れるだけでは撮りに行けないマイナーな夜景スポットにも気軽に訪問できるようになり、掲載している夜景スポットは200を超えるまでに。
+        </p>
+        <p className="about-section-text">
+          ありがたいことにカメラマンとしての仕事を依頼いただく機会も増え、東京の夜の街並みを撮り歩くのがライフワークの一つとなっています。これからもどんどん発展していく東京の街並みを記録していきたいと思っています。
+        </p>
+      </div>
+
+      {/* ── お問い合わせ CTA ── */}
+      <div className="content-card about-cta">
+        <p className="about-section-text" style={{ marginBottom: 20, textAlign: "center" }}>
+          夜景撮影のご依頼や写真素材等の購入はお気軽にお問い合わせください。
+        </p>
+        <Link href="/contact">
+          <Mail size={18} />
+          お問い合わせ・撮影依頼
+        </Link>
+      </div>
+    </ArticleLayout>
+    </>
   );
 }

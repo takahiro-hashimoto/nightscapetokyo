@@ -279,7 +279,7 @@ export default async function RecommendPage() {
                 </div>
                 <div className="spot-card-body">
                   <div className="spot-card-meta">
-                    <span className="spot-card-category">
+                    <span className="badge spot-card-category">
                       {spot.category.name}
                     </span>
                     <div
@@ -309,9 +309,9 @@ export default async function RecommendPage() {
             <h2 className="area-section-heading" id="recommend-faq-heading">東京の夜景おすすめランキングに関するFAQ</h2>
             <dl className="area-faq-list">
               {faqs.map((faq, i) => (
-                <div key={i} className="area-faq-item">
-                  <dt className="area-faq-question">{faq.question}</dt>
-                  <dd className="area-faq-answer">{faq.answer}</dd>
+                <div key={i} className="faq-item">
+                  <dt className="faq-q">{faq.question}</dt>
+                  <dd className="faq-a">{faq.answer}</dd>
                 </div>
               ))}
             </dl>

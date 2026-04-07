@@ -557,6 +557,100 @@ export async function getRelatedSpots(
   return data.map(mapSpotToListing);
 }
 
+/** タグが類似するおすすめスポットを取得 */
+export async function getRecommendedSpotsByTags(
+  spotId: string,
+  categoryId: string,
+  tagIds: string[],
+  limit = 8
+): Promise<SpotListItem[]> {
+  if (!isSupabaseConfigured || tagIds.length === 0) return [];
+
+  const supabase = await getSupabaseClient();
+
+  // 同じタグを持つスポットIDを取得（自分自身は除外）
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: tagLinks } = (await supabase
+    .from("spot_tags")
+    .select("spot_id, tag_id")
+    .in("tag_id", tagIds)
+    .neq("spot_id", spotId)) as any;
+
+  if (!tagLinks?.length) return [];
+
+  // タグの一致数でスコアリング
+  const scoreMap = new Map<string, number>();
+  for (const link of tagLinks) {
+    scoreMap.set(link.spot_id, (scoreMap.get(link.spot_id) || 0) + 1);
+  }
+
+  const candidateIds = [...scoreMap.keys()];
+
+  // 同じエリアのスポットは除外
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: spots } = (await supabase
+    .from("spots")
+    .select(LISTING_SELECT)
+    .in("id", candidateIds)
+    .eq("published", true)
+    .eq("type", "spot")
+    .neq("category_id", categoryId)) as any;
+
+  if (!spots?.length) return [];
+
+  return spots
+    .map(mapSpotToListing)
+    .sort((a: SpotListItem, b: SpotListItem) => {
+      const scoreA = scoreMap.get(a.id) || 0;
+      const scoreB = scoreMap.get(b.id) || 0;
+      if (scoreB !== scoreA) return scoreB - scoreA;
+      return b.rating_avg - a.rating_avg;
+    })
+    .slice(0, limit);
+}
+
+/** タグが類似するおすすめスポットを取得（翻訳版） */
+export async function getRecommendedSpotsByTagsTranslated(
+  spotId: string,
+  categoryId: string,
+  tagIds: string[],
+  urlSlug: string,
+  limit = 8
+): Promise<SpotListItem[]> {
+  const dbLocale = LOCALE_SLUG_MAP[urlSlug];
+  if (!isSupabaseConfigured || !dbLocale || tagIds.length === 0) return [];
+
+  const spots = await getRecommendedSpotsByTags(spotId, categoryId, tagIds, limit);
+  if (!spots.length) return [];
+
+  const supabase = await getSupabaseClient();
+  const spotIds = spots.map((s) => s.id);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: translations } = (await supabase
+    .from("spot_translations")
+    .select("spot_id, name, lead, category_name")
+    .eq("locale", dbLocale)
+    .in("spot_id", spotIds)) as any;
+
+  if (!translations?.length) return spots;
+
+  const tMap = new Map(translations.map((t: any) => [t.spot_id, t]));
+
+  return spots.map((base) => {
+    const t: any = tMap.get(base.id);
+    if (!t) return base;
+    return {
+      ...base,
+      name: t.name || base.name,
+      category: t.category_name
+        ? { slug: base.category.slug, name: t.category_name }
+        : base.category,
+      lead: t.lead || base.lead,
+    };
+  });
+}
+
 /** 翻訳済みの関連スポットを取得（同エリア＋翻訳あり） */
 export async function getRelatedSpotsTranslated(
   categoryId: string,
@@ -1294,4 +1388,59 @@ export async function getTagPageBySlugWithTranslation(
   if (!translation) return null;
 
   return { page, translation };
+}
+
+/* =========================================
+   Map — spots with coordinates (area-filtered)
+   ========================================= */
+export async function getMapSpotsByCategory(categorySlug: string): Promise<MapSpotItem[]> {
+  const all = await getSpotsForMap();
+  return all.filter((s) => s.categorySlug === categorySlug);
+}
+
+/* =========================================
+   Map page — spots with coordinates
+   ========================================= */
+export type MapSpotItem = {
+  id: string;
+  slug: string;
+  name: string;
+  featured_image: string;
+  categorySlug: string;
+  categoryName: string;
+  latitude: number;
+  longitude: number;
+  rating_avg: number;
+};
+
+export async function getSpotsForMap(): Promise<MapSpotItem[]> {
+  if (!isSupabaseConfigured) return [];
+
+  const supabase = await getSupabaseClient();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data } = (await supabase
+    .from("spots")
+    .select(
+      "id, slug, name, title, featured_image, latitude, longitude, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(slug, name)"
+    )
+    .eq("type", "spot")
+    .eq("published", true)
+    .not("latitude", "is", null)
+    .not("longitude", "is", null)) as any;
+
+  if (!data) return [];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return data.map((s: any) => ({
+    id: s.id,
+    slug: s.slug,
+    name: s.name || s.title,
+    featured_image: s.featured_image || "",
+    categorySlug: s.category?.slug ?? "",
+    categoryName: s.category?.name ?? "",
+    latitude: s.latitude,
+    longitude: s.longitude,
+    rating_avg: calcRatingAvg(s),
+  }));
 }

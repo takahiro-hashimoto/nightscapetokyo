@@ -7,6 +7,7 @@ import {
   getAllTranslatedSlugs,
   getAvailableTranslations,
   getRelatedSpotsTranslated,
+  getRecommendedSpotsByTagsTranslated,
 } from "@/lib/supabase/queries";
 import { ALL_LOCALE_SLUGS } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
@@ -57,9 +58,11 @@ export default async function TranslatedSpotPage({ params }: Props) {
   const spot = await getSpotWithTranslation(categorySlug, spotSlug, localeSlug);
   if (!spot) notFound();
 
-  const [translations, relatedSpots] = await Promise.all([
+  const tagIds = spot.tags.map((t) => t.id);
+  const [translations, relatedSpots, recommendedSpots] = await Promise.all([
     getAvailableTranslations(spot.id),
     getRelatedSpotsTranslated(spot.category_id, spot.id, localeSlug, 8),
+    getRecommendedSpotsByTagsTranslated(spot.id, spot.category_id, tagIds, localeSlug, 8),
   ]);
   const labels = getComponentLabels(localeSlug);
 
@@ -73,8 +76,9 @@ export default async function TranslatedSpotPage({ params }: Props) {
         categorySlug={categorySlug}
         spotSlug={spotSlug}
         availableLocales={translations.map((t) => t.locale)}
-        showReview={false}
+
         relatedSpots={relatedSpots}
+        recommendedSpots={recommendedSpots}
       />
     </>
   );

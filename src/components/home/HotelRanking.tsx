@@ -50,7 +50,7 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
               </div>
               <div className="spot-card-body">
                 <div className="spot-card-meta">
-                  <span className="spot-card-category">
+                  <span className="badge spot-card-category">
                     {hotel.category.name}
                   </span>
                   <div className="spot-card-rating">
