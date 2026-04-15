@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Camera, Award, Newspaper, BookOpen, Mail } from "lucide-react";
 import ArticleLayout from "@/components/layout/ArticleLayout";
-import SetHtmlLang from "@/components/layout/SetHtmlLang";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import {
   ALL_LOCALE_SLUGS,
@@ -11,6 +10,8 @@ import {
   LOCALE_LABELS,
   buildAreaHreflangAlternates,
 } from "@/lib/types";
+import type { CategoryPageProps as Props } from "@/lib/types";
+import { SNS_LINKS } from "@/lib/constants";
 
 /* ─── 翻訳ラベル ─── */
 type AboutLabels = {
@@ -154,16 +155,6 @@ const ABOUT_LABELS: Record<string, AboutLabels> = {
   },
 };
 
-/* ── 共通データ ── */
-const SNS_LINKS = [
-  { name: "YouTube", href: "https://www.youtube.com/@nightscape-tokyo?sub_confirmation=1", icon: "M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" },
-  { name: "X", href: "https://twitter.com/takahiro__1202", icon: "M18.9 1.2h3.7l-8 9.2L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4z" },
-  { name: "Instagram", href: "https://www.instagram.com/nightscape.tokyo/", icon: "M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6zm9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" },
-  { name: "TikTok", href: "https://www.tiktok.com/@nightscape_tokyo", icon: "M19.3 5.8a5.2 5.2 0 0 1-3.1-2.7A5.1 5.1 0 0 1 15.6 1h-3.8v14.4a2.9 2.9 0 0 1-2.9 2.7 2.9 2.9 0 0 1-2.9-2.9 2.9 2.9 0 0 1 2.9-2.9c.3 0 .6 0 .9.1V7.5a6.7 6.7 0 0 0-.9-.1A6.8 6.8 0 0 0 2 14.2a6.8 6.8 0 0 0 6.8 6.8 6.8 6.8 0 0 0 6.8-6.8V8.4a9 9 0 0 0 5.4 1.8V6.4a5.2 5.2 0 0 1-1.7-.6z" },
-  { name: "Pinterest", href: "https://www.pinterest.jp/nightscape_tokyo/", icon: "M12 0a12 12 0 0 0-4.4 23.2c-.1-.9-.2-2.4 0-3.4l1.3-5.5s-.3-.7-.3-1.7c0-1.6.9-2.8 2.1-2.8 1 0 1.5.7 1.5 1.6 0 1-.6 2.4-1 3.7-.3 1.1.6 2 1.7 2 2.1 0 3.7-2.2 3.7-5.4 0-2.8-2-4.8-4.9-4.8-3.4 0-5.3 2.5-5.3 5.1 0 1 .4 2.1.9 2.7.1.1.1.2.1.3l-.3 1.3c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.6 0-3.8 2.7-7.2 7.9-7.2 4.1 0 7.4 3 7.4 6.9 0 4.1-2.6 7.5-6.2 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 2.9c-.3 1.1-1 2.5-1.5 3.3A12 12 0 1 0 12 0z" },
-  { name: "Lemon8", href: "https://www.lemon8-app.com/nightscape_tokyo", icon: "M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 3.5a2.2 2.2 0 0 0-2.2 2.2c0 .5.2 1 .5 1.4A4.5 4.5 0 0 0 7.5 13 4.5 4.5 0 0 0 12 17.5a4.5 4.5 0 0 0 4.5-4.5 4.5 4.5 0 0 0-2.8-4.2c.3-.3.5-.8.5-1.3A2.2 2.2 0 0 0 12 5.5z" },
-];
-
 const EQUIPMENT = [
   "Sony α7Ⅳ", "Sony α7III", "Sony α7C",
   "Sony FE 24-105mm F4 G OSS",
@@ -191,8 +182,6 @@ const ACHIEVEMENTS = [
 ];
 
 /* ─── Page ─── */
-type Props = { params: Promise<{ category: string }> };
-
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((lang) => ({ category: lang }));
 }
@@ -219,7 +208,6 @@ export default async function AboutPageI18n({ params }: Props) {
 
   return (
     <>
-      <SetHtmlLang locale={locale === "tw" ? "zh-TW" : locale === "cn" ? "zh-CN" : locale} />
       <LanguageSwitcher
         currentLocale={locale}
         categorySlug="about"
@@ -267,7 +255,7 @@ export default async function AboutPageI18n({ params }: Props) {
           </table>
           <div style={{ marginTop: 24 }}>
             {l.bio.map((text, i) => (
-              <p key={i} className="about-section-text">{text}</p>
+              <p key={i}>{text}</p>
             ))}
           </div>
         </div>
@@ -278,7 +266,7 @@ export default async function AboutPageI18n({ params }: Props) {
             <span className="heading-icon"><Camera size={18} /></span>
             {l.equipment}
           </h2>
-          <p className="about-section-text">{l.equipmentDesc}</p>
+          <p>{l.equipmentDesc}</p>
           <ul className="about-equipment-list">
             {EQUIPMENT.map((item) => (
               <li key={item}><Camera size={14} color="#64748b" />{item}</li>
@@ -292,10 +280,10 @@ export default async function AboutPageI18n({ params }: Props) {
             <span className="heading-icon"><Award size={18} /></span>
             {l.achievements}
           </h2>
-          <p className="about-section-text" style={{ marginBottom: 24 }}>{l.achievementsDesc}</p>
+          <p style={{ marginBottom: 24 }}>{l.achievementsDesc}</p>
           {ACHIEVEMENTS.map((a) => (
-            <div key={a.title} className="about-achievement-card">
-              <h3 className="about-achievement-title">{a.title}</h3>
+            <div key={a.title}>
+              <h3>{a.title}</h3>
               <div className="about-achievement-image">
                 <Image
                   src={a.image}
@@ -330,13 +318,13 @@ export default async function AboutPageI18n({ params }: Props) {
             {l.story}
           </h2>
           {l.storyTexts.map((text, i) => (
-            <p key={i} className="about-section-text">{text}</p>
+            <p key={i}>{text}</p>
           ))}
         </div>
 
         {/* ── CTA ── */}
         <div className="content-card about-cta">
-          <p className="about-section-text" style={{ marginBottom: 20, textAlign: "center" }}>
+          <p style={{ marginBottom: 20, textAlign: "center" }}>
             {l.contactHeading}
           </p>
           <Link href={`/${category}/contact`}>

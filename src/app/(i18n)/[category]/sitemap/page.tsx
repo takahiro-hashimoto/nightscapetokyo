@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ArticleLayout from "@/components/layout/ArticleLayout";
-import SetHtmlLang from "@/components/layout/SetHtmlLang";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { LOCALE_LABELS, LOCALE_SLUG_MAP } from "@/lib/types";
+import { LOCALE_LABELS, LOCALE_SLUG_MAP, ALL_LOCALE_SLUGS } from "@/lib/types";
+import type { CategoryPageProps as Props } from "@/lib/types";
 import { supabase } from "@/lib/supabase/client";
-import { ALL_LOCALE_SLUGS } from "@/lib/types";
 import { SITEMAP_LABELS } from "@/lib/i18n-static-pages";
-
-type Props = { params: Promise<{ category: string }> };
 
 export async function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((c) => ({ category: c }));
@@ -67,7 +64,6 @@ export default async function I18nSitemapPage({ params }: Props) {
 
   return (
     <>
-      <SetHtmlLang locale={locale === "tw" ? "zh-TW" : locale === "cn" ? "zh-CN" : locale} />
       <LanguageSwitcher currentLocale={locale} categorySlug="sitemap" availableLocales={ALL_LOCALE_SLUGS} localeLabels={LOCALE_LABELS} />
       <ArticleLayout locale={locale}
         title={l.title}

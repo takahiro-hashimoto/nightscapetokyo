@@ -6,6 +6,7 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { getTopSpotsTranslated, getSpotCount } from "@/lib/supabase/queries";
 import { ALL_LOCALE_SLUGS, SITE_NAMES, SITE_URL, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
+import type { CategoryPageProps as Props } from "@/lib/types";
 
 /* ─── 翻訳ラベル ─── */
 type RecommendLabels = {
@@ -83,7 +84,6 @@ export function generateStaticParams() {
 }
 
 /* ─── Metadata ─── */
-type Props = { params: Promise<{ category: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: locale } = await params;

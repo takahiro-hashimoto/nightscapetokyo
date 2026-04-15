@@ -1,16 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Crown, Star, ChevronRight } from "lucide-react";
+import { Star, ChevronRight } from "lucide-react";
 import type { SpotListItem } from "@/lib/types";
 import type { HomePageLabels } from "@/lib/i18n-labels";
+import type { ReactNode } from "react";
 
 type Props = {
   spots: SpotListItem[];
   labels?: HomePageLabels["spotRanking"];
   localeSlug?: string;
+  prBanner?: ReactNode;
 };
 
-export default function SpotRanking({ spots, labels, localeSlug }: Props) {
+export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Props) {
   const currentYear = new Date().getFullYear();
   if (spots.length === 0) return null;
 
@@ -19,11 +21,9 @@ export default function SpotRanking({ spots, labels, localeSlug }: Props) {
   return (
     <section className="home-section" id="spot-ranking">
       <div className="home-container">
+        {prBanner}
         <h2 className="home-section-heading">
-          <span className="heading-icon">
-            <Crown size={20} />
-          </span>
-          {labels?.heading(currentYear) ?? `東京都内の夜景スポットおすすめランキング【${currentYear}年最新】`}
+          {labels?.heading(currentYear) ?? `東京都内の夜景スポット ランキング【${currentYear}年】`}
         </h2>
         <p className="home-section-desc">
           {labels?.desc1 ?? "実際に訪問した200ヶ所以上の東京の夜景スポットの中からおすすめの場所をランキング形式でご紹介！"}

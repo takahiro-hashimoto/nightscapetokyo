@@ -81,6 +81,7 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
                 width={300}
                 height={200}
                 sizes="(max-width: 768px) 50vw, 220px"
+                loading="lazy"
               />
             </button>
             {img.alt && <figcaption>{img.alt}</figcaption>}
@@ -123,11 +124,14 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
           )}
 
           {/* 画像 */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={current.url}
             alt={current.alt || ""}
+            width={1200}
+            height={800}
             className="gallery-modal-image"
+            sizes="min(90vw, 1200px)"
+            quality={85}
             onClick={(e) => e.stopPropagation()}
           />
 

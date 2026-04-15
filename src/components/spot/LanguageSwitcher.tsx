@@ -5,20 +5,14 @@ import { createPortal } from "react-dom";
 import { Globe } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ALL_LOCALE_SLUGS } from "@/lib/types";
-
-const ARIA_LABELS: Record<string, string> = {
-  ja: "言語を選択",
-  en: "Select language",
-  ko: "언어 선택",
-  tw: "選擇語言",
-  cn: "选择语言",
-};
+import type { SiteLocale } from "@/lib/types";
+import { LANG_SWITCHER_LABELS } from "@/lib/i18n-labels";
 
 type Props = {
   currentLocale: string | null;
   categorySlug: string;
   spotSlug?: string;
-  availableLocales: string[];
+  availableLocales: readonly string[];
   localeLabels: Record<string, string>;
 };
 
@@ -51,7 +45,7 @@ export default function LanguageSwitcher({
     router.push(`${prefix}${suffix}` || "/");
   };
 
-  const ariaLabel = ARIA_LABELS[currentValue] ?? ARIA_LABELS.en;
+  const ariaLabel = LANG_SWITCHER_LABELS[currentValue as SiteLocale] ?? LANG_SWITCHER_LABELS.en;
 
   const switcher = (
     <div className="language-switcher">

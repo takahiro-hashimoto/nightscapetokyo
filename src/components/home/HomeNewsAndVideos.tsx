@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Bell, Video } from "lucide-react";
 import type { RecentSpotItem } from "@/lib/supabase/queries";
 
 type Props = {
@@ -27,7 +26,6 @@ export default function HomeNewsAndVideos({ recentSpots }: Props) {
           {/* 新着情報 */}
           <div className="news-column">
             <h2 className="home-section-heading">
-              <span className="heading-icon"><Bell size={20} /></span>
               新着情報
             </h2>
             <div className="news-card">
@@ -47,7 +45,6 @@ export default function HomeNewsAndVideos({ recentSpots }: Props) {
           {/* タイムラプス動画 */}
           <div className="videos-column">
             <h2 className="home-section-heading">
-              <span className="heading-icon"><Video size={20} /></span>
               タイムラプス動画
             </h2>
             <p className="videos-intro">

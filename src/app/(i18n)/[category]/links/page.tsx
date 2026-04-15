@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/layout/ArticleLayout";
-import SetHtmlLang from "@/components/layout/SetHtmlLang";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { LOCALE_LABELS } from "@/lib/types";
-import { ALL_LOCALE_SLUGS } from "@/lib/types";
+import { LOCALE_LABELS, ALL_LOCALE_SLUGS } from "@/lib/types";
+import type { CategoryPageProps as Props } from "@/lib/types";
 import { LINKS_LABELS } from "@/lib/i18n-static-pages";
-
-type Props = { params: Promise<{ category: string }> };
 
 export async function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((c) => ({ category: c }));
@@ -20,14 +17,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const LINKS = [
-  { name: "夜景INFO", href: "https://www.nightview.info/", description: "Japan's largest night view drive & date information site with 2,500+ spots." },
-  { name: "大阪 at Night ブログ", href: "https://blog.osakanight.com/", description: "A photo blog covering Osaka's night views and urban development." },
-  { name: "使い道のない風景", href: "https://useless-landscape.com/", description: "A blog introducing night view spots and retro townscapes." },
-  { name: "Nighthiking＆Nightview", href: "https://nighthiking.jp/", description: "Introducing night hiking courses across Japan." },
-  { name: "気ままな飛行機人のプログ", href: "https://tanukineko.net/", description: "A blog featuring numerous travel journals from Japan and abroad." },
-  { name: "旅行リンク Travel Page®", href: "https://www.ryokolink.com/", description: "A comprehensive travel information directory." },
-  { name: "Airランキング", href: "https://airw.net/art/rank.cgi?id=Night10", description: "A ranking site for popular blogs and websites." },
-  { name: "Urawa Night View", href: "https://www.sirius.gr.jp/~satoh/yakei/index.html", description: "Night and sunset photos from across Japan." },
+  { name: "夜景INFO 国内最大級の夜景ドライブ＆デート情報サイト", href: "https://www.nightview.info/", description: "夜景写真家の岩崎さんが運営されている夜景サイトです。2,500ヶ所以上の夜景スポットを紹介されています。" },
+  { name: "大阪 at Night ブログ -大阪の夜景と都市風景探訪-", href: "https://blog.osakanight.com/", description: "大阪の夜景・都市開発情報を発信されている写真ブログです。" },
+  { name: "使い道のない風景", href: "https://useless-landscape.com/", description: "夜景スポットやレトロな街並みなどを紹介されているブログです。" },
+  { name: "Nighthiking＆Nightview", href: "https://nighthiking.jp/", description: "日本全国のナイトハイキングコースを紹介されているサイトです。" },
+  { name: "気ままな飛行機人のプログ", href: "https://tanukineko.net/", description: "国内外の旅行記を数多く掲載されているブログです。" },
+  { name: "「旅行リンク Travel Page®」海外と国内の旅行・観光情報", href: "https://www.ryokolink.com/", description: "旅行会社、航空会社/格安航空 LCC・JR/鉄道・バス、旅館やホテルなど旅行に関する情報をまとめているサイトです。" },
+  { name: "Airランキング", href: "https://airw.net/art/rank.cgi?id=Night10", description: "様々な人気ブログ、Webサイトが登録されているランキングサイト。" },
+  { name: "Urawa Night View", href: "https://www.sirius.gr.jp/~satoh/yakei/index.html", description: "日本全国の夜景・夕景写真を紹介されているwebサイトです。" },
 ];
 
 export default async function I18nLinksPage({ params }: Props) {
@@ -37,7 +34,6 @@ export default async function I18nLinksPage({ params }: Props) {
 
   return (
     <>
-      <SetHtmlLang locale={locale === "tw" ? "zh-TW" : locale === "cn" ? "zh-CN" : locale} />
       <LanguageSwitcher currentLocale={locale} categorySlug="links" availableLocales={ALL_LOCALE_SLUGS} localeLabels={LOCALE_LABELS} />
       <ArticleLayout locale={locale}
         title={l.title}

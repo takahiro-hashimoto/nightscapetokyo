@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Compass } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import type { HomePageLabels } from "@/lib/i18n-labels";
 
 type PurposeTag = {
@@ -30,11 +30,11 @@ export default function PurposeSearch({ tags, labels, localeSlug }: Props) {
     <section className="home-section" id="purpose">
       <div className="home-container">
         <h2 className="home-section-heading">
-          <span className="heading-icon">
-            <Compass size={20} />
-          </span>
           {labels?.heading ?? "目的別に夜景が綺麗な場所を探す"}
         </h2>
+        <p className="home-section-desc">
+          {"デートや撮影、無料で楽しめる場所など、シーン・目的に合わせて夜景スポットを絞り込めます。"}
+        </p>
         <div className="tag-card-grid" style={{ marginTop: 30 }} role="list">
           {tags.map((p) => {
             const imgSrc = resolveTagImage(p);

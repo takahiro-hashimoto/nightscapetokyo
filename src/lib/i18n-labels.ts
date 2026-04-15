@@ -1,4 +1,5 @@
 import type React from "react";
+import type { SiteLocale } from "@/lib/types";
 
 /**
  * 各コンポーネントで使用するUIラベルの多言語定義
@@ -33,10 +34,11 @@ export type InfoLabels = {
   officialSite: string;
   sns: string;
   relatedSite: string;
+  categoryListLabel: (name: string) => string;
 };
 
 export type AccessLabels = {
-  heading: string;
+  heading: (name: string) => string;
   caption: string;
   station: string;
   parking: string;
@@ -71,7 +73,8 @@ export type FaqLabels = {
 };
 
 export type MovieLabels = {
-  heading: string;
+  heading: (name: string) => string;
+  timeLapseLink: string;
 };
 
 export type AnchorLabels = {
@@ -106,6 +109,7 @@ export type ShareLabels = {
 
 export type FooterLabels = {
   author: string;
+  authorLabel: string;
   desc: string;
   published: string;
   updated: string;
@@ -147,6 +151,7 @@ export type HomePageLabels = {
   areaSearch: {
     heading: string;
     areaLabel: (name: string, count: number) => string;
+    areaNames?: Record<string, string>;
   };
   faq: {
     heading: string;
@@ -227,7 +232,7 @@ export type ComponentLabels = {
   notFound: NotFoundLabels;
 };
 
-const LABELS: Record<string, ComponentLabels> = {
+const LABELS = {
   ja: {
     seoH1: (name) => `${name}の行き方・営業時間・夜景見どころガイド`,
     seoDescription: (name, area, type) => {
@@ -263,9 +268,10 @@ const LABELS: Record<string, ComponentLabels> = {
       officialSite: "公式サイト",
       sns: "SNS",
       relatedSite: "関連サイト",
+      categoryListLabel: (name) => `${name}の夜景スポット一覧`,
     },
     access: {
-      heading: "行き方・アクセスと駐車場",
+      heading: (name) => `${name}の行き方・アクセスと駐車場`,
       caption: "アクセス情報",
       station: "電車・最寄り駅",
       parking: "駐車場",
@@ -296,7 +302,8 @@ const LABELS: Record<string, ComponentLabels> = {
       heading: "よくある質問（FAQ）",
     },
     movie: {
-      heading: "タイムラプス動画",
+      heading: (name) => `${name}のタイムラプス動画`,
+      timeLapseLink: "他のタイムラプス動画を見る",
     },
     related: {
       heading: (area) => `${area}の夜景スポット`,
@@ -326,9 +333,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     footer: {
       author: "東京夜景ナビ編集部",
+      authorLabel: "著者",
       desc: "掲載スポットは全て編集部が現地で撮影・取材しています",
       published: "公開日",
-      updated: "更新日",
+      updated: "最終更新日",
     },
     areaPage: {
       title: (area) => `${area}の夜景スポット一覧`,
@@ -373,7 +381,7 @@ const LABELS: Record<string, ComponentLabels> = {
       seoDescription: "東京都内の夜景が綺麗な場所を200ヶ所以上掲載！東京タワー、スカイツリーなどのランドマークが綺麗に見える場所、定番の展望台、無料の穴場夜景スポット、夜景が綺麗なホテルなどを紹介しているので、告白スポット、デート、旅行、撮影スポットの目的地探しにお役立てください。",
       hero: {
         catchphrase: "輝きの街の魅力、再発見。",
-        subtitle: (count) => `デート・撮影などにおすすめの東京の夜景スポットを定番から穴場まで紹介【${count}件掲載】`,
+        subtitle: (count) => `東京の夜景スポットを定番から穴場まで紹介！デート・旅行・写真撮影におすすめの場所がわかる【${count}件掲載】`,
         searchPlaceholder: "例）和田倉噴水公園、展望台、東京タワーが見える、渋谷区",
         searchAriaLabel: "夜景スポットを検索",
         searchButton: "検索",
@@ -387,13 +395,13 @@ const LABELS: Record<string, ComponentLabels> = {
         names: { observatory: "展望台", building: "高層ビル", park: "公園", bridge: "橋", hotel: "ホテル", event: "イベント", waterfront: "水辺", mountain: "山・丘" },
       },
       spotRanking: {
-        heading: (year) => `東京都内の夜景スポットおすすめランキング【${year}年最新】`,
+        heading: (year) => `東京都内の夜景スポット ランキング【${year}年】`,
         desc1: "実際に訪問した200ヶ所以上の東京の夜景スポットの中からおすすめの場所をランキング形式でご紹介！",
         desc2: "各スポットの評価は美しさ、アクセスの良さ、雰囲気の良さ、コスパの4項目から決定しています。デートや撮影の目的先を決めるのにご活用ください。",
         moreLink: "東京の夜景スポットおすすめランキング",
       },
       hotelRanking: {
-        heading: (year) => `夜景の綺麗なホテルおすすめランキング【${year}年版】`,
+        heading: (year) => `東京都内の夜景が綺麗なホテル【${year}年版】`,
         desc: "客室や最上階レストランから上質な東京の夜景が楽しめるホテルを厳選。記念日やデートにもおすすめです。",
         moreLink: "東京の夜景が綺麗なおすすめホテル",
       },
@@ -406,12 +414,13 @@ const LABELS: Record<string, ComponentLabels> = {
         heading: "東京の夜景に関するよくある質問",
         items: [
           { question: "本日の日没時間と夜景鑑賞におすすめの時間帯は何時ですか？", answer: "__SUNSET_DYNAMIC__" },
-          { question: "東京都内の夜景が綺麗な告白スポットを教えてください。", answer: "和田倉噴水公園、KITTE屋上庭園、豊洲ぐるり公園、若洲海浜公園などがおすすめです。とても美しい夜景を見ることができるのに関わらず、人も少なく落ち着いた雰囲気で会話ができるからです。" },
-          { question: "東京都内のインスタ映えする夜景スポットはどこですか？", answer: "SHIBUYA SKY、東京都庁南展望室・北展望室、タワーホール船堀展望台、東京タワー展望台などがおすすめです。" },
-          { question: "東京のランドマークにはどんな建物がありますか？", answer: "東京タワー、東京スカイツリー、レインボーブリッジ、東京ゲートブリッジ、東京駅などが有名なランドマークです。" },
-          { question: "東京の夜景鑑賞におすすめのタイミングはいつですか？", answer: "展望台などを訪れる際は空気が澄んでいる冬が夜景鑑賞におすすめです。また、ビル夜景を眺める際は平日のほうが光量の多い夜景を楽しめます。" },
-          { question: "夜景を綺麗に撮れるおすすめの機材を教えて欲しい！", answer: "「初心者におすすめの撮影機材」や「一眼カメラ・レンズの選び方」などの記事をご覧ください。" },
-          { question: "夜景を綺麗に撮るカメラの設定を教えて欲しい！", answer: "「一眼カメラで綺麗な夜景写真を撮る方法」や「一眼カメラの設定」などの記事をご覧ください。" },
+          { question: "東京でおすすめの夜景スポットはどこですか？", answer: "東京でおすすめの夜景スポットは、SHIBUYA SKY、東京都庁展望室（無料）、豊洲ぐるり公園、東京タワー、レインボーブリッジなどです。本サイトでは200ヶ所以上を実際に訪れた経験をもとに、評価・アクセス情報とともに紹介しています。" },
+          { question: "東京で無料で夜景を楽しめる場所はどこですか？", answer: "無料で楽しめる夜景スポットとして、東京都庁南展望室・北展望室、タワーホール船堀展望台、豊洲ぐるり公園、若洲海浜公園、和田倉噴水公園などがおすすめです。入場料なしで都心の絶景を楽しめます。" },
+          { question: "東京の夜景デート・告白におすすめの場所はどこですか？", answer: "デートや告白には、和田倉噴水公園、KITTE屋上庭園、豊洲ぐるり公園、若洲海浜公園などがおすすめです。美しい夜景を眺めながら落ち着いた雰囲気で過ごせます。" },
+          { question: "東京タワーが見えるおすすめ夜景スポットはどこですか？", answer: "東京タワーが綺麗に見えるスポットとして、ザ・プリンス パークタワー東京（客室）、増上寺、芝公園、六本木ヒルズ周辺などが人気です。角度によって異なる表情が楽しめます。" },
+          { question: "東京の夜景が綺麗に見える時期・時間帯はいつですか？", answer: "空気が澄んでいる冬（11〜2月）が最もクリアな夜景を楽しめます。時間帯は日没後20〜40分のマジックアワーが特におすすめ。ビル夜景は平日のほうが光量が多く映えます。" },
+          { question: "東京の夜景でインスタ映えするスポットはどこですか？", answer: "SHIBUYA SKY、東京都庁展望室、タワーホール船堀展望台、東京タワー展望台などが人気です。フォトジェニックな構図が撮れるポイントも各スポットページで紹介しています。" },
+          { question: "東京の夜景穴場スポットを教えてください。", answer: "穴場スポットとしては、若洲海浜公園、浮島橋、荒川戸田橋緑地、桜田門外堀などが挙げられます。人が少なくゆっくり夜景を楽しめる隠れた名所です。" },
           { question: "夕日が沈む方向を事前に調べるにはどうしたらいいですか？", answer: "__SIMULATOR_LINK__" },
         ],
         sunsetAnswer: (sunset, from, to) => `本日の東京都の日没時間は${sunset}です。${from}〜${to}が夜景が綺麗に見える時間になります。`,
@@ -480,9 +489,10 @@ const LABELS: Record<string, ComponentLabels> = {
       officialSite: "Official Website",
       sns: "SNS",
       relatedSite: "Related Sites",
+      categoryListLabel: (name) => `${name} Night View Spots`,
     },
     access: {
-      heading: "Access & Parking",
+      heading: (name) => `${name} - Access & Parking`,
       caption: "Access Information",
       station: "Train / Nearest Station",
       parking: "Parking",
@@ -513,7 +523,8 @@ const LABELS: Record<string, ComponentLabels> = {
       heading: "Frequently Asked Questions (FAQ)",
     },
     movie: {
-      heading: "Time-lapse Video",
+      heading: (name) => `${name} - Time-lapse Video`,
+      timeLapseLink: "See more time-lapse videos",
     },
     related: {
       heading: (area) => `Night View Spots in ${area}`,
@@ -543,9 +554,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     footer: {
       author: "Tokyo Nightscape Navi Editorial",
+      authorLabel: "Author",
       desc: "All spots are photographed and covered on-site by our editorial team",
       published: "Published",
-      updated: "Updated",
+      updated: "Last Updated",
     },
     areaPage: {
       title: (area) => `Best Night Views in ${area}, Tokyo — Top Spots & Hidden Gems`,
@@ -589,7 +601,7 @@ const LABELS: Record<string, ComponentLabels> = {
       seoTitle: (year) => `Best Tokyo Night View Spots (${year}) — 200+ Iconic & Hidden Gems | Tokyo Night View Guide`,
       seoDescription: "The ultimate guide to 200+ Tokyo night view spots for sightseeing and photography. Discover Tokyo Tower, Skytree, free observatories, hidden gems, and rooftop bars. Plan your Tokyo night tour with ratings, access info, and sunset times.",
       hero: {
-        catchphrase: "Rediscover the charm of the city of lights.",
+        catchphrase: "The Ultimate Guide to Tokyo Nightscapes.",
         subtitle: (count) => `Explore ${count} Tokyo night view spots for sightseeing & photography — from iconic landmarks to hidden gems`,
         searchPlaceholder: "e.g.) Wadakura Park, observatory, Tokyo Tower view, Shibuya",
         searchAriaLabel: "Search night view spots",
@@ -640,6 +652,7 @@ const LABELS: Record<string, ComponentLabels> = {
       areaSearch: {
         heading: "Search by Area",
         areaLabel: (name, count) => `${name} (${count})`,
+        areaNames: { other: "Other Areas" },
       },
       faq: {
         heading: "Frequently Asked Questions about Tokyo Night Views",
@@ -719,9 +732,10 @@ const LABELS: Record<string, ComponentLabels> = {
       officialSite: "공식 사이트",
       sns: "SNS",
       relatedSite: "관련 사이트",
+      categoryListLabel: (name) => `${name} 야경 스폿 목록`,
     },
     access: {
-      heading: "오시는 길・주차장",
+      heading: (name) => `${name} 오시는 길・주차장`,
       caption: "오시는 길 정보",
       station: "전철・가까운 역",
       parking: "주차장",
@@ -752,7 +766,8 @@ const LABELS: Record<string, ComponentLabels> = {
       heading: "자주 묻는 질문 (FAQ)",
     },
     movie: {
-      heading: "타임랩스 영상",
+      heading: (name) => `${name} 타임랩스 영상`,
+      timeLapseLink: "다른 타임랩스 영상 보기",
     },
     related: {
       heading: (area) => `${area}의 야경 스폿`,
@@ -782,9 +797,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     footer: {
       author: "도쿄 야경 나비 편집부",
+      authorLabel: "저자",
       desc: "모든 스폿은 편집부가 현장에서 촬영・취재합니다",
       published: "게시일",
-      updated: "수정일",
+      updated: "최종 수정일",
     },
     areaPage: {
       title: (area) => `${area} 야경 명소 추천 — 인기 스폿 & 숨겨진 장소`,
@@ -828,7 +844,7 @@ const LABELS: Record<string, ComponentLabels> = {
       seoTitle: (year) => `도쿄 야경 명소 추천 ${year} — 관광・촬영에 딱! 200곳 이상 수록 | 도쿄 야경 가이드`,
       seoDescription: "도쿄 여행에서 꼭 봐야 할 야경 명소 200곳 이상을 소개합니다. 도쿄타워, 스카이트리 전망대, 무료 관광 스폿, 숨겨진 명소까지 완벽 가이드. 평점, 교통편, 일몰 시간 정보로 도쿄 야경 여행을 계획하세요.",
       hero: {
-        catchphrase: "빛나는 도시의 매력, 재발견.",
+        catchphrase: "도쿄 야경 완전 가이드 : 모든 스팟을 한눈에",
         subtitle: (count) => `관광・촬영에 추천하는 도쿄 야경 스폿을 인기 명소부터 숨겨진 장소까지 소개【${count}곳 수록】`,
         searchPlaceholder: "예) 와다쿠라 분수공원, 전망대, 도쿄타워가 보이는, 시부야구",
         searchAriaLabel: "야경 스폿 검색",
@@ -879,6 +895,7 @@ const LABELS: Record<string, ComponentLabels> = {
       areaSearch: {
         heading: "지역별로 야경이 아름다운 장소 찾기",
         areaLabel: (name, count) => `${name} 야경 (${count})`,
+        areaNames: { other: "기타 지역" },
       },
       faq: {
         heading: "도쿄 야경에 관한 자주 묻는 질문",
@@ -958,9 +975,10 @@ const LABELS: Record<string, ComponentLabels> = {
       officialSite: "官方網站",
       sns: "社群媒體",
       relatedSite: "相關網站",
+      categoryListLabel: (name) => `${name}夜景景點一覧`,
     },
     access: {
-      heading: "交通方式・停車場",
+      heading: (name) => `${name}的交通方式・停車場`,
       caption: "交通資訊",
       station: "電車・最近車站",
       parking: "停車場",
@@ -991,7 +1009,8 @@ const LABELS: Record<string, ComponentLabels> = {
       heading: "常見問題（FAQ）",
     },
     movie: {
-      heading: "縮時攝影",
+      heading: (name) => `${name}縮時攝影`,
+      timeLapseLink: "查看更多縮時攝影影片",
     },
     related: {
       heading: (area) => `${area}的夜景景點`,
@@ -1021,9 +1040,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     footer: {
       author: "東京夜景導航編輯部",
+      authorLabel: "作者",
       desc: "所有景點均由編輯部實地拍攝採訪",
       published: "發佈日",
-      updated: "更新日",
+      updated: "最終更新日",
     },
     areaPage: {
       title: (area) => `${area}夜景推薦 — 人氣景點＆隱藏版秘境`,
@@ -1067,7 +1087,7 @@ const LABELS: Record<string, ComponentLabels> = {
       seoTitle: (year) => `東京夜景景點推薦（${year}最新）— 觀光・攝影必去！收錄200處以上 | 東京夜景導覽`,
       seoDescription: "東京旅遊必看的夜景景點完整指南！收錄200處以上景點，包含東京鐵塔、晴空塔觀景台、免費觀光景點、私房秘境等。提供評分、交通資訊及日落時間，輕鬆規劃東京夜景之旅。",
       hero: {
-        catchphrase: "重新發現璀璨城市的魅力。",
+        catchphrase: "東京夜景完全指南：從經典到私房景點",
         subtitle: (count) => `觀光・攝影推薦的東京夜景景點，從經典到私房全面介紹【收錄${count}處】`,
         searchPlaceholder: "例）和田倉噴水公園、觀景台、看得到東京鐵塔、澀谷區",
         searchAriaLabel: "搜尋夜景景點",
@@ -1118,6 +1138,7 @@ const LABELS: Record<string, ComponentLabels> = {
       areaSearch: {
         heading: "依地區搜尋夜景美麗的地方",
         areaLabel: (name, count) => `${name}的夜景（${count}）`,
+        areaNames: { other: "其他地區" },
       },
       faq: {
         heading: "關於東京夜景的常見問題",
@@ -1197,9 +1218,10 @@ const LABELS: Record<string, ComponentLabels> = {
       officialSite: "官方网站",
       sns: "社交媒体",
       relatedSite: "相关网站",
+      categoryListLabel: (name) => `${name}夜景景点一览`,
     },
     access: {
-      heading: "交通方式・停车场",
+      heading: (name) => `${name}的交通方式・停车场`,
       caption: "交通信息",
       station: "电车・最近车站",
       parking: "停车场",
@@ -1230,7 +1252,8 @@ const LABELS: Record<string, ComponentLabels> = {
       heading: "常见问题（FAQ）",
     },
     movie: {
-      heading: "延时摄影",
+      heading: (name) => `${name}延时摄影`,
+      timeLapseLink: "查看更多延时摄影视频",
     },
     related: {
       heading: (area) => `${area}的夜景景点`,
@@ -1260,9 +1283,10 @@ const LABELS: Record<string, ComponentLabels> = {
     },
     footer: {
       author: "东京夜景导航编辑部",
+      authorLabel: "作者",
       desc: "所有景点均由编辑部实地拍摄采访",
       published: "发布日",
-      updated: "更新日",
+      updated: "最終更新日",
     },
     areaPage: {
       title: (area) => `${area}夜景推荐 — 热门景点＆隐藏宝藏`,
@@ -1306,7 +1330,7 @@ const LABELS: Record<string, ComponentLabels> = {
       seoTitle: (year) => `东京夜景景点推荐（${year}最新）— 观光・摄影必去！收录200处以上 | 东京夜景导览`,
       seoDescription: "东京旅游必看的夜景景点完整指南！收录200处以上景点，包含东京塔、晴空塔观景台、免费观光景点、小众秘境等。提供评分、交通信息及日落时间，轻松规划东京夜景之旅。",
       hero: {
-        catchphrase: "重新发现璀璨城市的魅力。",
+        catchphrase: "东京夜景全攻略：完整指南",
         subtitle: (count) => `观光・摄影推荐的东京夜景景点，从经典到小众全面介绍【收录${count}处】`,
         searchPlaceholder: "例）和田仓喷水公园、观景台、能看到东京塔、涩谷区",
         searchAriaLabel: "搜索夜景景点",
@@ -1357,6 +1381,7 @@ const LABELS: Record<string, ComponentLabels> = {
       areaSearch: {
         heading: "按地区搜索夜景优美的地方",
         areaLabel: (name, count) => `${name}的夜景（${count}）`,
+        areaNames: { other: "其他地区" },
       },
       faq: {
         heading: "关于东京夜景的常见问题",
@@ -1401,8 +1426,222 @@ const LABELS: Record<string, ComponentLabels> = {
       button: "返回首页",
     },
   },
-};
+} satisfies Record<SiteLocale, ComponentLabels>;
 
 export function getComponentLabels(localeSlug: string): ComponentLabels {
-  return LABELS[localeSlug] ?? LABELS.ja;
+  return LABELS[localeSlug as SiteLocale] ?? LABELS.ja;
 }
+
+/* ------------------------------------------------------------------ */
+/* コンポーネント別ラベル（旧インライン定義をここに集約）               */
+/* ⚠️ 新しいラベルを追加する際は必ず Record<SiteLocale, ...> を使用すること */
+/* Record<string, ...> は使用禁止 - 翻訳漏れがコンパイル時に検出されなくなります */
+/* ------------------------------------------------------------------ */
+
+/* ---- Header: ナビゲーション静的ラベル ---- */
+export const NAV_STATIC_LABELS: Record<SiteLocale, {
+  recommend: string;
+  area: string;
+  tag: string;
+  about: string;
+  contact: string;
+}> = {
+  ja: { recommend: "おすすめ夜景スポット", area: "エリア別に探す", tag: "目的別に探す", about: "運営者情報", contact: "お問い合わせ" },
+  en: { recommend: "Recommended",          area: "Browse by Area", tag: "Browse by Purpose", about: "About", contact: "Contact" },
+  ko: { recommend: "추천",                 area: "지역별 탐색",     tag: "목적별 탐색",        about: "소개",  contact: "문의"  },
+  tw: { recommend: "推薦",                 area: "依地區搜尋",     tag: "依目的搜尋",          about: "關於",  contact: "聯絡"  },
+  cn: { recommend: "推荐",                 area: "按地区浏览",     tag: "按目的浏览",          about: "关于",  contact: "联系"  },
+};
+
+/* ---- Header: プロフィールラベル ---- */
+export const PROFILE_LABELS: Record<SiteLocale, { role: string; bio: string; link: string }> = {
+  ja: {
+    role: "夜景フォトグラファー / Webディレクター",
+    bio: "月間20〜30万PVの東京夜景専門メディア。実際に足を運んで撮影した夜景スポットを定番から穴場まで200ヶ所以上紹介しています。",
+    link: "運営者情報を見る",
+  },
+  en: {
+    role: "Night View Photographer / Web Director",
+    bio: "A Tokyo night view media with 200K–300K monthly PVs. Covering 200+ spots from popular to hidden gems — all personally visited and photographed.",
+    link: "About the author",
+  },
+  ko: {
+    role: "야경 사진작가 / 웹 디렉터",
+    bio: "월 20~30만 PV의 도쿄 야경 전문 미디어. 직접 발로 뛰며 촬영한 야경 스폿을 인기 명소부터 숨겨진 곳까지 200곳 이상 소개합니다.",
+    link: "운영자 정보 보기",
+  },
+  tw: {
+    role: "夜景攝影師 / 網站總監",
+    bio: "月瀏覽量達20〜30萬的東京夜景專門媒體。親自走訪拍攝，介紹200處以上從熱門到隱藏版的夜景景點。",
+    link: "查看運營者資訊",
+  },
+  cn: {
+    role: "夜景摄影师 / 网站总监",
+    bio: "月浏览量达20〜30万的东京夜景专业媒体。亲自走访拍摄，介绍200处以上从热门到隐藏版的夜景景点。",
+    link: "查看运营者信息",
+  },
+};
+
+/* ---- Header: モバイルメニューラベル ---- */
+export const MENU_LABELS: Record<SiteLocale, { areas: string; content: string; siteInfo: string }> = {
+  ja: { areas: "エリアから探す", content: "コンテンツ", siteInfo: "サイト情報" },
+  en: { areas: "Browse by Area", content: "Content", siteInfo: "Site Info" },
+  ko: { areas: "지역별 탐색", content: "콘텐츠", siteInfo: "사이트 정보" },
+  tw: { areas: "按地區瀏覽", content: "內容", siteInfo: "網站資訊" },
+  cn: { areas: "按地区浏览", content: "内容", siteInfo: "网站信息" },
+};
+
+/* ---- TagArticle: ラベル ---- */
+export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
+  toc: string;
+  tocAriaLabel: string;
+  faqLink: string;
+  faqHeading: (tagName: string) => string;
+  lastUpdated: string;
+}> = {
+  ja: {
+    toc: "≡ タップできる目次",
+    tocAriaLabel: "目次",
+    faqLink: "よくある質問",
+    faqHeading: (tagName) => `${tagName}スポットを撮影する際によくある質問`,
+    lastUpdated: "最終更新日",
+  },
+  en: {
+    toc: "≡ Table of Contents",
+    tocAriaLabel: "Table of Contents",
+    faqLink: "FAQ",
+    faqHeading: (tagName) => `Frequently Asked Questions About ${tagName} Spots`,
+    lastUpdated: "Last updated",
+  },
+  ko: {
+    toc: "≡ 목차",
+    tocAriaLabel: "목차",
+    faqLink: "자주 묻는 질문",
+    faqHeading: (tagName) => `${tagName} 스폿 촬영 시 자주 묻는 질문`,
+    lastUpdated: "최종 업데이트",
+  },
+  tw: {
+    toc: "≡ 點擊查看目錄",
+    tocAriaLabel: "目錄",
+    faqLink: "常見問題",
+    faqHeading: (tagName) => `關於${tagName}景點的常見問題`,
+    lastUpdated: "最後更新",
+  },
+  cn: {
+    toc: "≡ 点击查看目录",
+    tocAriaLabel: "目录",
+    faqLink: "常见问题",
+    faqHeading: (tagName) => `关于${tagName}景点的常见问题`,
+    lastUpdated: "最后更新",
+  },
+};
+
+/* ---- TagImageSlider: ラベル ---- */
+export const TAG_SLIDER_LABELS: Record<SiteLocale, {
+  nightView: string;
+  prev: string;
+  next: string;
+  imageN: (n: number) => string;
+}> = {
+  ja: { nightView: "の夜景", prev: "前の画像", next: "次の画像", imageN: (n) => `画像${n}` },
+  en: { nightView: " night view", prev: "Previous image", next: "Next image", imageN: (n) => `Image ${n}` },
+  ko: { nightView: " 야경", prev: "이전 이미지", next: "다음 이미지", imageN: (n) => `이미지 ${n}` },
+  tw: { nightView: "夜景", prev: "上一張", next: "下一張", imageN: (n) => `圖片${n}` },
+  cn: { nightView: "夜景", prev: "上一张", next: "下一张", imageN: (n) => `图片${n}` },
+};
+
+/* ---- TagSpotCard: ラベル ---- */
+export const TAG_SPOT_CARD_LABELS: Record<SiteLocale, {
+  address: string;
+  fee: string;
+  height: string;
+  hours: string;
+  checkin: string;
+  checkout: string;
+  station: string;
+  detail: string;
+  morePhotos: string;
+  moreHotelPhotos: string;
+  nightView: string;
+  facilityInfo: (name: string) => string;
+}> = {
+  ja: {
+    address: "住所",
+    fee: "料金",
+    height: "展望台の高さ",
+    hours: "営業時間",
+    checkin: "チェックイン",
+    checkout: "チェックアウト",
+    station: "最寄駅",
+    detail: "詳細ページ",
+    morePhotos: "この夜景スポットの写真をもっと見る",
+    moreHotelPhotos: "このホテルの写真をもっと見る",
+    nightView: "の夜景",
+    facilityInfo: (name) => `${name}の施設情報`,
+  },
+  en: {
+    address: "Address",
+    fee: "Admission",
+    height: "Observatory Height",
+    hours: "Hours",
+    checkin: "Check-in",
+    checkout: "Check-out",
+    station: "Nearest Station",
+    detail: "Details",
+    morePhotos: "See more photos of this spot",
+    moreHotelPhotos: "See more photos of this hotel",
+    nightView: " night view",
+    facilityInfo: (name) => `${name} facility information`,
+  },
+  ko: {
+    address: "주소",
+    fee: "요금",
+    height: "전망대 높이",
+    hours: "영업시간",
+    checkin: "체크인",
+    checkout: "체크아웃",
+    station: "가까운 역",
+    detail: "상세 페이지",
+    morePhotos: "이 야경 스폿의 사진 더 보기",
+    moreHotelPhotos: "이 호텔의 사진 더 보기",
+    nightView: " 야경",
+    facilityInfo: (name) => `${name} 시설 정보`,
+  },
+  tw: {
+    address: "地址",
+    fee: "費用",
+    height: "展望台高度",
+    hours: "營業時間",
+    checkin: "入住",
+    checkout: "退房",
+    station: "最近車站",
+    detail: "詳細頁面",
+    morePhotos: "查看更多這個夜景景點的照片",
+    moreHotelPhotos: "查看更多這間飯店的照片",
+    nightView: "夜景",
+    facilityInfo: (name) => `${name}設施資訊`,
+  },
+  cn: {
+    address: "地址",
+    fee: "费用",
+    height: "展望台高度",
+    hours: "营业时间",
+    checkin: "入住",
+    checkout: "退房",
+    station: "最近车站",
+    detail: "详细页面",
+    morePhotos: "查看更多这个夜景景点的照片",
+    moreHotelPhotos: "查看更多这间酒店的照片",
+    nightView: "夜景",
+    facilityInfo: (name) => `${name}设施信息`,
+  },
+};
+
+/* ---- LanguageSwitcher: aria-label ---- */
+export const LANG_SWITCHER_LABELS: Record<SiteLocale, string> = {
+  ja: "言語を選択",
+  en: "Select language",
+  ko: "언어 선택",
+  tw: "選擇語言",
+  cn: "选择语言",
+};

@@ -5,8 +5,9 @@ import {
   CircleHelp,
   Train,
   Clock,
-
 } from "lucide-react";
+import Link from "next/link";
+import { sanitizeHtml } from "@/lib/sanitize";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import SpotHero from "@/components/spot/SpotHero";
 import SpotOverview from "@/components/spot/SpotOverview";
@@ -15,9 +16,9 @@ import SpotRating from "@/components/spot/SpotRating";
 import SpotInfo from "@/components/spot/SpotInfo";
 import SpotAccess from "@/components/spot/SpotAccess";
 import SpotFaq from "@/components/spot/SpotFaq";
-import SpotHotel from "@/components/spot/SpotHotel";
 import SpotEvent from "@/components/spot/SpotEvent";
 import SpotBestTime from "@/components/spot/SpotBestTime";
+import RecommendCta from "@/components/common/RecommendCta";
 
 import SpotRelated from "@/components/spot/SpotRelated";
 import SpotRecommended from "@/components/spot/SpotRecommended";
@@ -25,8 +26,9 @@ import SpotShare from "@/components/spot/SpotShare";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
 import type { SpotWithRelations, SpotListItem } from "@/lib/types";
-import { SITE_URL, LOCALE_LABELS } from "@/lib/types";
+import { SITE_URL, LOCALE_LABELS, LOCALE_SLUG_MAP } from "@/lib/types";
 import type { ComponentLabels } from "@/lib/i18n-labels";
+import { buildSpotJsonLd } from "@/lib/spot-json-ld";
 
 type Props = {
   spot: SpotWithRelations;
@@ -39,103 +41,6 @@ type Props = {
   relatedSpots?: SpotListItem[];
   recommendedSpots?: SpotListItem[];
 };
-
-/** JSON-LD 構造化データを生成 */
-function buildJsonLd(spot: SpotWithRelations, canonicalUrl: string) {
-  const name = spot.name || spot.title;
-
-  const images = [
-    spot.featured_image,
-    ...spot.images.map((img) => img.url),
-  ].filter(Boolean);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const attraction: Record<string, any> = {
-    "@context": "https://schema.org",
-    "@type": "TouristAttraction",
-    name,
-    url: canonicalUrl,
-    ...(spot.lead && { description: spot.lead }),
-    ...(images.length > 0 && { image: images }),
-    ...(spot.published_at && { datePublished: spot.published_at }),
-    ...(spot.updated_at && { dateModified: spot.updated_at }),
-  };
-
-  if (spot.address) {
-    attraction.address = {
-      "@type": "PostalAddress",
-      addressLocality: spot.address,
-    };
-  }
-
-  if (spot.latitude != null && spot.longitude != null) {
-    attraction.geo = {
-      "@type": "GeoCoordinates",
-      latitude: spot.latitude,
-      longitude: spot.longitude,
-    };
-  }
-
-  if (spot.hours) {
-    attraction.openingHours = spot.hours;
-  }
-
-  // 独自4項目の評価を集約
-  const ratingValues = [
-    spot.rating_beautiful,
-    spot.rating_access,
-    spot.rating_atmosphere,
-    spot.rating_cost,
-  ].filter((v): v is number => v != null);
-
-  if (ratingValues.length > 0) {
-    const avg = ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length;
-    attraction.aggregateRating = {
-      "@type": "AggregateRating",
-      ratingValue: Math.round(avg * 10) / 10,
-      bestRating: 5,
-      worstRating: 1,
-      ratingCount: ratingValues.length,
-    };
-  }
-
-  // 口コミ
-  if (spot.reviews.length > 0) {
-    attraction.review = spot.reviews.map((r) => ({
-      "@type": "Review",
-      author: { "@type": "Person", name: r.name },
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: r.rating,
-        bestRating: 5,
-        worstRating: 1,
-      },
-      name: r.title,
-      reviewBody: r.content,
-      datePublished: r.created_at,
-    }));
-  }
-
-  const schemas = [attraction];
-
-  // FAQPage
-  if (spot.faqs.length > 0) {
-    schemas.push({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: spot.faqs.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
-        },
-      })),
-    });
-  }
-
-  return schemas;
-}
 
 export default function SpotArticle({
   spot,
@@ -158,7 +63,8 @@ export default function SpotArticle({
     ? `${SITE_URL}/${currentLocale}/${categorySlug}/${spotSlug}`
     : `${SITE_URL}/${categorySlug}/${spotSlug}`;
 
-  const jsonLdSchemas = buildJsonLd(spot, canonicalUrl);
+  const bcp47Locale = currentLocale ? (LOCALE_SLUG_MAP[currentLocale] ?? currentLocale) : "ja";
+  const jsonLdSchemas = buildSpotJsonLd(spot, canonicalUrl, bcp47Locale, categorySlug);
 
   const anchorLinks = [
     { id: "report", label: al.report, icon: PenLine, show: !!spot.report },
@@ -214,6 +120,27 @@ export default function SpotArticle({
             imageAlt={imageAlt}
           />
 
+          <div className="article-meta" itemProp="author" itemScope itemType="https://schema.org/Person">
+            <div className="meta-left">
+              <span className="meta-date">
+                <span className="meta-date-label">{fl.updated}：</span>
+                <time dateTime={spot.updated_at}>
+                  {new Date(spot.updated_at).toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit" }).replace(/\//g, "/")}
+                </time>
+              </span>
+              <span className="meta-author">
+                <span className="meta-date-label">{fl.authorLabel}：</span>
+                <Link href="/about/" rel="nofollow" itemProp="url"><span itemProp="name">{fl.author}</span></Link>
+              </span>
+            </div>
+            <div className="meta-right">
+              <span className="meta-desc">
+                <Camera size={13} aria-hidden="true" />
+                {fl.desc}
+              </span>
+            </div>
+          </div>
+
           <SpotRating
             name={spot.name}
             categoryName={spot.category.name}
@@ -249,12 +176,17 @@ export default function SpotArticle({
                 <span className="heading-icon">
                   <Camera size={18} aria-hidden="true" />
                 </span>
-                {labels.movie.heading}
+                {labels.movie.heading(spotName)}
               </h2>
               <div
                 className="video-container"
-                dangerouslySetInnerHTML={{ __html: spot.movie }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.movie) }}
               />
+              <div className="movie-timelapse-link">
+                <Link href={currentLocale ? `/${currentLocale}/time-lapse/` : "/time-lapse/"}>
+                  {labels.movie.timeLapseLink}
+                </Link>
+              </div>
             </section>
           )}
 
@@ -276,12 +208,17 @@ export default function SpotArticle({
             asoview={spot.asoview}
             asoview02={spot.asoview_02}
             localeSlug={currentLocale}
+            categorySlug={categorySlug}
+            categoryName={spot.category.name}
+            hotel={spot.hotel}
+            event={spot.event}
           />
 
           <SpotAccess
             station={spot.station}
             parking={spot.parking}
             map={spot.map}
+            spotName={spotName}
             labels={labels.access}
           />
 
@@ -294,34 +231,16 @@ export default function SpotArticle({
 
 <SpotFaq faqs={spot.faqs} labels={labels.faq} />
 
-          <footer className="article-footer-meta" itemProp="author" itemScope itemType="https://schema.org/Person">
-            <span className="meta-author">
-              <span className="meta-author-icon">
-                <Camera size={14} aria-hidden="true" />
-              </span>
-              <strong itemProp="name">{fl.author}</strong>
-            </span>
-            <span className="meta-separator" aria-hidden="true">|</span>
-            <span className="meta-desc">
-              {fl.desc}
-            </span>
-            <span className="meta-separator" aria-hidden="true">|</span>
-            <span className="meta-dates">
-              <span className="meta-date">
-                <span className="meta-date-label">{fl.updated}</span>
-                <time dateTime={spot.updated_at}>
-                  {new Date(spot.updated_at).toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit" }).replace(/\//g, "/")}
-                </time>
-              </span>
-            </span>
-          </footer>
+          <RecommendCta locale={currentLocale} />
 
           <SpotShare
             url={canonicalUrl}
             title={seoTitle}
             labels={labels.share}
           />
+        </article>
 
+        <aside aria-label="関連スポット">
           <SpotRelated
             spots={relatedSpots}
             areaName={spot.category.name}
@@ -335,11 +254,8 @@ export default function SpotArticle({
             labels={labels.recommend}
             localeSlug={currentLocale}
           />
+        </aside>
 
-          <SpotHotel hotel={spot.hotel} />
-
-          <SpotEvent event={spot.event} />
-        </article>
       </div>
     </div>
   );

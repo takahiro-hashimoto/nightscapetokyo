@@ -1,61 +1,23 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import Breadcrumb from "@/components/layout/Breadcrumb";
+import PrBanner from "@/components/common/PrBanner";
 import TagSpotCard from "@/components/tag/TagSpotCard";
+import TagMapSection from "@/components/tag/TagMapSection";
 import SpotFaq from "@/components/spot/SpotFaq";
-import type { SpotWithRelations } from "@/lib/types";
-import { SITE_URL, calcRatingAvg } from "@/lib/types";
+import type { SpotWithRelations, SiteLocale } from "@/lib/types";
+import { SITE_URL, calcRatingAvg, LOCALE_SLUG_MAP } from "@/lib/types";
+import { TAG_ARTICLE_LABELS } from "@/lib/i18n-labels";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
+import type { MapSpotItem } from "@/lib/supabase/queries";
 
-/** ロケール別UIラベル */
-const TAG_ARTICLE_LABELS: Record<string, {
-  toc: string;
-  tocAriaLabel: string;
-  faqLink: string;
-  faqHeading: (tagName: string) => string;
-  lastUpdated: string;
-}> = {
-  ja: {
-    toc: "≡ タップできる目次",
-    tocAriaLabel: "目次",
-    faqLink: "よくある質問",
-    faqHeading: (tagName) => `${tagName}スポットを撮影する際によくある質問`,
-    lastUpdated: "最終更新日",
-  },
-  en: {
-    toc: "≡ Table of Contents",
-    tocAriaLabel: "Table of Contents",
-    faqLink: "FAQ",
-    faqHeading: (tagName) => `Frequently Asked Questions About ${tagName} Spots`,
-    lastUpdated: "Last updated",
-  },
-  ko: {
-    toc: "≡ 목차",
-    tocAriaLabel: "목차",
-    faqLink: "자주 묻는 질문",
-    faqHeading: (tagName) => `${tagName} 스폿 촬영 시 자주 묻는 질문`,
-    lastUpdated: "최종 업데이트",
-  },
-  tw: {
-    toc: "≡ 點擊查看目錄",
-    tocAriaLabel: "目錄",
-    faqLink: "常見問題",
-    faqHeading: (tagName) => `關於${tagName}景點的常見問題`,
-    lastUpdated: "最後更新",
-  },
-  cn: {
-    toc: "≡ 点击查看目录",
-    tocAriaLabel: "目录",
-    faqLink: "常见问题",
-    faqHeading: (tagName) => `关于${tagName}景点的常见问题`,
-    lastUpdated: "最后更新",
-  },
-};
 
 /** ItemList JSON-LD: スポットを評価順でリスト化 */
-function buildItemListJsonLd(spots: SpotWithRelations[]) {
+function buildItemListJsonLd(spots: SpotWithRelations[], locale = "ja") {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    inLanguage: locale,
     itemListElement: spots
       .map((s) => ({ spot: s, rating: calcRatingAvg(s) }))
       .sort((a, b) => b.rating - a.rating)
@@ -70,10 +32,11 @@ function buildItemListJsonLd(spots: SpotWithRelations[]) {
 }
 
 /** FAQPage JSON-LD */
-function buildFaqJsonLd(faqs: { question: string; answer: string }[]) {
+function buildFaqJsonLd(faqs: { question: string; answer: string }[], locale = "ja") {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: locale,
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -89,11 +52,13 @@ type Props = {
   tagName: string;
   content: TagPageContent;
   allSpots: SpotWithRelations[];
+  mapSpots?: MapSpotItem[];
   locale?: string;
 };
 
-export default function TagArticle({ tagName, content, allSpots, locale }: Props) {
-  const l = TAG_ARTICLE_LABELS[locale ?? "ja"] ?? TAG_ARTICLE_LABELS.ja;
+export default function TagArticle({ tagName, content, allSpots, mapSpots, locale }: Props) {
+  const l = TAG_ARTICLE_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_ARTICLE_LABELS.ja;
+  const bcp47Locale = locale ? (LOCALE_SLUG_MAP[locale] ?? locale) : "ja";
   /** slug → SpotWithRelations のマップ */
   const spotMap = new Map(allSpots.map((s) => [s.slug, s]));
 
@@ -128,97 +93,72 @@ export default function TagArticle({ tagName, content, allSpots, locale }: Props
   return (
     <div className="l-article-body">
       <div className="l-article-container">
-        <Breadcrumb items={[{ label: content.breadcrumb }]} />
+        <Breadcrumb items={[{ label: content.breadcrumb }]} locale={locale} />
 
         <article itemScope itemType="https://schema.org/Article">
           <meta itemProp="author" content="nightscape.tokyo" />
           <meta itemProp="dateModified" content={isoDate} />
 
-          {/* メインビジュアル */}
-          {content.heroImage && (
-            <figure className="tag-hero" itemProp="image" itemScope itemType="https://schema.org/ImageObject">
-              <Image
-                src={content.heroImage}
-                alt={content.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 880px"
-                priority
-                style={{ objectFit: "cover" }}
-              />
-              <meta itemProp="url" content={content.heroImage} />
-            </figure>
-          )}
+          {/* ヒーロー画像 + ヘッダー wrapper */}
+          <div className="content-card">
+            {content.heroImage && (
+              <figure className="page-hero" itemProp="image" itemScope itemType="https://schema.org/ImageObject">
+                <Image
+                  src={content.heroImage}
+                  alt={content.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 880px"
+                  priority
+                  style={{ objectFit: "cover" }}
+                />
+                <meta itemProp="url" content={content.heroImage} />
+              </figure>
+            )}
 
-          {/* タイトル + リード */}
-          <header className="content-card card-padding">
-            <h1 className="tag-page-title" itemProp="headline">{content.title}</h1>
-            <div className="tag-page-meta">
-              <time className="tag-page-date" dateTime={isoDate} itemProp="datePublished">
-                {l.lastUpdated}: {content.updatedAt}
-              </time>
-              <span className="tag-page-pr">{content.prNotice}</span>
-            </div>
-            <div className="tag-page-lead" itemProp="description">
-              {content.lead.split("\n").map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
-            </div>
+            {/* タイトル + リード */}
+            <header className="card-padding">
+              <h1 className="page-title" itemProp="headline">{content.title}</h1>
+              <div className="page-meta">
+                <time className="page-date" dateTime={isoDate} itemProp="datePublished">
+                  {l.lastUpdated}: {content.updatedAt}
+                </time>
+                <span className="page-pr">{content.prNotice}</span>
+              </div>
+              <div className="page-lead" itemProp="description">
+                {content.lead.split("\n").map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
+            </header>
 
-            {/* PRバナー */}
+            {/* PRバナー（header の外、aside として独立） */}
             {content.prBanner && (
-              <aside className="tag-pr-banner" aria-label="PR">
-                <p className="tag-pr-banner-heading">
-                  {content.prBanner.heading}
-                </p>
-                <div className="tag-pr-banner-body">
-                  <div className="tag-pr-banner-image">
-                    <Image
-                      src={content.prBanner.image}
-                      alt=""
-                      width={280}
-                      height={187}
-                      style={{ objectFit: "cover", borderRadius: 4 }}
-                    />
-                  </div>
-                  <div className="tag-pr-banner-text">
-                    {content.prBanner.body.map((line, i) => (
-                      <p key={i}>{line}</p>
-                    ))}
-                    <div className="tag-pr-banner-links">
-                      {content.prBanner.links.map((link, i) => (
-                        <a
-                          key={i}
-                          href={link.href}
-                          className={`tag-pr-banner-cta ${i === 0 ? "cta-filled" : "cta-outline"}`}
-                          target={
-                            link.href.startsWith("http") ? "_blank" : undefined
-                          }
-                          rel={
-                            link.href.startsWith("http")
-                              ? "noopener noreferrer sponsored"
-                              : undefined
-                          }
-                        >
-                          ▸ {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+              <aside className="card-padding" style={{ paddingTop: 0 }}>
+                <PrBanner
+                  heading={content.prBanner.heading}
+                  image={{ src: content.prBanner.image }}
+                  paragraphs={content.prBanner.body}
+                  links={content.prBanner.links.map((link, i) => ({
+                    label: `▸ ${link.label}`,
+                    href: link.href,
+                    variant: i === 0 ? "filled" : "outline",
+                    external: link.href.startsWith("http"),
+                  }))}
+                />
               </aside>
             )}
-          </header>
+          </div>
 
           {/* 目次 */}
-          <nav className="tag-toc content-card card-padding" aria-label={l.tocAriaLabel}>
-            <p className="tag-toc-title">{l.toc}</p>
-            <ol className="tag-toc-list">
+          <nav className="toc content-card card-padding" aria-label={l.tocAriaLabel}>
+            <p className="toc-title">{l.toc}</p>
+            <ol className="toc-list">
               {tocSections.map(
                 (sec) =>
                   sec && (
                     <li key={sec.key}>
                       <a href={`#section-${sec.key}`}>{sec.heading}</a>
-                      <ol className="tag-toc-sublist">
+                      <ol className="toc-sublist">
                         {sec.spots.map((s) => (
                           <li key={s.slug}>
                             <a href={`#spot-${s.slug}`}>{s.name}</a>
@@ -228,9 +168,9 @@ export default function TagArticle({ tagName, content, allSpots, locale }: Props
                     </li>
                   )
               )}
-              {content.mapEmbed && (
+              {(content.mapEmbed || (mapSpots && mapSpots.length > 0)) && (
                 <li>
-                  <a href="#map">{content.mapEmbed.heading}</a>
+                  <a href="#map">{content.mapEmbed?.heading ?? `${tagName}の夜景スポットを地図から探す`}</a>
                 </li>
               )}
               {content.faqs && content.faqs.length > 0 && (
@@ -251,9 +191,9 @@ export default function TagArticle({ tagName, content, allSpots, locale }: Props
 
             return (
               <section key={section.key} id={`section-${section.key}`} aria-labelledby={`heading-${section.key}`}>
-                <div className="tag-spot-section-header">
-                  <h2 className="tag-section-heading" id={`heading-${section.key}`}>{section.heading}</h2>
-                  <p className="tag-section-intro">{section.intro}</p>
+                <div className="spot-section-header">
+                  <h2 className="section-heading" id={`heading-${section.key}`}>{section.heading}</h2>
+                  <p className="section-intro">{section.intro}</p>
                 </div>
 
                 {sectionSpots.map((spot) => {
@@ -269,18 +209,30 @@ export default function TagArticle({ tagName, content, allSpots, locale }: Props
             );
           })}
 
-          {/* マップ */}
-          {content.mapEmbed && (
-            <section id="map" className="content-card card-padding" aria-labelledby="map-heading">
-              <h2 className="tag-section-heading" id="map-heading">
-                {content.mapEmbed.heading}
-              </h2>
-              <p className="tag-section-intro">{content.mapEmbed.intro}</p>
-              <div
-                className="tag-map-embed"
-                dangerouslySetInnerHTML={{ __html: content.mapEmbed.iframeHtml }}
-              />
+          {/* サービスセクション */}
+          {content.serviceSection && (
+            <section className="content-card card-padding service-section">
+              <h2>{content.serviceSection.heading}</h2>
+              <dl>
+                {content.serviceSection.items.map((item, i) => (
+                  <Fragment key={i}>
+                    <dt>
+                      <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                    </dt>
+                    <dd><p>{item.description}</p></dd>
+                  </Fragment>
+                ))}
+              </dl>
             </section>
+          )}
+
+          {/* マップ */}
+          {mapSpots && mapSpots.length > 0 && (
+            <TagMapSection
+              spots={mapSpots}
+              heading={content.mapEmbed?.heading ?? `${tagName}の夜景スポットを地図から探す`}
+              intro={content.mapEmbed?.intro}
+            />
           )}
 
           {/* FAQ */}
@@ -297,7 +249,7 @@ export default function TagArticle({ tagName, content, allSpots, locale }: Props
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(buildItemListJsonLd(allResolvedSpots)),
+              __html: JSON.stringify(buildItemListJsonLd(allResolvedSpots, bcp47Locale)),
             }}
           />
         )}
@@ -307,7 +259,7 @@ export default function TagArticle({ tagName, content, allSpots, locale }: Props
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(buildFaqJsonLd(content.faqs)),
+              __html: JSON.stringify(buildFaqJsonLd(content.faqs, bcp47Locale)),
             }}
           />
         )}

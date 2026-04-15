@@ -27,8 +27,9 @@ export default function SpotRecommended({ spots, labels, localeSlug }: Props) {
               {spot.featured_image && (
                 <Image
                   src={spot.featured_image}
-                  alt={spot.name}
+                  alt={`${spot.name}から見える夜景`}
                   fill
+                  loading="lazy"
                   sizes="(max-width: 768px) 50vw, 240px"
                 />
               )}

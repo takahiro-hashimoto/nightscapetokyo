@@ -1,3 +1,4 @@
+import { sanitizeHtml } from "@/lib/sanitize";
 import { BedDouble, Clock, Sparkles } from "lucide-react";
 import type { SpotHotel as SpotHotelType } from "@/lib/types";
 
@@ -69,7 +70,7 @@ export default function SpotHotel({ hotel }: Props) {
           {affiliates.map((link, i) => (
             <div
               key={i}
-              dangerouslySetInnerHTML={{ __html: link! }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(link!) }}
             />
           ))}
         </div>

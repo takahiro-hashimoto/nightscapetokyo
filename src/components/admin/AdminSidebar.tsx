@@ -2,15 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, MapPin, FolderOpen, Tag, FileText, LogOut } from "lucide-react";
+import { LayoutDashboard, MapPin, FolderOpen, Tag, FileText, Newspaper, LogOut, Zap } from "lucide-react";
 import { logoutAction } from "@/app/admin/actions";
 
 const navItems = [
   { href: "/admin", label: "ダッシュボード", icon: LayoutDashboard },
   { href: "/admin/spots", label: "スポット", icon: MapPin },
+  { href: "/admin/articles", label: "記事", icon: Newspaper },
   { href: "/admin/categories", label: "カテゴリ", icon: FolderOpen },
   { href: "/admin/tags", label: "タグ", icon: Tag },
   { href: "/admin/tag-pages", label: "タグページ", icon: FileText },
+  { href: "/admin/luminar-sale", label: "Luminarセール", icon: Zap },
 ];
 
 type Props = {

@@ -42,28 +42,6 @@ export default function SpotMap({ spots, categories }: Props) {
 
   return (
     <div className="spot-map-wrapper">
-      <div className="spot-map-filter">
-        <button
-          className={`spot-map-filter-btn ${selectedCategory === "all" ? "is-active" : ""}`}
-          onClick={() => setSelectedCategory("all")}
-        >
-          すべて ({spots.length})
-        </button>
-        {categories.map((cat) => {
-          const count = spots.filter((s) => s.categorySlug === cat.slug).length;
-          if (count === 0) return null;
-          return (
-            <button
-              key={cat.slug}
-              className={`spot-map-filter-btn ${selectedCategory === cat.slug ? "is-active" : ""}`}
-              onClick={() => setSelectedCategory(cat.slug)}
-            >
-              {cat.name} ({count})
-            </button>
-          );
-        })}
-      </div>
-
       <div className="spot-map-container">
         <MapContainer
           center={center}
@@ -116,6 +94,27 @@ export default function SpotMap({ spots, categories }: Props) {
             </Marker>
           ))}
         </MapContainer>
+        <div className="spot-map-filter">
+          <button
+            className={`spot-map-filter-btn ${selectedCategory === "all" ? "is-active" : ""}`}
+            onClick={() => setSelectedCategory("all")}
+          >
+            すべて ({spots.length})
+          </button>
+          {categories.map((cat) => {
+            const count = spots.filter((s) => s.categorySlug === cat.slug).length;
+            if (count === 0) return null;
+            return (
+              <button
+                key={cat.slug}
+                className={`spot-map-filter-btn ${selectedCategory === cat.slug ? "is-active" : ""}`}
+                onClick={() => setSelectedCategory(cat.slug)}
+              >
+                {cat.name} ({count})
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <p className="spot-map-count">

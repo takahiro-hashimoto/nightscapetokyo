@@ -8,12 +8,18 @@ import {
   translateWithRetry,
 } from "@/lib/translate-utils";
 
-type TranslationFields = {
+/** 長文・創作的フィールド（自然な文体が重要） */
+type ProseFields = {
   title: string | null;
   name: string | null;
   lead: string | null;
   report: string | null;
   content: string | null;
+  faqs: { question: string; answer: string }[];
+};
+
+/** 構造化・事実情報フィールド（正確性が重要） */
+type StructuredFields = {
   address: string | null;
   station: string | null;
   parking: string | null;
@@ -25,14 +31,15 @@ type TranslationFields = {
   sns_label: string | null;
   relation_label: string | null;
   category_name: string | null;
-  faqs: { question: string; answer: string }[];
   image_alts: string[];
   tag_names: string[];
 };
 
-/** スポット翻訳用のシステムプロンプト */
-const SPOT_SYSTEM_PROMPT = `You are a professional tourism content localizer for a Tokyo nightscape guide website.
-Your job is NOT literal translation. You FULLY LOCALIZE content so it reads as if originally written for the target audience.
+type TranslationFields = ProseFields & StructuredFields;
+
+/** 長文・創作コンテンツ用プロンプト */
+const PROSE_SYSTEM_PROMPT = `You are a professional tourism content writer for a Tokyo nightscape guide website.
+Your job is NOT literal translation. You FULLY LOCALIZE content so it reads as if originally written for the target audience by a native speaker.
 
 ## Output format (STRICT)
 - Respond with ONLY a raw JSON object starting with { and ending with }
@@ -44,45 +51,59 @@ Your job is NOT literal translation. You FULLY LOCALIZE content so it reads as i
 ## Accuracy rules (CRITICAL)
 - NEVER add facts, statistics, descriptions, or details not present in the source.
 - NEVER invent opening hours, prices, access info, or historical facts.
-- If the source says "無料" (free), translate as "free" — do NOT add "but parking costs ¥500" or similar.
 - Keep the same number of sentences/paragraphs. Do not add extra sentences.
 - Output should be roughly the same length as input — do not pad or shorten significantly.
 
-## Localization philosophy (VERY IMPORTANT)
-- Do NOT do word-for-word translation. FULLY rephrase so it reads naturally to a native speaker.
-- ALL Japanese text must be fully converted — katakana, kanji, hiragana, everything. No Japanese characters should remain in the output (except inside "address" and when intentionally preserving station names in parentheses).
+## Localization philosophy
+- FULLY rephrase so it reads naturally to a native speaker — not word-for-word translation.
+- ALL Japanese text must be fully converted — katakana, kanji, hiragana, everything. No Japanese characters should remain.
 - Building/place names: ALWAYS use the locally established name or a full translation. Never leave part in Japanese and part translated.
-- Adapt currency, units, and cultural expressions for the target audience.
-- Use the tone of a popular travel blog — friendly, informative, not overly formal.
+- Use the tone of a popular travel blog — friendly, informative, vivid, not overly formal.
 - Be consistent: the same Japanese term must map to the same translated term throughout.
 
 ## Name translation rules (CRITICAL — do NOT mix languages)
-Japanese place names often combine a proper noun + descriptor (e.g. 丸ビル 35階 展望台 = "Maru Building" + "35th floor" + "observation deck"). You must translate THE ENTIRE name — never leave the proper noun in Japanese while translating only the descriptor.
+Japanese place names often combine a proper noun + descriptor. You must translate THE ENTIRE name.
 
 Good examples (English):
 - 丸ビル 35階 展望台 → "Marunouchi Building 35F Observation Deck" ✓
 - タワーホール船堀 → "Tower Hall Funabori" ✓
-- 東京スカイツリー → "Tokyo Skytree" ✓
 - 恵比寿ガーデンプレイスタワー → "Yebisu Garden Place Tower" ✓
 
 Bad examples (NEVER do this):
-- 丸ビル 35th Floor Observation Deck ✗ (丸ビル left in Japanese)
-- タワーホール船堀 Observation Deck ✗ (half Japanese)
+- 丸ビル 35th Floor Observation Deck ✗  (丸ビル left in Japanese)
 - 恵比寿Garden Place Tower ✗ (mixed)
 
 ## Field-specific rules
-- "title", "name": Proper nouns — FULLY translate/transliterate. Use locally established name. Keep recognizable but do NOT leave any Japanese.
-- "lead": Short summary — keep concise and the same tone. Fully localized.
+- "title", "name": Proper nouns — FULLY translate/transliterate. Use locally established name. No Japanese remaining.
+- "lead": Short summary — keep concise and vivid. Fully localized.
 - "report", "content": Long-form with HTML. Preserve ALL HTML tags as-is (<br>, <a>, <strong>, etc.). Natural prose, same paragraph structure.
-- "address": Romanize or transliterate. Do NOT change the actual address.
-- "station", "parking": Factual transport info — translate labels, keep original Japanese station name in parentheses only for lesser-known names.
-- "hours", "holiday": Factual schedule — translate day names and labels only. Do NOT change the actual times/dates.
-- "money": Translate labels, adapt currency format per locale rules. Do NOT change the actual prices.
+- "faqs": Translate Q&A pairs naturally. Same number of items, same topics.`;
+
+/** 構造化・事実情報フィールド用プロンプト */
+const STRUCTURED_SYSTEM_PROMPT = `You are a professional tourism content localizer for a Tokyo nightscape guide website.
+Your job is to accurately localize factual, structured information while preserving all specific values (times, prices, distances).
+
+## Output format (STRICT)
+- Respond with ONLY a raw JSON object starting with { and ending with }
+- NO markdown, NO code blocks, NO explanation, NO commentary
+- All strings must be valid JSON: escape double quotes as \\", use \\n for newlines
+- Do NOT include literal line breaks inside JSON string values
+- If source value is null, output null. If source array is empty [], output [].
+
+## Accuracy rules (CRITICAL — never change factual values)
+- Do NOT change actual times, prices, dates, or distances.
+- Do NOT add information not present in the source.
+- Translate only the labels and descriptors around factual values.
+- "hours", "holiday": Translate day names and labels only. Times/dates stay unchanged.
+- "money": Translate labels, adapt currency format per locale rules. Actual prices stay unchanged.
 - "height": Translate and convert units per locale rules. Keep original value.
-- "official_label", "sns_label", "relation_label": Short link labels — translate naturally.
+
+## Field-specific rules
+- "address": Romanize or transliterate. Do NOT change the actual address structure.
+- "station", "parking": Translate labels; keep original Japanese station name in parentheses only for lesser-known names.
+- "official_label", "sns_label", "relation_label": Short link labels — translate naturally and concisely.
 - "category_name": Area/category name — translate to the locally common form.
-- "faqs": Translate Q&A pairs naturally. Same number of items, same topics.
-- "image_alts": Short photo descriptions — translate concisely. Same number of items.
+- "image_alts": Short photo descriptions — translate concisely. Same number of items, same order.
 - "tag_names": Feature/category tags — translate naturally. Same number of items, same order.`;
 
 export async function translateSpot(spotId: string, targetLocales?: string[]) {
@@ -140,12 +161,16 @@ export async function translateSpot(spotId: string, targetLocales?: string[]) {
     .map((r: any) => r.tag?.name as string)
     .filter(Boolean);
 
-  const fields: TranslationFields = {
+  const proseFields: ProseFields = {
     title: spot.title,
     name: spot.name,
     lead: spot.lead,
     report: spot.report,
     content: spot.content,
+    faqs: faqs ?? [],
+  };
+
+  const structuredFields: StructuredFields = {
     address: spot.address,
     station: spot.station,
     parking: spot.parking,
@@ -157,28 +182,27 @@ export async function translateSpot(spotId: string, targetLocales?: string[]) {
     sns_label: spot.sns_label,
     relation_label: spot.relation_label,
     category_name: categoryName,
-    faqs: faqs ?? [],
     image_alts: imageAlts,
     tag_names: tagNames,
   };
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  // Translate selected languages in parallel
   const localesToTranslate = targetLocales?.length
     ? LOCALES.filter((l) => targetLocales.includes(l))
     : LOCALES;
 
-  const inputJSON = JSON.stringify(fields);
+  const proseJSON = JSON.stringify(proseFields);
+  const structuredJSON = JSON.stringify(structuredFields);
 
   const results = await Promise.allSettled(
     localesToTranslate.map(async (locale) => {
-      const translated = await translateWithRetry<TranslationFields>(
-        anthropic,
-        locale,
-        inputJSON,
-        SPOT_SYSTEM_PROMPT,
-      );
+      // 長文フィールドと構造化フィールドを並列で翻訳
+      const [prose, structured] = await Promise.all([
+        translateWithRetry<ProseFields>(anthropic, locale, proseJSON, PROSE_SYSTEM_PROMPT),
+        translateWithRetry<StructuredFields>(anthropic, locale, structuredJSON, STRUCTURED_SYSTEM_PROMPT),
+      ]);
+      const translated: TranslationFields = { ...prose, ...structured };
       return { locale, translated };
     })
   );
@@ -231,7 +255,6 @@ export async function translateSpot(spotId: string, targetLocales?: string[]) {
             ? translatedImageAlts
             : null,
           tag_names: (() => {
-            // 元タグ名→翻訳名のマップとして保存（順番に依存しない）
             const translatedTags = translated.tag_names ?? [];
             if (translatedTags.length === 0 || tagNames.length === 0) return null;
             const map: Record<string, string> = {};

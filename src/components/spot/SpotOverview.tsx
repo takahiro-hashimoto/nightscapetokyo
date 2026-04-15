@@ -1,3 +1,4 @@
+import { sanitizeHtml } from "@/lib/sanitize";
 import { PenLine } from "lucide-react";
 import type { OverviewLabels } from "@/lib/i18n-labels";
 
@@ -29,7 +30,7 @@ export default function SpotOverview({ spotName, report, labels }: Props) {
       <div
         className="report-content"
         itemProp="articleBody"
-        dangerouslySetInnerHTML={{ __html: report }}
+        dangerouslySetInnerHTML={{ __html: sanitizeHtml(report.replace(/<\/?strong>/gi, "")) }}
       />
     </section>
   );

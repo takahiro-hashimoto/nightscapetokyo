@@ -248,9 +248,9 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
 
           <article>
             {/* ヒーロー画像 */}
-            <div className="tag-hero">
+            <div className="page-hero">
               <img
-                src="https://nightscape.tokyo/wp-content/uploads/2023/01/wakura-park-2.jpg"
+                src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"
                 alt={l.title}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
@@ -258,8 +258,8 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
 
             {/* タイトル + リード */}
             <div className="content-card card-padding">
-              <h1 className="tag-page-title">{l.title}</h1>
-              <div className="tag-page-lead">
+              <h1 className="page-title">{l.title}</h1>
+              <div className="page-lead">
                 {l.leadLines.map((line, i) => {
                   if (line.includes(l.contactLinkText)) {
                     const parts = line.split(l.contactLinkText);
@@ -277,14 +277,14 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
             </div>
 
             {/* 目次 */}
-            <nav className="tag-toc content-card card-padding">
-              <p className="tag-toc-title">{l.tocTitle}</p>
-              <ol className="tag-toc-list">
+            <nav className="toc content-card card-padding">
+              <p className="toc-title">{l.tocTitle}</p>
+              <ol className="toc-list">
                 {tocItems.map((item) => (
                   <li key={item.key}>
                     <a href={`#section-${item.key}`}>{item.label}</a>
                     {item.children && (
-                      <ol className="tag-toc-sublist">
+                      <ol className="toc-sublist">
                         {item.children.map((child, i) => (
                           <li key={i}>
                             <a href={`#sub-collection-${i}`}>{child}</a>
@@ -299,9 +299,9 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
 
             {/* タイムラプス映像集 */}
             <div id="section-collection">
-              <div className="tag-spot-section-header">
-                <h2 className="tag-section-heading">{l.collectionHeading}</h2>
-                <p className="tag-section-intro">{l.collectionIntro}</p>
+              <div className="spot-section-header">
+                <h2 className="section-heading">{l.collectionHeading}</h2>
+                <p className="section-intro">{l.collectionIntro}</p>
               </div>
               {COLLECTION_SUBSECTIONS.map((sub, i) => (
                 <section
@@ -322,9 +322,9 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
 
             {/* 夕景タイムラプス素材集 */}
             <div id="section-materials">
-              <div className="tag-spot-section-header">
-                <h2 className="tag-section-heading">{l.materialsHeading}</h2>
-                <p className="tag-section-intro">{l.materialsIntro}</p>
+              <div className="spot-section-header">
+                <h2 className="section-heading">{l.materialsHeading}</h2>
+                <p className="section-intro">{l.materialsIntro}</p>
               </div>
               <div className="content-card card-padding tl-material-wrapper">
                 <div className="tl-material-grid">
@@ -339,8 +339,8 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
 
             {/* 関連記事 */}
             <div id="section-related">
-              <div className="tag-spot-section-header">
-                <h2 className="tag-section-heading">{l.relatedHeading}</h2>
+              <div className="spot-section-header">
+                <h2 className="section-heading">{l.relatedHeading}</h2>
               </div>
               <div className="tl-related-list">
                 {l.relatedArticles.map((article, i) => (

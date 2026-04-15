@@ -61,7 +61,21 @@ if ($isMobile) {
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/suncalc@1.8.0/suncalc.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***"></script>
+<?php
+// .env.local から API キーを読み込み
+$envFile = __DIR__ . '/../.env.local';
+$googleMapsApiKey = '';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, 'NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=') === 0) {
+            $googleMapsApiKey = substr($line, strlen('NEXT_PUBLIC_GOOGLE_MAPS_API_KEY='));
+            break;
+        }
+    }
+}
+?>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo htmlspecialchars($googleMapsApiKey); ?>"></script>
 <?php if ($isMobile) : ?>
 <script src="./script/sp_script.js"></script>
 <?php else : ?>

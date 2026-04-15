@@ -21,10 +21,10 @@ type Props = {
 
 export default function PrBanner({ heading, image, paragraphs, links }: Props) {
   return (
-    <aside className="tag-pr-banner">
-      <p className="tag-pr-banner-heading">{heading}</p>
-      <div className="tag-pr-banner-body">
-        <div className="tag-pr-banner-image">
+    <aside className="pr-banner mb-xl">
+      <p className="pr-banner-heading">{heading}</p>
+      <div className="pr-banner-body">
+        <div className="pr-banner-image">
           <Image
             alt=""
             loading="lazy"
@@ -34,17 +34,17 @@ export default function PrBanner({ heading, image, paragraphs, links }: Props) {
             style={{ color: "transparent", objectFit: "cover", borderRadius: 4 }}
           />
         </div>
-        <div className="tag-pr-banner-text">
+        <div className="pr-banner-text">
           {paragraphs.map((text, i) => (
             <p key={i}>{text}</p>
           ))}
-          <div className="tag-pr-banner-links">
+          <div className="pr-banner-links">
             {links.map((link) =>
               link.external ? (
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`tag-pr-banner-cta cta-${link.variant}`}
+                  className={`pr-banner-cta cta-${link.variant}`}
                   target="_blank"
                   rel="noopener noreferrer sponsored"
                 >
@@ -54,7 +54,7 @@ export default function PrBanner({ heading, image, paragraphs, links }: Props) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`tag-pr-banner-cta cta-${link.variant}`}
+                  className={`pr-banner-cta cta-${link.variant}`}
                 >
                   {link.label}
                 </Link>

@@ -1,10 +1,10 @@
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import AreaMapLoader from "@/components/map/AreaMapLoader";
-import SetHtmlLang from "@/components/layout/SetHtmlLang";
+import RecommendCta from "@/components/common/RecommendCta";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import type { SpotListItem } from "@/lib/types";
-import { SITE_URL, LOCALE_LABELS } from "@/lib/types";
+import { SITE_URL, LOCALE_LABELS, LOCALE_SLUG_MAP } from "@/lib/types";
 import type { AreaPageLabels } from "@/lib/i18n-labels";
 import type { MapSpotItem } from "@/lib/supabase/queries";
 
@@ -82,10 +82,12 @@ export default function TranslatedAreaContent({
   mapSpots = [],
 }: Props) {
   const faqs = generateAreaFaq(al, areaName, spots);
+  const bcp47Locale = LOCALE_SLUG_MAP[localeSlug] ?? localeSlug;
 
   const itemListJsonLd = spots.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    inLanguage: bcp47Locale,
     itemListElement: [...spots]
       .sort((a, b) => b.rating_avg - a.rating_avg)
       .map((spot, index) => ({
@@ -100,6 +102,7 @@ export default function TranslatedAreaContent({
   const faqJsonLd = faqs.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: bcp47Locale,
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -113,7 +116,6 @@ export default function TranslatedAreaContent({
   return (
     <div className="l-article-body">
       <div className="l-article-container">
-        <SetHtmlLang locale={localeSlug} />
         <LanguageSwitcher
           currentLocale={localeSlug}
           categorySlug={categorySlug}
@@ -157,6 +159,7 @@ export default function TranslatedAreaContent({
               countLabel={al.mapCount(areaName, mapSpots.length)}
               nameOverrides={Object.fromEntries(spots.map((s) => [s.slug, s.name]))}
             />
+            <RecommendCta locale={localeSlug} />
           </section>
         )}
 

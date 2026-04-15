@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { CircleHelp } from "lucide-react";
 import type { HomePageLabels } from "@/lib/i18n-labels";
 
 type FaqItem = {
@@ -57,9 +56,6 @@ export default function HomeFaq({ faqs, sunsetTime, labels }: Props) {
     <section className="home-section" id="faq">
       <div className="home-container">
         <h2 className="home-section-heading">
-          <span className="heading-icon">
-            <CircleHelp size={20} />
-          </span>
           {labels?.heading ?? "東京の夜景に関するよくある質問"}
         </h2>
         <div className="home-content-card">

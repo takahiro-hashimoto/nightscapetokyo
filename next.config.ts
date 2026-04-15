@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const isDev = process.env.NODE_ENV === "development";
 
 const nextConfig: NextConfig = {
+  trailingSlash: true,
+
   images: {
     unoptimized: isDev,
     remotePatterns: [
@@ -33,6 +35,26 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["lucide-react", "suncalc", "swiper"],
   },
 
+  async redirects() {
+    return [
+      {
+        source: "/pickup/:slug/",
+        destination: "/article/:slug/",
+        permanent: true,
+      },
+      {
+        source: "/post/:slug*/",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/post",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {
@@ -40,7 +62,51 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, s-maxage=3600, stale-while-revalidate=86400",
+            value: "public, s-maxage=86400, stale-while-revalidate=604800",
+          },
+          {
+            key: "Content-Language",
+            value: "ja",
+          },
+          { key: "X-DNS-Prefetch-Control", value: "on" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "DENY" },
+        ],
+      },
+      {
+        source: "/en/:path*",
+        headers: [
+          {
+            key: "Content-Language",
+            value: "en",
+          },
+        ],
+      },
+      {
+        source: "/ko/:path*",
+        headers: [
+          {
+            key: "Content-Language",
+            value: "ko",
+          },
+        ],
+      },
+      {
+        source: "/tw/:path*",
+        headers: [
+          {
+            key: "Content-Language",
+            value: "zh-Hant",
+          },
+        ],
+      },
+      {
+        source: "/cn/:path*",
+        headers: [
+          {
+            key: "Content-Language",
+            value: "zh-Hans",
           },
         ],
       },

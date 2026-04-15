@@ -1,95 +1,11 @@
+import { sanitizeHtml } from "@/lib/sanitize";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Clock, Banknote, Mountain, Train, ExternalLink } from "lucide-react";
-import type { SpotWithRelations } from "@/lib/types";
+import type { SpotWithRelations, SiteLocale } from "@/lib/types";
+import { TAG_SPOT_CARD_LABELS } from "@/lib/i18n-labels";
 import TagImageSlider from "./TagImageSlider";
 
-/** ロケール別UIラベル */
-const SPOT_CARD_LABELS: Record<string, {
-  address: string;
-  fee: string;
-  height: string;
-  hours: string;
-  checkin: string;
-  checkout: string;
-  station: string;
-  detail: string;
-  morePhotos: string;
-  moreHotelPhotos: string;
-  nightView: string;
-  facilityInfo: (name: string) => string;
-}> = {
-  ja: {
-    address: "住所",
-    fee: "料金",
-    height: "展望台の高さ",
-    hours: "営業時間",
-    checkin: "チェックイン",
-    checkout: "チェックアウト",
-    station: "最寄駅",
-    detail: "詳細ページ",
-    morePhotos: "この夜景スポットの写真をもっと見る",
-    moreHotelPhotos: "このホテルの写真をもっと見る",
-    nightView: "の夜景",
-    facilityInfo: (name) => `${name}の施設情報`,
-  },
-  en: {
-    address: "Address",
-    fee: "Admission",
-    height: "Observatory Height",
-    hours: "Hours",
-    checkin: "Check-in",
-    checkout: "Check-out",
-    station: "Nearest Station",
-    detail: "Details",
-    morePhotos: "See more photos of this spot",
-    moreHotelPhotos: "See more photos of this hotel",
-    nightView: " night view",
-    facilityInfo: (name) => `${name} facility information`,
-  },
-  ko: {
-    address: "주소",
-    fee: "요금",
-    height: "전망대 높이",
-    hours: "영업시간",
-    checkin: "체크인",
-    checkout: "체크아웃",
-    station: "가까운 역",
-    detail: "상세 페이지",
-    morePhotos: "이 야경 스폿의 사진 더 보기",
-    moreHotelPhotos: "이 호텔의 사진 더 보기",
-    nightView: " 야경",
-    facilityInfo: (name) => `${name} 시설 정보`,
-  },
-  tw: {
-    address: "地址",
-    fee: "費用",
-    height: "展望台高度",
-    hours: "營業時間",
-    checkin: "入住",
-    checkout: "退房",
-    station: "最近車站",
-    detail: "詳細頁面",
-    morePhotos: "查看更多這個夜景景點的照片",
-    moreHotelPhotos: "查看更多這間飯店的照片",
-    nightView: "夜景",
-    facilityInfo: (name) => `${name}設施資訊`,
-  },
-  cn: {
-    address: "地址",
-    fee: "费用",
-    height: "展望台高度",
-    hours: "营业时间",
-    checkin: "入住",
-    checkout: "退房",
-    station: "最近车站",
-    detail: "详细页面",
-    morePhotos: "查看更多这个夜景景点的照片",
-    moreHotelPhotos: "查看更多这间酒店的照片",
-    nightView: "夜景",
-    facilityInfo: (name) => `${name}设施信息`,
-  },
-};
 
 type Props = {
   spot: SpotWithRelations;
@@ -98,7 +14,7 @@ type Props = {
 };
 
 export default function TagSpotCard({ spot, description, locale }: Props) {
-  const l = SPOT_CARD_LABELS[locale ?? "ja"] ?? SPOT_CARD_LABELS.ja;
+  const l = TAG_SPOT_CARD_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_SPOT_CARD_LABELS.ja;
   const name = spot.name || spot.title;
   const categorySlug = spot.category?.slug ?? "";
   const detailHref = `/${categorySlug}/${spot.slug}`;
@@ -114,8 +30,8 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
     : [];
 
   return (
-    <section className="content-card card-padding tag-spot-card">
-      <h3 className="tag-spot-name">{name}</h3>
+    <article className="content-card card-padding">
+      <h3>{name}</h3>
 
       {spot.images && spot.images.length >= 2 ? (
         <TagImageSlider
@@ -137,7 +53,7 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
         </div>
       ) : null}
 
-      <div className="tag-spot-desc">
+      <div className="article-body">
         {description.split("\n").map((line, i) => (
           <p key={i}>{line}</p>
         ))}
@@ -168,7 +84,7 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
                   </span>
                   {l.fee}
                 </th>
-                <td dangerouslySetInnerHTML={{ __html: spot.money }} />
+                <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.money) }} />
               </tr>
             )}
             {!isHotel && spot.height && (
@@ -179,7 +95,7 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
                   </span>
                   {l.height}
                 </th>
-                <td dangerouslySetInnerHTML={{ __html: spot.height }} />
+                <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.height) }} />
               </tr>
             )}
             {!isHotel && spot.hours && (
@@ -190,7 +106,7 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
                   </span>
                   {l.hours}
                 </th>
-                <td dangerouslySetInnerHTML={{ __html: spot.hours }} />
+                <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.hours) }} />
               </tr>
             )}
 
@@ -226,7 +142,7 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
                   </span>
                   {l.station}
                 </th>
-                <td dangerouslySetInnerHTML={{ __html: spot.station }} />
+                <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.station) }} />
               </tr>
             )}
             <tr>
@@ -249,10 +165,10 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
       {affiliates.length > 0 && (
         <div className="panel-link-grid">
           {affiliates.map((link, i) => (
-            <div key={i} dangerouslySetInnerHTML={{ __html: link! }} />
+            <div key={i} dangerouslySetInnerHTML={{ __html: sanitizeHtml(link!) }} />
           ))}
         </div>
       )}
-    </section>
+    </article>
   );
 }

@@ -1,3 +1,4 @@
+import { sanitizeHtml } from "@/lib/sanitize";
 import { MapPinned } from "lucide-react";
 import type { AccessLabels } from "@/lib/i18n-labels";
 
@@ -5,14 +6,15 @@ type Props = {
   station: string | null;
   parking: string | null;
   map: string | null;
+  spotName: string;
   labels?: AccessLabels;
 };
 
-export default function SpotAccess({ station, parking, map, labels }: Props) {
+export default function SpotAccess({ station, parking, map, spotName, labels }: Props) {
   if (!station && !parking && !map) return null;
 
   const l = labels ?? {
-    heading: "行き方・アクセスと駐車場",
+    heading: (name: string) => `${name}の行き方・アクセスと駐車場`,
     caption: "アクセス情報",
     station: "電車・最寄駅",
     parking: "駐車場",
@@ -28,7 +30,7 @@ export default function SpotAccess({ station, parking, map, labels }: Props) {
         <span className="heading-icon">
           <MapPinned size={18} aria-hidden="true" />
         </span>
-        {l.heading}
+        {l.heading(spotName)}
       </h2>
 
       {(station || parking) && (
@@ -39,13 +41,13 @@ export default function SpotAccess({ station, parking, map, labels }: Props) {
               {station && (
                 <tr>
                   <th scope="row">{l.station}</th>
-                  <td dangerouslySetInnerHTML={{ __html: station }} />
+                  <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(station) }} />
                 </tr>
               )}
               {parking && (
                 <tr>
                   <th scope="row">{l.parking}</th>
-                  <td dangerouslySetInnerHTML={{ __html: parking }} />
+                  <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(parking) }} />
                 </tr>
               )}
             </tbody>
@@ -57,7 +59,7 @@ export default function SpotAccess({ station, parking, map, labels }: Props) {
         <div
           className="map-wrapper"
           aria-label="地図"
-          dangerouslySetInnerHTML={{ __html: map }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(map) }}
         />
       )}
     </section>

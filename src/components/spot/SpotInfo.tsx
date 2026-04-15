@@ -1,16 +1,21 @@
+import { sanitizeHtml } from "@/lib/sanitize";
 import {
   MapPin,
   Clock,
   CalendarOff,
+  CalendarDays,
   Ticket,
   ArrowUpFromDot,
   Link2,
   Info,
   ChevronRight,
+  BedDouble,
+  Sparkles,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { InfoLabels } from "@/lib/i18n-labels";
+import type { SpotHotel, SpotEvent } from "@/lib/types";
 
 type Tag = {
   id: string;
@@ -37,6 +42,10 @@ type Props = {
   asoview?: string | null;
   asoview02?: string | null;
   localeSlug?: string | null;
+  categorySlug?: string | null;
+  categoryName?: string | null;
+  hotel?: SpotHotel | null;
+  event?: SpotEvent | null;
 };
 
 export default function SpotInfo({
@@ -57,6 +66,10 @@ export default function SpotInfo({
   asoview,
   asoview02,
   localeSlug,
+  categorySlug,
+  categoryName,
+  hotel,
+  event,
 }: Props) {
   const tagPrefix = localeSlug ? `/${localeSlug}` : "";
   const l = labels ?? {
@@ -71,9 +84,22 @@ export default function SpotInfo({
     officialSite: "公式サイト",
     sns: "SNS",
     relatedSite: "関連サイト",
+    categoryListLabel: (name: string) => `${name}の夜景スポット一覧`,
   };
 
   const heading = l.heading(spotName);
+
+  const categoryHref =
+    categorySlug
+      ? `${tagPrefix}/${categorySlug}`
+      : null;
+
+  const isEvent = categorySlug === "event";
+  const isHotel = !!hotel;
+
+  const eventDateValue = event
+    ? [event.start_date, event.end_date].filter(Boolean).join(" 〜 ") || null
+    : null;
 
   const rows = [
     {
@@ -82,10 +108,22 @@ export default function SpotInfo({
       value: address,
       itemProp: "address",
     },
-    { icon: <Clock size={16} />, label: l.hours, value: hours, itemProp: "openingHours", isHtml: true },
-    { icon: <CalendarOff size={16} />, label: l.holiday, value: holiday },
-    { icon: <Ticket size={16} />, label: l.fee, value: money, isHtml: true },
-    { icon: <ArrowUpFromDot size={16} />, label: l.height, value: height },
+    // イベントカテゴリーでは営業時間・定休日を非表示
+    ...(!isEvent ? [
+      { icon: <Clock size={16} />, label: l.hours, value: hours, itemProp: "openingHours", isHtml: true },
+      { icon: <CalendarOff size={16} />, label: l.holiday, value: holiday },
+    ] : []),
+    // ホテルでは料金・高さを非表示
+    ...(!isHotel ? [
+      { icon: <Ticket size={16} />, label: l.fee, value: money, isHtml: true },
+      { icon: <ArrowUpFromDot size={16} />, label: l.height, value: height },
+    ] : []),
+    // イベントカテゴリーのみイベント情報を表示
+    ...(isEvent ? [
+      { icon: <CalendarDays size={16} />, label: "開催期間", value: eventDateValue },
+      { icon: <MapPin size={16} />, label: "開催場所", value: event?.place ?? null },
+      { icon: <Clock size={16} />, label: "開催時間", value: event?.event_hour ?? null },
+    ] : []),
   ].filter((r) => r.value);
 
   const linkRows: React.ReactNode[] = [];
@@ -131,7 +169,12 @@ export default function SpotInfo({
     );
   }
 
-  if (rows.length === 0 && linkRows.length === 0 && tags.length === 0)
+  const hotelAffiliates = hotel
+    ? [hotel.affiliate_1, hotel.affiliate_2, hotel.affiliate_3, hotel.affiliate_4].filter(Boolean)
+    : [];
+  const hasHotel = hotel && (hotel.checkin || hotel.checkout || hotel.amenity || hotelAffiliates.length > 0);
+
+  if (rows.length === 0 && linkRows.length === 0 && tags.length === 0 && !hasHotel)
     return null;
 
   return (
@@ -188,12 +231,21 @@ export default function SpotInfo({
                   <span className="th-icon">{row.icon}</span>
                   {row.label}
                 </th>
-                <td
-                  {...(row.itemProp ? { itemProp: row.itemProp } : {})}
-                  {...(row.isHtml
-                    ? { dangerouslySetInnerHTML: { __html: row.value as string } }
-                    : { children: row.value })}
-                />
+                {row.itemProp === "address" && categoryHref && categoryName ? (
+                  <td itemProp="address">
+                    {row.value}
+                    <span className="address-category-link">
+                      （<Link href={categoryHref}>{l.categoryListLabel(categoryName)}</Link>）
+                    </span>
+                  </td>
+                ) : (
+                  <td
+                    {...(row.itemProp ? { itemProp: row.itemProp } : {})}
+                    {...(row.isHtml
+                      ? { dangerouslySetInnerHTML: { __html: sanitizeHtml(row.value as string) } }
+                      : { children: row.value })}
+                  />
+                )}
               </tr>
             ))}
             {linkRows.length > 0 && (
@@ -223,16 +275,63 @@ export default function SpotInfo({
           {asoview && (
             <div
               className="info-ticket-btn"
-              dangerouslySetInnerHTML={{ __html: asoview }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(asoview) }}
             />
           )}
           {asoview02 && (
             <div
               className="info-ticket-btn"
-              dangerouslySetInnerHTML={{ __html: asoview02 }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(asoview02) }}
             />
           )}
         </div>
+      )}
+
+      {hasHotel && (
+        <>
+          <div className="table-wrapper">
+            <table className="info-table">
+              <caption className="visually-hidden">ホテル情報</caption>
+              <tbody>
+                {(hotel!.checkin || hotel!.checkout) && (
+                  <tr>
+                    <th scope="row">
+                      <span className="th-icon">
+                        <BedDouble size={16} />
+                      </span>
+                      チェックイン / アウト
+                    </th>
+                    <td>
+                      {hotel!.checkin || "—"} / {hotel!.checkout || "—"}
+                    </td>
+                  </tr>
+                )}
+                {hotel!.amenity && (
+                  <tr>
+                    <th scope="row">
+                      <span className="th-icon">
+                        <Sparkles size={16} />
+                      </span>
+                      アメニティ
+                    </th>
+                    <td>{hotel!.amenity}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {hotelAffiliates.length > 0 && (
+            <div className="panel-link-grid">
+              {hotelAffiliates.map((link, i) => (
+                <div
+                  key={i}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(link!) }}
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </section>
   );

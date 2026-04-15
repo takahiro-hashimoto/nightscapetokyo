@@ -102,7 +102,7 @@ async function main() {
         {
           pr_banner_id: banner.id,
           label: "体験記事を読む",
-          href: "/report/airos-skyview",
+          href: "/article/airos-skyview",
           sort_order: 1,
         },
       ]);

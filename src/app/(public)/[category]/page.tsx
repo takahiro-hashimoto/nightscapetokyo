@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import SetHtmlLang from "@/components/layout/SetHtmlLang";
 import HeroSection from "@/components/home/HeroSection";
 import SpotRanking from "@/components/home/SpotRanking";
 import HotelRanking from "@/components/home/HotelRanking";
@@ -23,6 +22,7 @@ import {
   getMapSpotsByCategory,
 } from "@/lib/supabase/queries";
 import AreaMapLoader from "@/components/map/AreaMapLoader";
+import RecommendCta from "@/components/common/RecommendCta";
 import {
   SITE_URL,
   ALL_LOCALE_SLUGS,
@@ -34,6 +34,7 @@ import {
 import type { SpotListItem } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { calculateSunData } from "@/lib/sun-calc";
+import { buildFaqJsonLd, buildItemListJsonLd, buildAreaItemListJsonLd, localeToLanguage } from "@/lib/json-ld";
 
 type Props = {
   params: Promise<{ category: string }>;
@@ -123,39 +124,6 @@ function generateAreaFaq(
   return faqs;
 }
 
-/** ItemList JSON-LD を生成 */
-function buildItemListJsonLd(spots: SpotListItem[], categorySlug: string) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: spots
-      .sort((a, b) => b.rating_avg - a.rating_avg)
-      .map((spot, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        url: `${SITE_URL}/${categorySlug}/${spot.slug}`,
-        name: spot.name,
-        ...(spot.featured_image && { image: spot.featured_image }),
-      })),
-  };
-}
-
-/** FAQPage JSON-LD を生成 */
-function buildFaqJsonLd(faqs: { question: string; answer: string }[]) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-}
-
 const NON_AREA_SLUGS = ["article", "pickup", "event"];
 
 /** 翻訳版トップページ用 OG locale */
@@ -185,7 +153,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (ALL_LOCALE_SLUGS.includes(categorySlug)) {
     const labels = getComponentLabels(categorySlug);
     const hp = labels.homePage;
-    const title = hp.seoTitle(new Date().getFullYear());
+    const spotCount = await getTotalSpotCount().catch(() => 200);
+    const title = hp.hero.subtitle(spotCount);
     const description = hp.seoDescription;
     const canonicalUrl = `${SITE_URL}/${categorySlug}`;
     const ogLocale = OG_LOCALE_MAP[categorySlug] ?? "en_US";
@@ -271,9 +240,12 @@ export default async function AreaPage({ params }: Props) {
       getTotalSpotCount().catch(() => 200),
     ]);
 
+    const faqItems = hp.faq.items;
+    const inLanguage = localeToLanguage(localeSlug);
+    const currentYear = new Date().getFullYear();
+
     return (
       <>
-        <SetHtmlLang locale={localeSlug} />
         <LanguageSwitcher
           currentLocale={localeSlug}
           categorySlug=""
@@ -285,7 +257,34 @@ export default async function AreaPage({ params }: Props) {
         <HotelRanking hotels={hotels} labels={hp.hotelRanking} localeSlug={localeSlug} />
         <PurposeSearch tags={purposeTags} labels={hp.purposeSearch} localeSlug={localeSlug} />
         <AreaSearch areas={areas} labels={hp.areaSearch} localeSlug={localeSlug} />
-        <HomeFaq faqs={hp.faq.items} sunsetTime={sunData.sunsetTime} labels={hp.faq} />
+        <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={hp.faq} />
+        {spots.length > 0 && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                buildItemListJsonLd(spots, {
+                  localePrefix: `/${localeSlug}`,
+                  name: hp.spotRanking?.heading(currentYear),
+                  inLanguage,
+                })
+              ),
+            }}
+          />
+        )}
+        {faqItems.length > 0 && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                buildFaqJsonLd(faqItems, {
+                  sunsetTime: sunData.sunsetTime,
+                  inLanguage,
+                })
+              ),
+            }}
+          />
+        )}
       </>
     );
   }
@@ -352,6 +351,7 @@ export default async function AreaPage({ params }: Props) {
           <section className="content-card card-padding" id="map" aria-labelledby="map-heading">
             <h2 className="area-section-heading" id="map-heading">{cat.name}の夜景スポットマップ</h2>
             <AreaMapLoader spots={mapSpots} areaName={cat.name} />
+            <RecommendCta locale={null} />
           </section>
         )}
 
@@ -375,7 +375,9 @@ export default async function AreaPage({ params }: Props) {
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(buildItemListJsonLd(spots, categorySlug)),
+              __html: JSON.stringify(
+                buildAreaItemListJsonLd(spots, categorySlug)
+              ),
             }}
           />
         )}

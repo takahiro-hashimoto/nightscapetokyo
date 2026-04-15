@@ -1,3 +1,4 @@
+import { sanitizeHtml } from "@/lib/sanitize";
 import { CircleHelp } from "lucide-react";
 import type { SpotFaq as SpotFaqType } from "@/lib/types";
 import type { FaqLabels } from "@/lib/i18n-labels";
@@ -33,7 +34,7 @@ export default function SpotFaq({ faqs, heading, labels }: Props) {
             <dt className="faq-q">{faq.question}</dt>
             <dd
               className="faq-a"
-              dangerouslySetInnerHTML={{ __html: faq.answer }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(faq.answer) }}
             />
           </div>
         ))}

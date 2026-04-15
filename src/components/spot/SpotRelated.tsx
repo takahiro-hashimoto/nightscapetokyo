@@ -20,7 +20,7 @@ export default function SpotRelated({ spots, areaName, areaSlug, labels, localeS
   return (
     <section className="related-section">
       <h3 className="related-heading">
-        {labels.heading(<Link href={areaHref} className="related-heading-link">{areaName}</Link>)}
+        {labels.heading(areaName)}
       </h3>
       <div className="ranking-grid ranking-grid-4">
         {spots.map((spot) => (
@@ -33,8 +33,9 @@ export default function SpotRelated({ spots, areaName, areaSlug, labels, localeS
               {spot.featured_image && (
                 <Image
                   src={spot.featured_image}
-                  alt={spot.name}
+                  alt={`${spot.name}から見える夜景`}
                   fill
+                  loading="lazy"
                   sizes="(max-width: 768px) 50vw, 240px"
                 />
               )}

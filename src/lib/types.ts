@@ -1,3 +1,6 @@
+/** i18n エリアページ共通の Next.js Props 型 */
+export type CategoryPageProps = { params: Promise<{ category: string }> };
+
 export type Category = {
   id: string;
   name: string;
@@ -131,38 +134,45 @@ export const LOCALE_DISPLAY_NAMES: Record<string, string> = {
   "zh-Hans": "简体中文",
 };
 
+/** サポートするロケール定数 — 新しい言語はここに追加するだけ */
+export const LOCALE_SLUGS = ["en", "ko", "tw", "cn"] as const;
+/** URL スラッグ用のロケール型（ja を含まない） */
+export type LocaleSlug = (typeof LOCALE_SLUGS)[number];
+/** ja + 全ロケール — ラベル定義など ja を含む場面で使用 */
+export type SiteLocale = "ja" | LocaleSlug;
+
 /** URL slug ↔ DB locale mapping */
-export const LOCALE_SLUG_MAP: Record<string, string> = {
+export const LOCALE_SLUG_MAP = {
   en: "en",
   ko: "ko",
   tw: "zh-Hant",
   cn: "zh-Hans",
-};
+} satisfies Record<LocaleSlug, string> as Record<string, string>;
 
 /** DB locale → URL slug (reverse) */
 export const LOCALE_TO_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(LOCALE_SLUG_MAP).map(([slug, locale]) => [locale, slug])
 );
 
-export const ALL_LOCALE_SLUGS = Object.keys(LOCALE_SLUG_MAP);
+export const ALL_LOCALE_SLUGS: readonly string[] = LOCALE_SLUGS;
 
 /** 言語切替ボタン用の表示名（URLスラッグ → 表示ラベル） */
-export const LOCALE_LABELS: Record<string, string> = {
+export const LOCALE_LABELS = {
   en: "English",
   ko: "한국어",
   tw: "繁體中文",
   cn: "简体中文",
-};
+} satisfies Record<LocaleSlug, string> as Record<string, string>;
 
 export const SITE_URL = "https://nightscape.tokyo";
 
 /** 各言語のサイト名（ヘッダーロゴ・パンくずで使用） */
-export const SITE_NAMES: Record<string, string> = {
+export const SITE_NAMES = {
   en: "Tokyo Night View Guide",
   ko: "도쿄 야경 가이드",
   tw: "東京夜景導覽",
   cn: "东京夜景导航",
-};
+} satisfies Record<LocaleSlug, string> as Record<string, string>;
 
 /* ------------------------------------------------------------------ */
 /* 共通ユーティリティ                                                    */
@@ -219,7 +229,7 @@ export function buildHreflangAlternates(
   siteUrl: string,
   categorySlug: string,
   spotSlug: string,
-  availableLocales: string[] // URL slugs: en, ko, tw, cn
+  availableLocales: readonly string[] // URL slugs: en, ko, tw, cn
 ): Record<string, string> {
   const jaUrl = `${siteUrl}/${categorySlug}/${spotSlug}`;
   const languages: Record<string, string> = {
@@ -244,7 +254,7 @@ export function buildHreflangAlternates(
 export function buildAreaHreflangAlternates(
   siteUrl: string,
   categorySlug: string,
-  availableLocales: string[] // URL slugs: en, ko, tw, cn
+  availableLocales: readonly string[] // URL slugs: en, ko, tw, cn
 ): Record<string, string> {
   const jaUrl = `${siteUrl}/${categorySlug}`;
   const languages: Record<string, string> = {
@@ -268,7 +278,7 @@ export function buildAreaHreflangAlternates(
  */
 export function buildHomeHreflangAlternates(
   siteUrl: string,
-  availableLocales: string[] // URL slugs: en, ko, tw, cn
+  availableLocales: readonly string[] // URL slugs: en, ko, tw, cn
 ): Record<string, string> {
   const languages: Record<string, string> = {
     ja: siteUrl,
@@ -381,6 +391,24 @@ export type TagPageTranslation = {
   sections: { key: string; heading: string; intro: string | null }[] | null;
   descriptions: Record<string, string> | null;
   faqs: { question: string; answer: string }[] | null;
+  created_at: string;
+  updated_at: string;
+};
+
+/* ------------------------------------------------------------------ */
+/* Article 関連型                                                       */
+/* ------------------------------------------------------------------ */
+
+export type Article = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string | null;
+  thumbnail: string | null;
+  content: string | null;
+  published: boolean;
+  is_pr: boolean | null;
+  published_at: string | null;
   created_at: string;
   updated_at: string;
 };

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BedDouble, Star, ChevronRight } from "lucide-react";
+import { Star, ChevronRight } from "lucide-react";
 import type { SpotListItem } from "@/lib/types";
 import type { HomePageLabels } from "@/lib/i18n-labels";
 
@@ -20,13 +20,10 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
     <section className="home-section" id="hotel-ranking">
       <div className="home-container">
         <h2 className="home-section-heading">
-          <span className="heading-icon">
-            <BedDouble size={20} />
-          </span>
-          {labels?.heading(currentYear) ?? `夜景の綺麗なホテルおすすめランキング【${currentYear}年版】`}
+          {labels?.heading(currentYear) ?? `東京都内の夜景が綺麗なホテル【${currentYear}年版】`}
         </h2>
         <p className="home-section-desc">
-          {labels?.desc ?? "客室や最上階レストランから上質な東京の夜景が楽しめるホテルを厳選。記念日やデートにもおすすめです。"}
+          {labels?.desc ?? "客室や最上階レストランから上質な東京の夜景が楽しめるホテルを厳選。記念日やデートにもおすすめです。実際に宿泊して撮影した写真やレポートが整っているのでぜひチェックしてみてください。"}
         </p>
         <div className="ranking-grid ranking-grid-4">
           {hotels.map((hotel, i) => (

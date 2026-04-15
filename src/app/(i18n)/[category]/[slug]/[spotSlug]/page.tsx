@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import SpotArticle from "@/components/spot/SpotArticle";
-import SetHtmlLang from "@/components/layout/SetHtmlLang";
 import {
   getSpotWithTranslation,
   getAllTranslatedSlugs,
@@ -49,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   );
 }
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export default async function TranslatedSpotPage({ params }: Props) {
   const { category: localeSlug, slug: categorySlug, spotSlug } = await params;
@@ -68,7 +67,6 @@ export default async function TranslatedSpotPage({ params }: Props) {
 
   return (
     <>
-      <SetHtmlLang locale={localeSlug} />
       <SpotArticle
         spot={spot}
         labels={labels}

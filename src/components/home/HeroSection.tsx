@@ -14,7 +14,9 @@ export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
   return (
     <section className="hero-section">
       <picture>
+        <source media="(max-width: 768px)" srcSet="/hero-sp.webp" type="image/webp" />
         <source media="(max-width: 768px)" srcSet="/hero-sp.jpg" />
+        <source srcSet="/hero.webp" type="image/webp" />
         <img
           src="/hero.jpg"
           alt={l?.imgAlt ?? "東京の夜景"}

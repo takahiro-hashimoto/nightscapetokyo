@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildSpotMetadata(spot, labels, category, slug, "ja", translations.map((t) => t.locale));
 }
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export default async function SpotOrAreaPage({ params }: Props) {
   const { category, slug } = await params;

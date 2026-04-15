@@ -25,6 +25,7 @@ export type TagPageContent = {
   sections: TagPageSection[];
   descriptions: Record<string, string>;
   mapEmbed?: { heading: string; intro: string; iframeHtml: string };
+  serviceSection?: { heading: string; items: { label: string; href: string; description: string }[] };
   faqs?: { question: string; answer: string }[];
 };
 
@@ -33,7 +34,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     title:
       "【保存版】東京タワーの写真撮影スポットおすすめ22選！インスタ映えする夜景スポットがわかる",
     breadcrumb: "東京タワーが見えるおすすめ夜景スポット",
-    heroImage: "https://nightscape.tokyo/wp-content/uploads/2023/01/prince-hotel-view-02.jpg",
+    heroImage: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/prince-hotel-view-02.jpg",
     updatedAt: "2026.03.07",
     prNotice: "本記事にはPRが含まれています",
     lead: `1958年12月23日竣工された東京を代表するランドマークである東京タワー。
@@ -43,7 +44,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
 東京タワーをどこから撮るのがいいのかお悩みの方は是非チェックしてみてください！`,
     prBanner: {
       heading: "【PR】ヘリコプター遊覧で一生の思い出に残る感動体験を。",
-      image: "https://nightscape.tokyo/wp-content/uploads/2024/09/tokyo-tower-1-1024x1024.jpg",
+      image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/09/tokyo-tower-1.jpg",
       body: [
         "AIROS Skyviewでは、22~55分の多彩なヘリコプター遊覧コースをご用意しています。",
         "上空600mから眺める夜景は、まるで宝石を散りばめたような輝き。見渡す限りの光の大海原に、心奪われること間違いなしです。",
@@ -56,7 +57,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
         },
         {
           label: "体験記事を読む",
-          href: "/report/airos-skyview",
+          href: "/article/airos-skyview",
         },
       ],
     },
@@ -237,7 +238,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     title:
       "【保存版】東京スカイツリーの写真撮影スポットおすすめ30選！インスタ映えする夜景スポットがわかる",
     breadcrumb: "東京スカイツリーが見えるおすすめ夜景スポット",
-    heroImage: "https://nightscape.tokyo/wp-content/uploads/2023/02/wing-inter-national-asakusa-5.jpg",
+    heroImage: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/02/wing-inter-national-asakusa-5.jpg",
     updatedAt: "2026.01.26",
     prNotice: "本記事にはPRが含まれています",
     lead: `2012年5月に電波塔・観光施設として開業した東京スカイツリー。
@@ -246,7 +247,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
 本記事では様々な場所を巡った中からおすすめの撮影スポットを定番から穴場まで厳選して紹介していきます！`,
     prBanner: {
       heading: "【PR】ヘリコプター遊覧で一生の思い出に残る感動体験を。",
-      image: "https://nightscape.tokyo/wp-content/uploads/2024/08/air.jpg",
+      image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/08/air.jpg",
       body: [
         "AIROS Skyviewでは、22~55分の多彩なヘリコプター遊覧コースをご用意しています。",
         "上空600mから眺める夜景は、まるで宝石を散りばめたような輝き。見渡す限りの光の大海原に、心奪われること間違いなしです。",
@@ -259,7 +260,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
         },
         {
           label: "体験記事を読む",
-          href: "/report/airos-skyview",
+          href: "/article/airos-skyview",
         },
       ],
     },
@@ -307,7 +308,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
           "arakawa-river-side",
           "kameido-shrine",
           "sumida-park",
-          "komagata-bridge",
+          "komagatabashi-bridge-intersection",
           "sakurabashi-bridge",
           "kuramae-bridge",
           "makura-bridge",
@@ -329,9 +330,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
       "asakusa-view-hotel": `1985年9月に開業した地上28階地下3階建ての浅草ビューホテル。
 スカイツリー側の客室には各部屋に小さな展望スペースが設けられており、ライトアップされた東京スカイツリーや浅草寺、浅草花やしきなどを眺めることができます。
 スカイツリーと浅草寺五重塔の共演はなんとも趣深いものがあります。
-また浅草ビューホテルには20階に宿泊客限定の展望室があり、スカイツリーと反対側の部屋を取った方も眺望を楽しめるのも嬉しいポイント。
-浅草エリアでは最も高い建物のため遮るものが少なく、特に高層階からの眺望は格別です。
-つくばエクスプレス「浅草駅」から直結というアクセスの良さも魅力のひとつ。`,
+また浅草ビューホテルには20階に宿泊客限定の展望室があり、スカイツリーと反対側の部屋を取った方も眺望を楽しめるのも嬉しいポイント。`,
       "the-kanzashi-tokyo-asakusa": `2021年開業の地上13階建てホテルのTHE KANZASHI TOKYO ASAKUSA。
 屋上にルーフトップテラスが設けられているホテルで浅草の街並みを一望することができます。
 テラスからはライトアップされた東京スカイツリーや浅草寺、花やしきなどの眺望が広がり迫力のある夜景を堪能できます。
@@ -378,7 +377,8 @@ export const tagPageContents: Record<string, TagPageContent> = {
       "asahi-skyroom": `金のオブジェでおなじみのアサヒビール本社、最上階にある展望ラウンジ「アサヒスカイルーム」。
 地上約100mのラウンジからは、隅田川を挟んでスカイツリー、浅草寺、川にかかる橋まで一望できます。
 特に夜は、ライトアップされたスカイツリーと川沿いの景色がきれいで、落ち着いた室内と相まって静かに景色を楽しめる空間です。
-1ドリンク700円程度とお手頃な価格から入場ができる穴場の夜景スポットです。`,
+1ドリンク700円程度とお手頃な価格から入場ができる穴場の夜景スポットです。
+隅田川を眼下に行き交う屋形船も見どころのひとつで、浅草観光と組み合わせて立ち寄るのがおすすめ。都営浅草線「本所吾妻橋駅」から徒歩約5分でアクセスできます。`,
       "civic-bunkyo": `文京区役所や文化ホールが入る公共施設である、文京シビックセンター。
 同ビルの25階には無料で入場できる展望ラウンジがあります。
 一番の見どころは新宿の高層ビル群と富士山の共演が眺められる西側の景色ですが、東の方角にはすっきりと東京スカイツリーを眺めることができます。
@@ -390,7 +390,11 @@ export const tagPageContents: Record<string, TagPageContent> = {
 池袋駅の全景を見渡すことができる西側や新宿エリアの摩天楼を眺めることができる南側の景色が特に人気ですが、南東方面に目をやると東京スカイツリービューを楽しむことが可能。
 スカイツリーまでの距離は約9kmあるため、空気が澄んでいる日に訪れるとより鮮明にその姿を眺めることができます。
 とても良心的な価格で入場できる都内の展望台なので、ぜひ立ち寄ってみてください。`,
-      "kitatopia": `北区王子にあるきたトピア17階の無料展望ロビー。高さ約80mから3方向に窓があり都内の眺望を満喫することができます。特に南東の方角には東京スカイツリーと新幹線をはじめとした複数の線路が交差するトレインビューが広がり、鉄道ファンにも人気の穴場スポットです。同フロアにはカフェレストランも併設されています。`,
+      "kitatopia": `北区王子にあるきたトピア17階の無料展望ロビー。
+高さ約80mから3方向に窓があり都内の眺望を満喫することができます。
+特に南東の方角には東京スカイツリーと新幹線をはじめとした複数の線路が交差するトレインビューが広がり、鉄道ファンにも人気の穴場スポットです。
+同フロアにはカフェレストランも併設されており、ドリンクを片手にゆったりと景色を楽しむこともできます。
+入場無料かつJR・東京メトロ「王子駅」から徒歩約3分とアクセスもよく、地元の方にも親しまれている穴場の展望スポットです。`,
       "ilink-town": `JR市川駅南口直結の高層マンションに設けられているアイリンク展望施設。
 45Fの屋内と屋外に展望デッキがあり、地上150mの高さから美しい眺望を楽しむことができます。
 見どころはなんといっても東京スカイツリーと富士山の共演を眺めることができる西側の景色。
@@ -413,18 +417,20 @@ export const tagPageContents: Record<string, TagPageContent> = {
       "arakawa-river-side": `京成押上線「四ツ木駅」から徒歩9分程の場所にある荒川河川敷（木根川橋野球場）付近。
 日没から夜にかけて黄昏時のとても美しい景観を眺めることができるスポットです。
 荒川越しに見える東京スカイツリーや木根川橋が見どころ。
+広大な河川敷越しにそびえるスカイツリーは都心部とは一味違うスケール感があり、夕焼けのグラデーションとの共演はとくに圧巻。
 日が完全に沈むとかなり周りが暗く足元が見えないので、帰り道はスマホのライトを懐中電灯代わりにするなどして歩きましょう。`,
       "kameido-shrine": `東京都江東区亀戸にある亀戸天神社。
 菅原道真を祀り、受験生などを中心に学問の神として親しまれている神社です。
 通年を通して参拝できる神社ですが、ぜひ訪れてほしいのは4月。
 「亀戸天神藤まつり」が開催され、境内にある藤棚が満開に咲き誇る光景を楽しむことができるからです。
-夜にはライトアップも実施され、東京スカイツリーとの共演も非常に美しいです。`,
+夜にはライトアップも実施され、紫色の花房と東京スカイツリーの共演は息を呑む美しさ。
+藤まつり以外にも梅・菊など四季折々の花を楽しめるため、訪れるたびに異なる表情を見せてくれる魅力的なスポットです。`,
       "sumida-park": `面積約8万平方メートルの広さを誇る墨田区立隅田公園。
 公園からは大迫力の東京スカイツリーを見上げることができ、春には桜、夏には隅田川花火大会との共演を眺めることができます。
 また園内にあるひょうたん池からはスカイツリーを交えた幻想的なリフレクション写真を撮ることが可能です。
 園内は24時間開放されているため、日の入り前から訪れてトワイライトタイムの移り変わる空の色とスカイツリーの共演を楽しむのがおすすめ。
 浅草駅からも徒歩圏内なのでアクセスもよく、散歩がてら気軽に夜景撮影を楽しめるスポットです。`,
-      "komagata-bridge": `隅田川にかかる駒形橋（こまがたばし）の東側にある駒形橋東詰交差点。
+      "komagatabashi-bridge-intersection": `隅田川にかかる駒形橋（こまがたばし）の東側にある駒形橋東詰交差点。
 約2kmほど先にある東京スカイツリーを一望することができる隠れた夜景スポットです。
 スカイツリーが街に溶け込んでいる様子が美しく、交差点を行き交う車の光跡を捉えると迫力のある夜景写真が撮影できます。
 三脚を設置してシャッタースピードを遅くすることで、車のヘッドライトが流れるような光跡写真を撮ることが可能。
@@ -473,7 +479,33 @@ export const tagPageContents: Record<string, TagPageContent> = {
       "fureai-bridge": `江戸川区平井と江東区亀戸を結ぶ長さ56mのふれあい橋。
 北東岸から橋を眺めると東京スカイツリーと重なる光景を眺めることができます。
 東京スカイツリーが竣工した後にライトアップが実施されるようになったため、夜に訪れるととても美しい光景が広がります。
-ふれあい橋のライトアップカラーはブルーなので、東京スカイツリーが粋（ブルー）の時に合わせて訪れるのがおすすめ。`,
+ふれあい橋のライトアップカラーはブルーなので、東京スカイツリーが粋（ブルー）の時に合わせて訪れるのがおすすめ。
+橋の周辺は静かな住宅街に囲まれており、観光客が少なく落ち着いて撮影に集中できる穴場スポットです。`,
+    },
+    serviceSection: {
+      heading: "浅草観光を楽しみたい方におすすめのサービス",
+      items: [
+        {
+          label: "浅草着物レンタル 愛和服（浅草店）",
+          href: "https://aiwafuku.com/shop/asakusa/",
+          description: "浅草雷門・浅草寺徒歩圏内の好立地。レース柄や大正ロマン風着物が選び放題。ヘアセット付きプランも充実で、学生割引や当日予約OKで気軽に着物体験できるレンタル店です。",
+        },
+        {
+          label: "浅草着物レンタル 花乃和服（かのわふく）",
+          href: "https://kano-wafuku.com/",
+          description: "2023年開店、浅草駅すぐ。手ぶらでOK、800種以上の着物＆浴衣から選べ、着付け・ヘアセット・小物預かりも完備。学割やカップル割もあり、手頃な価格で本格体験が楽しめます。",
+        },
+        {
+          label: "江戸和装工房 雅",
+          href: "https://hefumiyabi.com/ja",
+          description: "浅草に3店舗ある雅では、経験豊富な着付け師が、豊富な着物の中からあなたにぴったりの一着を選び、心地よく美しく着付けてくれます。手ぶら来店もOK、カップル割やグループ割などお得なプランも充実しています。",
+        },
+        {
+          label: "浅草着物レンタル 梨花和服",
+          href: "https://ewha-yifu.com/shops/asakusa/",
+          description: "浅草店は雷門まで徒歩1分、各線浅草駅から徒歩3分の好立地。レースからレトロまで800着以上の取り扱いがあるレンタル店です。",
+        },
+      ],
     },
     mapEmbed: {
       heading: "東京スカイツリー ビュースポットマップ",
@@ -507,13 +539,13 @@ export const tagPageContents: Record<string, TagPageContent> = {
     title:
       "東京駅周辺のおすすめ写真撮影スポット14選！インスタ映えする夜景スポットを厳選紹介",
     breadcrumb: "東京駅が見えるおすすめ夜景スポット",
-    heroImage: "https://nightscape.tokyo/wp-content/uploads/2023/01/tokyo-station-park-3.jpg",
+    heroImage: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/tokyo-station-park-3.jpg",
     updatedAt: "2025.12.29",
     prNotice: "一部プロモーションを含みます",
     lead: "東京の玄関口である東京駅。\nドーム型屋根が美しい赤レンガ駅舎は、東京を訪れた方の多くが記念写真を撮影する人気の観光スポットです。\nまた東京駅がある千代田区には丸の内や霞ヶ関といったエリアがあり、クラシカルな雰囲気をまとった素敵なフォトスポットが多数あります。\nそこで本記事では東京駅周辺の夜景が綺麗な場所を全部で13ヶ所紹介していきます。\n東京観光へ訪れた際はぜひ気になったポイントから記念に写真を撮ってみてください！",
     prBanner: {
       heading: "【PR】ヘリコプター遊覧で一生の思い出に残る感動体験を。",
-      image: "https://nightscape.tokyo/wp-content/uploads/2024/09/tokyo-station-1-1024x1024.jpg",
+      image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/09/tokyo-station-1.jpg",
       body: [
         "AIROS Skyviewでは、22~55分の多彩なヘリコプター遊覧コースをご用意しています。",
         "上空600mから眺める夜景は、まるで宝石を散りばめたような輝き。見渡す限りの光の大海原に、心奪われること間違いなしです。",
@@ -521,7 +553,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
       ],
       links: [
         { label: "遊覧コースの詳細を見る", href: "https://airos-skyview.jp/" },
-        { label: "体験記事を読む", href: "/report/airos-skyview/" },
+        { label: "体験記事を読む", href: "/article/airos-skyview/" },
       ],
     },
     sections: [
@@ -615,13 +647,13 @@ export const tagPageContents: Record<string, TagPageContent> = {
     title:
       "東京都内の展望台おすすめランキング！有料・無料別に人気施設を紹介",
     breadcrumb: "展望台おすすめランキング",
-    heroImage: "https://nightscape.tokyo/wp-content/uploads/2023/01/kitte-marunouchi-observation.jpg",
+    heroImage: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/kitte-marunouchi-observation.jpg",
     updatedAt: "2025.12.29",
     prNotice: "一部プロモーションを含みます",
     lead: "東京都内には東京タワーやスカイツリーなどのランドマーク、光まばゆい高層ビル群を眺めることができる展望台が多数あります。\n東京観光に訪れたい方や都内のデート目的地として探したいという方も多いのではないでしょうか。\nそこで本記事では東京都内の展望台を定番から穴場まで行き尽くしている筆者がおすすめの展望台を有料と無料の施設に分けて厳選して紹介します。\n雰囲気もよく東京の夜景を満喫するのにふさわしい場所ばかりですので、是非チェックしてみて下さい！",
     prBanner: {
       heading: "【PR】ヘリコプター遊覧で一生の思い出に残る感動体験を。",
-      image: "https://nightscape.tokyo/wp-content/uploads/2024/08/air.jpg",
+      image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/08/air.jpg",
       body: [
         "AIROS Skyviewでは、22~55分の多彩なヘリコプター遊覧コースをご用意しています。",
         "上空600mから眺める夜景は、まるで宝石を散りばめたような輝き。見渡す限りの光の大海原に、心奪われること間違いなしです。",
@@ -629,7 +661,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
       ],
       links: [
         { label: "遊覧コースの詳細を見る", href: "https://airos-skyview.jp/" },
-        { label: "体験記事を読む", href: "/report/airos-skyview/" },
+        { label: "体験記事を読む", href: "/article/airos-skyview/" },
       ],
     },
     sections: [
@@ -762,7 +794,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     title: "【保存版】東京の夜景が綺麗なホテルおすすめ20選",
     breadcrumb: "夜景が綺麗なホテル",
     heroImage:
-      "https://nightscape.tokyo/wp-content/uploads/2024/08/best-night-view-tokyo-hotel-20.jpg",
+      "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/08/best-night-view-tokyo-hotel-20.jpg",
     updatedAt: "2025.12.29",
     prNotice: "一部プロモーションを含みます",
     lead: `東京タワーやスカイツリーなどのランドマーク、光まばゆい高層ビル群の明かりが魅力の東京の夜景。
@@ -772,7 +804,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     prBanner: {
       heading: "【PR】ヘリコプター遊覧で一生の思い出に残る感動体験を。",
       image:
-        "https://nightscape.tokyo/wp-content/uploads/2024/09/tokyo-tower-1-1024x1024.jpg",
+        "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/09/tokyo-tower-1-1024x1024.jpg",
       body: [
         "AIROS Skyviewでは、22~55分の多彩なヘリコプター遊覧コースをご用意しています。",
         "上空600mから眺める夜景は、まるで宝石を散りばめたような輝き。見渡す限りの光の大海原に、心奪われること間違いなしです。",
@@ -785,7 +817,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
         },
         {
           label: "体験記事を読む",
-          href: "/report/airos-skyview",
+          href: "/article/airos-skyview",
         },
       ],
     },
@@ -881,7 +913,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
       "【保存版】レインボーブリッジの写真撮影スポットおすすめ18選！インスタ映えする夜景スポットがわかる",
     breadcrumb: "レインボーブリッジが見えるおすすめ夜景スポット",
     heroImage:
-      "https://nightscape.tokyo/wp-content/uploads/2023/07/fujimi-bridge-1.jpg",
+      "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/07/fujimi-bridge-1.jpg",
     updatedAt: "2025.12.29",
     prNotice: "一部プロモーションを含みます",
     lead: `東京の港区芝浦地区と台場地区を結ぶ吊り橋として、1993年に開通したレインボーブリッジ。
@@ -892,7 +924,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     prBanner: {
       heading: "【PR】ヘリコプター遊覧で一生の思い出に残る感動体験を。",
       image:
-        "https://nightscape.tokyo/wp-content/uploads/2024/09/tokyo-tower-1-1024x1024.jpg",
+        "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/09/tokyo-tower-1-1024x1024.jpg",
       body: [
         "AIROS Skyviewでは、22~55分の多彩なヘリコプター遊覧コースをご用意しています。",
         "上空600mから眺める夜景は、まるで宝石を散りばめたような輝き。見渡す限りの光の大海原に、心奪われること間違いなしです。",
@@ -905,7 +937,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
         },
         {
           label: "体験記事を読む",
-          href: "/report/airos-skyview",
+          href: "/article/airos-skyview",
         },
       ],
     },
@@ -1007,7 +1039,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
       "渋谷スクランブル交差点を眺めることができる写真撮影スポットまとめ",
     breadcrumb: "スクランブル交差点が見えるスポット",
     heroImage:
-      "https://nightscape.tokyo/wp-content/uploads/2023/01/shibuya-intersection.jpg",
+      "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/shibuya-intersection.jpg",
     updatedAt: "2025.12.29",
     prNotice: "一部プロモーションを含みます",
     lead: `1日に50万近くの人が行き交うと言われている渋谷スクランブル交差点。
@@ -1087,7 +1119,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     title: "【2025】東京都内のおすすめイルミネーションイベントまとめ",
     breadcrumb: "イルミネーションイベント",
     heroImage:
-      "https://nightscape.tokyo/wp-content/uploads/2023/12/tokyo-midtown-illumination-2.jpg",
+      "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/12/tokyo-midtown-illumination-2.jpg",
     updatedAt: "2025.12.29",
     prNotice: "一部プロモーションを含みます",
     lead: `冬の訪れとともに、2025年も東京都内ではイルミネーションイベントが各地で開催されます。煌びやかに照らされた光が闇夜に浮かび上がる光景は、いつもの街並みとは異なる魅力を楽しめる特別なひとときです。
@@ -1124,7 +1156,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     title: "東京都内の夜桜のライトアップが美しい夜景スポット",
     breadcrumb: "夜桜ライトアップスポット",
     heroImage:
-      "https://nightscape.tokyo/wp-content/uploads/2023/03/mouri-park-01.jpg",
+      "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/03/mouri-park-01.jpg",
     updatedAt: "2025.03.01",
     prNotice: "",
     lead: `春の訪れとともに、2025年も東京の夜桜ライトアップが各地で開催されます。幻想的に照らされた桜が闇夜に浮かび上がる光景は、昼間とは異なる魅力を楽しめる特別なひととき。
@@ -1192,7 +1224,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
       "カップルのまったり夜デートにおすすめする東京都内の夜景スポット",
     breadcrumb: "夜デートにおすすめのスポット",
     heroImage:
-      "https://nightscape.tokyo/wp-content/uploads/2023/01/wakura-park-4.jpg",
+      "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-4.jpg",
     updatedAt: "2025.12.29",
     prNotice: "一部プロモーションを含みます",
     lead: `東京都内には東京タワーやスカイツリーなどのランドマーク、光まばゆい高層ビル群を眺めることができる場所が多数あります。
@@ -1344,7 +1376,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
       "ドライブにおすすめの東京の夜景スポット10選！駐車場があって落ち着いた場所がわかる",
     breadcrumb: "ドライブにおすすめの夜景スポット",
     heroImage:
-      "https://nightscape.tokyo/wp-content/uploads/2023/12/shinagawa-futo-01.jpg",
+      "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/12/shinagawa-futo-01.jpg",
     updatedAt: "2025.12.29",
     prNotice: "",
     lead: `駐車場が近くにあって美しい夜景を眺めることができる東京都内のドライブの目的地を10カ所紹介します。
@@ -1418,7 +1450,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
 /* ダミースポットデータ（Supabase未接続時のフォールバック）               */
 /* ------------------------------------------------------------------ */
 
-const WP = "https://nightscape.tokyo/wp-content/uploads";
+const WP = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads";
 
 /** ヘルパー: SpotWithRelations の共通デフォルト値 */
 function spot(
@@ -2207,7 +2239,7 @@ export const dummyTagSpots: Record<string, SpotWithRelations[]> = {
     }),
     spot({
       id: "dummy-komagata-east",
-      slug: "komagata-bridge",
+      slug: "komagatabashi-bridge-intersection",
       title: "駒形橋東詰交差点",
       type: "spot",
       address: "東京都墨田区東駒形 1丁目",

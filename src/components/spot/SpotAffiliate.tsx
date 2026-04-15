@@ -1,3 +1,4 @@
+import { sanitizeHtml } from "@/lib/sanitize";
 import { Ticket } from "lucide-react";
 
 type Props = {
@@ -20,13 +21,13 @@ export default function SpotAffiliate({ asoview, asoview02 }: Props) {
         {asoview && (
           <div
             className="affiliate-primary"
-            dangerouslySetInnerHTML={{ __html: asoview }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(asoview) }}
           />
         )}
         {asoview02 && (
           <div
             className="affiliate-secondary"
-            dangerouslySetInnerHTML={{ __html: asoview02 }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(asoview02) }}
           />
         )}
       </div>

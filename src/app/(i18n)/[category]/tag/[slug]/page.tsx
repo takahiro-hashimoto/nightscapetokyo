@@ -1,8 +1,6 @@
-import { cache } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import TagArticle from "@/components/tag/TagArticle";
-import SetHtmlLang from "@/components/layout/SetHtmlLang";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
 import {
@@ -11,6 +9,7 @@ import {
   getSpotsBySlugs,
   getTagPageBySlugWithTranslation,
   getAvailableTagPageLocales,
+  getMapSpotsByTag,
 } from "@/lib/supabase/queries";
 import {
   SITE_URL,
@@ -32,11 +31,6 @@ type Props = {
   params: Promise<{ category: string; slug: string }>;
 };
 
-/** 同一リクエスト内で重複呼び出しを排除 */
-const getCachedTranslatedTagPage = cache(
-  (tagSlug: string, localeSlug: string) =>
-    getTagPageBySlugWithTranslation(tagSlug, localeSlug)
-);
 
 /** DB の TagPageWithRelations + Translation → TagPageContent に変換 */
 function dbToTranslatedContent(
@@ -143,7 +137,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: localeSlug, slug: tagSlug } = await params;
   if (!ALL_LOCALE_SLUGS.includes(localeSlug)) return {};
 
-  const result = await getCachedTranslatedTagPage(tagSlug, localeSlug);
+  const result = await getTagPageBySlugWithTranslation(tagSlug, localeSlug);
   if (!result) return {};
 
   const { translation } = result;
@@ -202,7 +196,7 @@ export default async function TranslatedTagPage({ params }: Props) {
   const { category: localeSlug, slug: tagSlug } = await params;
   if (!ALL_LOCALE_SLUGS.includes(localeSlug)) notFound();
 
-  const result = await getCachedTranslatedTagPage(tagSlug, localeSlug);
+  const result = await getTagPageBySlugWithTranslation(tagSlug, localeSlug);
   if (!result) notFound();
 
   const { page, translation } = result;
@@ -211,11 +205,12 @@ export default async function TranslatedTagPage({ params }: Props) {
   // セクション内のスポットslugsからスポットデータを取得
   const allSpotSlugs = content.sections.flatMap((s) => s.spotSlugs);
 
-  const [tag, spotsBySlugs, spotsByTag, availableLocales] = await Promise.all([
+  const [tag, spotsBySlugs, spotsByTag, availableLocales, mapSpots] = await Promise.all([
     getTagBySlug(tagSlug),
     allSpotSlugs.length > 0 ? getSpotsBySlugs(allSpotSlugs) : Promise.resolve([]),
     getSpotsByTagSlug(tagSlug),
     getAvailableTagPageLocales(tagSlug),
+    getMapSpotsByTag(tagSlug),
   ]);
 
   // slugs指定で取得したものを優先し、タグ紐付け分もマージ（重複除去）
@@ -229,7 +224,6 @@ export default async function TranslatedTagPage({ params }: Props) {
 
   return (
     <>
-      <SetHtmlLang locale={localeSlug} />
       <DevEditLink href={`/admin/tag-pages/${page.id}/edit`} />
       <LanguageSwitcher
         currentLocale={localeSlug}
@@ -241,6 +235,7 @@ export default async function TranslatedTagPage({ params }: Props) {
         tagName={tagName}
         content={content}
         allSpots={allSpots}
+        mapSpots={mapSpots}
         locale={localeSlug}
       />
     </>

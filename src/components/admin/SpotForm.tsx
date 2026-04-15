@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   ChevronDown,
@@ -12,6 +12,7 @@ import {
   Loader2,
   Check,
   GripVertical,
+  Upload,
 } from "lucide-react";
 import {
   DndContext,
@@ -176,11 +177,57 @@ function SortableImageItem({
     isDragging,
   } = useSortable({ id });
 
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setUploadError(null);
+
+    try {
+      // 署名付きURLを取得
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.name, contentType: file.type }),
+      });
+
+      if (!res.ok) {
+        const { error } = await res.json();
+        throw new Error(error ?? "アップロードURLの取得に失敗しました");
+      }
+
+      const { signedUrl, publicUrl } = await res.json();
+
+      // R2に直接アップロード
+      const uploadRes = await fetch(signedUrl, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+
+      if (!uploadRes.ok) throw new Error("R2へのアップロードに失敗しました");
+
+      // URLフィールドに自動セット
+      onUpdate(index, { ...img, url: publicUrl });
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "エラーが発生しました");
+    } finally {
+      setUploading(false);
+      // input をリセット（同じファイルを再選択できるように）
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }
 
   return (
     <div
@@ -197,12 +244,37 @@ function SortableImageItem({
         <GripVertical size={20} />
       </button>
       <div className="flex-1 space-y-2">
-        <input
-          value={img.url}
-          onChange={(e) => onUpdate(index, { ...img, url: e.target.value })}
-          placeholder="画像URL"
-          className={inputClass}
-        />
+        <div className="flex gap-2">
+          <input
+            value={img.url}
+            onChange={(e) => onUpdate(index, { ...img, url: e.target.value })}
+            placeholder="画像URL"
+            className={`${inputClass} flex-1`}
+          />
+          {/* アップロードボタン */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-50 text-blue-600 border border-blue-200 rounded hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          >
+            {uploading
+              ? <Loader2 size={14} className="animate-spin" />
+              : <Upload size={14} />
+            }
+            {uploading ? "アップロード中..." : "アップロード"}
+          </button>
+        </div>
+        {uploadError && (
+          <p className="text-xs text-red-500">{uploadError}</p>
+        )}
         <div>
           <label className="block text-xs text-gray-500 mb-1">alt テキスト</label>
           <input
@@ -378,13 +450,6 @@ export default function SpotForm({ spot, categories, tags, translations = [] }: 
             name="report"
             defaultValue={spot?.report ?? ""}
             className={`${inputClass} min-h-[200px]`}
-          />
-        </Field>
-        <Field label="コンテンツ (HTML)">
-          <textarea
-            name="content"
-            defaultValue={spot?.content ?? ""}
-            className={`${inputClass} min-h-[200px] font-mono text-xs`}
           />
         </Field>
       </Section>
