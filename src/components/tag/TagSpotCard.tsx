@@ -40,7 +40,7 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
 
   return (
     <article className="content-card card-padding">
-      <h3>{name}</h3>
+      <h2>{name}</h2>
 
       {spot.images && spot.images.length >= 2 ? (
         <TagImageSlider
