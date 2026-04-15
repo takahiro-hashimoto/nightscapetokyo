@@ -250,7 +250,7 @@ function tokenizeQuery(query: string): string[] {
     .filter((t: string) => t.length > 0 && !STOP_WORDS.has(t));
 }
 
-export async function searchSpots(query: string, fieldLabels?: FieldLabels): Promise<SearchSpotItem[]> {
+export async function searchSpots(query: string, fieldLabels?: FieldLabels, localeSlug?: string): Promise<SearchSpotItem[]> {
   if (!isSupabaseConfigured || !query.trim()) return [];
 
   const labels = { ...DEFAULT_FIELD_LABELS, ...fieldLabels };
@@ -371,7 +371,7 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels): Pro
   }
 
   // ソート優先順: タイトルマッチトークン数 → 全体マッチトークン数 → 評価
-  return results.sort((a, b) => {
+  const sorted = results.sort((a, b) => {
     const ta = spotMap.get(a.id)!.titleMatchTokens.size;
     const tb = spotMap.get(b.id)!.titleMatchTokens.size;
     if (tb !== ta) return tb - ta;
@@ -380,6 +380,39 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels): Pro
     if (sb !== sa) return sb - sa;
     return b.rating_avg - a.rating_avg;
   });
+
+  // ロケールが指定されている場合、翻訳を適用
+  const dbLocale = localeSlug ? LOCALE_SLUG_MAP[localeSlug] : null;
+  if (dbLocale && sorted.length > 0) {
+    const spotIds = sorted.map((s) => s.id);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: translations } = (await supabase
+      .from("spot_translations")
+      .select("spot_id, name, lead, category_name")
+      .eq("locale", dbLocale)
+      .in("spot_id", spotIds)) as any;
+
+    if (translations?.length) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const tMap = new Map<string, any>();
+      for (const t of translations) tMap.set(t.spot_id, t);
+
+      return sorted.map((s) => {
+        const t = tMap.get(s.id);
+        if (!t) return s;
+        return {
+          ...s,
+          name: t.name || s.name,
+          lead: t.lead || s.lead,
+          category: t.category_name
+            ? { ...s.category, name: t.category_name }
+            : s.category,
+        };
+      });
+    }
+  }
+
+  return sorted;
 }
 
 export async function getSpotCount(): Promise<number> {

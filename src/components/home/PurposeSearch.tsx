@@ -32,9 +32,9 @@ export default function PurposeSearch({ tags, labels, localeSlug }: Props) {
         <h2 className="home-section-heading">
           {labels?.heading ?? "目的別に夜景が綺麗な場所を探す"}
         </h2>
-        <p className="home-section-desc">
-          {"デートや撮影、無料で楽しめる場所など、シーン・目的に合わせて夜景スポットを絞り込めます。"}
-        </p>
+        {labels?.desc && (
+          <p className="home-section-desc">{labels.desc}</p>
+        )}
         <div className="tag-card-grid" style={{ marginTop: 30 }} role="list">
           {tags.map((p) => {
             const imgSrc = resolveTagImage(p);

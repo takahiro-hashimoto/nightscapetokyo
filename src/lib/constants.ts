@@ -30,6 +30,8 @@ export const AREA_NAME: Record<string, Record<SiteLocale, string>> = {
   bunkyo:    { ja: "文京区",  en: "Bunkyo",    ko: "분쿄구",    tw: "文京區", cn: "文京区" },
   taito:     { ja: "台東区",  en: "Taito",     ko: "다이토구",  tw: "台東區", cn: "台东区" },
   meguro:    { ja: "目黒区",  en: "Meguro",    ko: "메구로구",  tw: "目黒區", cn: "目黒区" },
+  kita:      { ja: "北区",   en: "Kita",      ko: "기타구",    tw: "北區",   cn: "北区"   },
+  yokohama:  { ja: "横浜",   en: "Yokohama",  ko: "요코하마",  tw: "橫濱",   cn: "横滨"   },
 };
 
 /** タグ slug → ロケール別表示名 */

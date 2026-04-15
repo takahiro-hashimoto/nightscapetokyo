@@ -146,10 +146,12 @@ export type HomePageLabels = {
   };
   purposeSearch: {
     heading: string;
+    desc?: string;
     tagNames?: Record<string, string>;
   };
   areaSearch: {
     heading: string;
+    desc?: string;
     areaLabel: (name: string, count: number) => string;
     areaNames?: Record<string, string>;
   };
@@ -405,9 +407,13 @@ const LABELS = {
         desc: "客室や最上階レストランから上質な東京の夜景が楽しめるホテルを厳選。記念日やデートにもおすすめです。",
         moreLink: "東京の夜景が綺麗なおすすめホテル",
       },
-      purposeSearch: { heading: "目的別に夜景が綺麗な場所を探す" },
+      purposeSearch: {
+        heading: "目的別に夜景が綺麗な場所を探す",
+        desc: "デートや撮影、無料で楽しめる場所など、シーン・目的に合わせて夜景スポットを絞り込めます。",
+      },
       areaSearch: {
         heading: "エリア別に夜景が綺麗な場所を探す",
+        desc: "渋谷・新宿・お台場など、行きたいエリアから東京の夜景スポットを探せます。",
         areaLabel: (name, count) => `${name}の夜景（${count}）`,
       },
       faq: {
@@ -628,6 +634,7 @@ const LABELS = {
       },
       purposeSearch: {
         heading: "Search by Purpose",
+        desc: "Filter night view spots by scene or purpose — dates, photography, free admission, and more.",
         tagNames: {
           "無料スポット": "Free Spots",
           "デート向け": "For Dates",
@@ -651,8 +658,34 @@ const LABELS = {
       },
       areaSearch: {
         heading: "Search by Area",
+        desc: "Explore Tokyo night view spots by neighborhood — Shibuya, Shinjuku, Odaiba, and more.",
         areaLabel: (name, count) => `${name} (${count})`,
-        areaNames: { other: "Other Areas" },
+        areaNames: {
+          minato: "Minato",
+          shibuya: "Shibuya",
+          shinjuku: "Shinjuku",
+          chuo: "Chuo",
+          sumida: "Sumida",
+          koto: "Koto",
+          taito: "Taito",
+          kita: "Kita",
+          edogawa: "Edogawa",
+          adachi: "Adachi",
+          arakawa: "Arakawa",
+          itabashi: "Itabashi",
+          nerima: "Nerima",
+          setagaya: "Setagaya",
+          meguro: "Meguro",
+          shinagawa: "Shinagawa",
+          ota: "Ota",
+          suginami: "Suginami",
+          nakano: "Nakano",
+          toshima: "Toshima",
+          bunkyo: "Bunkyo",
+          chiyoda: "Chiyoda",
+          yokohama: "Yokohama",
+          other: "Other Areas",
+        },
       },
       faq: {
         heading: "Frequently Asked Questions about Tokyo Night Views",
@@ -871,6 +904,7 @@ const LABELS = {
       },
       purposeSearch: {
         heading: "목적별로 야경이 아름다운 장소 찾기",
+        desc: "데이트, 촬영, 무료 입장 등 목적에 맞는 야경 스폿을 검색할 수 있습니다.",
         tagNames: {
           "無料スポット": "무료 스폿",
           "デート向け": "데이트 추천",
@@ -894,8 +928,20 @@ const LABELS = {
       },
       areaSearch: {
         heading: "지역별로 야경이 아름다운 장소 찾기",
+        desc: "시부야, 신주쿠, 오다이바 등 가고 싶은 지역에서 도쿄 야경 스폿을 찾아보세요.",
         areaLabel: (name, count) => `${name} 야경 (${count})`,
-        areaNames: { other: "기타 지역" },
+        areaNames: {
+          minato: "미나토구",
+          shibuya: "시부야구",
+          shinjuku: "신주쿠구",
+          chuo: "주오구",
+          sumida: "스미다구",
+          koto: "고토구",
+          taito: "다이토구",
+          kita: "기타구",
+          yokohama: "요코하마",
+          other: "기타 지역",
+        },
       },
       faq: {
         heading: "도쿄 야경에 관한 자주 묻는 질문",
@@ -1114,6 +1160,7 @@ const LABELS = {
       },
       purposeSearch: {
         heading: "依目的搜尋夜景美麗的地方",
+        desc: "依約會、攝影、免費景點等目的，篩選適合的夜景景點。",
         tagNames: {
           "無料スポット": "免費景點",
           "デート向け": "約會推薦",
@@ -1137,8 +1184,20 @@ const LABELS = {
       },
       areaSearch: {
         heading: "依地區搜尋夜景美麗的地方",
+        desc: "從澀谷、新宿、台場等想前往的地區，搜尋東京夜景景點。",
         areaLabel: (name, count) => `${name}的夜景（${count}）`,
-        areaNames: { other: "其他地區" },
+        areaNames: {
+          minato: "港區",
+          shibuya: "澀谷區",
+          shinjuku: "新宿區",
+          chuo: "中央區",
+          sumida: "墨田區",
+          koto: "江東區",
+          taito: "台東區",
+          kita: "北區",
+          yokohama: "橫濱",
+          other: "其他地區",
+        },
       },
       faq: {
         heading: "關於東京夜景的常見問題",
@@ -1357,6 +1416,7 @@ const LABELS = {
       },
       purposeSearch: {
         heading: "按目的搜索夜景优美的地方",
+        desc: "按约会、摄影、免费景点等目的，筛选适合的夜景景点。",
         tagNames: {
           "無料スポット": "免费景点",
           "デート向け": "约会推荐",
@@ -1380,8 +1440,20 @@ const LABELS = {
       },
       areaSearch: {
         heading: "按地区搜索夜景优美的地方",
+        desc: "从涩谷、新宿、台场等想去的地区，搜索东京夜景景点。",
         areaLabel: (name, count) => `${name}的夜景（${count}）`,
-        areaNames: { other: "其他地区" },
+        areaNames: {
+          minato: "港区",
+          shibuya: "涩谷区",
+          shinjuku: "新宿区",
+          chuo: "中央区",
+          sumida: "墨田区",
+          koto: "江东区",
+          taito: "台东区",
+          kita: "北区",
+          yokohama: "横滨",
+          other: "其他地区",
+        },
       },
       faq: {
         heading: "关于东京夜景的常见问题",

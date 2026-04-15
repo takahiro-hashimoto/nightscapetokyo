@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Search } from "lucide-react";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import SearchResults from "@/components/search/SearchResults";
 import { searchSpots } from "@/lib/supabase/queries";
@@ -42,31 +41,25 @@ export default async function SearchPage({ searchParams }: Props) {
   const matchedFieldNames = Object.keys(fieldCounts);
 
   return (
-    <article className="home-section" style={{ paddingTop: 0 }}>
-      <div className="home-container">
+    <div className="l-article-body">
+      <div className="l-article-container">
         <Breadcrumb items={[{ label: l.breadcrumb }]} />
 
-        <h1
-          className="home-section-heading"
-          style={{ marginTop: 24, justifyContent: "flex-start" }}
-        >
-          <span className="heading-icon">
-            <Search size={20} />
-          </span>
-          {query ? l.heading(query) : l.headingDefault}
-        </h1>
-
-        {query && spots.length > 0 && (
-          <p className="home-section-desc" style={{ textAlign: "left" }}>
-            {l.found(matchedFieldNames.join("・"), query, spots.length)}
-          </p>
-        )}
-
-        {query && spots.length === 0 && (
-          <p className="home-section-desc" style={{ textAlign: "left" }}>
-            {l.notFound(query)}
-          </p>
-        )}
+        <header className="content-card card-padding">
+          <h1 className="area-page-heading">
+            {query ? l.heading(query) : l.headingDefault}
+          </h1>
+          {query && spots.length > 0 && (
+            <p className="area-page-lead">
+              {l.found(matchedFieldNames.join("・"), query, spots.length)}
+            </p>
+          )}
+          {query && spots.length === 0 && (
+            <p className="area-page-lead">
+              {l.notFound(query)}
+            </p>
+          )}
+        </header>
 
         {spots.length > 0 && (
           <SearchResults
@@ -78,6 +71,6 @@ export default async function SearchPage({ searchParams }: Props) {
           />
         )}
       </div>
-    </article>
+    </div>
   );
 }

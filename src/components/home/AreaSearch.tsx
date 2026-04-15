@@ -24,9 +24,9 @@ export default function AreaSearch({ areas, labels, localeSlug }: Props) {
         <h2 className="home-section-heading">
           {labels?.heading ?? "エリア別に夜景が綺麗な場所を探す"}
         </h2>
-        <p className="home-section-desc">
-          {"渋谷・新宿・お台場など、行きたいエリアから東京の夜景スポットを探せます。"}
-        </p>
+        {labels?.desc && (
+          <p className="home-section-desc">{labels.desc}</p>
+        )}
         <div className="pill-tag-list" style={{ marginTop: 30 }}>
           {areas.map((area) => {
             const displayName = labels?.areaNames?.[area.slug] ?? area.name;
