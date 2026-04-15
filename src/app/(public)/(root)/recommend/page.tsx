@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { getTopSpots, getSpotsBySlugs, getSpotCount } from "@/lib/supabase/queries";
+import { getTopSpots, getSpotsBySlugs, getSpotCount, type MapSpotItem } from "@/lib/supabase/queries";
 import { summarizeReport } from "@/lib/summarize-report";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
@@ -116,6 +116,21 @@ export default async function RecommendPage() {
     ],
   };
 
+  // 座標があるスポットだけマップ用に変換
+  const mapSpots: MapSpotItem[] = sortedSpots
+    .filter((s) => s.latitude != null && s.longitude != null)
+    .map((s) => ({
+      id: s.id,
+      slug: s.slug,
+      name: s.name || s.title,
+      featured_image: s.featured_image || "",
+      categorySlug: s.category?.slug ?? "",
+      categoryName: s.category?.name ?? "",
+      latitude: s.latitude as number,
+      longitude: s.longitude as number,
+      rating_avg: ratingMap.get(s.slug) ?? 0,
+    }));
+
   return (
     <>
       <LanguageSwitcher
@@ -128,6 +143,7 @@ export default async function RecommendPage() {
         tagName="おすすめ夜景スポット"
         content={content}
         allSpots={sortedSpots}
+        mapSpots={mapSpots}
       />
     </>
   );
