@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { getTopSpots, getSpotsBySlugs, getSpotCount, type MapSpotItem } from "@/lib/supabase/queries";
+import { getTopSpots, getSpotsBySlugs, getTotalSpotCount, type MapSpotItem } from "@/lib/supabase/queries";
 import { summarizeReport } from "@/lib/summarize-report";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
@@ -42,7 +42,7 @@ export default async function RecommendPage() {
 
   const [topSpots, totalCount] = await Promise.all([
     getTopSpots(30).catch(() => []),
-    getSpotCount().catch(() => 0),
+    getTotalSpotCount().catch(() => 0),
   ]);
 
   // スラグリストを評価順で保持
