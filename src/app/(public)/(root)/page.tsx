@@ -43,7 +43,7 @@ export default async function Home() {
   const labels = getComponentLabels("ja");
 
   const [spots, hotels, areas, purposeTags, spotCount, recentSpots, mapSpots] = await Promise.all([
-    getTopSpots(30).catch(() => []),
+    getTopSpots(12).catch(() => []),
     getHotelSpots(4).catch(() => []),
     getAreas().catch(() => []),
     getPurposeTags().catch(() => []),
