@@ -1635,6 +1635,7 @@ export const TAG_SPOT_CARD_LABELS: Record<SiteLocale, {
   morePhotos: string;
   moreHotelPhotos: string;
   nightView: string;
+  rating: string;
   facilityInfo: (name: string) => string;
 }> = {
   ja: {
@@ -1649,6 +1650,7 @@ export const TAG_SPOT_CARD_LABELS: Record<SiteLocale, {
     morePhotos: "この夜景スポットの写真をもっと見る",
     moreHotelPhotos: "このホテルの写真をもっと見る",
     nightView: "の夜景",
+    rating: "総合評価",
     facilityInfo: (name) => `${name}の施設情報`,
   },
   en: {
@@ -1663,6 +1665,7 @@ export const TAG_SPOT_CARD_LABELS: Record<SiteLocale, {
     morePhotos: "See more photos of this spot",
     moreHotelPhotos: "See more photos of this hotel",
     nightView: " night view",
+    rating: "Rating",
     facilityInfo: (name) => `${name} facility information`,
   },
   ko: {
@@ -1677,6 +1680,7 @@ export const TAG_SPOT_CARD_LABELS: Record<SiteLocale, {
     morePhotos: "이 야경 스폿의 사진 더 보기",
     moreHotelPhotos: "이 호텔의 사진 더 보기",
     nightView: " 야경",
+    rating: "평가",
     facilityInfo: (name) => `${name} 시설 정보`,
   },
   tw: {
@@ -1691,6 +1695,7 @@ export const TAG_SPOT_CARD_LABELS: Record<SiteLocale, {
     morePhotos: "查看更多這個夜景景點的照片",
     moreHotelPhotos: "查看更多這間飯店的照片",
     nightView: "夜景",
+    rating: "評分",
     facilityInfo: (name) => `${name}設施資訊`,
   },
   cn: {
@@ -1705,6 +1710,7 @@ export const TAG_SPOT_CARD_LABELS: Record<SiteLocale, {
     morePhotos: "查看更多这个夜景景点的照片",
     moreHotelPhotos: "查看更多这间酒店的照片",
     nightView: "夜景",
+    rating: "评分",
     facilityInfo: (name) => `${name}设施信息`,
   },
 };

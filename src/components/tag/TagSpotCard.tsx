@@ -1,8 +1,9 @@
 import { sanitizeHtml } from "@/lib/sanitize";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Clock, Banknote, Mountain, Train, ExternalLink } from "lucide-react";
+import { Star, MapPin, Clock, Banknote, Mountain, Train, ExternalLink } from "lucide-react";
 import type { SpotWithRelations, SiteLocale } from "@/lib/types";
+import { calcRatingAvg } from "@/lib/types";
 import { TAG_SPOT_CARD_LABELS } from "@/lib/i18n-labels";
 import TagImageSlider from "./TagImageSlider";
 
@@ -28,6 +29,14 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
         spot.hotel.affiliate_4,
       ].filter(Boolean)
     : [];
+
+  const avg = calcRatingAvg(spot);
+  const ratingItems = [
+    { label: "美しさ", value: spot.rating_beautiful },
+    { label: "アクセス", value: spot.rating_access },
+    { label: "雰囲気", value: spot.rating_atmosphere },
+    { label: "コスパ", value: spot.rating_cost },
+  ].filter((r): r is { label: string; value: number } => r.value != null);
 
   return (
     <article className="content-card card-padding">
@@ -63,6 +72,34 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
         <table className="info-table">
           <caption className="visually-hidden">{l.facilityInfo(name)}</caption>
           <tbody>
+            {ratingItems.length > 0 && (
+              <tr>
+                <th scope="row">
+                  <span className="th-icon">
+                    <Star size={16} fill="currentColor" stroke="none" />
+                  </span>
+                  {l.rating}
+                </th>
+                <td>
+                  <span className="article-star-wrapper">
+                    <span className="article-star-rating">
+                      {[1, 2, 3, 4, 5].map((i) => {
+                        const fill = Math.min(100, Math.max(0, (avg - (i - 1)) * 100));
+                        return (
+                          <span key={i} className="star-icon">
+                            <Star size={20} fill="#d1d5db" stroke="none" aria-hidden="true" />
+                            <span className="star-fill" style={{ width: `${fill}%` }}>
+                              <Star size={20} fill="#eab308" stroke="none" aria-hidden="true" />
+                            </span>
+                          </span>
+                        );
+                      })}
+                    </span>
+                    <span className="article-star-score">{avg.toFixed(1)}</span>
+                  </span>
+                </td>
+              </tr>
+            )}
             {spot.address && (
               <tr>
                 <th scope="row">

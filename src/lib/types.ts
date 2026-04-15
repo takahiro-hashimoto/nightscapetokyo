@@ -218,6 +218,10 @@ export type SpotListItem = {
   featured_image: string;
   category: { slug: string; name: string };
   rating_avg: number;
+  rating_beautiful: number | null;
+  rating_access: number | null;
+  rating_atmosphere: number | null;
+  rating_cost: number | null;
   lead: string;
 };
 

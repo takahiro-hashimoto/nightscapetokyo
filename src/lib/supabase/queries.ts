@@ -52,6 +52,10 @@ function mapSpotToListing(s: any): SpotListItem {
     featured_image: s.featured_image || "",
     category: s.category || { slug: "", name: "" },
     rating_avg: calcRatingAvg(s),
+    rating_beautiful: s.rating_beautiful ?? null,
+    rating_access: s.rating_access ?? null,
+    rating_atmosphere: s.rating_atmosphere ?? null,
+    rating_cost: s.rating_cost ?? null,
     lead: s.lead || "",
   };
 }
