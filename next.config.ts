@@ -38,6 +38,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.nightscape.tokyo" }],
+        destination: "https://nightscape.tokyo/:path*",
+        permanent: true,
+      },
+      {
         source: "/pickup/:slug/",
         destination: "/article/:slug/",
         permanent: true,

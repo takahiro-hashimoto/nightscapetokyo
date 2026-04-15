@@ -30,6 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: { title, description },
     alternates: {
+      canonical: SITE_URL,
       languages: buildHomeHreflangAlternates(SITE_URL, ALL_LOCALE_SLUGS),
     },
   };
