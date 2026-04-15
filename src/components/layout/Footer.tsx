@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SITE_NAMES } from "@/lib/types";
 import type { SiteLocale } from "@/lib/types";
 import { getAreas, getAreasTranslated, getPurposeTags, getTotalSpotCount } from "@/lib/supabase/queries";
@@ -151,8 +152,7 @@ export default async function Footer({ locale }: { locale: string | null }) {
               </Link>
             ) : (
               <Link href="/" className="footer-logo-link">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo.png" alt="東京夜景ナビ" className="footer-logo" />
+                <Image src="/logo.png" alt="東京夜景ナビ" className="footer-logo" width={556} height={115} />
               </Link>
             )}
             <p className="footer-desc">{labels.description(spotCount)}</p>
