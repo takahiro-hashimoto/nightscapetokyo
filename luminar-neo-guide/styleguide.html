@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luminar Neo Style Guide v2.5</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基本設定 --- */
+        body { background-color: #f1f5f9; padding: 2rem 0; font-family: 'Noto Sans JP', sans-serif; color: #334155; line-height: 1.6; }
+        .l-container { max-width: 1000px; margin: 0 auto; padding: 0 1rem; }
+        
+        /* --- セクション共通 --- */
+        section { background: white; padding: 2rem; border-radius: 1rem; margin-bottom: 3rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        
+        /* 見出し (H2) */
+        section h2 { font-size: 1.25rem; font-weight: 700; color: #0f172a; border-left: 5px solid #0ea5e9; padding-left: 1rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+        section h2 span { font-size: 0.75rem; font-weight: 400; color: #94a3b8; background: #f1f5f9; padding: 0.25rem 0.75rem; border-radius: 999px; }
+
+        /* プレビューエリア */
+        .preview-label { font-size: 0.75rem; font-weight: 700; color: #64748b; margin-bottom: 0.5rem; display: block; letter-spacing: 0.05em; }
+        .preview-area { border: 2px dashed #e2e8f0; padding: 2rem; border-radius: 0.75rem; margin-bottom: 1.5rem; background: #fff; position: relative; }
+        .preview-area .l-grid-2, .preview-area .l-grid-3, .preview-area .l-grid-4 { gap: 1rem; }
+
+        /* 使用ルール */
+        .usage-guide { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; color: #0369a1; }
+        .usage-guide p { font-weight: bold; margin-bottom: 0.25rem; color: #0c4a6e; }
+
+        /* ソースコード */
+        pre { background: #1e293b; color: #e2e8f0; padding: 1.25rem; border-radius: 0.5rem; overflow-x: auto; font-family: 'Menlo', 'Monaco', 'Courier New', monospace; font-size: 0.8125rem; tab-size: 4; }
+        code { font-family: inherit; }
+
+        /* --- ルールセクション（ダークモード・シンプル版） --- */
+        .rule-section { 
+            background: #1e293b; 
+            color: #e2e8f0; 
+            border: none; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); 
+        }
+        .rule-section h2 { 
+            color: #fff; 
+            border-left-color: #38bdf8; 
+            margin-bottom: 2rem;
+        }
+        .rule-section h2 span { 
+            background: rgba(255,255,255,0.1); 
+            color: #94a3b8; 
+        }
+        .rule-section .usage-guide {
+            background: #1e293b;
+            border: none;
+            /* border-left: 3px solid #38bdf8; */
+            color: #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 0;
+        }
+        .rule-section .usage-guide p { color: #7dd3fc; }
+        .rule-section .preview-label { color: #94a3b8; }
+        .rule-section .preview-area { 
+            background: #0f172a; 
+            border: 1px solid #334155; 
+        }
+        /* コンセプトボックス等の微調整 */
+        .m-concept-box { color: #e2e8f0; }
+
+        .m-tech-card {
+                background: var(--c-slate-50);
+                border-left: 0px !important;
+                padding: 1rem;
+                border-radius: .5rem !important
+            }
+
+        .m-tech-card p {
+            margin-bottom: 0 !important;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="l-container">
+
+    <section id="sec_toc_guide">
+        <h2>目次ガイド <span>TOC Guide</span></h2>
+        
+        <span class="preview-label">PREVIEW (実際の表示)</span>
+        <div class="preview-area">
+            <div class="m-toc-guide">
+                <div>
+                    <p class="m-toc-guide__cat">ルール</p>
+                    <a href="#sec_rules">00. 開発ルール</a>
+                    <p class="m-toc-guide__cat">基本</p>
+                    <a href="#sec1">1. レスポンシブ</a>
+                </div>
+                <div>
+                    <p class="m-toc-guide__cat">テキスト</p>
+                    <a href="#sec2">2. 見出し</a>
+                    <a href="#sec3">3. 本文・強調</a>
+                    <a href="#sec4">4. テキスト装飾</a>
+                    <a href="#sec5">5. リスト</a>
+                    <a href="#sec6">6. 定義リスト</a>
+                    <a href="#sec7">7. 引用</a>
+                </div>
+                <div>
+                    <p class="m-toc-guide__cat">記事パーツ</p>
+                    <a href="#sec8">8. 目次（TOC）</a>
+                    <a href="#sec9">9. リード文・結論</a>
+                    <a href="#sec10">10. ポイントBOX</a>
+                    <a href="#sec11">11. アイコンBOX</a>
+                    <a href="#sec12">12. 注釈・補足</a>
+                    <a href="#sec13">13. ステップ表示</a>
+                    <a href="#sec14">14. FAQ</a>
+                </div>
+                <div>
+                    <p class="m-toc-guide__cat">メディア</p>
+                    <a href="#sec15">15. 比較スライダー</a>
+                    <a href="#sec16">16. キャプション画像</a>
+                    <a href="#sec17">17. 撮影データ</a>
+                </div>
+                <div>
+                    <p class="m-toc-guide__cat">テーブル・UI</p>
+                    <a href="#sec18">18. 通常テーブル</a>
+                    <a href="#sec19">19. 比較テーブル</a>
+                    <a href="#sec20">20. メリデメBOX</a>
+                    <a href="#sec21">21. ボタン</a>
+                    <a href="#sec22">22. カード</a>
+                    <a href="#sec23">23. バッジ</a>
+                    <a href="#sec24">24. タブ切り替え</a>
+                </div>
+                <div>
+                    <p class="m-toc-guide__cat">その他</p>
+                    <a href="#sec25">25. 画像+テキスト</a>
+                    <a href="#sec25">26. 内部リンクト</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            スタイルガイド専用のナビゲーション。
+        </div>
+    </section>
+
+    <section id="sec_rules" class="rule-section">
+        <h2>00. デザイン・開発ルール <span>Design Rules</span></h2>
+        
+        <div class="usage-guide">
+            <p>AI・開発者向けマスターデータ:</p>
+            このセクションは、新規コンポーネントを作成する際や、デザインの一貫性を保つための「唯一の正解（Single Source of Truth）」として機能します。
+        </div>
+
+        <span class="preview-label">1. デザインコンセプト (Concept)</span>
+        <div class="preview-area">
+            <div class="m-concept-box">
+                <p style="margin-bottom:0.5rem;"><strong style="color:var(--c-sky-400); background:none;">"Clean & Friendly Night" v2.1</strong></p>
+                <p style="font-size:0.875rem; color:var(--c-slate-300);">サルワカ風の白ベース・余白広め・柔らかい印象。夜景撮影・写真編集というテーマながら、初心者にも安心感を与えるUI。</p>
+            </div>
+            
+            <h3 class="u-mb-small" style="color:white; margin-top:1.5rem;">カラーパレット</h3>
+            <div class="m-color-grid">
+                <div><p class="m-section__label">PRIMARY</p><span class="m-color-item__box" style="background:var(--c-sky-500)"></span><span class="m-color-item__text">Sky 500</span></div>
+                <div><p class="m-section__label">SECONDARY</p><span class="m-color-item__box" style="background:var(--c-indigo-500)"></span><span class="m-color-item__text">Indigo 500</span></div>
+                <div><p class="m-section__label">BASE</p><span class="m-color-item__box" style="background:var(--c-slate-900)"></span><span class="m-color-item__text">Slate 900</span></div>
+                <div><p class="m-section__label">ACCENT</p><span class="m-color-item__box" style="background:var(--c-emerald-500)"></span><span class="m-color-item__text">Emerald 500</span></div>
+            </div>
+
+            <h3 class="u-mb-small" style="color:white; margin-top:1rem;">装飾ルール</h3>
+            <div class="l-grid-4">
+                <div class="m-deco-box">角丸: rounded-xl〜2xl</div>
+                <div class="m-deco-box">影: sw-shadow</div>
+                <div class="m-deco-box">強調: 水色下線</div>
+                <div class="m-deco-box">余白: 広め</div>
+            </div>
+        </div>
+
+        <span class="preview-label">2. 技術スタック (Tech Stack)</span>
+        <div class="preview-area">
+            <div class="l-grid-2">
+                <div class="m-tech-card"><h3>HTML5</h3><p>セマンティックなマークアップ</p></div>
+                <div class="m-tech-card"><h3>Vanilla CSS</h3><p>SMACSS設計 / Tailwind非依存</p></div>
+                <div class="m-tech-card"><h3>Vanilla JavaScript</h3><p>ライブラリなしで実装</p></div>
+                <div class="m-tech-card"><h3>Font Awesome</h3><p>アイコンと日本語フォント</p></div>
+            </div>
+        </div>
+
+        <span class="preview-label">3. クイックリファレンス (Quick Ref)</span>
+        <div class="preview-area">
+            <div class="m-quick-ref" style="background:transparent; padding:0;">
+                <div class="l-grid-4">
+                    <div class="m-ref-card"><p class="m-ref-label">カラー</p><p class="m-ref-val">Sky / Indigo / Slate</p></div>
+                    <div class="m-ref-card"><p class="m-ref-label">角丸</p><p class="m-ref-val">rounded-xl / 2xl</p></div>
+                    <div class="m-ref-card"><p class="m-ref-label">影</p><p class="m-ref-val">sw-shadow</p></div>
+                    <div class="m-ref-card"><p class="m-ref-label">フォント</p><p class="m-ref-val">Noto Sans JP</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sec1">
+        <h2>1. レスポンシブ設計ルール <span>Responsive</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="l-grid-2">
+                <div class="m-tech-card">
+                    <h3>ブレークポイント</h3>
+                    <p>768px (MD) を基準にSP/PCを切り替え</p>
+                </div>
+                <div class="m-tech-card">
+                    <h3>基本ルール</h3>
+                    <p>モバイルファースト。grid-cols-1 → 2 で展開。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            グリッドシステムの使用例。`l-grid-2` は768px以上で2カラムになる。
+        </div>
+
+        <pre><code>&lt;div class="l-grid-2"&gt;
+    &lt;div class="m-tech-card"&gt;
+        &lt;h3&gt;ブレークポイント&lt;/h3&gt;
+        &lt;p&gt;768px (MD) を基準にSP/PCを切り替え&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="m-tech-card"&gt;
+        &lt;h3&gt;基本ルール&lt;/h3&gt;
+        &lt;p&gt;モバイルファースト。grid-cols-1 → 2 で展開。&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- CSS参照 --&gt;
+&lt;style&gt;
+/* SP: 1カラム / PC: 2カラム */
+.l-grid-2 { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 768px) {
+    .l-grid-2 { grid-template-columns: repeat(2, 1fr); }
+}
+&lt;/style&gt;</code></pre>
+    </section>
+
+    <section id="sec2">
+        <h2>2. 見出し <span>Headings</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-headings-demo">
+                <h1>H1 記事タイトル</h1>
+                <h2>H2 大見出し</h2>
+                <h3>H3 中見出し</h3>
+                <h4>H4 小見出し</h4>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            記事内の見出し階層。H1はページタイトル、H2〜H4は記事コンテンツ内で使用する。
+        </div>
+
+        <pre><code>&lt;div class="m-headings-demo"&gt;
+    &lt;h1&gt;H1 記事タイトル&lt;/h1&gt;
+    &lt;h2&gt;H2 大見出し&lt;/h2&gt;
+    &lt;h3&gt;H3 中見出し&lt;/h3&gt;
+    &lt;h4&gt;H4 小見出し&lt;/h4&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec3">
+        <h2>3. 本文・強調 <span>Body Text</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="entry-content m-headings-demo">
+                <p>Luminar Neoは、<strong>AIの力で写真編集をかんたんにする</strong>次世代のソフトウェアです。</p>
+                <p>ノイズ除去、空の入れ替え、不要な物の削除など、今まで手間のかかっていた作業が<strong>AIで自動化</strong>。</p>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            通常の段落テキスト。`strong`タグで太字強調を行う。`entry-content`クラス内で適切なスタイルが当たる。
+        </div>
+
+        <pre><code>&lt;div class="entry-content"&gt;
+    &lt;p&gt;Luminar Neoは、&lt;strong&gt;AIの力で写真編集をかんたんにする&lt;/strong&gt;次世代のソフトウェアです。&lt;/p&gt;
+    &lt;p&gt;ノイズ除去、空の入れ替え、不要な物の削除など、今まで手間のかかっていた作業が&lt;strong&gt;AIで自動化&lt;/strong&gt;。&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec4">
+        <h2>4. テキスト装飾 <span>Text Decoration</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-headings-demo">
+                <p><span class="m-mark-yellow">黄色マーカー</span> - 最も重要なキーワード</p>
+                <p><span class="m-mark-red">赤色マーカー</span> - 注意点、警告</p>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            `m-mark-yellow`（蛍光ペン風・黄）は重要箇所、`m-mark-red`（赤）は注意点に使用。
+        </div>
+
+        <pre><code>&lt;p&gt;&lt;span class="m-mark-yellow"&gt;黄色マーカー&lt;/span&gt; - 最も重要なキーワード&lt;/p&gt;
+&lt;p&gt;&lt;span class="m-mark-red"&gt;赤色マーカー&lt;/span&gt; - 注意点、警告&lt;/p&gt;</code></pre>
+    </section>
+
+    <section id="sec5">
+        <h2>5. リスト <span>Lists</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="l-grid-2">
+                <div>
+                    <h3 class="u-mb-small">順序なしリスト</h3>
+                    <ul class="m-list-ul">
+                        <li><span class="m-list-ul__icon">•</span> ノイズレスAIでノイズ除去</li>
+                        <li><span class="m-list-ul__icon">•</span> スカイAIで空を置き換え</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="u-mb-small">順序付きリスト</h3>
+                    <ol class="m-list-ol">
+                        <li><span class="m-list-ol__num">1</span> Luminar Neoをインストール</li>
+                        <li><span class="m-list-ol__num">2</span> 写真を読み込む</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            `m-list-ul`はドット付きリスト、`m-list-ol`は番号付きリスト。それぞれカスタムアイコン/番号スタイルを持つ。
+        </div>
+
+        <pre><code>&lt;!-- 順序なし --&gt;
+&lt;ul class="m-list-ul"&gt;
+    &lt;li&gt;&lt;span class="m-list-ul__icon"&gt;•&lt;/span&gt; ノイズレスAIでノイズ除去&lt;/li&gt;
+    &lt;li&gt;&lt;span class="m-list-ul__icon"&gt;•&lt;/span&gt; スカイAIで空を置き換え&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- 順序付き --&gt;
+&lt;ol class="m-list-ol"&gt;
+    &lt;li&gt;&lt;span class="m-list-ol__num"&gt;1&lt;/span&gt; Luminar Neoをインストール&lt;/li&gt;
+    &lt;li&gt;&lt;span class="m-list-ol__num"&gt;2&lt;/span&gt; 写真を読み込む&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+    </section>
+
+    <section id="sec6">
+        <h2>6. 定義リスト <span>Definition List</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-def-list">
+                <div class="m-def-item">
+                    <dt class="m-def-dt">対象読者</dt>
+                    <dd class="m-def-dd">夜景写真をもっと綺麗に仕上げたい初中級者の方</dd>
+                </div>
+                <div class="m-def-item">
+                    <dt class="m-def-dt">推奨ソフト</dt>
+                    <dd class="m-def-dd">Luminar Neo / Lightroom Classic</dd>
+                </div>
+                <div class="m-def-item">
+                    <dt class="m-def-dt">所要時間</dt>
+                    <dd class="m-def-dd">約5分</dd>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            用語定義やスペック、記事の概要データなどを記述する。
+        </div>
+
+        <pre><code>&lt;div class="m-def-list"&gt;
+    &lt;div class="m-def-item"&gt;
+        &lt;dt class="m-def-dt"&gt;対象読者&lt;/dt&gt;
+        &lt;dd class="m-def-dd"&gt;夜景写真をもっと綺麗に仕上げたい初中級者の方&lt;/dd&gt;
+    &lt;/div&gt;
+    &lt;div class="m-def-item"&gt;
+        &lt;dt class="m-def-dt"&gt;推奨ソフト&lt;/dt&gt;
+        &lt;dd class="m-def-dd"&gt;Luminar Neo / Lightroom Classic&lt;/dd&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec7">
+        <h2>7. 引用 <span>Blockquote</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="l-grid-2">
+                <div>
+                    <h3 class="u-mb-small">レビュー</h3>
+                    <blockquote class="m-quote-review">
+                        <p>「Luminar Neoのノイズ除去機能は本当に素晴らしい。初心者の私でも簡単に使えて大満足です。」</p>
+                        <footer>— 田中太郎さん ★★★★★</footer>
+                    </blockquote>
+                </div>
+                <div>
+                    <h3 class="u-mb-small">公式引用</h3>
+                    <blockquote class="m-quote-official">
+                        <p>Luminar Neoは、AI技術を駆使した次世代の写真編集ソフトウェアです。</p>
+                        <footer style="margin-top:0.5rem; font-size:0.75rem; color:var(--c-sky-600); font-weight:700;">— Skylum公式サイト</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            `m-quote-review`は口コミ・感想用。`m-quote-official`は公式サイトや文献からの引用用。
+        </div>
+
+        <pre><code>&lt;!-- レビュー --&gt;
+&lt;blockquote class="m-quote-review"&gt;
+    &lt;p&gt;「Luminar Neoのノイズ除去機能は本当に素晴らしい。初心者の私でも簡単に使えて大満足です。」&lt;/p&gt;
+    &lt;footer&gt;— 田中太郎さん ★★★★★&lt;/footer&gt;
+&lt;/blockquote&gt;
+
+&lt;!-- 公式引用 --&gt;
+&lt;blockquote class="m-quote-official"&gt;
+    &lt;p&gt;Luminar Neoは、AI技術を駆使した次世代の写真編集ソフトウェアです。&lt;/p&gt;
+    &lt;footer style="margin-top:0.5rem; font-size:0.75rem; color:var(--c-sky-600); font-weight:700;"&gt;— Skylum公式サイト&lt;/footer&gt;
+&lt;/blockquote&gt;</code></pre>
+    </section>
+
+    <section id="sec8">
+        <h2>8. 目次 <span>Table of Contents</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-toc">
+                <div class="m-toc__header"><span style="color:var(--c-sky-500); font-size:1.25rem;">≡</span> 目次</div>
+                <ul class="m-toc__list">
+                    <li><a href="#" class="m-toc__link">1. Luminar Neoの基本機能</a></li>
+                    <li><a href="#" class="m-toc__link">2. ノイズレスAIの実力</a></li>
+                    <li class="m-toc__sub"><a href="#" class="m-toc__link" style="border:none; font-size:0.75rem;">・比較画像で見る効果</a></li>
+                    <li><a href="#" class="m-toc__link" style="border:none;">3. まとめと購入ガイド</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            記事冒頭に設置する目次。`m-toc__sub`で階層構造を表現可能。
+        </div>
+
+        <pre><code>&lt;div class="m-toc"&gt;
+    &lt;div class="m-toc__header"&gt;&lt;span style="color:var(--c-sky-500); font-size:1.25rem;"&gt;≡&lt;/span&gt; 目次&lt;/div&gt;
+    &lt;ul class="m-toc__list"&gt;
+        &lt;li&gt;&lt;a href="#" class="m-toc__link"&gt;1. Luminar Neoの基本機能&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#" class="m-toc__link"&gt;2. ノイズレスAIの実力&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="m-toc__sub"&gt;&lt;a href="#" class="m-toc__link" style="border:none; font-size:0.75rem;"&gt;・比較画像で見る効果&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#" class="m-toc__link" style="border:none;"&gt;3. まとめと購入ガイド&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec9">
+        <h2>9. リード文・結論 <span>Lead & Abstract</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-abstract">
+                <span class="m-abstract__label">この記事の結論</span>
+                <p>Luminar Neoは、AIを活用した次世代の写真編集ソフト。特にノイズ除去機能が優秀で、夜景写真の仕上がりが劇的に向上します。</p>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            記事の導入部で結論を提示し、読者の関心を惹きつけるために使用する。
+        </div>
+
+        <pre><code>&lt;div class="m-abstract"&gt;
+    &lt;span class="m-abstract__label"&gt;この記事の結論&lt;/span&gt;
+    &lt;p&gt;Luminar Neoは、AIを活用した次世代の写真編集ソフト。特にノイズ除去機能が優秀で、夜景写真の仕上がりが劇的に向上します。&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec10">
+        <h2>10. ポイントボックス <span>Point Box</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-point-box">
+                <div class="m-point-box__bg">!</div>
+                <div class="m-point-box__header">
+                    <span class="m-point-box__label">Point</span>
+                    <span class="m-point-box__title">ここが重要</span>
+                </div>
+                <ul class="m-point-box__list">
+                    <li><i class="fa-solid fa-check" style="color:var(--c-sky-600)"></i> AIが自動でノイズを判別</li>
+                    <li><i class="fa-solid fa-check" style="color:var(--c-sky-600)"></i> ディテールを保ったまま補正</li>
+                    <li><i class="fa-solid fa-check" style="color:var(--c-sky-600)"></i> ワンクリックで完了</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            セクションのまとめや、絶対に読み飛ばしてほしくない重要なリストを提示する。
+        </div>
+
+        <pre><code>&lt;div class="m-point-box"&gt;
+    &lt;div class="m-point-box__bg"&gt;!&lt;/div&gt;
+    &lt;div class="m-point-box__header"&gt;
+        &lt;span class="m-point-box__label"&gt;Point&lt;/span&gt;
+        &lt;span class="m-point-box__title"&gt;ここが重要&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;ul class="m-point-box__list"&gt;
+        &lt;li&gt;&lt;i class="fa-solid fa-check" style="color:var(--c-sky-600)"&gt;&lt;/i&gt; AIが自動でノイズを判別&lt;/li&gt;
+        &lt;li&gt;&lt;i class="fa-solid fa-check" style="color:var(--c-sky-600)"&gt;&lt;/i&gt; ディテールを保ったまま補正&lt;/li&gt;
+        &lt;li&gt;&lt;i class="fa-solid fa-check" style="color:var(--c-sky-600)"&gt;&lt;/i&gt; ワンクリックで完了&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec11">
+        <h2>11. アイコンボックス <span>Icon Boxes</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <h3 class="u-mb-small">小サイズ</h3>
+            <div class="m-icon-box m-icon-box--memo">
+                <i class="fa-solid fa-pencil"></i><p>メモアイコン付き</p>
+            </div>
+            <div class="m-icon-box m-icon-box--check">
+                <i class="fa-solid fa-circle-check"></i><p>チェックアイコン付き</p>
+            </div>
+            
+            <h3 class="u-mb-small" style="margin-top:1.5rem;">大サイズ</h3>
+            <div class="l-grid-2">
+                <div class="m-icon-box-lg m-icon-box-lg--memo">
+                    <div class="m-icon-box-lg__head"><i class="fa-solid fa-pencil"></i> メモ</div>
+                    <div class="m-icon-box-lg__body">補足説明に使用</div>
+                </div>
+                <div class="m-icon-box-lg m-icon-box-lg--check">
+                    <div class="m-icon-box-lg__head"><i class="fa-solid fa-circle-check"></i> ポイント</div>
+                    <div class="m-icon-box-lg__body">まとめに使用</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            小サイズは行内での補足に、大サイズはコラム的に使用する。
+        </div>
+
+        <pre><code>&lt;!-- 小サイズ --&gt;
+&lt;div class="m-icon-box m-icon-box--memo"&gt;
+    &lt;i class="fa-solid fa-pencil"&gt;&lt;/i&gt;&lt;p&gt;メモアイコン付き&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- 大サイズ --&gt;
+&lt;div class="m-icon-box-lg m-icon-box-lg--memo"&gt;
+    &lt;div class="m-icon-box-lg__head"&gt;&lt;i class="fa-solid fa-pencil"&gt;&lt;/i&gt; メモ&lt;/div&gt;
+    &lt;div class="m-icon-box-lg__body"&gt;補足説明に使用&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec12">
+        <h2>12. 注釈・補足ボックス <span>Notice Box</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-notice m-notice--tips">
+                <div class="m-notice__head"><span class="m-notice__badge">TIPS</span><span class="m-notice__title">ワンポイント</span></div>
+                <p>AIツールを使う前に、基本的な露出補正を行いましょう。</p>
+            </div>
+            <div class="m-notice m-notice--warn">
+                <div class="m-notice__head"><span class="m-notice__badge">WARNING</span><span class="m-notice__title">注意事項</span></div>
+                <p>過度な補正は不自然な結果を招くことがあります。</p>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            `tips`（青）は役立つ情報、`warn`（赤）は禁止・注意事項に使用。
+        </div>
+
+        <pre><code>&lt;!-- TIPS --&gt;
+&lt;div class="m-notice m-notice--tips"&gt;
+    &lt;div class="m-notice__head"&gt;&lt;span class="m-notice__badge"&gt;TIPS&lt;/span&gt;&lt;span class="m-notice__title"&gt;ワンポイント&lt;/span&gt;&lt;/div&gt;
+    &lt;p&gt;AIツールを使う前に、基本的な露出補正を行いましょう。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- WARNING --&gt;
+&lt;div class="m-notice m-notice--warn"&gt;
+    &lt;div class="m-notice__head"&gt;&lt;span class="m-notice__badge"&gt;WARNING&lt;/span&gt;&lt;span class="m-notice__title"&gt;注意事項&lt;/span&gt;&lt;/div&gt;
+    &lt;p&gt;過度な補正は不自然な結果を招くことがあります。&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec13">
+        <h2>13. ステップ表示 <span>Steps</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div style="position:relative;">
+                <div class="m-step">
+                    <div class="m-step__line"></div>
+                    <div class="m-step__num">1</div>
+                    <div class="m-step__content">
+                        <h4 class="m-step__title">RAWデータの読み込み</h4>
+                        <p class="m-step__desc">編集したい写真のRAWファイルを選択します。</p>
+                    </div>
+                </div>
+                <div class="m-step">
+                    <div class="m-step__line"></div>
+                    <div class="m-step__num">2</div>
+                    <div class="m-step__content">
+                        <h4 class="m-step__title">ノイズレスAIを適用</h4>
+                        <p class="m-step__desc">拡張機能からノイズレスAIを選択します。</p>
+                    </div>
+                </div>
+                <div class="m-step">
+                    <div class="m-step__num">3</div>
+                    <div class="m-step__content">
+                        <h4 class="m-step__title">エクスポート</h4>
+                        <p class="m-step__desc">高品質なJPGまたはTIFFで書き出します。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            手順解説に使用。最後のステップ以外は`m-step__line`を含めることで線をつなぐ。
+        </div>
+
+        <pre><code>&lt;div style="position:relative;"&gt;
+    &lt;div class="m-step"&gt;
+        &lt;div class="m-step__line"&gt;&lt;/div&gt;
+        &lt;div class="m-step__num"&gt;1&lt;/div&gt;
+        &lt;div class="m-step__content"&gt;
+            &lt;h4 class="m-step__title"&gt;RAWデータの読み込み&lt;/h4&gt;
+            &lt;p class="m-step__desc"&gt;編集したい写真のRAWファイルを選択します。&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- (中略) --&gt;
+    &lt;div class="m-step"&gt;
+        &lt;div class="m-step__num"&gt;3&lt;/div&gt;
+        &lt;div class="m-step__content"&gt;
+            &lt;h4 class="m-step__title"&gt;エクスポート&lt;/h4&gt;
+            &lt;p class="m-step__desc"&gt;高品質なJPGまたはTIFFで書き出します。&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec14">
+        <h2>14. FAQ <span>FAQ</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-faq-item">
+                <div class="m-faq-q"><div class="m-faq-icon m-faq-icon--q">Q</div>アップデートは無料？</div>
+                <div class="m-faq-a"><div class="m-faq-icon m-faq-icon--a">A</div>マイナーアップデートは無料です。</div>
+            </div>
+            <div class="m-faq-item" style="border:none; margin:0; padding:0;">
+                <div class="m-faq-q"><div class="m-faq-icon m-faq-icon--q">Q</div>動作環境は？</div>
+                <div class="m-faq-a"><div class="m-faq-icon m-faq-icon--a">A</div>Windows 10以上、macOS 12以上です。</div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            Q&A形式のリスト。最後の項目はborderを消す等の調整が可能。
+        </div>
+
+        <pre><code>&lt;div class="m-faq-item"&gt;
+    &lt;div class="m-faq-q"&gt;&lt;div class="m-faq-icon m-faq-icon--q"&gt;Q&lt;/div&gt;アップデートは無料？&lt;/div&gt;
+    &lt;div class="m-faq-a"&gt;&lt;div class="m-faq-icon m-faq-icon--a"&gt;A&lt;/div&gt;マイナーアップデートは無料です。&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec15">
+        <h2>15. 比較スライダー <span>Before/After</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-slider" id="demo-slider">
+                <img src="https://images.unsplash.com/photo-1518131359043-4112666eeec9?auto=format&fit=crop&q=80&w=1200" alt="After">
+                <div class="m-slider-before" id="demo-before">
+                    <img src="https://images.unsplash.com/photo-1518131359043-4112666eeec9?auto=format&fit=crop&q=20&w=1200" alt="Before">
+                </div>
+                <div class="m-slider-label m-slider-label--before">BEFORE</div>
+                <div class="m-slider-label m-slider-label--after">AFTER</div>
+                <div class="m-slider-handle" id="demo-handle">
+                    <div class="m-slider-handle__btn">↔</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            写真編集前後の比較に使用。要JavaScript。
+        </div>
+
+        <pre><code>&lt;div class="m-slider" id="demo-slider"&gt;
+    &lt;img src="after.jpg" alt="After"&gt;
+    &lt;div class="m-slider-before" id="demo-before"&gt;
+        &lt;img src="before.jpg" alt="Before"&gt;
+    &lt;/div&gt;
+    &lt;div class="m-slider-label m-slider-label--before"&gt;BEFORE&lt;/div&gt;
+    &lt;div class="m-slider-label m-slider-label--after"&gt;AFTER&lt;/div&gt;
+    &lt;div class="m-slider-handle" id="demo-handle"&gt;
+        &lt;div class="m-slider-handle__btn"&gt;↔&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec16">
+        <h2>16. キャプション付き画像 <span>Figure</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <figure class="m-figure">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=1200" alt="風景">
+                <figcaption class="m-figcaption">
+                    <div style="display:flex; align-items:center; margin-bottom:0.25rem;">
+                        <span class="m-fig-badge">図1</span>
+                        <span style="font-weight:700; font-size:0.875rem;">ノイズレスAI適用前後</span>
+                    </div>
+                    <p style="font-size:0.75rem; color:var(--c-slate-500);">ISO 6400で撮影した夜景写真。</p>
+                </figcaption>
+            </figure>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            記事内の画像は原則この形式を使用。図番号とタイトルを付記する。
+        </div>
+
+        <pre><code>&lt;figure class="m-figure"&gt;
+    &lt;img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=1200" alt="風景"&gt;
+    &lt;figcaption class="m-figcaption"&gt;
+        &lt;div style="display:flex; align-items:center; margin-bottom:0.25rem;"&gt;
+            &lt;span class="m-fig-badge"&gt;図1&lt;/span&gt;
+            &lt;span style="font-weight:700; font-size:0.875rem;"&gt;ノイズレスAI適用前後&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;p style="font-size:0.75rem; color:var(--c-slate-500);"&gt;ISO 6400で撮影した夜景写真。&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+    </section>
+
+    <section id="sec17">
+        <h2>17. 撮影データ <span>Shooting Data</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-shooting-box">
+                <div class="m-shooting-head">📷 SHOOTING DATA</div>
+                <div class="l-grid-4">
+                    <div><p class="m-shooting-label">Camera</p><p class="m-shooting-val">Sony α7R V</p></div>
+                    <div><p class="m-shooting-label">Lens</p><p class="m-shooting-val">24-70mm GM II</p></div>
+                    <div><p class="m-shooting-label">Settings</p><p class="m-shooting-val">f/8 | 15s | ISO 100</p></div>
+                    <div><p class="m-shooting-label">Filter</p><p class="m-shooting-val">None</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            作例写真の下に配置し、EXIF情報を表示する。
+        </div>
+
+        <pre><code>&lt;div class="m-shooting-box"&gt;
+    &lt;div class="m-shooting-head"&gt;📷 SHOOTING DATA&lt;/div&gt;
+    &lt;div class="l-grid-4"&gt;
+        &lt;div&gt;&lt;p class="m-shooting-label"&gt;Camera&lt;/p&gt;&lt;p class="m-shooting-val"&gt;Sony α7R V&lt;/p&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;p class="m-shooting-label"&gt;Lens&lt;/p&gt;&lt;p class="m-shooting-val"&gt;24-70mm GM II&lt;/p&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;p class="m-shooting-label"&gt;Settings&lt;/p&gt;&lt;p class="m-shooting-val"&gt;f/8 | 15s | ISO 100&lt;/p&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;p class="m-shooting-label"&gt;Filter&lt;/p&gt;&lt;p class="m-shooting-val"&gt;None&lt;/p&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec18">
+        <h2>18. 通常テーブル <span>Table</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-table-wrap">
+                <table class="m-table">
+                    <thead><tr><th>項目</th><th>買い切り版</th><th>サブスク版</th><th>Pro版</th></tr></thead>
+                    <tbody>
+                        <tr><td>価格</td><td>¥19,980</td><td>¥1,480/月</td><td>¥2,480/月</td></tr>
+                        <tr><td>サポート</td><td>△ 標準</td><td>○ 良好</td><td>◎ 優先</td></tr>
+                        <tr><td>リンク</td>
+                            <td><a href="#" class="m-badge m-badge--sky m-badge--round">詳細</a></td>
+                            <td><a href="#" class="m-badge m-badge--sky m-badge--round">詳細</a></td>
+                            <td><a href="#" class="m-badge m-badge--sky m-badge--round">詳細</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            `m-table-wrap`で囲み、SP表示時に横スクロール可能にする。
+        </div>
+
+        <pre><code>&lt;div class="m-table-wrap"&gt;
+    &lt;table class="m-table"&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th&gt;項目&lt;/th&gt;&lt;th&gt;買い切り版&lt;/th&gt;&lt;th&gt;サブスク版&lt;/th&gt;&lt;th&gt;Pro版&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;価格&lt;/td&gt;&lt;td&gt;¥19,980&lt;/td&gt;&lt;td&gt;¥1,480/月&lt;/td&gt;&lt;td&gt;¥2,480/月&lt;/td&gt;&lt;/tr&gt;
+            &lt;!-- (中略) --&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec19">
+        <h2>19. 比較テーブル <span>Comparison</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-compare">
+                <div class="m-compare__head">
+                    <div class="m-compare__th m-compare__th--1">買い切り版</div>
+                    <div class="m-compare__th m-compare__th--2">サブスク版</div>
+                </div>
+                <div class="m-compare__body">
+                    <div class="m-compare__col m-compare__col--1">
+                        <div class="m-compare__item"><span class="m-compare__dot" style="background:var(--c-sky-400)"></span> 一度の支払いで永続</div>
+                        <div class="m-compare__item"><span class="m-compare__dot" style="background:var(--c-sky-400)"></span> メジャー更新は別途</div>
+                    </div>
+                    <div class="m-compare__col m-compare__col--2">
+                        <div class="m-compare__item"><span class="m-compare__dot" style="background:var(--c-indigo-400)"></span> 月額で開始可能</div>
+                        <div class="m-compare__item"><span class="m-compare__dot" style="background:var(--c-indigo-400)"></span> 常に最新バージョン</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            2つのプランや製品を対比させる。Flexboxベースでレスポンシブ対応。
+        </div>
+
+        <pre><code>&lt;div class="m-compare"&gt;
+    &lt;div class="m-compare__head"&gt;
+        &lt;div class="m-compare__th m-compare__th--1"&gt;買い切り版&lt;/div&gt;
+        &lt;div class="m-compare__th m-compare__th--2"&gt;サブスク版&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="m-compare__body"&gt;
+        &lt;div class="m-compare__col m-compare__col--1"&gt;
+            &lt;div class="m-compare__item"&gt;&lt;span class="m-compare__dot" style="background:var(--c-sky-400)"&gt;&lt;/span&gt; 一度の支払いで永続&lt;/div&gt;
+            &lt;div class="m-compare__item"&gt;&lt;span class="m-compare__dot" style="background:var(--c-sky-400)"&gt;&lt;/span&gt; メジャー更新は別途&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="m-compare__col m-compare__col--2"&gt;
+            &lt;div class="m-compare__item"&gt;&lt;span class="m-compare__dot" style="background:var(--c-indigo-400)"&gt;&lt;/span&gt; 月額で開始可能&lt;/div&gt;
+            &lt;div class="m-compare__item"&gt;&lt;span class="m-compare__dot" style="background:var(--c-indigo-400)"&gt;&lt;/span&gt; 常に最新バージョン&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec20">
+        <h2>20. メリデメBOX <span>Pros & Cons</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="l-grid-2">
+                <div class="m-pc-box m-pc-box--pros">
+                    <div class="m-pc-head"><i class="fa-solid fa-circle-check"></i> メリット</div>
+                    <div class="m-pc-body">
+                        <div class="m-pc-item"><span class="m-pc-dot"></span> 初心者でもプロ級</div>
+                        <div class="m-pc-item"><span class="m-pc-dot"></span> 買い切りがある</div>
+                    </div>
+                </div>
+                <div class="m-pc-box m-pc-box--cons">
+                    <div class="m-pc-head"><i class="fa-solid fa-circle-xmark"></i> デメリット</div>
+                    <div class="m-pc-body">
+                        <div class="m-pc-item"><span class="m-pc-dot"></span> PCスペック必要</div>
+                        <div class="m-pc-item"><span class="m-pc-dot"></span> 拡張は別途</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            良い点（青）と悪い点（赤）を並列表示。
+        </div>
+
+        <pre><code>&lt;div class="l-grid-2"&gt;
+    &lt;div class="m-pc-box m-pc-box--pros"&gt;
+        &lt;div class="m-pc-head"&gt;&lt;i class="fa-solid fa-circle-check"&gt;&lt;/i&gt; メリット&lt;/div&gt;
+        &lt;div class="m-pc-body"&gt;
+            &lt;div class="m-pc-item"&gt;&lt;span class="m-pc-dot"&gt;&lt;/span&gt; 初心者でもプロ級&lt;/div&gt;
+            &lt;div class="m-pc-item"&gt;&lt;span class="m-pc-dot"&gt;&lt;/span&gt; 買い切りがある&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="m-pc-box m-pc-box--cons"&gt;
+        &lt;div class="m-pc-head"&gt;&lt;i class="fa-solid fa-circle-xmark"&gt;&lt;/i&gt; デメリット&lt;/div&gt;
+        &lt;div class="m-pc-body"&gt;
+            &lt;div class="m-pc-item"&gt;&lt;span class="m-pc-dot"&gt;&lt;/span&gt; PCスペック必要&lt;/div&gt;
+            &lt;div class="m-pc-item"&gt;&lt;span class="m-pc-dot"&gt;&lt;/span&gt; 拡張は別途&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec21">
+        <h2>21. ボタン <span>Buttons</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                <a href="#" class="m-btn m-btn--primary">プライマリ</a>
+                <a href="#" class="m-btn m-btn--dark">ダーク</a>
+                <a href="#" class="m-btn m-btn--outline">アウトライン</a>
+                <a href="#" class="m-btn m-btn--sale">セール</a>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            汎用ボタン群。CTA以外のリンクやアクションに使用する。
+        </div>
+
+        <pre><code>&lt;!-- ボタン群 --&gt;
+&lt;a href="#" class="m-btn m-btn--primary"&gt;プライマリ&lt;/a&gt;
+&lt;a href="#" class="m-btn m-btn--dark"&gt;ダーク&lt;/a&gt;
+&lt;a href="#" class="m-btn m-btn--outline"&gt;アウトライン&lt;/a&gt;
+&lt;a href="#" class="m-btn m-btn--sale"&gt;セール&lt;/a&gt;</code></pre>
+    </section>
+
+    <section id="sec22">
+        <h2>22. カード <span>Cards</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="l-grid-2">
+                <a href="#" class="m-card">
+                    <div class="m-card__img"><img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=200" alt=""></div>
+                    <div class="m-card__body">
+                        <span class="m-card__tag">環境構築</span>
+                        <div class="m-card__title">Luminar Neo 推奨スペック</div>
+                    </div>
+                </a>
+                <a href="#" class="m-card">
+                    <div class="m-card__img"><img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=200" alt=""></div>
+                    <div class="m-card__body">
+                        <span class="m-card__tag">購入ガイド</span>
+                        <div class="m-card__title">買い切りとサブスクの違い</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            内部リンク、関連記事への誘導に使用。
+        </div>
+
+        <pre><code>&lt;a href="#" class="m-card"&gt;
+    &lt;div class="m-card__img"&gt;&lt;img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=200" alt=""&gt;&lt;/div&gt;
+    &lt;div class="m-card__body"&gt;
+        &lt;span class="m-card__tag"&gt;環境構築&lt;/span&gt;
+        &lt;div class="m-card__title"&gt;Luminar Neo 推奨スペック&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/a&gt;</code></pre>
+    </section>
+
+    <section id="sec23">
+        <h2>23. バッジ <span>Badges</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+                <span class="m-badge m-badge--red m-badge--round">NEW</span>
+                <span class="m-badge m-badge--amber m-badge--round">人気</span>
+                <span class="m-badge m-badge--sky m-badge--round">おすすめ</span>
+                <span class="m-badge m-badge--emerald m-badge--round">初心者</span>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+                <span class="m-badge m-badge--pale-red m-badge--square">NEW</span>
+                <span class="m-badge m-badge--pale-sky m-badge--square">期間限定</span>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            丸型（round）は属性表示、四角（square）は期間表示などに使用。
+        </div>
+
+        <pre><code>&lt;span class="m-badge m-badge--red m-badge--round"&gt;NEW&lt;/span&gt;
+&lt;span class="m-badge m-badge--amber m-badge--round"&gt;人気&lt;/span&gt;
+&lt;span class="m-badge m-badge--sky m-badge--round"&gt;おすすめ&lt;/span&gt;
+&lt;span class="m-badge m-badge--emerald m-badge--round"&gt;初心者&lt;/span&gt;
+
+&lt;span class="m-badge m-badge--pale-red m-badge--square"&gt;NEW&lt;/span&gt;
+&lt;span class="m-badge m-badge--pale-sky m-badge--square"&gt;期間限定&lt;/span&gt;</code></pre>
+    </section>
+
+    <section id="sec24">
+        <h2>24. タブ切り替え <span>Tabs</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-tabs">
+                <div class="m-tabs__nav">
+                    <button class="m-tab-btn is-active" data-tab="win">Windows</button>
+                    <button class="m-tab-btn" data-tab="mac">Mac</button>
+                </div>
+                <div class="m-tab-content is-active" data-content="win">
+                    <h3 style="font-size:0.875rem; margin-bottom:0.5rem;">Windows手順</h3>
+                    <p style="font-size:0.875rem;">.exeファイルを実行してください。</p>
+                </div>
+                <div class="m-tab-content" data-content="mac">
+                    <h3 style="font-size:0.875rem; margin-bottom:0.5rem;">Mac手順</h3>
+                    <p style="font-size:0.875rem;">.dmgファイルを開いてください。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            OS別解説などに使用。`data-tab`属性とJSで制御。
+        </div>
+
+        <pre><code>&lt;div class="m-tabs"&gt;
+    &lt;div class="m-tabs__nav"&gt;
+        &lt;button class="m-tab-btn is-active" data-tab="win"&gt;Windows&lt;/button&gt;
+        &lt;button class="m-tab-btn" data-tab="mac"&gt;Mac&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="m-tab-content is-active" data-content="win"&gt;
+        &lt;h3 style="font-size:0.875rem; margin-bottom:0.5rem;"&gt;Windows手順&lt;/h3&gt;
+        &lt;p style="font-size:0.875rem;"&gt;.exeファイルを実行してください。&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="m-tab-content" data-content="mac"&gt;
+        &lt;h3 style="font-size:0.875rem; margin-bottom:0.5rem;"&gt;Mac手順&lt;/h3&gt;
+        &lt;p style="font-size:0.875rem;"&gt;.dmgファイルを開いてください。&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec25">
+        <h2>25. 画像＋テキスト <span>Media</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-media-box">
+                <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&q=80&w=800" alt="" class="m-media-img">
+                <div class="m-media-body">
+                    <h4 style="font-weight:900; margin-bottom:0.5rem;">ノイズレスAIの実力</h4>
+                    <p style="font-size:0.875rem; margin-bottom:0.75rem;">ISO 12800で撮影した夜景写真も、驚くほどクリアに仕上がります。</p>
+                    <a href="#" class="m-btn m-btn--primary" style="align-self:flex-start; font-size:0.75rem; padding:0.5rem 1rem;">詳しく見る</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            機能紹介や特定トピックの紹介に使用。画像と説明文を横並びに配置。
+        </div>
+
+        <pre><code>&lt;div class="m-media-box"&gt;
+    &lt;img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&q=80&w=800" alt="" class="m-media-img"&gt;
+    &lt;div class="m-media-body"&gt;
+        &lt;h4 style="font-weight:900; margin-bottom:0.5rem;"&gt;ノイズレスAIの実力&lt;/h4&gt;
+        &lt;p style="font-size:0.875rem; margin-bottom:0.75rem;"&gt;ISO 12800で撮影した夜景写真も、驚くほどクリアに仕上がります。&lt;/p&gt;
+        &lt;a href="#" class="m-btn m-btn--primary" style="align-self:flex-start; font-size:0.75rem; padding:0.5rem 1rem;"&gt;詳しく見る&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec27">
+        <h2>26. シンプル内部リンク <span>Simple Link</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <div class="m-link-box">
+                <div class="m-link-box__icon">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <p class="m-link-box__text">
+                    詳しい手順や設定については
+                    <a href="#">Luminar Neoの初期設定ガイド</a>
+                    をご覧ください。
+                </p>
+            </div>
+        </div>
+
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            文脈の中で自然に関連記事へ誘導したい場合に使用。`[info_link]`ショートコードで呼び出し可能。
+        </div>
+
+        <pre><code>&lt;div class="m-link-box"&gt;
+    &lt;div class="m-link-box__icon"&gt;
+        &lt;i class="fa-solid fa-circle-info"&gt;&lt;/i&gt;
+    &lt;/div&gt;
+    &lt;p class="m-link-box__text"&gt;
+        詳しい手順や設定については
+        &lt;a href="#"&gt;Luminar Neoの初期設定ガイド&lt;/a&gt;
+        をご覧ください。
+    &lt;/p&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <section id="sec28">
+        <h2>27. Twitter埋め込みラッパー <span>Tweet Embed</span></h2>
+        
+        <span class="preview-label">PREVIEW</span>
+        <div class="preview-area">
+            <p style="font-size:0.875rem; color:#64748b; margin-bottom:1rem;">デフォルト（ユーザーの声）</p>
+            <div class="m-tweet-wrap">
+                <div class="m-tweet-wrap__label"><span class="m-tweet-wrap__icon">💬</span> ユーザーの声</div>
+                <div class="m-tweet-wrap__body">
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:1rem; min-height:100px; display:flex; align-items:center; justify-content:center; color:#64748b; font-size:0.875rem;">[Twitter埋め込み]</div>
+                </div>
+            </div>
+
+            <p style="font-size:0.875rem; color:#64748b; margin-bottom:1rem; margin-top:1.5rem;">ポジティブ（良い評判）</p>
+            <div class="m-tweet-wrap m-tweet-wrap--positive">
+                <div class="m-tweet-wrap__label"><span class="m-tweet-wrap__icon">👍</span> 良い評判</div>
+                <div class="m-tweet-wrap__body">
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:1rem; min-height:100px; display:flex; align-items:center; justify-content:center; color:#64748b; font-size:0.875rem;">[Twitter埋め込み]</div>
+                </div>
+            </div>
+
+            <p style="font-size:0.875rem; color:#64748b; margin-bottom:1rem; margin-top:1.5rem;">ネガティブ（気になる声）</p>
+            <div class="m-tweet-wrap m-tweet-wrap--negative">
+                <div class="m-tweet-wrap__label"><span class="m-tweet-wrap__icon">👎</span> 気になる声</div>
+                <div class="m-tweet-wrap__body">
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:1rem; min-height:100px; display:flex; align-items:center; justify-content:center; color:#64748b; font-size:0.875rem;">[Twitter埋め込み]</div>
+                </div>
+            </div>
+        </div>
+        <div class="usage-guide">
+            <p>使用ルール:</p>
+            X（Twitter）埋め込み投稿を装飾するラッパー。口コミ紹介時に使用。デフォルト：一般的な口コミ / `--positive`：良い評判 / `--negative`：気になる声。
+        </div>
+        <pre><code>&lt;!-- デフォルト --&gt;
+&lt;div class="m-tweet-wrap"&gt;
+    &lt;div class="m-tweet-wrap__label"&gt;&lt;span class="m-tweet-wrap__icon"&gt;💬&lt;/span&gt; ユーザーの声&lt;/div&gt;
+    &lt;div class="m-tweet-wrap__body"&gt;
+        &lt;blockquote class="twitter-tweet"&gt;...&lt;/blockquote&gt;
+        &lt;script async src="https://platform.twitter.com/widgets.js"&gt;&lt;/script&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ポジティブ --&gt;
+&lt;div class="m-tweet-wrap m-tweet-wrap--positive"&gt;
+    &lt;div class="m-tweet-wrap__label"&gt;&lt;span class="m-tweet-wrap__icon"&gt;👍&lt;/span&gt; 良い評判&lt;/div&gt;
+    &lt;div class="m-tweet-wrap__body"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ネガティブ --&gt;
+&lt;div class="m-tweet-wrap m-tweet-wrap--negative"&gt;
+    &lt;div class="m-tweet-wrap__label"&gt;&lt;span class="m-tweet-wrap__icon"&gt;👎&lt;/span&gt; 気になる声&lt;/div&gt;
+    &lt;div class="m-tweet-wrap__body"&gt;...&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+    </section>
+
+</div>
+</body>
+</html>
