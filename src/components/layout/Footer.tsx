@@ -24,6 +24,7 @@ const FOOTER_LABELS = {
     contentHeading: "コンテンツ",
     contentLinks: [
       { label: "おすすめスポット", href: "/recommend" },
+      { label: "無料壁紙", href: "/wallpaper" },
       { label: "タイムラプス動画", href: "/time-lapse" },
       { label: "日の出・日の入りシミュレーター", href: "/simulator" },
       { label: "Luminar Neo ガイド", href: "/luminar" },
@@ -46,6 +47,7 @@ const FOOTER_LABELS = {
     contentHeading: "Content",
     contentLinks: [
       { label: "Recommended Spots", href: "/recommend" },
+      { label: "Free Wallpapers", href: "/wallpaper" },
       { label: "Time-lapse Videos", href: "/time-lapse" },
       { label: "Sunrise/Sunset Simulator", href: "/simulator" },
     ],
@@ -67,6 +69,7 @@ const FOOTER_LABELS = {
     contentHeading: "콘텐츠",
     contentLinks: [
       { label: "추천 스폿", href: "/recommend" },
+      { label: "무료 배경화면", href: "/wallpaper" },
       { label: "타임랩스 영상", href: "/time-lapse" },
       { label: "일출·일몰 시뮬레이터", href: "/simulator" },
     ],
@@ -88,6 +91,7 @@ const FOOTER_LABELS = {
     contentHeading: "內容",
     contentLinks: [
       { label: "推薦景點", href: "/recommend" },
+      { label: "免費桌布", href: "/wallpaper" },
       { label: "縮時攝影影片", href: "/time-lapse" },
       { label: "日出・日落模擬器", href: "/simulator" },
     ],
@@ -109,6 +113,7 @@ const FOOTER_LABELS = {
     contentHeading: "内容",
     contentLinks: [
       { label: "推荐景点", href: "/recommend" },
+      { label: "免费壁纸", href: "/wallpaper" },
       { label: "延时摄影视频", href: "/time-lapse" },
       { label: "日出・日落模拟器", href: "/simulator" },
     ],
