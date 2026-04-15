@@ -6,7 +6,7 @@ import { summarizeReport } from "@/lib/summarize-report";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
 
-const TITLE = "東京おすすめ夜景スポット30選【編集部厳選】";
+const TITLE = "東京都内のおすすめ夜景スポットランキング30";
 const DESCRIPTION =
   "東京の夜景スポットを実際に訪問した編集部が、特におすすめの30ヶ所を厳選してご紹介。展望台・ホテル・公園など、デートや撮影スポット選びにお役立てください。";
 
@@ -83,7 +83,7 @@ export default async function RecommendPage() {
 
   const content: TagPageContent = {
     title: `${TITLE}【${currentYear}年版】`,
-    breadcrumb: "東京おすすめ夜景スポット30選",
+    breadcrumb: "東京都内のおすすめ夜景スポットランキング30",
     heroImage,
     updatedAt: `${currentYear}.04.15`,
     prNotice: "",
