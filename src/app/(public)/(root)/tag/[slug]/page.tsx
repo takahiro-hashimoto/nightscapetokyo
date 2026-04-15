@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import TagArticle from "@/components/tag/TagArticle";
 import TagMapSection from "@/components/tag/TagMapSection";
 import Breadcrumb from "@/components/layout/Breadcrumb";
@@ -144,6 +145,10 @@ function toListItem(s: SpotWithRelations): SpotListItem {
     featured_image: s.featured_image || "",
     category: s.category ? { slug: s.category.slug, name: s.category.name } : { slug: "", name: "" },
     rating_avg: calcRatingAvg(s),
+    rating_beautiful: s.rating_beautiful ?? null,
+    rating_access: s.rating_access ?? null,
+    rating_atmosphere: s.rating_atmosphere ?? null,
+    rating_cost: s.rating_cost ?? null,
     lead: s.lead || "",
   };
 }
@@ -353,6 +358,7 @@ export default async function TagPage({ params }: Props) {
           <p className="area-page-lead" itemProp="description">
             「{tagName}」に関連する夜景スポットを{spots.length}件掲載しています。気になるスポットをチェックしてみてください。
           </p>
+          <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
         </header>
 
         {spots.length === 0 ? (
