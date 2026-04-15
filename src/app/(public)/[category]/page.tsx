@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
@@ -325,6 +326,7 @@ export default async function AreaPage({ params }: Props) {
           <p className="area-page-lead">
             {buildAreaDescription(cat.name)}
           </p>
+          <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
         </header>
 
         {/* エリア紹介文 */}

@@ -10,8 +10,8 @@ import HeaderLogo from "./HeaderLogo";
 import DevAdminLink from "./DevAdminLink";
 import { ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
 import type { SiteLocale } from "@/lib/types";
-import { NAV_STATIC_LABELS, PROFILE_LABELS, MENU_LABELS } from "@/lib/i18n-labels";
-import { AREA_NAME, TAG_NAME, DRAWER_MENU_ITEMS } from "@/lib/constants";
+import { NAV_STATIC_LABELS, PROFILE_LABELS } from "@/lib/i18n-labels";
+import { AREA_NAME, TAG_NAME } from "@/lib/constants";
 
 /* -------------------------------------------------- */
 /*  Navigation data                                   */
@@ -22,7 +22,19 @@ type TagData = { slug: string; name: string; spot_count: number; image_url?: str
 type SubNavItem = { label: string; href: string; count?: number };
 type NavItem = { label: string; href?: string; children?: SubNavItem[]; dropdownClass?: string };
 
-function buildNavItems(
+/** Row 1 右側: 運営者・お問い合わせ・サイトマップ (ja のみ使用) */
+function buildTopNavItems(locale: string | null): SubNavItem[] {
+  const prefix = locale ? `/${locale}` : "";
+  const labels = NAV_STATIC_LABELS[(locale ?? "ja") as SiteLocale] ?? NAV_STATIC_LABELS["ja"];
+  return [
+    { label: "運営者", href: `${prefix}/about` },
+    { label: labels.contact, href: `${prefix}/contact` },
+    { label: "サイトマップ", href: `/sitemap/` },
+  ];
+}
+
+/** Row 2: メインナビ */
+function buildMainNavItems(
   locale: string | null,
   areaData: AreaData[],
   tagData: TagData[],
@@ -58,13 +70,18 @@ function buildNavItems(
   ];
 
   if (loc === "ja") {
-    items.push({ label: "ブログ", href: "/article/" });
+    items.push(
+      { label: "無料壁紙", href: "/wallpaper/" },
+      { label: "タイムラプス動画", href: "/time-lapse/" },
+      { label: "ブログ", href: "/article/" },
+      { label: "おすすめ現像ソフト", href: "/luminar/" },
+    );
+  } else {
+    items.push(
+      { label: labels.about, href: `${prefix}/about` },
+      { label: labels.contact, href: `${prefix}/contact` },
+    );
   }
-
-  items.push(
-    { label: labels.about, href: `${prefix}/about` },
-    { label: labels.contact, href: `${prefix}/contact` },
-  );
 
   return items;
 }
@@ -139,22 +156,26 @@ function AccordionSection({
 export default function Header({
   areaData = [],
   tagData = [],
+  spotCount = 0,
 }: {
   areaData?: AreaData[];
   tagData?: TagData[];
+  spotCount?: number;
 }) {
   const pathname = usePathname();
   const router = useRouter();
   const firstSegment = pathname.split("/")[1] ?? "";
   const locale = ALL_LOCALE_SLUGS.includes(firstSegment) ? firstSegment : null;
-  const navItems = buildNavItems(locale, areaData, tagData);
-  const menuLabels = MENU_LABELS[(locale ?? "ja") as SiteLocale];
-  const menuItems = DRAWER_MENU_ITEMS[(locale ?? "ja") as SiteLocale];
+  const topNavItems = buildTopNavItems(locale);
+  const mainNavItems = buildMainNavItems(locale, areaData, tagData);
   const profileLabels = PROFILE_LABELS[(locale ?? "ja") as SiteLocale];
+
+  // ja: 2-row (52px top + 1px border + 40px bottom = 93px), non-ja: 1-row (72px)
+  const initialHeaderHeight = locale !== null ? 72 : 93;
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [headerHeight, setHeaderHeight] = useState(60);
+  const [headerHeight, setHeaderHeight] = useState(initialHeaderHeight);
   const [closingItem, setClosingItem] = useState<string | null>(null);
 
   const handleDropdownLinkClick = useCallback((label: string) => {
@@ -205,83 +226,117 @@ export default function Header({
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
+  const handleLangChange = useCallback((loc: string) => {
+    const parts = pathname.split("/").filter(Boolean);
+    const hasLocale = ALL_LOCALE_SLUGS.includes(parts[0]);
+    const pathWithoutLocale = hasLocale ? parts.slice(1) : parts;
+    const prefix = loc === "ja" ? "" : `/${loc}`;
+    const rest = pathWithoutLocale.length > 0 ? `/${pathWithoutLocale.join("/")}` : "";
+    router.push(`${prefix}${rest}` || "/");
+  }, [pathname, router]);
+
+  const renderNavItems = (items: NavItem[]) =>
+    items.map((item) =>
+      item.children ? (
+        <div key={item.label} className={`site-header-nav-item${closingItem === item.label ? " is-closing" : ""}`}>
+          <button className="site-header-nav-link site-header-nav-trigger">
+            {item.label}
+            <ChevronDown size={13} aria-hidden="true" />
+          </button>
+          <div className={`site-header-dropdown${item.dropdownClass ? ` ${item.dropdownClass}` : ""}`}>
+            {item.children.map((child) => (
+              <Link
+                key={child.href}
+                href={child.href}
+                className="site-header-dropdown-link"
+                onClick={() => handleDropdownLinkClick(item.label)}
+              >
+                {child.count != null ? `${child.label}（${child.count}）` : child.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <Link key={item.href} href={item.href!} className="site-header-nav-link">
+          {item.label}
+        </Link>
+      )
+    );
+
+  const hamburger = (
+    <button
+      className="hamburger"
+      aria-label="メニューを開く"
+      aria-expanded={menuOpen}
+      aria-controls="mobile-drawer"
+      onClick={() => setMenuOpen((v) => !v)}
+    >
+      <span className="hamburger-line" style={menuOpen ? { transform: "translateY(7px) rotate(45deg)" } : undefined} />
+      <span className="hamburger-line" style={menuOpen ? { opacity: 0 } : undefined} />
+      <span className="hamburger-line" style={menuOpen ? { transform: "translateY(-7px) rotate(-45deg)" } : undefined} />
+    </button>
+  );
+
   return (
     <>
       <header ref={headerRef} className="site-header">
-        <div className="site-header-inner">
-          <HeaderLogo />
+        {locale ? (
+          /* ---- 単段ヘッダー: 非 ja ロケール ---- */
+          <div className="site-header-inner">
+            <HeaderLogo />
+            <div className="site-header-right">
+              <nav className="site-header-nav">
+                {renderNavItems(mainNavItems)}
+              </nav>
+              <div className="site-header-trailing">
+                <div id="header-trailing" />
+                <DevAdminLink />
+                {hamburger}
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* ---- 2段ヘッダー: ja ---- */
+          <>
+            <div className="site-header-top">
+              <div className="site-header-top-inner">
+                {/* 左: ロゴ + スポット数・タグライン */}
+                <div className="site-header-top-left">
+                  <HeaderLogo />
+                  {spotCount > 0 && (
+                    <div className="site-header-tagline">
+                      <span className="site-header-tagline-count">掲載スポット数{spotCount}件</span>
+                      <span className="site-header-tagline-desc">東京夜景の専門サイト</span>
+                    </div>
+                  )}
+                </div>
 
-          <div className="site-header-right">
-          {/* PC nav */}
-          <nav className="site-header-nav">
-            {navItems.map((item) =>
-              item.children ? (
-                <div key={item.label} className={`site-header-nav-item${closingItem === item.label ? " is-closing" : ""}`}>
-                  <button className="site-header-nav-link site-header-nav-trigger">
-                    {item.label}
-                    <ChevronDown size={13} aria-hidden="true" />
-                  </button>
-                  <div className={`site-header-dropdown${item.dropdownClass ? ` ${item.dropdownClass}` : ""}`}>
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className="site-header-dropdown-link"
-                        onClick={() => handleDropdownLinkClick(item.label)}
-                      >
-                        {child.count != null ? `${child.label}（${child.count}）` : child.label}
+                {/* 右: 運営者情報・お問い合わせ + portal 言語スイッチャー (#header-trailing に注入) */}
+                <div className="site-header-top-right">
+                  <nav className="site-header-top-nav">
+                    {topNavItems.map((item) => (
+                      <Link key={item.href} href={item.href} className="site-header-top-nav-link">
+                        {item.label}
                       </Link>
                     ))}
+                  </nav>
+                  <div className="site-header-trailing">
+                    <div id="header-trailing" />
+                    <DevAdminLink />
+                    {hamburger}
                   </div>
                 </div>
-              ) : (
-                <Link
-                  key={item.href}
-                  href={item.href!}
-                  className="site-header-nav-link"
-                >
-                  {item.label}
-                </Link>
-              )
-            )}
-          </nav>
-
-          <div className="site-header-trailing">
-            <div id="header-trailing" />
-            <DevAdminLink />
-
-            {/* Hamburger button (SP only) */}
-            <button
-              className="hamburger"
-              aria-label="メニューを開く"
-              aria-expanded={menuOpen}
-              aria-controls="mobile-drawer"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              <span
-                className="hamburger-line"
-                style={
-                  menuOpen
-                    ? { transform: "translateY(7px) rotate(45deg)" }
-                    : undefined
-                }
-              />
-              <span
-                className="hamburger-line"
-                style={menuOpen ? { opacity: 0 } : undefined}
-              />
-              <span
-                className="hamburger-line"
-                style={
-                  menuOpen
-                    ? { transform: "translateY(-7px) rotate(-45deg)" }
-                    : undefined
-                }
-              />
-            </button>
-          </div>
-          </div>
-        </div>
+              </div>
+            </div>
+            <div className="site-header-bottom">
+              <div className="site-header-bottom-inner">
+                <nav className="site-header-nav">
+                  {renderNavItems(mainNavItems)}
+                </nav>
+              </div>
+            </div>
+          </>
+        )}
       </header>
 
       {/* Portal: overlay + drawer */}
@@ -303,7 +358,7 @@ export default function Header({
               aria-label="モバイルメニュー"
             >
               {/* Main nav links */}
-              {navItems.map((item) =>
+              {mainNavItems.map((item) =>
                 item.children ? (
                   <AccordionSection
                     key={item.label}
@@ -312,16 +367,17 @@ export default function Header({
                     onLinkClick={closeMenu}
                   />
                 ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href!}
-                    className="drawer-menu-link"
-                    onClick={closeMenu}
-                  >
+                  <Link key={item.href} href={item.href!} className="drawer-menu-link" onClick={closeMenu}>
                     {item.label}
                   </Link>
                 )
               )}
+              {/* ja: Row 1 のリンクをドロワーにも表示 */}
+              {!locale && topNavItems.map((item) => (
+                <Link key={item.href} href={item.href} className="drawer-menu-link" onClick={closeMenu}>
+                  {item.label}
+                </Link>
+              ))}
 
               <div className="drawer-divider" />
 
@@ -332,13 +388,7 @@ export default function Header({
                   className="drawer-lang-select"
                   value={locale ?? "ja"}
                   onChange={(e) => {
-                    const loc = e.target.value;
-                    const parts = pathname.split("/").filter(Boolean);
-                    const hasLocale = ALL_LOCALE_SLUGS.includes(parts[0]);
-                    const pathWithoutLocale = hasLocale ? parts.slice(1) : parts;
-                    const prefix = loc === "ja" ? "" : `/${loc}`;
-                    const rest = pathWithoutLocale.length > 0 ? `/${pathWithoutLocale.join("/")}` : "";
-                    router.push(`${prefix}${rest}` || "/");
+                    handleLangChange(e.target.value);
                     closeMenu();
                   }}
                 >

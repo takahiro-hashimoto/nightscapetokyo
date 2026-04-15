@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import PrBanner from "@/components/common/PrBanner";
@@ -129,6 +130,7 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
                   <p key={i}>{line}</p>
                 ))}
               </div>
+              <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
             </header>
 
             {/* PRバナー（header の外、aside として独立） */}
@@ -156,16 +158,24 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
               {tocSections.map(
                 (sec) =>
                   sec && (
-                    <li key={sec.key}>
-                      <a href={`#section-${sec.key}`}>{sec.heading}</a>
-                      <ol className="toc-sublist">
-                        {sec.spots.map((s) => (
-                          <li key={s.slug}>
-                            <a href={`#spot-${s.slug}`}>{s.name}</a>
-                          </li>
-                        ))}
-                      </ol>
-                    </li>
+                    sec.heading ? (
+                      <li key={sec.key}>
+                        <a href={`#section-${sec.key}`}>{sec.heading}</a>
+                        <ol className="toc-sublist">
+                          {sec.spots.map((s) => (
+                            <li key={s.slug}>
+                              <a href={`#spot-${s.slug}`}>{s.name}</a>
+                            </li>
+                          ))}
+                        </ol>
+                      </li>
+                    ) : (
+                      sec.spots.map((s) => (
+                        <li key={s.slug}>
+                          <a href={`#spot-${s.slug}`}>{s.name}</a>
+                        </li>
+                      ))
+                    )
                   )
               )}
               {(content.mapEmbed || (mapSpots && mapSpots.length > 0)) && (
@@ -190,11 +200,13 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
             if (sectionSpots.length === 0) return null;
 
             return (
-              <section key={section.key} id={`section-${section.key}`} aria-labelledby={`heading-${section.key}`}>
-                <div className="spot-section-header">
-                  <h2 className="section-heading" id={`heading-${section.key}`}>{section.heading}</h2>
-                  <p className="section-intro">{section.intro}</p>
-                </div>
+              <section key={section.key} id={`section-${section.key}`} {...(section.heading ? { "aria-labelledby": `heading-${section.key}` } : {})}>
+                {(section.heading || section.intro) && (
+                  <div className="spot-section-header">
+                    {section.heading && <h2 className="section-heading" id={`heading-${section.key}`}>{section.heading}</h2>}
+                    {section.intro && <p className="section-intro">{section.intro}</p>}
+                  </div>
+                )}
 
                 {sectionSpots.map((spot) => {
                   const desc =

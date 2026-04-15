@@ -1,4 +1,5 @@
 import AreaMapLoader from "@/components/map/AreaMapLoader";
+import RecommendCta from "@/components/common/RecommendCta";
 import type { MapSpotItem } from "@/lib/supabase/queries";
 
 type Props = {
@@ -27,6 +28,7 @@ export default function TagMapSection({ spots, heading, intro, localeSlug }: Pro
         localeSlug={localeSlug}
         countLabel={`${spots.length}件の夜景スポットを表示中`}
       />
+      <RecommendCta locale={localeSlug ?? null} />
     </section>
   );
 }

@@ -2014,6 +2014,25 @@
 }
 
 
+.tag-spot-rating {
+  margin: 4px 0 20px;
+}
+
+.tag-spot-rating .rating-main {
+  justify-content: flex-start;
+  margin-bottom: 6px;
+}
+
+.tag-spot-rating .rating-score {
+  font-size: 28px;
+}
+
+.tag-spot-rating .rating-details {
+  justify-content: flex-start;
+  font-size: 13px;
+  margin-top: 0;
+}
+
 .tag-spot-image {
   position: relative;
   width: 100%;
