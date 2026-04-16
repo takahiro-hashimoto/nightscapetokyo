@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/types";
 import { buildWebSiteJsonLd, buildOrganizationJsonLd, buildSiteNavigationJsonLd } from "@/lib/json-ld";
+import NonCriticalCss from "@/components/layout/NonCriticalCss";
 import "./globals.css";
 
 const SITE_NAME = "東京夜景ナビ";
@@ -44,16 +45,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://nightscape.tokyo" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev" crossOrigin="anonymous" />
         <link rel="preload" as="image" href="/hero.webp" fetchPriority="high" />
-        {/* non-critical CSS: 非ブロッキングロード (media trick) */}
-        <link
-          rel="stylesheet"
-          href="/css/non-critical.min.css?v=20260416a"
-          media="print"
-          onLoad={(e) => { (e.currentTarget as HTMLLinkElement).media = "all"; }}
-        />
-        <noscript>
-          <link rel="stylesheet" href="/css/non-critical.min.css?v=20260416a" />
-        </noscript>
+        {/* non-critical CSS: 非ブロッキングロード (Client Component でイベント処理) */}
+        <NonCriticalCss href="/css/non-critical.min.css?v=20260416a" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}
