@@ -1555,6 +1555,24 @@
   color: #94a3b8;
 }
 
+.ref-external {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 14px;
+  color: #94a3b8;
+  margin-left: auto;
+  padding-left: 8px;
+}
+
+.ref-url {
+  font-size: 11px;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
 /* ── Amazon 商品カード ── */
 .amazon-card {
   display: flex;

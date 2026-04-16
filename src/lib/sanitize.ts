@@ -131,17 +131,24 @@ function parseShortcodeAttrs(attrStr: string): Record<string, string> {
 
 /**
  * ref-card の HTML を生成するヘルパー。
+ * title あり → タイトル + サイト名
+ * title なし → サイト名 + URL（小文字・省略表示）
  */
-function refCardHtml(url: string, title: string, site: string, newTab = true): string {
+function refCardHtml(url: string, title: string, site: string, newTab = true, ogpImage?: string): string {
   const targetAttr = newTab ? ' target="_blank"' : "";
   const relAttr = newTab ? ' rel="noopener noreferrer"' : "";
+  const bodyHtml = title
+    ? `<span class="ref-title">${title}</span><span class="ref-site">${site}</span>`
+    : `<span class="ref-title">${site}</span><span class="ref-url">${url}</span>`;
+  const thumbHtml = ogpImage
+    ? `<div class="ref-thumb"><img src="${ogpImage}" alt="${title || site}" loading="lazy"></div>`
+    : "";
   return (
     `<div class="article-spot-links">` +
     `<a href="${url}" class="ref-card"${targetAttr}${relAttr}>` +
-    `<div class="ref-body">` +
-    `<span class="ref-title">${title || url}</span>` +
-    `<span class="ref-site">${site}</span>` +
-    `</div>` +
+    thumbHtml +
+    `<div class="ref-body">${bodyHtml}</div>` +
+    `<span class="ref-external">↗</span>` +
     `</a>` +
     `</div>`
   );
@@ -149,6 +156,7 @@ function refCardHtml(url: string, title: string, site: string, newTab = true): s
 
 import type { AmazonProduct } from "./amazon";
 import { extractAsin } from "./amazon";
+import type { OgpData } from "./ogp";
 
 /**
  * Amazon 商品カードの HTML を生成するヘルパー。
@@ -228,7 +236,8 @@ function amazonCardHtml(
  */
 export function convertShortcodes(
   html: string,
-  amazonProducts?: Map<string, AmazonProduct>
+  amazonProducts?: Map<string, AmazonProduct>,
+  ogpData?: Map<string, OgpData>
 ): string {
   // [relatedLink ...] → ref-card
   let result = html.replace(
@@ -240,7 +249,8 @@ export function convertShortcodes(
       if (!siteLabel) {
         try { siteLabel = new URL(url).hostname; } catch { siteLabel = url; }
       }
-      return refCardHtml(url, title, siteLabel);
+      const ogpImage = ogpData?.get(url)?.imageUrl;
+      return refCardHtml(url, title, siteLabel, true, ogpImage);
     }
   );
 
@@ -277,7 +287,7 @@ export function convertShortcodes(
  *
  * ※ sanitizeHtml より先に呼ぶこと（sanitizeHtml が wp: コメントを削除するため）
  */
-export function convertPostLinks(html: string): string {
+export function convertPostLinks(html: string, ogpData?: Map<string, OgpData>): string {
   return html.replace(
     /<!--\s*wp:loos\/post-link\s+([\s\S]*?)\s*\/-->/g,
     (_match, jsonStr: string) => {
@@ -296,14 +306,20 @@ export function convertPostLinks(html: string): string {
         const displayTitle = title || url;
         const targetAttr = data.isNewTab ? ' target="_blank"' : "";
         const relAttr = data.rel ? ` rel="${data.rel}"` : "";
+        const ogpImage = ogpData?.get(url)?.imageUrl;
+        const thumbHtml = ogpImage
+          ? `<div class="ref-thumb"><img src="${ogpImage}" alt="${displayTitle}" loading="lazy"></div>`
+          : "";
 
         return (
           `<div class="article-spot-links">` +
           `<a href="${url}" class="ref-card"${targetAttr}${relAttr}>` +
+          thumbHtml +
           `<div class="ref-body">` +
           `<span class="ref-title">${displayTitle}</span>` +
           `<span class="ref-site">${hostname}</span>` +
           `</div>` +
+          `<span class="ref-external">↗</span>` +
           `</a>` +
           `</div>`
         );

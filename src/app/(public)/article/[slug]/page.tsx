@@ -6,6 +6,7 @@ import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles, getSpotImages
 import { SITE_URL } from "@/lib/types";
 import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks, convertPostLinks, convertShortcodes } from "@/lib/sanitize";
 import { prefetchAmazonProducts } from "@/lib/amazon";
+import { prefetchOgpData } from "@/lib/ogp";
 import { ARTICLE_SPOT_LINKS } from "@/lib/article-spot-links";
 
 function articleThumbnail(url: string | null | undefined): string | null {
@@ -91,7 +92,10 @@ export default async function ArticleDetailPage({ params }: Props) {
   );
 
   const rawContent = article.content ?? "";
-  const amazonProducts = await prefetchAmazonProducts(rawContent);
+  const [amazonProducts, ogpData] = await Promise.all([
+    prefetchAmazonProducts(rawContent),
+    prefetchOgpData(rawContent),
+  ]);
 
   const { html: processedContent, toc } = buildToc(
     injectH3SpotLinks(
@@ -99,7 +103,8 @@ export default async function ArticleDetailPage({ params }: Props) {
         replaceWpImagesInHtml(
           sanitizeHtml(
             convertPostLinks(
-              convertShortcodes(rawContent, amazonProducts)
+              convertShortcodes(rawContent, amazonProducts, ogpData),
+              ogpData
             )
           )
         )
