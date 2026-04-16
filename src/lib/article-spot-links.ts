@@ -12,6 +12,7 @@
 export type SpotLink = {
   name: string;
   href: string;
+  image?: string;
 };
 
 export type ArticleH3SpotLinks = Record<string, SpotLink[]>;

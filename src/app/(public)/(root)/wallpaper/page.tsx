@@ -4,7 +4,8 @@ import Image from "next/image";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
-import { SITE_URL } from "@/lib/types";
+import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
 
 const PAGE_TITLE = "東京夜景の無料スマホ壁紙（大人向けおしゃれな壁紙）";
 const PAGE_DESCRIPTION =
@@ -286,9 +287,16 @@ const WALLPAPERS: WallpaperItem[] = [
 
 export default function WallpaperPage() {
   return (
-    <div className="l-article-body">
-      <div className="l-article-container">
-        <Breadcrumb items={[{ label: PAGE_TITLE }]} />
+    <>
+      <LanguageSwitcher
+        currentLocale={null}
+        categorySlug="wallpaper"
+        availableLocales={ALL_LOCALE_SLUGS}
+        localeLabels={LOCALE_LABELS}
+      />
+      <div className="l-article-body">
+        <div className="l-article-container">
+          <Breadcrumb items={[{ label: PAGE_TITLE }]} />
 
         <article>
           {/* タイトル + リード */}
@@ -341,8 +349,9 @@ export default function WallpaperPage() {
               copied: "コピーしました",
             }}
           />
-        </article>
+          </article>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

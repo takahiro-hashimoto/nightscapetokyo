@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Save, Loader2, Trash2, ExternalLink } from "lucide-react";
 import { createArticle, updateArticle, deleteArticle } from "@/app/admin/articles/actions";
 import type { Article } from "@/lib/types";
+import AmazonCardInserter from "./AmazonCardInserter";
 
 type Props = {
   article?: Article;
@@ -11,6 +12,7 @@ type Props = {
 
 export default function ArticleForm({ article }: Props) {
   const isEdit = !!article;
+  const contentRef = useRef<HTMLTextAreaElement>(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -128,7 +130,9 @@ export default function ArticleForm({ article }: Props) {
       {/* 本文 */}
       <div className="bg-white border border-gray-200 rounded-lg p-5">
         <h2 className="font-semibold text-gray-700 mb-4">本文（HTML）</h2>
+        <AmazonCardInserter textareaRef={contentRef} />
         <textarea
+          ref={contentRef}
           name="content"
           defaultValue={article?.content ?? ""}
           rows={24}

@@ -30,6 +30,7 @@ export default async function ArticleListPage() {
           <header className="content-card card-padding">
             <h1 className="area-page-heading">記事一覧</h1>
             <p className="area-page-lead">夜景撮影のコツや東京夜景スポットに関するコラムを掲載しています。実際に現地で撮影した経験をもとに、デートや旅行・撮影スポット選びにお役立ていただける情報をお届けします。</p>
+            <a className="content-top-link" href="/">東京都内の夜景情報一覧</a>
           </header>
 
           {articles.length === 0 ? (

@@ -291,6 +291,7 @@ export default async function TagPage({ params }: Props) {
           content={content}
           allSpots={allSpots}
           mapSpots={mapSpots}
+          spotHeadingLevel="h3"
         />
       </>
     );

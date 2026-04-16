@@ -541,7 +541,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     breadcrumb: "東京駅が見えるおすすめ夜景スポット",
     heroImage: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/tokyo-station-park-3.jpg",
     updatedAt: "2025.12.29",
-    prNotice: "一部プロモーションを含みます",
+    prNotice: "一部PRを含みます",
     lead: "東京の玄関口である東京駅。\nドーム型屋根が美しい赤レンガ駅舎は、東京を訪れた方の多くが記念写真を撮影する人気の観光スポットです。\nまた東京駅がある千代田区には丸の内や霞ヶ関といったエリアがあり、クラシカルな雰囲気をまとった素敵なフォトスポットが多数あります。\nそこで本記事では東京駅周辺の夜景が綺麗な場所を全部で13ヶ所紹介していきます。\n東京観光へ訪れた際はぜひ気になったポイントから記念に写真を撮ってみてください！",
     prBanner: {
       heading: "【PR】ヘリコプター遊覧で一生の思い出に残る感動体験を。",
@@ -649,7 +649,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     breadcrumb: "展望台おすすめランキング",
     heroImage: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/kitte-marunouchi-observation.jpg",
     updatedAt: "2025.12.29",
-    prNotice: "一部プロモーションを含みます",
+    prNotice: "一部PRを含みます",
     lead: "東京都内には東京タワーやスカイツリーなどのランドマーク、光まばゆい高層ビル群を眺めることができる展望台が多数あります。\n東京観光に訪れたい方や都内のデート目的地として探したいという方も多いのではないでしょうか。\nそこで本記事では東京都内の展望台を定番から穴場まで行き尽くしている筆者がおすすめの展望台を有料と無料の施設に分けて厳選して紹介します。\n雰囲気もよく東京の夜景を満喫するのにふさわしい場所ばかりですので、是非チェックしてみて下さい！",
     prBanner: {
       heading: "【PR】ヘリコプター遊覧で一生の思い出に残る感動体験を。",
@@ -796,7 +796,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     heroImage:
       "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/08/best-night-view-tokyo-hotel-20.jpg",
     updatedAt: "2025.12.29",
-    prNotice: "一部プロモーションを含みます",
+    prNotice: "一部PRを含みます",
     lead: `東京タワーやスカイツリーなどのランドマーク、光まばゆい高層ビル群の明かりが魅力の東京の夜景。
 僕はこんな魅力あふれる景色が大好きで、数年前から東京都内のホテルに泊まって、東京ならではの夜景を撮り歩いています。
 本記事ではそんな夜景フォトグラファーの僕が「この景色は絶対見ておくべき！」と思う東京の夜景が綺麗なホテルを20ヶ所厳選して紹介していきます。
@@ -915,7 +915,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     heroImage:
       "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/07/fujimi-bridge-1.jpg",
     updatedAt: "2025.12.29",
-    prNotice: "一部プロモーションを含みます",
+    prNotice: "一部PRを含みます",
     lead: `東京の港区芝浦地区と台場地区を結ぶ吊り橋として、1993年に開通したレインボーブリッジ。
 お台場のランドマークとしても有名で、様々なドラマにも登場しています。
 そんなレインボーブリッジにはフォトジェニックな写真を撮れる場所がいくつもあります。
@@ -1041,7 +1041,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     heroImage:
       "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/shibuya-intersection.jpg",
     updatedAt: "2025.12.29",
-    prNotice: "一部プロモーションを含みます",
+    prNotice: "一部PRを含みます",
     lead: `1日に50万近くの人が行き交うと言われている渋谷スクランブル交差点。
 ぶつからずに多くの人が交差点を渡る光景が面白いと外国人観光客にも人気の渋谷を代表する観光名所です。
 本記事ではそんな渋谷スクランブル交差点を俯瞰して眺められる写真撮影スポットを厳選して紹介したいと思います。
@@ -1121,7 +1121,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     heroImage:
       "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/12/tokyo-midtown-illumination-2.jpg",
     updatedAt: "2025.12.29",
-    prNotice: "一部プロモーションを含みます",
+    prNotice: "一部PRを含みます",
     lead: `冬の訪れとともに、2025年も東京都内ではイルミネーションイベントが各地で開催されます。煌びやかに照らされた光が闇夜に浮かび上がる光景は、いつもの街並みとは異なる魅力を楽しめる特別なひとときです。
 本記事では、都内で実施されるイルミネーションイベント情報を厳選し、開催場所や見どころを詳しく紹介します。
 夜デートや散歩、写真撮影にもぴったりなスポットをチェックして、冬の夜を彩る美しい輝きを堪能しましょう！`,
@@ -1226,7 +1226,7 @@ export const tagPageContents: Record<string, TagPageContent> = {
     heroImage:
       "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-4.jpg",
     updatedAt: "2025.12.29",
-    prNotice: "一部プロモーションを含みます",
+    prNotice: "一部PRを含みます",
     lead: `東京都内には東京タワーやスカイツリーなどのランドマーク、光まばゆい高層ビル群を眺めることができる場所が多数あります。
 そんな夜景スポットはカップルのデートスポットや告白スポットにおすすめ。
 本記事では夜デートで訪れたい東京都内の夜景スポットを紹介するので、まったりした時間を過ごしたい方や夕方から夜にかけてのデートスポットを探している方は是非チェックしてみてください！`,

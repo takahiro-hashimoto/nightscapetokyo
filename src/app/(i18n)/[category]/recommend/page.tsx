@@ -7,6 +7,12 @@ import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { getTopSpotsTranslated, getSpotCount } from "@/lib/supabase/queries";
 import { ALL_LOCALE_SLUGS, SITE_NAMES, SITE_URL, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
+import { AREA_NAME } from "@/lib/constants";
+
+/** 東京都内のカテゴリーslugセット（横浜など都外を除く） */
+const TOKYO_AREA_SLUGS = new Set(
+  Object.keys(AREA_NAME).filter((s) => s !== "yokohama")
+);
 
 /* ─── 翻訳ラベル ─── */
 type RecommendLabels = {
@@ -108,7 +114,7 @@ export default async function RecommendPageI18n({ params }: Props) {
 
   const currentYear = new Date().getFullYear();
   const [spots, totalCount] = await Promise.all([
-    getTopSpotsTranslated(locale, 30).catch(() => []),
+    getTopSpotsTranslated(locale, 30, TOKYO_AREA_SLUGS).catch(() => []),
     getSpotCount().catch(() => 0),
   ]);
 

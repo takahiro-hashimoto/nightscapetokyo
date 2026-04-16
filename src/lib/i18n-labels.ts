@@ -273,7 +273,7 @@ const LABELS = {
       categoryListLabel: (name) => `${name}の夜景スポット一覧`,
     },
     access: {
-      heading: (name) => `${name}の行き方・アクセスと駐車場`,
+      heading: (name) => `${name}の行き方・アクセス方法`,
       caption: "アクセス情報",
       station: "電車・最寄り駅",
       parking: "駐車場",

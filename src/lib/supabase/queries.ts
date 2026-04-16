@@ -455,7 +455,8 @@ export async function getHotelSpots(limit = 4): Promise<SpotListItem[]> {
 /** 翻訳付きトップスポット取得（ホームページ翻訳版用） */
 export async function getTopSpotsTranslated(
   urlSlug: string,
-  limit = 8
+  limit = 8,
+  allowedCategorySlugs?: Set<string>
 ): Promise<SpotListItem[]> {
   const dbLocale = LOCALE_SLUG_MAP[urlSlug];
   if (!isSupabaseConfigured || !dbLocale) return [];
@@ -490,6 +491,8 @@ export async function getTopSpotsTranslated(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .filter((s: any) => tMap.has(s.id))
     .map(mapSpotToListing)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .filter((s: SpotListItem) => !allowedCategorySlugs || allowedCategorySlugs.has(s.category.slug))
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg)
     .slice(0, limit)
     .map((base: SpotListItem) => {
@@ -1630,6 +1633,20 @@ export async function getRelatedArticles(
   return data as Article[];
 }
 
+export async function getArticlesBySlugs(slugs: string[]): Promise<Article[]> {
+  if (!isSupabaseConfigured || slugs.length === 0) return [];
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase
+    .from("articles")
+    .select("id, slug, title, description, thumbnail, published, published_at, created_at, updated_at")
+    .eq("published", true)
+    .in("slug", slugs);
+  if (error || !data) return [];
+  return (data as Article[]).sort(
+    (a, b) => slugs.indexOf(a.slug) - slugs.indexOf(b.slug)
+  );
+}
+
 export async function getAllArticleSlugs(): Promise<{ slug: string }[]> {
   if (!isSupabaseConfigured) return [];
   const supabase = await getSupabaseClient();
@@ -1639,4 +1656,20 @@ export async function getAllArticleSlugs(): Promise<{ slug: string }[]> {
     .eq("published", true);
   if (error || !data) return [];
   return data;
+}
+
+/** スラッグ一覧から featured_image を軽量取得 */
+export async function getSpotImagesBySlugs(
+  slugs: string[]
+): Promise<Record<string, string>> {
+  if (!isSupabaseConfigured || slugs.length === 0) return {};
+  const supabase = await getSupabaseClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data } = (await supabase
+    .from("spots")
+    .select("slug, featured_image")
+    .in("slug", slugs)) as any;
+  if (!data) return {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return Object.fromEntries(data.map((s: any) => [s.slug, s.featured_image ?? ""]));
 }

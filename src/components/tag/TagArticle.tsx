@@ -55,9 +55,10 @@ type Props = {
   allSpots: SpotWithRelations[];
   mapSpots?: MapSpotItem[];
   locale?: string;
+  spotHeadingLevel?: "h2" | "h3";
 };
 
-export default function TagArticle({ tagName, content, allSpots, mapSpots, locale }: Props) {
+export default function TagArticle({ tagName, content, allSpots, mapSpots, locale, spotHeadingLevel = "h2" }: Props) {
   const l = TAG_ARTICLE_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_ARTICLE_LABELS.ja;
   const bcp47Locale = locale ? (LOCALE_SLUG_MAP[locale] ?? locale) : "ja";
   /** slug → SpotWithRelations のマップ */
@@ -123,7 +124,7 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
                 <time className="page-date" dateTime={isoDate} itemProp="datePublished">
                   {l.lastUpdated}: {content.updatedAt}
                 </time>
-                <span className="page-pr">{content.prNotice}</span>
+                {content.prNotice && <span className="page-pr">{content.prNotice}</span>}
               </div>
               <div className="page-lead" itemProp="description">
                 {content.lead.split("\n").map((line, i) => (
@@ -213,7 +214,7 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
                     content.descriptions[spot.slug] ?? spot.lead ?? "";
                   return (
                     <div key={spot.id} id={`spot-${spot.slug}`}>
-                      <TagSpotCard spot={spot} description={desc} locale={locale} />
+                      <TagSpotCard spot={spot} description={desc} locale={locale} headingLevel={spotHeadingLevel} />
                     </div>
                   );
                 })}

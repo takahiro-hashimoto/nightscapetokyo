@@ -52,7 +52,7 @@ export default async function RootLayout({
         <link rel="preload" as="image" href="/hero.webp" fetchPriority="high" />
         <link
           rel="preload"
-          href="/css/non-critical.min.css?v=20260415d"
+          href="/css/non-critical.min.css?v=20260416a"
           as="style"
           fetchPriority="low"
         />
@@ -76,7 +76,7 @@ export default async function RootLayout({
           nonce={nonce}
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: `var l=document.createElement('link');l.rel='stylesheet';l.href='/css/non-critical.min.css?v=20260415d';document.head.appendChild(l);`,
+            __html: `var l=document.createElement('link');l.rel='stylesheet';l.href='/css/non-critical.min.css?v=20260416a';document.head.appendChild(l);`,
           }}
         />
       </head>

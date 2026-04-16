@@ -94,14 +94,20 @@ export function injectH3SpotLinks(
       }
 
       const linksHtml = spots
-        .map(
-          (s) =>
-            `<a href="${s.href}" class="article-spot-link">` +
-            `<span class="article-spot-link-label">夜景スポット</span>` +
-            `<span class="article-spot-link-name">${s.name}</span>` +
-            `<span class="article-spot-link-arrow">詳細を見る →</span>` +
+        .map((s) => {
+          const thumbHtml = s.image
+            ? `<div class="ref-thumb"><img src="${s.image}" alt="${s.name}" loading="lazy"></div>`
+            : "";
+          return (
+            `<a href="${s.href}" class="ref-card">` +
+            thumbHtml +
+            `<div class="ref-body">` +
+            `<span class="ref-title">${s.name}</span>` +
+            `<span class="ref-site">夜景スポット</span>` +
+            `</div>` +
             `</a>`
-        )
+          );
+        })
         .join("");
 
       return h3Tag + updatedContent + `<div class="article-spot-links">${linksHtml}</div>`;
@@ -128,5 +134,6 @@ export function sanitizeHtml(html: string): string {
     .replace(/\s*class="wp-block-list"/g, "")
     .replace(/\s*class="[^"]*wp-block-group[^"]*"/g, "")
     .replace(/<!--\$-->/g, "")
-    .replace(/\bl-bottom-medium\b\s*/g, "");
+    .replace(/\bl-bottom-medium\b\s*/g, "")
+    .replace(/<span[^>]*data-icon="[^"]*"[^>]*>[\s\S]*?<\/span>/gi, "");
 }

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles } from "@/lib/supabase/queries";
+import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles, getSpotImagesBySlugs } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";
 import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks } from "@/lib/sanitize";
 import { ARTICLE_SPOT_LINKS } from "@/lib/article-spot-links";
@@ -65,10 +65,33 @@ export default async function ArticleDetailPage({ params }: Props) {
   const related = await getRelatedArticles(slug, 6);
   const thumbnail = article.thumbnail ? toR2Url(article.thumbnail) : null;
   const h3SpotLinks = ARTICLE_SPOT_LINKS[slug] ?? {};
+
+  // スポットスラグを収集してfeatured_imageを一括取得
+  const allSpotSlugs = [
+    ...new Set(
+      Object.values(h3SpotLinks)
+        .flat()
+        .map((s) => s.href.split("/").filter(Boolean).pop() ?? "")
+        .filter(Boolean)
+    ),
+  ];
+  const spotImages = await getSpotImagesBySlugs(allSpotSlugs);
+
+  // h3SpotLinks に画像を付与
+  const enrichedH3SpotLinks = Object.fromEntries(
+    Object.entries(h3SpotLinks).map(([h3Text, links]) => [
+      h3Text,
+      links.map((link) => ({
+        ...link,
+        image: spotImages[link.href.split("/").filter(Boolean).pop() ?? ""] ?? "",
+      })),
+    ])
+  );
+
   const { html: processedContent, toc } = buildToc(
     injectH3SpotLinks(
       embedYoutubeUrls(replaceWpImagesInHtml(sanitizeHtml(article.content ?? ""))),
-      h3SpotLinks
+      enrichedH3SpotLinks
     )
   );
 
@@ -137,7 +160,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                       year: "numeric", month: "2-digit", day: "2-digit",
                     })}
                   </time>
-                  <span className="page-pr">一部プロモーションを含みます</span>
+                  <span className="page-pr">一部PRを含みます</span>
                 </div>
                 {leadHtml && (
                   <div

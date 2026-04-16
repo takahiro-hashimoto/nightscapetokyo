@@ -15,16 +15,13 @@ type Props = {
 export default function TagImageSlider({ images, name, locale }: Props) {
   const l = TAG_SLIDER_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_SLIDER_LABELS.ja;
   const [current, setCurrent] = useState(0);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const total = images.length;
 
   const prev = useCallback(() => {
-    setHasInteracted(true);
     setCurrent((c) => (c - 1 + total) % total);
   }, [total]);
 
   const next = useCallback(() => {
-    setHasInteracted(true);
     setCurrent((c) => (c + 1) % total);
   }, [total]);
 
@@ -59,20 +56,17 @@ export default function TagImageSlider({ images, name, locale }: Props) {
               <button
                 key={i}
                 className={`tag-slider-thumb${i === current ? " active" : ""}`}
-                onClick={() => { setHasInteracted(true); setCurrent(i); }}
+                onClick={() => setCurrent(i)}
                 aria-label={img.alt ?? l.imageN(i + 1)}
               >
-                {hasInteracted ? (
-                  <Image
-                    src={img.url}
-                    alt={img.alt ?? `${name}${l.nightView} ${l.imageN(i + 1)}`}
-                    width={60}
-                    height={40}
-                    style={{ objectFit: "cover", width: "100%", height: "100%" }}
-                  />
-                ) : (
-                  <span className="tag-slider-thumb-placeholder" aria-hidden="true" />
-                )}
+                <Image
+                  src={img.url}
+                  alt={img.alt ?? `${name}${l.nightView} ${l.imageN(i + 1)}`}
+                  width={60}
+                  height={40}
+                  loading="lazy"
+                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                />
               </button>
             ))}
           </div>

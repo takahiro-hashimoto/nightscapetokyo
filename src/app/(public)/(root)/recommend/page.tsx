@@ -5,6 +5,12 @@ import { getTopSpots, getSpotsBySlugs, getTotalSpotCount, type MapSpotItem } fro
 import { summarizeReport } from "@/lib/summarize-report";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
+import { AREA_NAME } from "@/lib/constants";
+
+/** 東京都内のカテゴリーslugセット（横浜など都外を除く） */
+const TOKYO_AREA_SLUGS = new Set(
+  Object.keys(AREA_NAME).filter((s) => s !== "yokohama")
+);
 
 const TITLE = "東京都内のおすすめ夜景スポットランキング30";
 const DESCRIPTION =
@@ -40,10 +46,15 @@ export const revalidate = 3600;
 export default async function RecommendPage() {
   const currentYear = new Date().getFullYear();
 
-  const [topSpots, totalCount] = await Promise.all([
-    getTopSpots(30).catch(() => []),
+  const [allTopSpots, totalCount] = await Promise.all([
+    getTopSpots(60).catch(() => []),
     getTotalSpotCount().catch(() => 0),
   ]);
+
+  // 東京都内のカテゴリーのみに絞り込み、上位30件を取得
+  const topSpots = allTopSpots
+    .filter((s) => TOKYO_AREA_SLUGS.has(s.category.slug))
+    .slice(0, 30);
 
   // スラグリストを評価順で保持
   const slugs = topSpots.map((s) => s.slug);

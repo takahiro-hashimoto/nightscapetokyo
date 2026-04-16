@@ -21,7 +21,7 @@ type Props = {
 
 export default function PrBanner({ heading, image, paragraphs, links }: Props) {
   return (
-    <aside className="pr-banner mb-xl">
+    <aside className="pr-banner">
       <p className="pr-banner-heading">{heading}</p>
       <div className="pr-banner-body">
         <div className="pr-banner-image">

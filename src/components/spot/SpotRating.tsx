@@ -88,6 +88,7 @@ export default function SpotRating({
             <div className="rating-divider" aria-hidden="true" />
             <div className="rating-right" itemProp="description">
               {lead}
+              <p><a className="content-top-link" href="/">東京都内の夜景情報一覧</a></p>
             </div>
           </>
         )}

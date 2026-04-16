@@ -14,7 +14,7 @@ export default function SpotAccess({ station, parking, map, spotName, labels }: 
   if (!station && !parking && !map) return null;
 
   const l = labels ?? {
-    heading: (name: string) => `${name}の行き方・アクセスと駐車場`,
+    heading: (name: string) => `${name}の行き方・アクセス方法`,
     caption: "アクセス情報",
     station: "電車・最寄駅",
     parking: "駐車場",

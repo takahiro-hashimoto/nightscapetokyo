@@ -311,7 +311,7 @@ export default function Header({
                   )}
                 </div>
 
-                {/* 右: 運営者情報・お問い合わせ + portal 言語スイッチャー (#header-trailing に注入) */}
+                {/* 右: 運営者情報・お問い合わせ + 言語スイッチャー */}
                 <div className="site-header-top-right">
                   <nav className="site-header-top-nav">
                     {topNavItems.map((item) => (
@@ -320,7 +320,7 @@ export default function Header({
                       </Link>
                     ))}
                   </nav>
-                  <div className="site-header-trailing">
+<div className="site-header-trailing">
                     <div id="header-trailing" />
                     <DevAdminLink />
                     {hamburger}
@@ -378,8 +378,6 @@ export default function Header({
                   {item.label}
                 </Link>
               ))}
-
-              <div className="drawer-divider" />
 
               {/* Language switcher (SP only) */}
               <div className="drawer-lang-select-wrap">

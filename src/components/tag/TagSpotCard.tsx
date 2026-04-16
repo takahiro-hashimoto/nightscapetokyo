@@ -12,9 +12,11 @@ type Props = {
   spot: SpotWithRelations;
   description: string;
   locale?: string;
+  headingLevel?: "h2" | "h3";
 };
 
-export default function TagSpotCard({ spot, description, locale }: Props) {
+export default function TagSpotCard({ spot, description, locale, headingLevel = "h2" }: Props) {
+  const Heading = headingLevel;
   const l = TAG_SPOT_CARD_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_SPOT_CARD_LABELS.ja;
   const name = spot.name || spot.title;
   const categorySlug = spot.category?.slug ?? "";
@@ -40,7 +42,7 @@ export default function TagSpotCard({ spot, description, locale }: Props) {
 
   return (
     <article className="content-card card-padding">
-      <h2>{name}</h2>
+      <Heading className="card-heading">{name}</Heading>
 
       {spot.images && spot.images.length >= 2 ? (
         <TagImageSlider

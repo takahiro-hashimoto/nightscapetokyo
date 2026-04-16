@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
-import { SITE_URL } from "@/lib/types";
+import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
 import { getTimeLapseSpots } from "@/lib/supabase/queries";
 
 const PAGE_TITLE = "東京夜景のタイムラプス映像集・素材集";
@@ -151,13 +152,20 @@ export default async function TimeLapsePage() {
   });
 
   return (
-    <div className="l-article-body">
-      <div className="l-article-container">
-        <Breadcrumb items={[{ label: PAGE_TITLE }]} />
+    <>
+      <LanguageSwitcher
+        currentLocale={null}
+        categorySlug="time-lapse"
+        availableLocales={ALL_LOCALE_SLUGS}
+        localeLabels={LOCALE_LABELS}
+      />
+      <div className="l-article-body">
+        <div className="l-article-container">
+          <Breadcrumb items={[{ label: PAGE_TITLE }]} />
 
-        <article>
-          {/* ヒーロー画像 */}
-          <div className="page-hero">
+          <article>
+            {/* ヒーロー画像 */}
+            <div className="page-hero">
             <img
               src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"
               alt={PAGE_TITLE}
@@ -264,8 +272,9 @@ export default async function TimeLapsePage() {
               ))}
             </div>
           </div>
-        </article>
+          </article>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
