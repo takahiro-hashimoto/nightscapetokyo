@@ -69,7 +69,7 @@ export function embedYoutubeUrls(html: string): string {
  */
 export function injectH3SpotLinks(
   html: string,
-  h3SpotLinks: Record<string, { name: string; href: string }[]>
+  h3SpotLinks: Record<string, { name: string; href: string; image?: string }[]>
 ): string {
   if (Object.keys(h3SpotLinks).length === 0) return html;
 
