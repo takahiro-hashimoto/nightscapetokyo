@@ -130,8 +130,7 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
             width={1200}
             height={800}
             className="gallery-modal-image"
-            sizes="min(90vw, 1200px)"
-            quality={85}
+            unoptimized
             onClick={(e) => e.stopPropagation()}
           />
 

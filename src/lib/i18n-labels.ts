@@ -12,6 +12,8 @@ export type RatingLabels = {
   access: string;
   atmosphere: string;
   cost: string;
+  topLink: string;
+  topLinkHref: string;
 };
 
 export type OverviewLabels = {
@@ -251,6 +253,8 @@ const LABELS = {
       access: "アクセス",
       atmosphere: "雰囲気",
       cost: "コスパ",
+      topLink: "東京都内の夜景情報一覧",
+      topLinkHref: "/",
     },
     overview: {
       heading: (name) => name ? `${name}の訪問レポート` : "訪問レポート",
@@ -476,6 +480,8 @@ const LABELS = {
       access: "Access",
       atmosphere: "Atmosphere",
       cost: "Value",
+      topLink: "Tokyo Night View Spot List",
+      topLinkHref: "/en",
     },
     overview: {
       heading: (name) => name ? `Visit Report: ${name}` : "Visit Report",
@@ -746,6 +752,8 @@ const LABELS = {
       access: "접근성",
       atmosphere: "분위기",
       cost: "가성비",
+      topLink: "도쿄 야경 스폿 목록",
+      topLinkHref: "/ko",
     },
     overview: {
       heading: (name) => name ? `${name} 방문 리포트` : "방문 리포트",
@@ -1002,6 +1010,8 @@ const LABELS = {
       access: "交通便利",
       atmosphere: "氛圍",
       cost: "性價比",
+      topLink: "東京夜景景點一覽",
+      topLinkHref: "/tw",
     },
     overview: {
       heading: (name) => name ? `${name}訪問報告` : "訪問報告",
@@ -1258,6 +1268,8 @@ const LABELS = {
       access: "交通便利",
       atmosphere: "氛围",
       cost: "性价比",
+      topLink: "东京夜景景点一览",
+      topLinkHref: "/cn",
     },
     overview: {
       heading: (name) => name ? `${name}访问报告` : "访问报告",

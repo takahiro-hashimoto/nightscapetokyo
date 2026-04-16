@@ -49,6 +49,8 @@ export default function SpotRating({
     access: "アクセス",
     atmosphere: "雰囲気",
     cost: "コスパ",
+    topLink: "東京都内の夜景情報一覧",
+    topLinkHref: "/",
   };
 
   const ratings: RatingItem[] = [
@@ -88,7 +90,7 @@ export default function SpotRating({
             <div className="rating-divider" aria-hidden="true" />
             <div className="rating-right" itemProp="description">
               {lead}
-              <p><a className="content-top-link" href="/">東京都内の夜景情報一覧</a></p>
+              <p><a className="content-top-link" href={l.topLinkHref}>{l.topLink}</a></p>
             </div>
           </>
         )}
