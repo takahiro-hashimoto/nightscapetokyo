@@ -93,7 +93,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const spot = await getSpotBySlug(category, slug);
   if (!spot) return {};
 
-  const translations = await getAvailableTranslations(spot.id);
+  // getSpotBySlug は react.cache でメモ化済みのため page component と重複しない
+  const [translations] = await Promise.all([
+    getAvailableTranslations(spot.id),
+  ]);
   const labels = getComponentLabels("ja");
 
   return buildSpotMetadata(spot, labels, category, slug, "ja", translations.map((t) => t.locale));

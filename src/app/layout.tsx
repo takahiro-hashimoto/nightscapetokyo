@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import { headers } from "next/headers";
 import { SITE_URL } from "@/lib/types";
 import { buildWebSiteJsonLd, buildOrganizationJsonLd, buildSiteNavigationJsonLd } from "@/lib/json-ld";
 import "./globals.css";
@@ -34,50 +32,39 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headersList = await headers();
-  const lang = headersList.get("x-lang") || "ja";
-  const nonce = headersList.get("x-nonce") ?? "";
-
   return (
-    <html lang={lang}>
+    <html lang="ja">
       <head>
         <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />
         <link rel="preconnect" href="https://nightscape.tokyo" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev" crossOrigin="anonymous" />
         <link rel="preload" as="image" href="/hero.webp" fetchPriority="high" />
+        {/* non-critical CSS: 非ブロッキングロード (media trick) */}
         <link
-          rel="preload"
+          rel="stylesheet"
           href="/css/non-critical.min.css?v=20260416a"
-          as="style"
-          fetchPriority="low"
+          media="print"
+          onLoad={(e) => { (e.currentTarget as HTMLLinkElement).media = "all"; }}
         />
+        <noscript>
+          <link rel="stylesheet" href="/css/non-critical.min.css?v=20260416a" />
+        </noscript>
         <script
           type="application/ld+json"
-          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}
         />
         <script
           type="application/ld+json"
-          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildOrganizationJsonLd()) }}
         />
         <script
           type="application/ld+json"
-          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSiteNavigationJsonLd()) }}
-        />
-        <Script
-          id="css-loader"
-          nonce={nonce}
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `var l=document.createElement('link');l.rel='stylesheet';l.href='/css/non-critical.min.css?v=20260416a';document.head.appendChild(l);`,
-          }}
         />
       </head>
       <body className="antialiased min-h-screen flex flex-col">

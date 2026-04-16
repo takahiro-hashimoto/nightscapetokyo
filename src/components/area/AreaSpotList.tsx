@@ -64,7 +64,7 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
       </div>
 
       <div className="area-spot-grid">
-        {sorted.map((spot) => (
+        {sorted.map((spot, index) => (
           <article key={spot.id} className="spot-card" itemScope itemType="https://schema.org/TouristAttraction">
             <Link
               href={buildHref(spot)}
@@ -79,6 +79,7 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
                     fill
                     sizes="(max-width: 768px) 100vw, 450px"
                     itemProp="image"
+                    priority={index === 0}
                   />
                 )}
               </div>
