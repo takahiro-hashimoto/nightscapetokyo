@@ -354,7 +354,6 @@ export default async function AreaPage({ params }: Props) {
           <section className="content-card card-padding" id="map" aria-labelledby="map-heading">
             <h2 className="area-section-heading" id="map-heading">{cat.name}の夜景スポットマップ</h2>
             <AreaMapLoader spots={mapSpots} areaName={cat.name} />
-            <RecommendCta locale={null} />
           </section>
         )}
 
@@ -372,6 +371,8 @@ export default async function AreaPage({ params }: Props) {
             </dl>
           </section>
         )}
+
+        <RecommendCta locale={null} />
 
         {/* ItemList JSON-LD */}
         {spots.length > 0 && (
