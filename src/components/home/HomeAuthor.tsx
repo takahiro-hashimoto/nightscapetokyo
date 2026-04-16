@@ -38,7 +38,7 @@ export default function HomeAuthor() {
             <p>
               国内外の多くの方に東京夜景の魅力を伝えていきたい。そんな思いでこのサイトを運営しています。
             </p>
-            <p className="home-author-achievements-label">主な実績</p>
+            <h3 className="home-author-achievements-label">主な実績</h3>
             <ul className="home-author-achievements">
               {ACHIEVEMENTS.map((a, i) => (
                 <li key={i}>{a}</li>

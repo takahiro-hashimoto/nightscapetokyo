@@ -200,7 +200,7 @@ img {
 }
 
 .card-padding {
-  padding: 40px;
+  padding: 32px;
 }
 
 .header-card {
@@ -272,16 +272,16 @@ img {
    ========================================= */
 .rating-card-header {
   background-color: #333;
-  color: #fff;
-  padding: 12px 20px;
-  font-weight: 700;
-  font-size: 18px;
-  display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin: 0;
+  margin: 0 !important;
+  padding: 12px 20px;
+  font-weight: 700;
   line-height: 1.5;
+  display: flex;
+  color: #fff !important;
+  font-size: 18px !important;
 }
 
 .rating-card-body {
@@ -397,6 +397,14 @@ img {
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
   margin-bottom: 30px;
+}
+
+.anchor-nav ul {
+  display: contents;
+}
+
+.anchor-nav li {
+  list-style: none;
 }
 
 .anchor-btn {
@@ -597,8 +605,8 @@ img {
   background: var(--color-bg);
 }
 
-/* Alternating section backgrounds — auto-adjusts when sections are added/removed */
-main > .home-section:nth-child(even) {
+/* Alternating section backgrounds — counts only .home-section children */
+main > .home-section:nth-child(even of .home-section) {
   background: var(--color-bg-gray);
 }
 
@@ -915,7 +923,9 @@ main > .home-section:nth-child(even) {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   border: 1px solid rgba(0, 0, 0, 0.04);
   transition: all 0.25s;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .spot-card:hover {
@@ -969,6 +979,7 @@ main > .home-section:nth-child(even) {
 
 .spot-card-body {
   padding: 10px 14px 14px;
+  flex: 1;
 }
 
 .spot-card-meta {
@@ -2016,9 +2027,10 @@ main > .home-section:nth-child(even) {
 }
 
 .page-lead {
+  color: var(--color-text-secondary);
   font-size: 15px;
   line-height: 1.8;
-  color: var(--color-text-secondary);
+  padding: 0 40px 40px !important;
 }
 
 .content-top-link {
@@ -2028,6 +2040,31 @@ main > .home-section:nth-child(even) {
   color: var(--color-text-secondary);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.tag-detail-link-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.tag-detail-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.tag-detail-link:hover {
+  background: var(--color-primary-dark);
+  color: #fff;
 }
 .content-top-link:hover {
   color: var(--color-primary);
@@ -2232,10 +2269,10 @@ main > .home-section:nth-child(even) {
    WordPress Block - Columns
    ========================================= */
 .wp-block-columns {
-  display: flex;
   flex-wrap: wrap;
   gap: 24px;
-  margin: 1.5em 0;
+  /* margin: 1.5em 0; */
+  display: flex;
 }
 
 .wp-block-column {

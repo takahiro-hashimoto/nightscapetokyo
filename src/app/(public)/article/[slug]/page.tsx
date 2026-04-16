@@ -43,6 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonicalUrl,
       siteName: "nightscape.tokyo",
       locale: "ja_JP",
+      publishedTime: article.published_at ?? article.created_at,
+      modifiedTime: article.updated_at,
       images: article.thumbnail
         ? [{ url: articleThumbnail(article.thumbnail)!, width: 1200, height: 630, alt: article.title }]
         : undefined,
@@ -126,7 +128,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             locale={null}
             items={[
               { label: "記事一覧", href: "/article/" },
-              { label: article.title },
+              { label: article.title, href: `/article/${slug}/` },
             ]}
           />
 
@@ -140,7 +142,11 @@ export default async function ArticleDetailPage({ params }: Props) {
                   headline: article.title,
                   ...(article.description && { description: article.description }),
                   url: `${SITE_URL}/article/${slug}/`,
-                  ...(thumbnail && { image: thumbnail }),
+                  ...(thumbnail && {
+                    image: [
+                      { "@type": "ImageObject", url: thumbnail, width: 1200, height: 630 },
+                    ],
+                  }),
                   datePublished: publishedDate,
                   dateModified: article.updated_at,
                   inLanguage: "ja",
@@ -180,13 +186,13 @@ export default async function ArticleDetailPage({ params }: Props) {
                   </time>
                   <span className="page-pr">一部PRを含みます</span>
                 </div>
-                {leadHtml && (
-                  <div
-                    className="page-lead article-body"
-                    dangerouslySetInnerHTML={{ __html: leadHtml }}
-                  />
-                )}
               </header>
+              {leadHtml && (
+                <div
+                  className="page-lead article-body card-padding"
+                  dangerouslySetInnerHTML={{ __html: leadHtml }}
+                />
+              )}
 
 
             </div>
@@ -228,7 +234,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
             {/* ③ 本文カード（h2セクションごとに1カード） */}
             {bodyHtml && bodyHtml.split(/(?=<h2[\s>])/i).filter(s => s.trim()).map((section, i) => (
-              <div
+              <section
                 key={i}
                 className="content-card card-padding article-body"
                 dangerouslySetInnerHTML={{ __html: section }}
@@ -245,34 +251,36 @@ export default async function ArticleDetailPage({ params }: Props) {
           {related.length > 0 && (
             <aside className="related-articles">
               <h2 className="related-articles-heading">関連記事</h2>
-              <div className="article-list-grid">
+              <ul className="article-list-grid">
                 {related.map((r) => (
-                  <Link key={r.id} href={`/article/${r.slug}/`} className="article-card">
-                    {r.thumbnail && (
-                      <div className="article-card-thumb">
-                        <Image
-                          src={r.thumbnail}
-                          alt={r.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 240px"
-                        />
-                      </div>
-                    )}
-                    <div className="article-card-body">
-                      <h3 className="article-card-title">{r.title}</h3>
-                      {r.description && (
-                        <p className="article-card-desc">{r.description}</p>
+                  <li key={r.id}>
+                    <Link href={`/article/${r.slug}/`} className="article-card">
+                      {r.thumbnail && (
+                        <div className="article-card-thumb">
+                          <Image
+                            src={r.thumbnail}
+                            alt={r.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 240px"
+                          />
+                        </div>
                       )}
-                      <time className="article-card-date" dateTime={r.published_at ?? r.created_at}>
-                        {new Date(r.published_at ?? r.created_at).toLocaleDateString("ja-JP", {
-                          year: "numeric", month: "2-digit", day: "2-digit",
-                        })}
-                      </time>
-                    </div>
-                  </Link>
+                      <div className="article-card-body">
+                        <h3 className="article-card-title">{r.title}</h3>
+                        {r.description && (
+                          <p className="article-card-desc">{r.description}</p>
+                        )}
+                        <time className="article-card-date" dateTime={r.published_at ?? r.created_at}>
+                          {new Date(r.published_at ?? r.created_at).toLocaleDateString("ja-JP", {
+                            year: "numeric", month: "2-digit", day: "2-digit",
+                          })}
+                        </time>
+                      </div>
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </aside>
           )}
         </div>

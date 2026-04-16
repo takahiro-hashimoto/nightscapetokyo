@@ -67,10 +67,10 @@ export default function SpotRating({
 
   return (
     <section className="content-card" aria-labelledby="rating-heading">
-      <p id="rating-heading" className="rating-card-header">
+      <h2 id="rating-heading" className="rating-card-header">
         <MapPin size={16} aria-hidden="true" />
         <span>{l.header(name || "Spot", categoryName)}</span>
-      </p>
+      </h2>
       <div className="rating-card-body">
         <div className="rating-left">
           <div className="rating-main">

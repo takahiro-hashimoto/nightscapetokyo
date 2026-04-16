@@ -1310,13 +1310,13 @@
   color: var(--color-main);
   background: #fff;
   border-radius: 999px;
-  padding: 12px 12px;
+  padding: 8px 12px;
   font-size: 12px;
   text-align: center;
   font-weight: 600;
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
-  display: inline-block;
+  display: block;
 }
 
 .pill-tag:hover {

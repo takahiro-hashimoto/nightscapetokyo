@@ -24,8 +24,8 @@ export default function HomeNewsAndVideos({ recentSpots }: Props) {
       <div className="home-container">
         <div className="news-videos-grid">
           {/* 新着情報 */}
-          <div className="news-column">
-            <h2 className="home-section-heading">
+          <section className="news-column" aria-labelledby="news-heading">
+            <h2 id="news-heading" className="home-section-heading">
               新着情報
             </h2>
             <div className="news-card">
@@ -40,11 +40,11 @@ export default function HomeNewsAndVideos({ recentSpots }: Props) {
                 ))}
               </ul>
             </div>
-          </div>
+          </section>
 
           {/* タイムラプス動画 */}
-          <div className="videos-column">
-            <h2 className="home-section-heading">
+          <section className="videos-column" aria-labelledby="videos-heading">
+            <h2 id="videos-heading" className="home-section-heading">
               タイムラプス動画
             </h2>
             <p className="videos-intro">
@@ -65,7 +65,7 @@ export default function HomeNewsAndVideos({ recentSpots }: Props) {
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>

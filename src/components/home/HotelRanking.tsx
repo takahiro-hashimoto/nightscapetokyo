@@ -25,10 +25,10 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
         <p className="home-section-desc">
           {labels?.desc ?? "客室や最上階レストランから上質な東京の夜景が楽しめるホテルを厳選。記念日やデートにもおすすめです。実際に宿泊して撮影した写真やレポートが整っているのでぜひチェックしてみてください。"}
         </p>
-        <div className="ranking-grid ranking-grid-4">
+        <ol className="ranking-grid ranking-grid-4">
           {hotels.map((hotel, i) => (
+            <li key={hotel.id}>
             <Link
-              key={hotel.id}
               href={`${prefix}/${hotel.category.slug}/${hotel.slug}`}
               className="spot-card"
             >
@@ -59,8 +59,9 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
                 <p className="spot-card-lead">{hotel.lead}</p>
               </div>
             </Link>
+            </li>
           ))}
-        </div>
+        </ol>
         <div className="home-section-more">
           <Link href={`${prefix}/tag/hotel`} className="home-more-link">
             {labels?.moreLink ?? "東京の夜景が綺麗なおすすめホテル"}

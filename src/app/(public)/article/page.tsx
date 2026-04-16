@@ -11,9 +11,17 @@ export const metadata: Metadata = {
   description: "nightscape.tokyoの記事一覧です。夜景撮影のコツや東京夜景スポットに関するコラムを掲載しています。",
   alternates: { canonical: `${SITE_URL}/article/` },
   openGraph: {
+    type: "website",
     title: "記事一覧 | nightscape.tokyo",
     description: "夜景撮影のコツや東京夜景スポットに関するコラムを掲載しています。",
     url: `${SITE_URL}/article/`,
+    siteName: "nightscape.tokyo",
+    locale: "ja_JP",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "記事一覧 | nightscape.tokyo",
+    description: "夜景撮影のコツや東京夜景スポットに関するコラムを掲載しています。",
   },
 };
 

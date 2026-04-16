@@ -63,9 +63,10 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
         </label>
       </div>
 
-      <div className="area-spot-grid">
+      <ul className="area-spot-grid">
         {sorted.map((spot, index) => (
-          <article key={spot.id} className="spot-card" itemScope itemType="https://schema.org/TouristAttraction">
+          <li key={spot.id}>
+          <article className="spot-card" itemScope itemType="https://schema.org/TouristAttraction">
             <Link
               href={buildHref(spot)}
               className="spot-card-link"
@@ -93,13 +94,14 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
                     <span aria-label={`評価 ${spot.rating_avg.toFixed(1)}`}>{spot.rating_avg.toFixed(1)}</span>
                   </div>
                 </div>
-                <h2 className="spot-card-title" itemProp="name">{spot.name}</h2>
+                <h3 className="spot-card-title" itemProp="name">{spot.name}</h3>
                 <p className="spot-card-lead" itemProp="description">{spot.lead}</p>
               </div>
             </Link>
           </article>
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 }

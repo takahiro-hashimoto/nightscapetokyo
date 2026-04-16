@@ -27,22 +27,25 @@ export default function AreaSearch({ areas, labels, localeSlug }: Props) {
         {labels?.desc && (
           <p className="home-section-desc">{labels.desc}</p>
         )}
-        <div className="pill-tag-list" style={{ marginTop: 30 }}>
-          {areas.map((area) => {
-            const displayName = labels?.areaNames?.[area.slug] ?? area.name;
-            return (
-              <Link
-                key={area.slug}
-                href={`${prefix}/${area.slug}`}
-                className="pill-tag"
-              >
-                {labels
-                  ? labels.areaLabel(displayName, area.spot_count)
-                  : `${displayName}の夜景（${area.spot_count}）`}
-              </Link>
-            );
-          })}
-        </div>
+        <nav aria-label="エリア別検索" style={{ marginTop: 30 }}>
+          <ul className="pill-tag-list">
+            {areas.map((area) => {
+              const displayName = labels?.areaNames?.[area.slug] ?? area.name;
+              return (
+                <li key={area.slug}>
+                  <Link
+                    href={`${prefix}/${area.slug}`}
+                    className="pill-tag"
+                  >
+                    {labels
+                      ? labels.areaLabel(displayName, area.spot_count)
+                      : `${displayName}の夜景（${area.spot_count}）`}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
       </div>
     </section>
   );

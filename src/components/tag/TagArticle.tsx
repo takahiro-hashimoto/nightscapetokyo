@@ -6,9 +6,11 @@ import PrBanner from "@/components/common/PrBanner";
 import TagSpotCard from "@/components/tag/TagSpotCard";
 import TagMapSection from "@/components/tag/TagMapSection";
 import SpotFaq from "@/components/spot/SpotFaq";
+import RecommendCta from "@/components/common/RecommendCta";
+import SpotShare from "@/components/spot/SpotShare";
 import type { SpotWithRelations, SiteLocale } from "@/lib/types";
 import { SITE_URL, calcRatingAvg, LOCALE_SLUG_MAP } from "@/lib/types";
-import { TAG_ARTICLE_LABELS } from "@/lib/i18n-labels";
+import { TAG_ARTICLE_LABELS, getComponentLabels } from "@/lib/i18n-labels";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
 import type { MapSpotItem } from "@/lib/supabase/queries";
 
@@ -56,11 +58,13 @@ type Props = {
   mapSpots?: MapSpotItem[];
   locale?: string;
   spotHeadingLevel?: "h2" | "h3";
+  shareUrl?: string;
 };
 
-export default function TagArticle({ tagName, content, allSpots, mapSpots, locale, spotHeadingLevel = "h2" }: Props) {
+export default function TagArticle({ tagName, content, allSpots, mapSpots, locale, spotHeadingLevel = "h2", shareUrl }: Props) {
   const l = TAG_ARTICLE_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_ARTICLE_LABELS.ja;
   const bcp47Locale = locale ? (LOCALE_SLUG_MAP[locale] ?? locale) : "ja";
+  const breadcrumbHref = shareUrl ? shareUrl.replace(SITE_URL, "") : undefined;
   /** slug → SpotWithRelations のマップ */
   const spotMap = new Map(allSpots.map((s) => [s.slug, s]));
 
@@ -95,7 +99,7 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
   return (
     <div className="l-article-body">
       <div className="l-article-container">
-        <Breadcrumb items={[{ label: content.breadcrumb }]} locale={locale} />
+        <Breadcrumb items={[{ label: content.breadcrumb, ...(breadcrumbHref ? { href: breadcrumbHref } : {}) }]} locale={locale} />
 
         <article itemScope itemType="https://schema.org/Article">
           <meta itemProp="author" content="nightscape.tokyo" />
@@ -117,7 +121,7 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
               </figure>
             )}
 
-            {/* タイトル + リード */}
+            {/* タイトル */}
             <header className="card-padding">
               <h1 className="page-title" itemProp="headline">{content.title}</h1>
               <div className="page-meta">
@@ -126,15 +130,17 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
                 </time>
                 {content.prNotice && <span className="page-pr">{content.prNotice}</span>}
               </div>
-              <div className="page-lead" itemProp="description">
-                {content.lead.split("\n").map((line, i) => (
-                  <p key={i}>{line}</p>
-                ))}
-              </div>
-              <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
             </header>
 
-            {/* PRバナー（header の外、aside として独立） */}
+            {/* リード文 */}
+            <div className="page-lead" itemProp="description">
+              {content.lead.split("\n").map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+              <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
+            </div>
+
+            {/* PRバナー */}
             {content.prBanner && (
               <aside className="card-padding" style={{ paddingTop: 0 }}>
                 <PrBanner
@@ -253,6 +259,15 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
             <SpotFaq
               faqs={content.faqs}
               heading={l.faqHeading(tagName)}
+            />
+          )}
+
+          <RecommendCta locale={locale ?? null} />
+          {shareUrl && (
+            <SpotShare
+              url={shareUrl}
+              title={content.title}
+              labels={getComponentLabels(locale ?? "ja").share}
             />
           )}
         </article>

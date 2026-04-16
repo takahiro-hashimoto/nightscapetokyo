@@ -31,10 +31,10 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
         <p className="home-section-desc">
           {labels?.desc2 ?? <>各スポットの評価は<strong>美しさ</strong>、<strong>アクセスの良さ</strong>、<strong>雰囲気の良さ</strong>、<strong>コスパ</strong>の4項目から決定しています。デートや撮影の目的先を決めるのにご活用ください。</>}
         </p>
-        <div className="ranking-grid">
+        <ol className="ranking-grid">
           {spots.map((spot, i) => (
+            <li key={spot.id}>
             <Link
-              key={spot.id}
               href={`${prefix}/${spot.category.slug}/${spot.slug}`}
               className="spot-card"
             >
@@ -65,8 +65,9 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
                 <p className="spot-card-lead">{spot.lead}</p>
               </div>
             </Link>
+            </li>
           ))}
-        </div>
+        </ol>
         <div className="home-section-more">
           <Link href={`${prefix}/recommend`} className="home-more-link">
             {labels?.moreLink ?? "東京の夜景スポットおすすめランキング"}

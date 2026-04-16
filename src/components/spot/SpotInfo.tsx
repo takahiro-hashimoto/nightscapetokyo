@@ -192,14 +192,13 @@ export default function SpotInfo({
 
       {tags.length > 0 && (
         <>
-          <span className="features-label">{l.features}</span>
-          <div className="tag-card-grid" role="list">
+          <h3 className="features-label">{l.features}</h3>
+          <ul className="tag-card-grid">
             {tags.map((tag) => (
+              <li key={tag.id}>
               <Link
-                key={tag.id}
                 href={`${tagPrefix}/tag/${tag.slug}`}
                 className="tag-card"
-                role="listitem"
               >
                 <span className="tag-card-thumb">
                   <Image
@@ -216,8 +215,9 @@ export default function SpotInfo({
                 </span>
                 <ChevronRight size={16} className="tag-card-arrow" aria-hidden="true" />
               </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </>
       )}
 

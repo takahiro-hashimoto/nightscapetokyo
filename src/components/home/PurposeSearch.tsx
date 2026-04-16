@@ -35,15 +35,14 @@ export default function PurposeSearch({ tags, labels, localeSlug }: Props) {
         {labels?.desc && (
           <p className="home-section-desc">{labels.desc}</p>
         )}
-        <div className="tag-card-grid" style={{ marginTop: 30 }} role="list">
+        <ul className="tag-card-grid" style={{ marginTop: 30 }}>
           {tags.map((p) => {
             const imgSrc = resolveTagImage(p);
             return (
+              <li key={p.slug}>
               <Link
-                key={p.slug}
                 href={`${prefix}/tag/${p.slug}`}
                 className="tag-card"
-                role="listitem"
               >
                 <span className="tag-card-thumb">
                   {imgSrc ? (
@@ -68,9 +67,10 @@ export default function PurposeSearch({ tags, labels, localeSlug }: Props) {
                   aria-hidden="true"
                 />
               </Link>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </section>
   );

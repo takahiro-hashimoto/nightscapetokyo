@@ -1,7 +1,7 @@
 import { sanitizeHtml } from "@/lib/sanitize";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, MapPin, Clock, Banknote, Mountain, Train, ExternalLink } from "lucide-react";
+import { Star, MapPin, Clock, Banknote, Mountain, Train } from "lucide-react";
 import type { SpotWithRelations, SiteLocale } from "@/lib/types";
 import { calcRatingAvg } from "@/lib/types";
 import { TAG_SPOT_CARD_LABELS } from "@/lib/i18n-labels";
@@ -184,21 +184,14 @@ export default function TagSpotCard({ spot, description, locale, headingLevel = 
                 <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.station) }} />
               </tr>
             )}
-            <tr>
-              <th scope="row">
-                <span className="th-icon">
-                  <ExternalLink size={16} />
-                </span>
-                {l.detail}
-              </th>
-              <td>
-                <Link href={detailHref} className="tag-detail-link">
-                  {isHotel ? l.moreHotelPhotos : l.morePhotos}
-                </Link>
-              </td>
-            </tr>
           </tbody>
         </table>
+      </div>
+
+      <div className="tag-detail-link-wrapper">
+        <Link href={detailHref} className="tag-detail-link">
+          {isHotel ? l.moreHotelPhotos : l.morePhotos}
+        </Link>
       </div>
 
       {affiliates.length > 0 && (

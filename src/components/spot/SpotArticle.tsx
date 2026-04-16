@@ -154,15 +154,19 @@ export default function SpotArticle({
 
           {anchorLinks.length > 1 && (
             <nav className="anchor-nav" aria-label={al.navAriaLabel}>
-              {anchorLinks.map((link) => {
-                const Icon = link.icon;
-                return (
-                  <a key={link.id} href={`#${link.id}`} className="anchor-btn">
-                    <Icon size={16} aria-hidden="true" />
-                    {link.label}
-                  </a>
-                );
-              })}
+              <ul>
+                {anchorLinks.map((link) => {
+                  const Icon = link.icon;
+                  return (
+                    <li key={link.id}>
+                      <a href={`#${link.id}`} className="anchor-btn">
+                        <Icon size={16} aria-hidden="true" />
+                        {link.label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
             </nav>
           )}
 

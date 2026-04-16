@@ -263,6 +263,27 @@ export async function buildAllEntries(): Promise<AllEntries> {
     }
   }
 
+  // ── 記事ページ ──
+  const { data: articles } = await db
+    .from("articles")
+    .select("slug, updated_at")
+    .eq("published", true) as { data: Row[] | null };
+
+  result.ja.push({
+    loc: `${SITE_URL}/article/`,
+    changefreq: "weekly",
+    priority: 0.6,
+  });
+
+  for (const article of articles ?? []) {
+    result.ja.push({
+      loc: `${SITE_URL}/article/${article.slug}/`,
+      lastmod: article.updated_at ? new Date(article.updated_at).toISOString() : undefined,
+      changefreq: "monthly",
+      priority: 0.7,
+    });
+  }
+
   // ── タグ一覧（タグページがないタグ） ──
   const tagPageSlugs = new Set(
     (tagPages ?? []).map((tp) => {

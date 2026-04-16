@@ -66,9 +66,10 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
         </span>
         {heading}
       </h2>
-      <div className="gallery-grid" role="list">
+      <ul className="gallery-grid">
         {images.map((img, i) => (
-          <figure key={img.id} className="gallery-item" role="listitem">
+          <li key={img.id} className="gallery-item">
+          <figure>
             <button
               type="button"
               className="gallery-item-btn"
@@ -86,8 +87,9 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
             </button>
             {img.alt && <figcaption>{img.alt}</figcaption>}
           </figure>
+          </li>
         ))}
-      </div>
+      </ul>
 
       {/* ライトボックス モーダル */}
       {current && (
