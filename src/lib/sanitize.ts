@@ -189,7 +189,6 @@ function amazonCardHtml(
     `<div class="amazon-card">` +
     `<div class="amazon-card-content">` +
     `<p class="amazon-card-title">${title || titleFallback}</p>` +
-    `<p class="amazon-card-site">amzn.to</p>` +
     priceHtml +
     `<a href="${detailUrl}" class="amazon-card-btn" target="_blank" rel="noopener noreferrer">` +
     `Amazon.co.jpで購入する` +
