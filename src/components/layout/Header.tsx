@@ -20,7 +20,7 @@ import { AREA_NAME, TAG_NAME } from "@/lib/constants";
 type AreaData = { slug: string; name: string; spot_count: number };
 type TagData = { slug: string; name: string; spot_count: number; image_url?: string | null };
 type SubNavItem = { label: string; href: string; count?: number };
-type NavItem = { label: string; href?: string; children?: SubNavItem[]; dropdownClass?: string };
+type NavItem = { label: string; href?: string; children?: SubNavItem[]; dropdownClass?: string; newTab?: boolean };
 
 /** Row 1 右側: 運営者・お問い合わせ・サイトマップ (ja のみ使用) */
 function buildTopNavItems(locale: string | null): SubNavItem[] {
@@ -74,7 +74,7 @@ function buildMainNavItems(
       { label: "無料壁紙", href: "/wallpaper/" },
       { label: "タイムラプス動画", href: "/time-lapse/" },
       { label: "ブログ", href: "/article/" },
-      { label: "おすすめ現像ソフト", href: "/luminar/" },
+      { label: "おすすめ現像ソフト", href: "/luminar/", newTab: true },
     );
   } else {
     items.push(
@@ -257,7 +257,12 @@ export default function Header({
           </div>
         </div>
       ) : (
-        <Link key={item.href} href={item.href!} className="site-header-nav-link">
+        <Link
+          key={item.href}
+          href={item.href!}
+          className="site-header-nav-link"
+          {...(item.newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        >
           {item.label}
         </Link>
       )
@@ -367,7 +372,13 @@ export default function Header({
                     onLinkClick={closeMenu}
                   />
                 ) : (
-                  <Link key={item.href} href={item.href!} className="drawer-menu-link" onClick={closeMenu}>
+                  <Link
+                    key={item.href}
+                    href={item.href!}
+                    className="drawer-menu-link"
+                    onClick={closeMenu}
+                    {...(item.newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
                     {item.label}
                   </Link>
                 )
