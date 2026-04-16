@@ -1206,16 +1206,12 @@ main > .home-section:nth-child(even) {
   line-height: 1.3;
 }
 
-.site-header-tagline-count {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.7);
-  white-space: nowrap;
-}
-
+.site-header-tagline-count,
 .site-header-tagline-desc {
-  font-size: 11px;
   color: #ffffffb3;
   white-space: nowrap;
+  font-size: 11px;
+  padding-right: 4px;
 }
 
 .site-header-top-right {

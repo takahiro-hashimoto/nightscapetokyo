@@ -116,6 +116,206 @@ export function injectH3SpotLinks(
 }
 
 /**
+ * ショートコードの属性文字列を key="value" 形式でパースする。
+ * 例: `url="https://..." title="飯給駅" site="ekitan"` → { url, title, site }
+ */
+function parseShortcodeAttrs(attrStr: string): Record<string, string> {
+  const attrs: Record<string, string> = {};
+  const re = /(\w+)="([^"]*)"/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(attrStr)) !== null) {
+    attrs[m[1]] = m[2];
+  }
+  return attrs;
+}
+
+/**
+ * ref-card の HTML を生成するヘルパー。
+ */
+function refCardHtml(url: string, title: string, site: string, newTab = true): string {
+  const targetAttr = newTab ? ' target="_blank"' : "";
+  const relAttr = newTab ? ' rel="noopener noreferrer"' : "";
+  return (
+    `<div class="article-spot-links">` +
+    `<a href="${url}" class="ref-card"${targetAttr}${relAttr}>` +
+    `<div class="ref-body">` +
+    `<span class="ref-title">${title || url}</span>` +
+    `<span class="ref-site">${site}</span>` +
+    `</div>` +
+    `</a>` +
+    `</div>`
+  );
+}
+
+import type { AmazonProduct } from "./amazon";
+import { extractAsin } from "./amazon";
+
+/**
+ * Amazon 商品カードの HTML を生成するヘルパー。
+ * API データがない場合は ref-card スタイルにフォールバック。
+ */
+function amazonCardHtml(
+  url: string,
+  titleFallback: string,
+  product: AmazonProduct | undefined
+): string {
+  if (!product) {
+    // API データなし → シンプルな ref-card にフォールバック
+    return refCardHtml(url, titleFallback || url, "Amazon.co.jp");
+  }
+
+  const { title, imageUrl, price, detailUrl, fetchedAt } = product;
+  const dateStr = fetchedAt.toLocaleDateString("ja-JP", {
+    year: "numeric", month: "2-digit", day: "2-digit",
+  });
+  const timeStr = fetchedAt.toLocaleTimeString("ja-JP", {
+    hour: "2-digit", minute: "2-digit",
+  });
+
+  const priceHtml = price
+    ? `<div class="amazon-card-price-row">` +
+      `<strong class="amazon-card-price">${price}</strong>` +
+      `<span class="amazon-card-note">` +
+      `(${dateStr} ${timeStr}時点 <a href="${detailUrl}" target="_blank" rel="noopener noreferrer">詳しくはこちら</a>)` +
+      `</span>` +
+      `</div>`
+    : "";
+
+  const thumbHtml = imageUrl
+    ? `<div class="amazon-card-thumb"><img src="${imageUrl}" alt="${title}" loading="lazy"></div>`
+    : "";
+
+  return (
+    `<div class="amazon-card">` +
+    `<div class="amazon-card-content">` +
+    `<p class="amazon-card-title">${title || titleFallback}</p>` +
+    `<p class="amazon-card-site">amzn.to</p>` +
+    priceHtml +
+    `<a href="${detailUrl}" class="amazon-card-btn" target="_blank" rel="noopener noreferrer">` +
+    `Amazon.co.jpで購入する` +
+    `</a>` +
+    `</div>` +
+    thumbHtml +
+    `</div>`
+  );
+}
+
+/**
+ * 記事本文内のカスタムショートコードを HTML に変換する。
+ *
+ * ## 対応ショートコード
+ *
+ * ### relatedLink — 外部リンクを ref-card で表示
+ * ```
+ * [relatedLink url="https://ekitan.com/..." title="飯給駅　小湊鉄道" site="ekitan"]
+ * ```
+ * | 属性  | 必須 | 説明                                      |
+ * |-------|------|-------------------------------------------|
+ * | url   | ✓   | リンク先 URL                              |
+ * | title |      | タイトル（省略時は URL を表示）           |
+ * | site  |      | サイト名ラベル（省略時は hostname）       |
+ *
+ * ### amazonLink — Amazon 商品カードを表示
+ * ```
+ * [amazonLink url="https://www.amazon.co.jp/dp/ASIN/" title="商品名"]
+ * ```
+ * | 属性  | 必須 | 説明                                        |
+ * |-------|------|---------------------------------------------|
+ * | url   | ✓   | Amazon URL（ASIN を含む）または ASIN 直接   |
+ * | title |      | API 取得失敗時のフォールバックタイトル      |
+ *
+ * ※ sanitizeHtml より先に呼ぶこと。
+ * ※ amazonLink を使う場合は amazonProducts を渡すこと（page.tsx で prefetch）。
+ */
+export function convertShortcodes(
+  html: string,
+  amazonProducts?: Map<string, AmazonProduct>
+): string {
+  // [relatedLink ...] → ref-card
+  let result = html.replace(
+    /\[relatedLink\s+([\s\S]*?)\s*\]/g,
+    (_match, attrStr: string) => {
+      const { url = "", title = "", site = "" } = parseShortcodeAttrs(attrStr);
+      if (!url) return "";
+      let siteLabel = site;
+      if (!siteLabel) {
+        try { siteLabel = new URL(url).hostname; } catch { siteLabel = url; }
+      }
+      return refCardHtml(url, title, siteLabel);
+    }
+  );
+
+  // [amazonLink ...] → amazon-card
+  result = result.replace(
+    /\[amazonLink\s+([\s\S]*?)\s*\]/g,
+    (_match, attrStr: string) => {
+      const { url = "", title = "" } = parseShortcodeAttrs(attrStr);
+      if (!url) return "";
+      const asin = extractAsin(url);
+      const product = asin ? amazonProducts?.get(asin) : undefined;
+      return amazonCardHtml(url, title, product);
+    }
+  );
+
+  return result;
+}
+
+/**
+ * WordPress の wp:loos/post-link ブロックコメントを ref-card HTML に変換する。
+ *
+ * 変換前（WP block editor 出力）:
+ *   <!-- wp:loos/post-link {"isNewTab":true,"rel":"...","linkData":{"url":"https://...","title":"..."},"icon":"externalLink"} /-->
+ *
+ * 変換後:
+ *   <div class="article-spot-links">
+ *     <a href="https://..." class="ref-card" target="_blank" rel="...">
+ *       <div class="ref-body">
+ *         <span class="ref-title">ページタイトル or URL</span>
+ *         <span class="ref-site">hostname</span>
+ *       </div>
+ *     </a>
+ *   </div>
+ *
+ * ※ sanitizeHtml より先に呼ぶこと（sanitizeHtml が wp: コメントを削除するため）
+ */
+export function convertPostLinks(html: string): string {
+  return html.replace(
+    /<!--\s*wp:loos\/post-link\s+([\s\S]*?)\s*\/-->/g,
+    (_match, jsonStr: string) => {
+      try {
+        const data = JSON.parse(jsonStr) as {
+          isNewTab?: boolean;
+          rel?: string;
+          linkData?: { url?: string; title?: string; text?: string };
+          icon?: string;
+        };
+        const url = data.linkData?.url ?? "";
+        if (!url) return "";
+
+        const title = data.linkData?.title ?? data.linkData?.text ?? "";
+        const hostname = new URL(url).hostname;
+        const displayTitle = title || url;
+        const targetAttr = data.isNewTab ? ' target="_blank"' : "";
+        const relAttr = data.rel ? ` rel="${data.rel}"` : "";
+
+        return (
+          `<div class="article-spot-links">` +
+          `<a href="${url}" class="ref-card"${targetAttr}${relAttr}>` +
+          `<div class="ref-body">` +
+          `<span class="ref-title">${displayTitle}</span>` +
+          `<span class="ref-site">${hostname}</span>` +
+          `</div>` +
+          `</a>` +
+          `</div>`
+        );
+      } catch {
+        return "";
+      }
+    }
+  );
+}
+
+/**
  * DB / CMS 由来の HTML を dangerouslySetInnerHTML に渡す前にサニタイズする。
  * - <script> タグを除去
  * - インラインイベントハンドラ (on*) を除去

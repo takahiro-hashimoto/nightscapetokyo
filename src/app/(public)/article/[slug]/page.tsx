@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles, getSpotImagesBySlugs } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";
-import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks } from "@/lib/sanitize";
+import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks, convertPostLinks, convertShortcodes } from "@/lib/sanitize";
+import { prefetchAmazonProducts } from "@/lib/amazon";
 import { ARTICLE_SPOT_LINKS } from "@/lib/article-spot-links";
 
 function articleThumbnail(url: string | null | undefined): string | null {
@@ -89,9 +90,20 @@ export default async function ArticleDetailPage({ params }: Props) {
     ])
   );
 
+  const rawContent = article.content ?? "";
+  const amazonProducts = await prefetchAmazonProducts(rawContent);
+
   const { html: processedContent, toc } = buildToc(
     injectH3SpotLinks(
-      embedYoutubeUrls(replaceWpImagesInHtml(sanitizeHtml(article.content ?? ""))),
+      embedYoutubeUrls(
+        replaceWpImagesInHtml(
+          sanitizeHtml(
+            convertPostLinks(
+              convertShortcodes(rawContent, amazonProducts)
+            )
+          )
+        )
+      ),
       enrichedH3SpotLinks
     )
   );
@@ -209,13 +221,14 @@ export default async function ArticleDetailPage({ params }: Props) {
               </nav>
             )}
 
-            {/* ③ 本文カード（h2以降） */}
-            {bodyHtml && (
+            {/* ③ 本文カード（h2セクションごとに1カード） */}
+            {bodyHtml && bodyHtml.split(/(?=<h2[\s>])/i).filter(s => s.trim()).map((section, i) => (
               <div
+                key={i}
                 className="content-card card-padding article-body"
-                dangerouslySetInnerHTML={{ __html: bodyHtml }}
+                dangerouslySetInnerHTML={{ __html: section }}
               />
-            )}
+            ))}
           </article>
 
           <SpotShare

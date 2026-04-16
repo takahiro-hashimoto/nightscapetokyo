@@ -10,6 +10,12 @@
   text-decoration: underline;
 }
 
+.report-content ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
 /* =========================================
    Module - Gallery Grid
    ========================================= */
@@ -1547,6 +1553,113 @@
 .ref-site {
   font-size: 11px;
   color: #94a3b8;
+}
+
+/* ── Amazon 商品カード ── */
+.amazon-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  margin: 16px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.amazon-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.amazon-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #1d1d1f;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.amazon-card-site {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.amazon-card-price-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.amazon-card-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1d1d1f;
+}
+
+.amazon-card-note {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.amazon-card-note a {
+  color: #0071e3;
+  text-decoration: underline;
+}
+
+.amazon-card-btn {
+  display: block;
+  margin-top: 8px;
+  padding: 11px 16px;
+  background: #1a1a2e;
+  color: #fff !important;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: opacity 0.2s;
+}
+
+.amazon-card-btn:hover {
+  opacity: 0.82;
+}
+
+.amazon-card-thumb {
+  flex-shrink: 0;
+  width: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.amazon-card-thumb img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 480px) {
+  .amazon-card {
+    gap: 14px;
+    padding: 14px;
+  }
+  .amazon-card-thumb {
+    width: 80px;
+  }
+  .amazon-card-price {
+    font-size: 16px;
+  }
 }
 
 .ref-excerpt {
