@@ -1373,7 +1373,7 @@ main > .home-section:nth-child(even) {
 }
 
 .site-header-bottom .site-header-nav > *:last-child {
-  justify-content: flex-end;
+  justify-content: flex-end !important;
 }
 
 .site-header-bottom .site-header-nav-trigger {
