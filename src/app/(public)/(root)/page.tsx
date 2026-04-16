@@ -38,6 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const revalidate = 3600;
+export const fetchCache = "force-cache";
 
 export default async function Home() {
   const sunData = calculateSunData(new Date(), 35.6895, 139.6917);

@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 3600;
+export const fetchCache = "force-cache";
 
 /* ===== Video data ===== */
 

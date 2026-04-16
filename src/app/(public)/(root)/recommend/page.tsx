@@ -42,6 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const revalidate = 3600;
+export const fetchCache = "force-cache";
 
 export default async function RecommendPage() {
   const currentYear = new Date().getFullYear();

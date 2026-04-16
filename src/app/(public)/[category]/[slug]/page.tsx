@@ -103,6 +103,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 86400;
+export const fetchCache = "force-cache";
 
 export default async function SpotOrAreaPage({ params }: Props) {
   const { category, slug } = await params;

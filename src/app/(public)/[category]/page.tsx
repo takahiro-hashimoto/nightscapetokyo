@@ -222,6 +222,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 3600;
+export const fetchCache = "force-cache";
 
 export default async function AreaPage({ params }: Props) {
   const { category: categorySlug } = await params;
