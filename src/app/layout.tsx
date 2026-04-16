@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: SITE_NAME,
     locale: "ja_JP",
+    alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
     url: SITE_URL,
     title: "東京夜景ナビ | 東京の夜景スポットガイド",
     description: DEFAULT_DESCRIPTION,

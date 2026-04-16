@@ -27,6 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title,
       description,
+      locale: "ja_JP",
+      alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
       images: [{ url: "/hero.jpg", width: 1200, height: 630, alt: title }],
     },
     twitter: { title, description },

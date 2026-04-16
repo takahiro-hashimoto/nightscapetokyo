@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 
 /* ===== 翻訳ラベル ===== */
 
@@ -209,12 +209,23 @@ type PageProps = { params: Promise<{ category: string }> };
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category: locale } = await params;
   const l = LABELS[locale] ?? LABELS.en;
+  const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
+  const canonicalUrl = `${SITE_URL}/${locale}/time-lapse/`;
   return {
     title: { absolute: l.seoTitle },
     description: l.description,
-    openGraph: { title: l.title, description: l.description },
+    openGraph: {
+      title: l.title,
+      description: l.description,
+      url: canonicalUrl,
+      locale: ogLocale,
+      alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
+    },
     twitter: { title: l.title, description: l.description },
-    alternates: { canonical: `${SITE_URL}/${locale}/time-lapse/` },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: buildAreaHreflangAlternates(SITE_URL, "time-lapse", ALL_LOCALE_SLUGS),
+    },
   };
 }
 

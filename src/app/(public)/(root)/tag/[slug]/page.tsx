@@ -2,13 +2,16 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import TagArticle from "@/components/tag/TagArticle";
+import RecommendCta from "@/components/common/RecommendCta";
+import SpotShare from "@/components/spot/SpotShare";
 import TagMapSection from "@/components/tag/TagMapSection";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
 import { getTagBySlug, getSpotsByTagSlug, getSpotsBySlugs, getTagPageBySlug, getAvailableTagPageLocales, getMapSpotsByTag } from "@/lib/supabase/queries";
-import { SITE_URL, calcRatingAvg, LOCALE_SLUG_MAP, LOCALE_LABELS } from "@/lib/types";
+import { SITE_URL, calcRatingAvg, LOCALE_SLUG_MAP, LOCALE_LABELS, OG_LOCALE_MAP } from "@/lib/types";
+import { getComponentLabels } from "@/lib/i18n-labels";
 import type { SpotListItem, SpotWithRelations } from "@/lib/types";
 import { tagPageContents, dummyTagSpots } from "@/lib/dummy-tag-data";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
@@ -177,6 +180,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         url: canonicalUrl,
         siteName: "nightscape.tokyo",
         locale: "ja_JP",
+        alternateLocale: availableLocales.map((s) => OG_LOCALE_MAP[s]).filter(Boolean),
+        publishedTime: dbPage?.created_at ?? dbPage?.updated_at ?? undefined,
+        modifiedTime: dbPage?.updated_at ?? undefined,
         images: heroImage
           ? [{ url: heroImage, width: 1200, height: 630, alt: content.title }]
           : undefined,
@@ -197,11 +203,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   // シンプル一覧ページ用メタデータ
-  const tag = await getTagBySlug(slug);
+  const [tag, simpleSpots] = await Promise.all([
+    getTagBySlug(slug),
+    getSpotsByTagSlug(slug),
+  ]);
   if (!tag) return {};
 
   const title = `${tag.name}の夜景スポット一覧`;
   const canonicalUrl = `${SITE_URL}/tag/${slug}`;
+  const topSpot = [...simpleSpots].sort((a, b) => calcRatingAvg(b) - calcRatingAvg(a))[0];
+  const heroImage = topSpot?.featured_image || undefined;
 
   return {
     title,
@@ -213,10 +224,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonicalUrl,
       siteName: "nightscape.tokyo",
       locale: "ja_JP",
+      images: heroImage ? [{ url: heroImage, width: 1200, height: 630, alt: title }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title,
+      images: heroImage ? [heroImage] : undefined,
     },
     alternates: { canonical: canonicalUrl },
   };
@@ -293,6 +306,7 @@ export default async function TagPage({ params }: Props) {
           allSpots={allSpots}
           mapSpots={mapSpots}
           spotHeadingLevel="h3"
+          shareUrl={`${SITE_URL}/tag/${slug}`}
         />
       </>
     );
@@ -396,6 +410,13 @@ export default async function TagPage({ params }: Props) {
             </dl>
           </section>
         )}
+
+        <RecommendCta locale={null} />
+        <SpotShare
+          url={`${SITE_URL}/tag/${slug}`}
+          title={`${tagName}の夜景スポット一覧`}
+          labels={getComponentLabels("ja").share}
+        />
 
         {/* ItemList JSON-LD */}
         {itemListJsonLd && (

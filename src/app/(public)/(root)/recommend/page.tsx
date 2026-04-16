@@ -18,6 +18,11 @@ const DESCRIPTION =
 
 export async function generateMetadata(): Promise<Metadata> {
   const canonicalUrl = `${SITE_URL}/recommend`;
+
+  const allTopSpots = await getTopSpots(60).catch(() => []);
+  const firstSpot = allTopSpots.find((s) => TOKYO_AREA_SLUGS.has(s.category.slug));
+  const heroImage = firstSpot?.featured_image || undefined;
+
   return {
     title: TITLE,
     description: DESCRIPTION,
@@ -28,11 +33,14 @@ export async function generateMetadata(): Promise<Metadata> {
       url: canonicalUrl,
       siteName: "nightscape.tokyo",
       locale: "ja_JP",
+      alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
+      images: heroImage ? [{ url: heroImage, width: 1200, height: 630, alt: TITLE }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title: TITLE,
       description: DESCRIPTION,
+      images: heroImage ? [heroImage] : undefined,
     },
     alternates: {
       canonical: canonicalUrl,
@@ -156,6 +164,7 @@ export default async function RecommendPage() {
         content={content}
         allSpots={sortedSpots}
         mapSpots={mapSpots}
+        shareUrl={`${SITE_URL}/recommend`}
       />
     </>
   );

@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
+import RecommendCta from "@/components/common/RecommendCta";
+import SpotShare from "@/components/spot/SpotShare";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import { getTimeLapseSpots } from "@/lib/supabase/queries";
+import { getComponentLabels } from "@/lib/i18n-labels";
 
 const PAGE_TITLE = "東京夜景のタイムラプス映像集・素材集";
 const PAGE_DESCRIPTION =
@@ -12,9 +15,17 @@ const PAGE_DESCRIPTION =
 export const metadata: Metadata = {
   title: { absolute: `${PAGE_TITLE} | 東京夜景ナビ` },
   description: PAGE_DESCRIPTION,
-  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    locale: "ja_JP",
+    alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
+  },
   twitter: { title: PAGE_TITLE, description: PAGE_DESCRIPTION },
-  alternates: { canonical: `${SITE_URL}/time-lapse/` },
+  alternates: {
+    canonical: `${SITE_URL}/time-lapse/`,
+    languages: buildAreaHreflangAlternates(SITE_URL, "time-lapse", ALL_LOCALE_SLUGS),
+  },
 };
 
 export const revalidate = 3600;
@@ -89,17 +100,6 @@ const COLLECTION_SUBSECTIONS: Subsection[] = [
       { id: "kwBZmsRHa3I", title: "【4K】横浜みなとみらいの夜景タイムラプス映像", caption: "横浜みなとみらいのタイムラプス映像" },
       { id: "FUdXp5-Vyks", title: "【4K】横浜みなとみらいの夕景＆夜景タイムラプス映像", caption: "横浜みなとみらいのタイムラプス映像" },
     ],
-  },
-];
-
-const RELATED_ARTICLES = [
-  {
-    title: "【保存版】一眼カメラでタイムラプス動画を作る方法を5ステップで解説",
-    href: "/article/create-timelapse/",
-  },
-  {
-    title: "タイムラプス用計算機の使い方と撮影間隔、撮影枚数、フレームレートの解説",
-    href: "/article/timelapse-calculator/",
   },
 ];
 
@@ -212,9 +212,6 @@ export default async function TimeLapsePage() {
                   <a href="#section-materials">夕景タイムラプス素材集</a>
                 </li>
               )}
-              <li>
-                <a href="#section-related">タイムラプス関連の記事</a>
-              </li>
             </ol>
           </nav>
 
@@ -260,20 +257,14 @@ export default async function TimeLapsePage() {
             </div>
           )}
 
-          {/* 関連記事 */}
-          <div id="section-related">
-            <div className="spot-section-header">
-              <h2 className="section-heading">タイムラプス関連の記事</h2>
-            </div>
-            <div className="tl-related-list">
-              {RELATED_ARTICLES.map((article, i) => (
-                <Link key={i} href={article.href} className="tl-related-card content-card card-padding">
-                  {article.title}
-                </Link>
-              ))}
-            </div>
-          </div>
           </article>
+
+          <RecommendCta locale={null} />
+          <SpotShare
+            url={`${SITE_URL}/time-lapse/`}
+            title={PAGE_TITLE}
+            labels={getComponentLabels("ja").share}
+          />
         </div>
       </div>
     </>

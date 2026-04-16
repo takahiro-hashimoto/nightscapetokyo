@@ -4,7 +4,7 @@ import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import RecommendCta from "@/components/common/RecommendCta";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 
 /* ─── 翻訳ラベル ─── */
@@ -330,11 +330,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: locale } = await params;
   const labels = WALLPAPER_LABELS[locale];
   if (!labels) return {};
+  const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
+  const canonicalUrl = `${SITE_URL}/${locale}/wallpaper/`;
   return {
     title: labels.title,
     description: labels.description,
+    openGraph: {
+      title: labels.title,
+      description: labels.description,
+      url: canonicalUrl,
+      locale: ogLocale,
+      alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
+    },
     alternates: {
-      canonical: `${SITE_URL}/${locale}/wallpaper/`,
+      canonical: canonicalUrl,
       languages: buildAreaHreflangAlternates(SITE_URL, "wallpaper", ALL_LOCALE_SLUGS),
     },
   };

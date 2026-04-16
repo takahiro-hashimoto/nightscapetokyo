@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { LOCALE_LABELS, ALL_LOCALE_SLUGS } from "@/lib/types";
+import { LOCALE_LABELS, ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { GUIDELINES_LABELS } from "@/lib/i18n-static-pages";
 
@@ -13,7 +13,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
   const locale = category;
   const l = GUIDELINES_LABELS[locale] ?? GUIDELINES_LABELS.en;
-  return { title: l.title, description: l.description };
+  const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
+  const canonicalUrl = `${SITE_URL}/${locale}/guidelines`;
+  return {
+    title: l.title,
+    description: l.description,
+    openGraph: {
+      title: l.title,
+      description: l.description,
+      url: canonicalUrl,
+      locale: ogLocale,
+      alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
+    },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: buildAreaHreflangAlternates(SITE_URL, "guidelines", ALL_LOCALE_SLUGS),
+    },
+  };
 }
 
 export default async function I18nGuidelinesPage({ params }: Props) {

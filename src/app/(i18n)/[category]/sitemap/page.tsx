@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { LOCALE_LABELS, LOCALE_SLUG_MAP, ALL_LOCALE_SLUGS } from "@/lib/types";
+import { LOCALE_LABELS, LOCALE_SLUG_MAP, ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { supabase } from "@/lib/supabase/client";
 import { SITEMAP_LABELS } from "@/lib/i18n-static-pages";
@@ -14,7 +14,23 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
   const l = SITEMAP_LABELS[category] ?? SITEMAP_LABELS.en;
-  return { title: l.title, description: l.description };
+  const ogLocale = OG_LOCALE_MAP[category] ?? "en_US";
+  const canonicalUrl = `${SITE_URL}/${category}/sitemap`;
+  return {
+    title: l.title,
+    description: l.description,
+    openGraph: {
+      title: l.title,
+      description: l.description,
+      url: canonicalUrl,
+      locale: ogLocale,
+      alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
+    },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: buildAreaHreflangAlternates(SITE_URL, "sitemap", ALL_LOCALE_SLUGS),
+    },
+  };
 }
 
 type SpotRow = { slug: string; title: string };

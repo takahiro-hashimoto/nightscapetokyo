@@ -16,6 +16,7 @@ import {
   ALL_LOCALE_SLUGS,
   LOCALE_SLUG_MAP,
   LOCALE_LABELS,
+  OG_LOCALE_MAP,
 } from "@/lib/types";
 import type { SpotWithRelations, TagPageTranslation } from "@/lib/types";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
@@ -147,8 +148,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const heroImage = result.page.hero_image;
   const availableLocales = await getAvailableTagPageLocales(tagSlug);
 
-  // hreflang用ロケール → DB locale のマップ
-  const hreflangLocale = LOCALE_SLUG_MAP[localeSlug];
+  // og:locale / og:locale:alternate
+  const ogLocale = OG_LOCALE_MAP[localeSlug] ?? "en_US";
+  const alternateOgLocales = availableLocales
+    .map((s) => OG_LOCALE_MAP[s])
+    .filter((l): l is string => Boolean(l) && l !== ogLocale);
+  // ja も常に alternate に含める
+  if (!alternateOgLocales.includes(OG_LOCALE_MAP.ja)) {
+    alternateOgLocales.unshift(OG_LOCALE_MAP.ja);
+  }
 
   // hreflang alternates
   const jaUrl = `${SITE_URL}/tag/${tagSlug}`;
@@ -172,7 +180,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: canonicalUrl,
       siteName: "nightscape.tokyo",
-      locale: hreflangLocale,
+      locale: ogLocale,
+      alternateLocale: alternateOgLocales,
       images: heroImage
         ? [{ url: heroImage, width: 1200, height: 630, alt: title }]
         : undefined,

@@ -8,6 +8,8 @@ import {
   ALL_LOCALE_SLUGS,
   SITE_URL,
   LOCALE_LABELS,
+  OG_LOCALE_MAP,
+  ALL_OG_LOCALES,
   buildAreaHreflangAlternates,
 } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
@@ -190,10 +192,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
   const locale = category;
   const l = ABOUT_LABELS[locale] ?? ABOUT_LABELS.en;
+  const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
+  const canonicalUrl = `${SITE_URL}/${locale}/about`;
   return {
     title: l.title,
     description: l.description,
+    openGraph: {
+      title: l.title,
+      description: l.description,
+      url: canonicalUrl,
+      locale: ogLocale,
+      alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
+    },
     alternates: {
+      canonical: canonicalUrl,
       languages: buildAreaHreflangAlternates(SITE_URL, "about", ALL_LOCALE_SLUGS),
     },
   };

@@ -24,6 +24,7 @@ import {
 } from "@/lib/supabase/queries";
 import AreaMapLoader from "@/components/map/AreaMapLoader";
 import RecommendCta from "@/components/common/RecommendCta";
+import SpotShare from "@/components/spot/SpotShare";
 import {
   SITE_URL,
   ALL_LOCALE_SLUGS,
@@ -31,6 +32,8 @@ import {
   buildHomeHreflangAlternates,
   LOCALE_LABELS,
   LOCALE_SLUG_MAP,
+  OG_LOCALE_MAP,
+  ALL_OG_LOCALES,
 } from "@/lib/types";
 import type { SpotListItem } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
@@ -127,13 +130,6 @@ function generateAreaFaq(
 
 const NON_AREA_SLUGS = ["article", "pickup", "event"];
 
-/** 翻訳版トップページ用 OG locale */
-const OG_LOCALE_MAP: Record<string, string> = {
-  en: "en_US",
-  ko: "ko_KR",
-  tw: "zh_TW",
-  cn: "zh_CN",
-};
 
 export async function generateStaticParams() {
   const areas = await getAreas();
@@ -170,6 +166,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         url: canonicalUrl,
         siteName: "nightscape.tokyo",
         locale: ogLocale,
+        alternateLocale: ALL_OG_LOCALES.filter((l) => l !== ogLocale),
       },
       twitter: {
         card: "summary_large_image",
@@ -185,9 +182,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (NON_AREA_SLUGS.includes(categorySlug)) return {};
 
-  const [cat, availableLocales] = await Promise.all([
+  const [cat, availableLocales, spots] = await Promise.all([
     getCategoryBySlug(categorySlug),
     getAvailableAreaLocales(categorySlug),
+    getSpotsByCategory(categorySlug),
   ]);
   if (!cat) return {};
 
@@ -195,6 +193,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${displayName}の夜景スポット一覧`;
   const description = buildAreaDescription(cat.name);
   const canonicalUrl = `${SITE_URL}/${categorySlug}`;
+  const heroImage = spots[0]?.featured_image || undefined;
+  const areaAlternateLocale = availableLocales
+    .map((s) => OG_LOCALE_MAP[s])
+    .filter(Boolean);
 
   return {
     title,
@@ -206,11 +208,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonicalUrl,
       siteName: "nightscape.tokyo",
       locale: "ja_JP",
+      alternateLocale: areaAlternateLocale.length > 0 ? areaAlternateLocale : undefined,
+      images: heroImage ? [{ url: heroImage, width: 1200, height: 630, alt: title }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: heroImage ? [heroImage] : undefined,
     },
     alternates: {
       canonical: canonicalUrl,
@@ -318,7 +323,7 @@ export default async function AreaPage({ params }: Props) {
           availableLocales={availableLocales}
           localeLabels={LOCALE_LABELS}
         />
-        <Breadcrumb items={[{ label: `${cat.name}の夜景スポット一覧` }]} />
+        <Breadcrumb items={[{ label: `${cat.name}の夜景スポット一覧`, href: `/${categorySlug}` }]} />
 
         <header className="content-card card-padding">
           <h1 className="area-page-heading">
@@ -373,6 +378,11 @@ export default async function AreaPage({ params }: Props) {
         )}
 
         <RecommendCta locale={null} />
+        <SpotShare
+          url={`${SITE_URL}/${categorySlug}`}
+          title={`${displayName}の夜景スポット一覧`}
+          labels={getComponentLabels("ja").share}
+        />
 
         {/* ItemList JSON-LD */}
         {spots.length > 0 && (
@@ -380,7 +390,7 @@ export default async function AreaPage({ params }: Props) {
             type="application/ld+json"
             dangerouslySetInnerHTML={{
               __html: JSON.stringify(
-                buildAreaItemListJsonLd(spots, categorySlug)
+                buildAreaItemListJsonLd(spots, categorySlug, { name: `${displayName}の夜景スポット一覧` })
               ),
             }}
           />

@@ -5,7 +5,7 @@ import { Crown, Star, Sparkles, TrainFront, Heart, Coins } from "lucide-react";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { getTopSpotsTranslated, getSpotCount } from "@/lib/supabase/queries";
-import { ALL_LOCALE_SLUGS, SITE_NAMES, SITE_URL, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, SITE_NAMES, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { AREA_NAME } from "@/lib/constants";
 
@@ -95,10 +95,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: locale } = await params;
   const labels = RECOMMEND_LABELS[locale];
   if (!labels) return {};
+  const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
+  const canonicalUrl = `${SITE_URL}/${locale}/recommend`;
   return {
     title: labels.title,
     description: labels.description,
+    openGraph: {
+      title: labels.title,
+      description: labels.description,
+      url: canonicalUrl,
+      locale: ogLocale,
+      alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
+    },
     alternates: {
+      canonical: canonicalUrl,
       languages: buildAreaHreflangAlternates(SITE_URL, "recommend", ALL_LOCALE_SLUGS),
     },
   };

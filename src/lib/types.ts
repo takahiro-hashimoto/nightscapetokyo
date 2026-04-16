@@ -166,6 +166,26 @@ export const LOCALE_LABELS = {
 
 export const SITE_URL = "https://nightscape.tokyo";
 
+/** URL slug → OG locale 形式 (og:locale / og:locale:alternate で使用) */
+export const OG_LOCALE_MAP: Record<string, string> = {
+  ja: "ja_JP",
+  en: "en_US",
+  ko: "ko_KR",
+  tw: "zh_TW",
+  cn: "zh_CN",
+};
+
+/** 全 OG locale 値の配列 */
+export const ALL_OG_LOCALES: readonly string[] = Object.values(OG_LOCALE_MAP);
+
+/** URL slug → HTML lang 属性値 (非 ja ページの lang 属性で使用) */
+export const LOCALE_HTML_LANG: Record<string, string> = {
+  en: "en",
+  ko: "ko",
+  tw: "zh-Hant",
+  cn: "zh-Hans",
+};
+
 /** 各言語のサイト名（ヘッダーロゴ・パンくずで使用） */
 export const SITE_NAMES = {
   en: "Tokyo Night View Guide",

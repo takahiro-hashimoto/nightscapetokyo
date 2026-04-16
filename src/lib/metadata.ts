@@ -3,17 +3,8 @@
  */
 import type { Metadata } from "next";
 import type { SpotWithRelations } from "./types";
-import { SITE_URL, buildHreflangAlternates } from "./types";
+import { SITE_URL, OG_LOCALE_MAP, buildHreflangAlternates } from "./types";
 import type { ComponentLabels } from "./i18n-labels";
-
-/** OG locale マッピング */
-const OG_LOCALE_MAP: Record<string, string> = {
-  ja: "ja_JP",
-  en: "en_US",
-  ko: "ko_KR",
-  tw: "zh_TW",
-  cn: "zh_CN",
-};
 
 /**
  * スポット詳細ページの Metadata を生成する。
@@ -41,6 +32,13 @@ export function buildSpotMetadata(
     ? [{ url: spot.featured_image, width: 1200, height: 630, alt: spotName }]
     : undefined;
 
+  // og:locale:alternate: ja + 翻訳済みロケールのうち現在ロケール以外
+  const allLocalesForPage = ["ja", ...availableLocales];
+  const alternateLocale = allLocalesForPage
+    .filter((l) => l !== localeSlug)
+    .map((l) => OG_LOCALE_MAP[l])
+    .filter((l): l is string => Boolean(l));
+
   return {
     title: pageTitle,
     description,
@@ -51,6 +49,7 @@ export function buildSpotMetadata(
       url: canonicalUrl,
       siteName: "nightscape.tokyo",
       locale: ogLocale,
+      alternateLocale,
       images: ogImages,
     },
     twitter: {
