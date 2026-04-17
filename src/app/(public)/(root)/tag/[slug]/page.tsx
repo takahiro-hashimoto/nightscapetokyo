@@ -153,6 +153,7 @@ function toListItem(s: SpotWithRelations): SpotListItem {
     rating_atmosphere: s.rating_atmosphere ?? null,
     rating_cost: s.rating_cost ?? null,
     lead: s.lead || "",
+    closed: s.closed ?? false,
   };
 }
 
