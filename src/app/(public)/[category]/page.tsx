@@ -21,10 +21,13 @@ import {
   getPurposeTags,
   getTotalSpotCount,
   getMapSpotsByCategory,
+  getSpotsForMap,
 } from "@/lib/supabase/queries";
 import AreaMapLoader from "@/components/map/AreaMapLoader";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
+import HomeAuthor from "@/components/home/HomeAuthor";
+import HomeMapSection from "@/components/home/HomeMapSection";
 import {
   SITE_URL,
   ALL_LOCALE_SLUGS,
@@ -239,12 +242,13 @@ export default async function AreaPage({ params }: Props) {
     const hp = labels.homePage;
     const sunData = calculateSunData(new Date(), 35.6895, 139.6917);
 
-    const [spots, hotels, areas, purposeTags, spotCount] = await Promise.all([
+    const [spots, hotels, areas, purposeTags, spotCount, mapSpots] = await Promise.all([
       getTopSpotsTranslated(localeSlug, 8).catch(() => []),
       getHotelSpotsTranslated(localeSlug, 4).catch(() => []),
       getAreasTranslated(localeSlug).catch(() => []),
       getPurposeTags().catch(() => []),
       getTotalSpotCount().catch(() => 200),
+      getSpotsForMap().catch(() => []),
     ]);
 
     const faqItems = hp.faq.items;
@@ -264,7 +268,19 @@ export default async function AreaPage({ params }: Props) {
         <HotelRanking hotels={hotels} labels={hp.hotelRanking} localeSlug={localeSlug} />
         <PurposeSearch tags={purposeTags} labels={hp.purposeSearch} localeSlug={localeSlug} />
         <AreaSearch areas={areas} labels={hp.areaSearch} localeSlug={localeSlug} />
+        <HomeMapSection
+          spots={mapSpots}
+          categories={areas.map((a) => ({ slug: a.slug, name: a.name }))}
+          labels={hp.mapSection}
+        />
         <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={hp.faq} />
+        <HomeAuthor labels={labels.homeAuthor} locale={localeSlug} />
+        <SpotShare
+          url={`${SITE_URL}/${localeSlug}`}
+          title={hp.hero.subtitle(spotCount)}
+          locale={localeSlug}
+          labels={labels.share}
+        />
         {spots.length > 0 && (
           <script
             type="application/ld+json"
@@ -323,17 +339,19 @@ export default async function AreaPage({ params }: Props) {
           availableLocales={availableLocales}
           localeLabels={LOCALE_LABELS}
         />
-        <Breadcrumb items={[{ label: `${cat.name}の夜景スポット一覧`, href: `/${categorySlug}` }]} />
+        <Breadcrumb items={[{ label: `${cat.name}の夜景スポット一覧` }]} />
 
-        <header className="content-card card-padding">
-          <h1 className="area-page-heading">
-            {displayName}の夜景スポット一覧
-          </h1>
-          <p className="area-page-lead">
-            {buildAreaDescription(cat.name)}
-          </p>
-          <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
-        </header>
+        <div className="firstVisual">
+          <header className="firstVisual-header">
+            <h1 className="firstVisual-title">
+              {displayName}の夜景スポット一覧
+            </h1>
+          </header>
+          <div className="firstVisual-body">
+            <p>{buildAreaDescription(cat.name)}</p>
+            <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
+          </div>
+        </div>
 
         {/* エリア紹介文 */}
         {cat.description && (

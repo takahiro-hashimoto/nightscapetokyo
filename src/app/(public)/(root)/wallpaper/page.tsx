@@ -16,7 +16,13 @@ export const metadata: Metadata = {
   description: PAGE_DESCRIPTION,
   openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION },
   twitter: { title: PAGE_TITLE, description: PAGE_DESCRIPTION },
-  alternates: { canonical: `${SITE_URL}/wallpaper/` },
+  alternates: {
+    canonical: `${SITE_URL}/wallpaper/`,
+    languages: {
+      ja: `${SITE_URL}/wallpaper/`,
+      "x-default": `${SITE_URL}/wallpaper/`,
+    },
+  },
 };
 
 export const revalidate = 3600;
@@ -300,18 +306,16 @@ export default function WallpaperPage() {
           <Breadcrumb items={[{ label: PAGE_TITLE }]} />
 
         <article>
-          {/* タイトル + リード */}
-          <div className="content-card card-padding">
-            <h1 className="page-title">{PAGE_TITLE}</h1>
-            <div className="page-lead">
-              <p>
-                iPhoneやAndroidで使用できる高画質な東京夜景の壁紙を無料でプレゼントします！
-              </p>
-              <p>
-                掲載しているのは大人の方が使いやすいお洒落な画像ばかり。気に入った画像がありましたら、長押ししてスマホに保存してください。壁紙に設定頂けた場合はぜひSNS等で紹介してもらえると今後の活動の励みになります。
-              </p>
+          {/* firstVisual: タイトル + リード文 */}
+          <div className="firstVisual">
+            <header className="firstVisual-header">
+              <h1 className="firstVisual-title">{PAGE_TITLE}</h1>
+            </header>
+            <div className="firstVisual-body">
+              <p>iPhoneやAndroidで使用できる高画質な東京夜景の壁紙を無料でプレゼントします！</p>
+              <p>掲載しているのは大人の方が使いやすいお洒落な画像ばかり。気に入った画像がありましたら、長押ししてスマホに保存してください。壁紙に設定頂けた場合はぜひSNS等で紹介してもらえると今後の活動の励みになります。</p>
+              <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
             </div>
-            <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
           </div>
 
           {/* 壁紙グリッド */}
@@ -335,6 +339,21 @@ export default function WallpaperPage() {
                 </figure>
             ))}
           </div>
+
+          {/* 壁紙に関連する夜景エリア */}
+          <section className="content-card card-padding">
+            <h2 className="area-section-heading">壁紙に登場する夜景スポットを探す</h2>
+            <p className="area-page-lead" style={{ marginBottom: "16px" }}>壁紙に使用した写真の撮影地をエリア別にご紹介しています。</p>
+            <div className="pill-tag-list">
+              <Link href="/minato/" className="pill-tag">港区（東京タワー）</Link>
+              <Link href="/sumida/" className="pill-tag">墨田区（スカイツリー）</Link>
+              <Link href="/shibuya/" className="pill-tag">渋谷区（渋谷スカイ）</Link>
+              <Link href="/shinjuku/" className="pill-tag">新宿区（都庁展望台）</Link>
+              <Link href="/chiyoda/" className="pill-tag">千代田区（東京駅・皇居）</Link>
+              <Link href="/koto/" className="pill-tag">江東区（お台場）</Link>
+              <Link href="/recommend/" className="pill-tag">おすすめ夜景スポット一覧</Link>
+            </div>
+          </section>
 
           <RecommendCta locale={null} />
 

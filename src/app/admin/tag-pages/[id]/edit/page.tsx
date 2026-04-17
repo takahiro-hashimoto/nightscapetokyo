@@ -80,6 +80,7 @@ export default async function EditTagPage({ params }: Props) {
           <Link
             href={`/tag/${tagSlug}`}
             target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md shadow-sm transition-colors"
           >
             <ExternalLink size={15} />

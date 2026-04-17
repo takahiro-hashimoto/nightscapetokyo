@@ -20,7 +20,7 @@ export default function PcContentModal({
   }, [onClose]);
 
   return (
-    <div className="sim-modal__overlay" onClick={onClose}>
+    <div className="modal-overlay sim-modal__overlay" onClick={onClose}>
       <div
         className="sim-modal__container"
         onClick={(e) => e.stopPropagation()}

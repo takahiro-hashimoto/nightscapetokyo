@@ -6,6 +6,7 @@ import LuminarCtaSale from '@/components/luminar/LuminarCtaSale'
 import LuminarAuthorBox from '@/components/luminar/LuminarAuthorBox'
 import LuminarRelatedPosts from '@/components/luminar/LuminarRelatedPosts'
 import LuminarSaleCurrentSection from '@/components/luminar/LuminarSaleCurrentSection'
+import LuminarCouponScript from '@/components/luminar/LuminarCouponScript'
 import {
   getAllPostSlugs,
   getPostBySlug,
@@ -47,6 +48,8 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }))
 }
 
+const NOINDEX_SLUGS = ['privacy-policy', 'about']
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const raw = await getPostBySlug(slug)
@@ -58,6 +61,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: article.title,
     description: article.description,
+    ...(NOINDEX_SLUGS.includes(slug) && {
+      robots: { index: false, follow: true },
+    }),
     openGraph: {
       type: 'article',
       url,
@@ -75,6 +81,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       }),
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
+    },
+    twitter: {
+      images: article.featuredImage ? [article.featuredImage.src] : [],
     },
     alternates: { canonical: url },
   }
@@ -239,6 +248,8 @@ export default async function LuminarArticlePage({ params }: Props) {
           </div>
         </div>
       </main>
+
+      <LuminarCouponScript />
 
       {/* ── JSON-LD ── */}
       <script

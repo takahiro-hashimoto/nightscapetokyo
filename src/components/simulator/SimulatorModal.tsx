@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
+import Link from "next/link";
 import { X } from "lucide-react";
 import LocationSearch from "./LocationSearch";
 
@@ -36,7 +37,7 @@ export default function SimulatorModal({
   if (!isOpen) return null;
 
   return (
-    <div className="sim-modal__overlay" onClick={onClose}>
+    <div className="modal-overlay sim-modal__overlay" onClick={onClose}>
       <div
         className="sim-modal__container"
         onClick={(e) => e.stopPropagation()}
@@ -367,9 +368,9 @@ export default function SimulatorModal({
         </div>
 
         <div className="sim-modal__footer">
-          <a href="/" className="sim-modal__footer-link">
+          <Link href="/" className="sim-modal__footer-link">
             東京夜景ナビ（サイトトップ）→
-          </a>
+          </Link>
         </div>
       </div>
     </div>

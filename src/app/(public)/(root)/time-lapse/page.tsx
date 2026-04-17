@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
@@ -24,7 +25,10 @@ export const metadata: Metadata = {
   twitter: { title: PAGE_TITLE, description: PAGE_DESCRIPTION },
   alternates: {
     canonical: `${SITE_URL}/time-lapse/`,
-    languages: buildAreaHreflangAlternates(SITE_URL, "time-lapse", ALL_LOCALE_SLUGS),
+    languages: {
+      ja: `${SITE_URL}/time-lapse/`,
+      "x-default": `${SITE_URL}/time-lapse/`,
+    },
   },
 };
 
@@ -40,7 +44,7 @@ type Video = {
   captionLink?: string;
 };
 
-type Subsection = { heading: string; description: string[]; videos: Video[] };
+type Subsection = { heading: string; description: string[]; videos: Video[]; areaHref?: string };
 
 const COLLECTION_SUBSECTIONS: Subsection[] = [
   {
@@ -62,6 +66,7 @@ const COLLECTION_SUBSECTIONS: Subsection[] = [
   },
   {
     heading: "千代田区の都市風景タイムラプス",
+    areaHref: "/chiyoda/",
     description: [
       "東京の玄関口である東京駅や皇居・国会議事堂・官庁街といった日本の首都機能を有している千代田区。",
       "美しく整備され、どこかクラシカルな雰囲気をまとった街並みが魅力のエリアです。",
@@ -77,6 +82,7 @@ const COLLECTION_SUBSECTIONS: Subsection[] = [
   },
   {
     heading: "渋谷区のタイムラプス映像",
+    areaHref: "/shibuya/",
     description: [
       "世界的にも人気の観光名所にもなっている渋谷スクランブル交差点がある渋谷区。",
       "大規模な再開発プロジェクトにより、日本を代表するIT企業が集まるビジネスの拠点にもなっており、非常に活気のある街です。",
@@ -165,33 +171,34 @@ export default async function TimeLapsePage() {
           <Breadcrumb items={[{ label: PAGE_TITLE }]} />
 
           <article>
-            {/* ヒーロー画像 */}
-            <div className="page-hero">
-            <img
-              src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"
-              alt={PAGE_TITLE}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-          </div>
-
-          {/* タイトル + リード */}
-          <div className="content-card card-padding">
-            <h1 className="page-title">{PAGE_TITLE}</h1>
-            <div className="page-lead">
-              <p>
-                過去に東京都内で撮影したタイムラプス映像を一本の記事にまとめました！
-              </p>
-              <p>
-                <strong>世界の都市総合力ランキング</strong>で毎年上位に入る国際的にも有名な
-                <Link href="/">東京の美しい夜景</Link>をお楽しみ下さい。
-              </p>
-              <p>
-                映像の中で使用しているデータ素材を購入希望の方は
-                <Link href="/contact/">お問い合せフォーム</Link>
-                よりご連絡下さい。
-              </p>
+            {/* firstVisual: ヒーロー画像 + タイトル + リード文 */}
+            <div className="firstVisual">
+              <figure className="firstVisual-image">
+                <Image
+                  src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"
+                  alt={PAGE_TITLE}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 800px"
+                />
+              </figure>
+              <header className="firstVisual-header">
+                <h1 className="firstVisual-title">{PAGE_TITLE}</h1>
+              </header>
+              <div className="firstVisual-body">
+                <p>過去に東京都内で撮影したタイムラプス映像を一本の記事にまとめました！</p>
+                <p>
+                  <strong>世界の都市総合力ランキング</strong>で毎年上位に入る国際的にも有名な
+                  <Link href="/">東京の美しい夜景</Link>をお楽しみ下さい。
+                </p>
+                <p>
+                  映像の中で使用しているデータ素材を購入希望の方は
+                  <Link href="/contact/">お問い合せフォーム</Link>
+                  よりご連絡下さい。
+                </p>
+              </div>
             </div>
-          </div>
 
           {/* 目次 */}
           <nav className="toc content-card card-padding">
@@ -227,7 +234,13 @@ export default async function TimeLapsePage() {
                 id={`sub-collection-${i}`}
                 className="content-card card-padding tl-subsection"
               >
-                <h3 className="tl-subsection-heading">{sub.heading}</h3>
+                <h3 className="tl-subsection-heading">
+                  {sub.areaHref ? (
+                    <Link href={sub.areaHref}>{sub.heading}</Link>
+                  ) : (
+                    sub.heading
+                  )}
+                </h3>
                 {sub.description.map((p, j) => (
                   <p key={j} className="tl-subsection-desc">{p}</p>
                 ))}
@@ -258,6 +271,20 @@ export default async function TimeLapsePage() {
           )}
 
           </article>
+
+          {/* 関連する夜景スポット */}
+          <section className="content-card card-padding">
+            <h2 className="area-section-heading">映像に登場する夜景スポットを探す</h2>
+            <p className="area-page-lead" style={{ marginBottom: "16px" }}>タイムラプスの撮影地を実際に訪れてみませんか？各エリアの夜景スポット情報をご覧いただけます。</p>
+            <div className="pill-tag-list">
+              <Link href="/chiyoda/" className="pill-tag">千代田区（東京駅・丸の内）</Link>
+              <Link href="/shibuya/" className="pill-tag">渋谷区（スクランブル交差点）</Link>
+              <Link href="/minato/" className="pill-tag">港区（東京タワー）</Link>
+              <Link href="/sumida/" className="pill-tag">墨田区（スカイツリー）</Link>
+              <Link href="/tag/timelapse/" className="pill-tag">タイムラプス撮影スポット一覧</Link>
+              <Link href="/recommend/" className="pill-tag">おすすめ夜景スポット一覧</Link>
+            </div>
+          </section>
 
           <RecommendCta locale={null} />
           <SpotShare

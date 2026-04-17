@@ -353,7 +353,7 @@ export default function AboutPage() {
 
         <div className="about-profile-bio">
           <p><strong>東京タワーが見える夜景スポット</strong>や<strong>ウォーターフロントの夜景スポット</strong>が大好きです。</p>
-          <p>東京都内のメジャーな夜景スポットはほぼ制覇しており、最近は「<a href="https://nightscape.tokyo/tag/hotel/">夜景が綺麗な都内のホテル</a>」に宿泊して客室からの眺めを堪能するのがマイブーム。</p>
+          <p>東京都内のメジャーな夜景スポットはほぼ制覇しており、最近は「<Link href="/tag/hotel/">夜景が綺麗な都内のホテル</Link>」に宿泊して客室からの眺めを堪能するのがマイブーム。</p>
           <p>本サイトの他にも「<a href="https://digital-style.jp/" target="_blank" rel="noreferrer noopener">ガジェットレビューブログ・デジスタ</a>」、「<a href="https://used-lab.jp">ユーズドラボ</a>」、「<a href="https://biz-shelf.com">ビズシェルフ</a>」を運営していたり、カメラマン、Webコンサルタントとしても活動しています。</p>
         </div>
 

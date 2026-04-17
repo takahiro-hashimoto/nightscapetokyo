@@ -107,6 +107,9 @@ export type ShareLabels = {
   hatena: string;
   copy: string;
   copied: string;
+  facebook?: string;
+  whatsapp?: string;
+  weibo?: string;
 };
 
 export type FooterLabels = {
@@ -165,6 +168,10 @@ export type HomePageLabels = {
     simulatorLinkText: string;
     simulatorSuffix: string;
   };
+  mapSection: {
+    heading: string;
+    desc: (count: number) => string;
+  };
 };
 
 export type AreaPageLabels = {
@@ -212,6 +219,17 @@ export type NotFoundLabels = {
   button: string;
 };
 
+export type HomeAuthorLabels = {
+  heading: string;
+  name: string;
+  title: string;
+  desc1: string;
+  desc2: string;
+  achievementsLabel: string;
+  achievements: string[];
+  moreLink: string;
+};
+
 export type ComponentLabels = {
   seoH1: (name: string) => string;
   seoDescription: (name: string, area: string, type: string) => string;
@@ -234,6 +252,7 @@ export type ComponentLabels = {
   homePage: HomePageLabels;
   searchPage: SearchPageLabels;
   notFound: NotFoundLabels;
+  homeAuthor: HomeAuthorLabels;
 };
 
 const LABELS = {
@@ -438,6 +457,10 @@ const LABELS = {
         simulatorLinkText: "日の出・日の入り方角シミュレーター",
         simulatorSuffix: "を利用すると簡単に夕日が沈む方向をチェックすることができます。",
       },
+      mapSection: {
+        heading: "地図から夜景スポットを探す",
+        desc: (n) => `東京・横浜エリアの夜景スポット${n}ヶ所を地図上に表示。マーカーをクリックすると詳細を確認できます。`,
+      },
     },
     searchPage: {
       breadcrumb: "検索結果",
@@ -462,6 +485,21 @@ const LABELS = {
       title: "ページが見つかりませんでした",
       desc: "お探しのページは移動または削除された可能性があります。",
       button: "トップページに戻る",
+    },
+    homeAuthor: {
+      heading: "東京夜景ナビについて",
+      name: "タカヒロ",
+      title: "夜景フォトグラファー / Webディレクター",
+      desc1: "月間20〜30万PVの東京夜景専門メディア。実際に足を運んで撮影した夜景スポットを定番から穴場まで200ヶ所以上紹介しています。",
+      desc2: "国内外の多くの方に東京夜景の魅力を伝えていきたい。そんな思いでこのサイトを運営しています。",
+      achievementsLabel: "主な実績",
+      achievements: [
+        "東京タワー公式サイトのタイムラプス映像を撮影",
+        "ザ・プリンス パークタワー東京の客室・レストラン写真を撮影",
+        "第8回東京大回廊写真コンテスト 出光美術館賞を受賞",
+        "NHK総合・BS TBS・テレビ朝日などに映像・写真を提供",
+      ],
+      moreLink: "プロフィール・活動実績をもっと見る",
     },
   },
   en: {
@@ -552,6 +590,8 @@ const LABELS = {
       hatena: "Hatena",
       copy: "Copy URL",
       copied: "Copied!",
+      facebook: "Facebook",
+      whatsapp: "WhatsApp",
     },
     anchor: {
       report: "Visit Report",
@@ -710,6 +750,10 @@ const LABELS = {
         simulatorLinkText: "Sunrise & Sunset Direction Simulator",
         simulatorSuffix: " makes it easy to check which direction the sun sets.",
       },
+      mapSection: {
+        heading: "Explore Night View Spots on the Map",
+        desc: (n) => `Showing ${n} night view spots in Tokyo & Yokohama on the map. Click a marker to see details.`,
+      },
     },
     searchPage: {
       breadcrumb: "Search Results",
@@ -734,6 +778,21 @@ const LABELS = {
       title: "Page Not Found",
       desc: "The page you are looking for may have been moved or deleted.",
       button: "Back to Home",
+    },
+    homeAuthor: {
+      heading: "About Tokyo Nightscape Navi",
+      name: "Takahiro",
+      title: "Night View Photographer / Web Director",
+      desc1: "A dedicated Tokyo night view media with 200,000–300,000 monthly visitors. We've personally visited and photographed over 200 spots, from iconic landmarks to hidden gems.",
+      desc2: "Our mission is to share the beauty of Tokyo's night views with people around the world.",
+      achievementsLabel: "Key Achievements",
+      achievements: [
+        "Filmed official time-lapse footage for Tokyo Tower's website",
+        "Photographed rooms & restaurants at The Prince Park Tower Tokyo",
+        "Won the Idemitsu Museum of Arts Award at the 8th Tokyo Grand Circuit Photo Contest",
+        "Provided footage and photos to NHK, BS TBS, TV Asahi, and other broadcasters",
+      ],
+      moreLink: "Learn more about us",
     },
   },
   ko: {
@@ -824,6 +883,7 @@ const LABELS = {
       hatena: "하테나",
       copy: "URL 복사",
       copied: "복사했습니다!",
+      facebook: "Facebook",
     },
     anchor: {
       report: "방문 리포트",
@@ -968,6 +1028,10 @@ const LABELS = {
         simulatorLinkText: "일출·일몰 방향 시뮬레이터",
         simulatorSuffix: "를 이용하면 간편하게 해가 지는 방향을 확인할 수 있습니다.",
       },
+      mapSection: {
+        heading: "지도에서 야경 스폿 찾기",
+        desc: (n) => `도쿄·요코하마 지역의 야경 스폿 ${n}곳을 지도에 표시합니다. 마커를 클릭하면 상세 정보를 확인할 수 있습니다.`,
+      },
     },
     searchPage: {
       breadcrumb: "검색 결과",
@@ -992,6 +1056,20 @@ const LABELS = {
       title: "페이지를 찾을 수 없습니다",
       desc: "찾으시는 페이지가 이동되었거나 삭제되었을 수 있습니다.",
       button: "홈으로 돌아가기",
+    },
+    homeAuthor: {
+      heading: "도쿄 야경 나비에 대하여",
+      name: "타카히로",
+      title: "야경 사진작가 / 웹 디렉터",
+      desc1: "월 20〜30만 PV의 도쿄 야경 전문 미디어. 직접 방문·촬영한 야경 스폿을 정평 있는 명소부터 숨은 명소까지 200곳 이상 소개합니다.",
+      desc2: "국내외 많은 분들께 도쿄 야경의 매력을 전하고 싶다는 마음으로 운영하고 있습니다.",
+      achievementsLabel: "주요 실적",
+      achievements: [
+        "도쿄 타워 공식 사이트의 타임랩스 영상 촬영",
+        "프린스 파크 타워 도쿄 객실·레스토랑 사진 촬영",
+        "NHK·BS TBS·TV 아사히 등에 영상·사진 제공",
+      ],
+      moreLink: "프로필·활동 실적 더 보기",
     },
   },
   tw: {
@@ -1082,6 +1160,7 @@ const LABELS = {
       hatena: "Hatena",
       copy: "複製連結",
       copied: "已複製！",
+      facebook: "Facebook",
     },
     anchor: {
       report: "訪問報告",
@@ -1226,6 +1305,10 @@ const LABELS = {
         simulatorLinkText: "日出・日落方向模擬器",
         simulatorSuffix: "可以輕鬆查詢日落的方向。",
       },
+      mapSection: {
+        heading: "在地圖上尋找夜景景點",
+        desc: (n) => `在地圖上顯示東京・橫濱地區的${n}個夜景景點。點擊標記可查看詳細資訊。`,
+      },
     },
     searchPage: {
       breadcrumb: "搜尋結果",
@@ -1250,6 +1333,20 @@ const LABELS = {
       title: "找不到頁面",
       desc: "您尋找的頁面可能已被移動或刪除。",
       button: "返回首頁",
+    },
+    homeAuthor: {
+      heading: "關於東京夜景導航",
+      name: "Takahiro",
+      title: "夜景攝影師 / 網站總監",
+      desc1: "每月20〜30萬PV的東京夜景專業媒體。實際走訪拍攝，從知名景點到隱藏景點，為您介紹200處以上的夜景景點。",
+      desc2: "希望將東京夜景的魅力傳遞給國內外更多人，懷著這份心意持續運營本站。",
+      achievementsLabel: "主要成就",
+      achievements: [
+        "拍攝東京鐵塔官方網站的縮時攝影影像",
+        "拍攝王子大飯店帕克東京客房及餐廳照片",
+        "為NHK、BS TBS、朝日電視台等提供影像與照片",
+      ],
+      moreLink: "查看更多個人簡介及活動實績",
     },
   },
   cn: {
@@ -1340,6 +1437,7 @@ const LABELS = {
       hatena: "Hatena",
       copy: "复制链接",
       copied: "已复制！",
+      weibo: "微博",
     },
     anchor: {
       report: "访问报告",
@@ -1484,6 +1582,10 @@ const LABELS = {
         simulatorLinkText: "日出・日落方向模拟器",
         simulatorSuffix: "可以轻松查询日落的方向。",
       },
+      mapSection: {
+        heading: "在地图上寻找夜景景点",
+        desc: (n) => `在地图上显示东京・横滨地区的${n}个夜景景点。点击标记可查看详细信息。`,
+      },
     },
     searchPage: {
       breadcrumb: "搜索结果",
@@ -1508,6 +1610,20 @@ const LABELS = {
       title: "找不到页面",
       desc: "您寻找的页面可能已被移动或删除。",
       button: "返回首页",
+    },
+    homeAuthor: {
+      heading: "关于东京夜景导航",
+      name: "Takahiro",
+      title: "夜景摄影师 / 网站总监",
+      desc1: "每月20～30万PV的东京夜景专业媒体。实际走访拍摄，从知名景点到隐藏景点，为您介绍200处以上的夜景景点。",
+      desc2: "希望将东京夜景的魅力传递给国内外更多人，怀着这份心意持续运营本站。",
+      achievementsLabel: "主要成就",
+      achievements: [
+        "拍摄东京铁塔官方网站的延时摄影视频",
+        "拍摄王子大饭店帕克东京客房及餐厅照片",
+        "为NHK、BS TBS、朝日电视台等提供影像与照片",
+      ],
+      moreLink: "查看更多个人简介及活动实绩",
     },
   },
 } satisfies Record<SiteLocale, ComponentLabels>;
@@ -1582,6 +1698,8 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
   faqLink: string;
   faqHeading: (tagName: string) => string;
   lastUpdated: string;
+  topLink: string;
+  topLinkHref: string;
 }> = {
   ja: {
     toc: "≡ タップできる目次",
@@ -1589,6 +1707,8 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     faqLink: "よくある質問",
     faqHeading: (tagName) => `${tagName}スポットを撮影する際によくある質問`,
     lastUpdated: "最終更新日",
+    topLink: "東京都内の夜景情報一覧",
+    topLinkHref: "/",
   },
   en: {
     toc: "≡ Table of Contents",
@@ -1596,6 +1716,8 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     faqLink: "FAQ",
     faqHeading: (tagName) => `Frequently Asked Questions About ${tagName} Spots`,
     lastUpdated: "Last updated",
+    topLink: "Tokyo Night View Spot List",
+    topLinkHref: "/en",
   },
   ko: {
     toc: "≡ 목차",
@@ -1603,6 +1725,8 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     faqLink: "자주 묻는 질문",
     faqHeading: (tagName) => `${tagName} 스폿 촬영 시 자주 묻는 질문`,
     lastUpdated: "최종 업데이트",
+    topLink: "도쿄 야경 스폿 목록",
+    topLinkHref: "/ko",
   },
   tw: {
     toc: "≡ 點擊查看目錄",
@@ -1610,6 +1734,8 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     faqLink: "常見問題",
     faqHeading: (tagName) => `關於${tagName}景點的常見問題`,
     lastUpdated: "最後更新",
+    topLink: "東京夜景景點一覽",
+    topLinkHref: "/tw",
   },
   cn: {
     toc: "≡ 点击查看目录",
@@ -1617,6 +1743,8 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     faqLink: "常见问题",
     faqHeading: (tagName) => `关于${tagName}景点的常见问题`,
     lastUpdated: "最后更新",
+    topLink: "东京夜景景点一览",
+    topLinkHref: "/cn",
   },
 };
 

@@ -1,4 +1,5 @@
 import Header from "@/components/layout/HeaderWrapper";
+import { buildSiteNavigationJsonLd } from "@/lib/json-ld";
 
 // Supabase JS クライアントの fetch を ISR キャッシュ対象にする
 export const fetchCache = "force-cache";
@@ -10,6 +11,10 @@ export default function PublicLayout({
 }) {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSiteNavigationJsonLd()) }}
+      />
       <Header />
       <main>{children}</main>
     </>

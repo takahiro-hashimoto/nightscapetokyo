@@ -36,11 +36,15 @@ export default async function ArticleListPage() {
       <div className="l-article-body">
         <div className="l-article-container">
           <Breadcrumb items={[{ label: "記事一覧" }]} />
-          <header className="content-card card-padding">
-            <h1 className="area-page-heading">記事一覧</h1>
-            <p className="area-page-lead">夜景撮影のコツや東京夜景スポットに関するコラムを掲載しています。実際に現地で撮影した経験をもとに、デートや旅行・撮影スポット選びにお役立ていただける情報をお届けします。</p>
-            <a className="content-top-link" href="/">東京都内の夜景情報一覧</a>
-          </header>
+          <div className="firstVisual">
+            <header className="firstVisual-header">
+              <h1 className="firstVisual-title">記事一覧</h1>
+            </header>
+            <div className="firstVisual-body">
+              <p>夜景撮影のコツや東京夜景スポットに関するコラムを掲載しています。実際に現地で撮影した経験をもとに、デートや旅行・撮影スポット選びにお役立ていただける情報をお届けします。</p>
+              <Link className="content-top-link" href="/">東京都内の夜景情報一覧</Link>
+            </div>
+          </div>
 
           {articles.length === 0 ? (
             <p style={{ color: "#64748b" }}>記事はまだありません。</p>

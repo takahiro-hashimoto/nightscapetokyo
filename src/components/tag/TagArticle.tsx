@@ -64,7 +64,6 @@ type Props = {
 export default function TagArticle({ tagName, content, allSpots, mapSpots, locale, spotHeadingLevel = "h2", shareUrl }: Props) {
   const l = TAG_ARTICLE_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_ARTICLE_LABELS.ja;
   const bcp47Locale = locale ? (LOCALE_SLUG_MAP[locale] ?? locale) : "ja";
-  const breadcrumbHref = shareUrl ? shareUrl.replace(SITE_URL, "") : undefined;
   /** slug → SpotWithRelations のマップ */
   const spotMap = new Map(allSpots.map((s) => [s.slug, s]));
 
@@ -99,16 +98,16 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
   return (
     <div className="l-article-body">
       <div className="l-article-container">
-        <Breadcrumb items={[{ label: content.breadcrumb, ...(breadcrumbHref ? { href: breadcrumbHref } : {}) }]} locale={locale} />
+        <Breadcrumb items={[{ label: content.breadcrumb }]} locale={locale} />
 
         <article itemScope itemType="https://schema.org/Article">
           <meta itemProp="author" content="nightscape.tokyo" />
           <meta itemProp="dateModified" content={isoDate} />
 
-          {/* ヒーロー画像 + ヘッダー wrapper */}
-          <div className="content-card">
+          {/* firstVisual: ヒーロー画像 + ヘッダー + リード文 */}
+          <div className="firstVisual">
             {content.heroImage && (
-              <figure className="page-hero" itemProp="image" itemScope itemType="https://schema.org/ImageObject">
+              <figure className="firstVisual-image" itemProp="image" itemScope itemType="https://schema.org/ImageObject">
                 <Image
                   src={content.heroImage}
                   alt={content.title}
@@ -120,42 +119,36 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
                 <meta itemProp="url" content={content.heroImage} />
               </figure>
             )}
-
-            {/* タイトル */}
-            <header className="card-padding">
-              <h1 className="page-title" itemProp="headline">{content.title}</h1>
-              <div className="page-meta">
-                <time className="page-date" dateTime={isoDate} itemProp="datePublished">
+            <header className="firstVisual-header">
+              <h1 className="firstVisual-title" itemProp="headline">{content.title}</h1>
+              <div className="firstVisual-meta">
+                <time className="firstVisual-date" dateTime={isoDate} itemProp="datePublished">
                   {l.lastUpdated}: {content.updatedAt}
                 </time>
-                {content.prNotice && <span className="page-pr">{content.prNotice}</span>}
+                {content.prNotice && <span className="firstVisual-badge">{content.prNotice}</span>}
               </div>
             </header>
-
-            {/* リード文 */}
-            <div className="page-lead" itemProp="description">
+            <div className="firstVisual-body" itemProp="description">
               {content.lead.split("\n").map((line, i) => (
                 <p key={i}>{line}</p>
               ))}
-              <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
+              <Link href={l.topLinkHref} className="content-top-link">{l.topLink}</Link>
+              {content.prBanner && (
+                <div className="mt-6">
+                  <PrBanner
+                    heading={content.prBanner.heading}
+                    image={{ src: content.prBanner.image }}
+                    paragraphs={content.prBanner.body}
+                    links={content.prBanner.links.map((link, i) => ({
+                      label: `▸ ${link.label}`,
+                      href: link.href,
+                      variant: i === 0 ? "filled" : "outline",
+                      external: link.href.startsWith("http"),
+                    }))}
+                  />
+                </div>
+              )}
             </div>
-
-            {/* PRバナー */}
-            {content.prBanner && (
-              <aside className="card-padding" style={{ paddingTop: 0 }}>
-                <PrBanner
-                  heading={content.prBanner.heading}
-                  image={{ src: content.prBanner.image }}
-                  paragraphs={content.prBanner.body}
-                  links={content.prBanner.links.map((link, i) => ({
-                    label: `▸ ${link.label}`,
-                    href: link.href,
-                    variant: i === 0 ? "filled" : "outline",
-                    external: link.href.startsWith("http"),
-                  }))}
-                />
-              </aside>
-            )}
           </div>
 
           {/* 目次 */}
@@ -268,6 +261,7 @@ export default function TagArticle({ tagName, content, allSpots, mapSpots, local
               url={shareUrl}
               title={content.title}
               labels={getComponentLabels(locale ?? "ja").share}
+              locale={locale ?? "ja"}
             />
           )}
         </article>

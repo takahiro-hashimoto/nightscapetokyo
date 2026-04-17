@@ -4,10 +4,13 @@ import Link from "next/link";
 import { Crown, Star, Sparkles, TrainFront, Heart, Coins } from "lucide-react";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
+import HomeAuthor from "@/components/home/HomeAuthor";
+import SpotShare from "@/components/spot/SpotShare";
 import { getTopSpotsTranslated, getSpotCount } from "@/lib/supabase/queries";
 import { ALL_LOCALE_SLUGS, SITE_NAMES, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { AREA_NAME } from "@/lib/constants";
+import { getComponentLabels } from "@/lib/i18n-labels";
 
 /** 東京都内のカテゴリーslugセット（横浜など都外を除く） */
 const TOKYO_AREA_SLUGS = new Set(
@@ -129,6 +132,7 @@ export default async function RecommendPageI18n({ params }: Props) {
   ]);
 
   const siteName = SITE_NAMES[locale] ?? "Tokyo Night View Guide";
+  const componentLabels = getComponentLabels(locale);
 
   return (
     <>
@@ -254,6 +258,13 @@ export default async function RecommendPageI18n({ params }: Props) {
         </div>
         </div>
       </article>
+      <HomeAuthor labels={componentLabels.homeAuthor} locale={locale} />
+      <SpotShare
+        url={`${SITE_URL}/${locale}/recommend`}
+        title={labels.title}
+        locale={locale}
+        labels={componentLabels.share}
+      />
     </>
   );
 }

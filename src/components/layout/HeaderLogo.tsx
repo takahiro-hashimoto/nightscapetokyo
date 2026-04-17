@@ -26,8 +26,7 @@ export default function HeaderLogo() {
       <img
         src="/logo.png"
         alt="東京夜景ナビ"
-        height={42}
-        style={{ height: 42, width: "auto" }}
+        className="header-logo-img"
       />
     </Link>
   );

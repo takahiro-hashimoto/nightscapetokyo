@@ -1,5 +1,14 @@
 import type { SpotWithRelations } from "@/lib/types";
 
+/** ロケール別 VideoObject ラベル */
+const VIDEO_LABELS: Record<string, { nameSuffix: string; fallbackDesc: string }> = {
+  ja:    { nameSuffix: "の夜景動画",       fallbackDesc: "の夜景・夕景映像" },
+  en:    { nameSuffix: " Night View Video", fallbackDesc: " night view footage" },
+  ko:    { nameSuffix: " 야경 동영상",      fallbackDesc: " 야경 영상" },
+  "zh-TW": { nameSuffix: " 夜景影片",      fallbackDesc: " 夜景影片" },
+  "zh-CN": { nameSuffix: " 夜景视频",      fallbackDesc: " 夜景视频" },
+};
+
 /** YouTube embed HTML から動画IDを抽出 */
 export function extractYoutubeId(html: string): string | null {
   const match = html.match(/(?:youtube\.com\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/);
@@ -139,8 +148,8 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
       schemas.push({
         "@context": "https://schema.org",
         "@type": "VideoObject",
-        name: `${name}の夜景動画`,
-        description: spot.lead ?? `${name}の夜景・夕景映像`,
+        name: `${name}${(VIDEO_LABELS[locale] ?? VIDEO_LABELS.ja).nameSuffix}`,
+        description: spot.lead ?? `${name}${(VIDEO_LABELS[locale] ?? VIDEO_LABELS.ja).fallbackDesc}`,
         thumbnailUrl: `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`,
         uploadDate: spot.published_at ?? spot.created_at,
         contentUrl: `https://www.youtube.com/watch?v=${youtubeId}`,

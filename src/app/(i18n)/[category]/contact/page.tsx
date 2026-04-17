@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { LOCALE_LABELS, ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
@@ -52,22 +51,16 @@ export default async function I18nContactPage({ params }: Props) {
         summary={l.summary}
         breadcrumb={[{ label: l.title }]}
       >
-        <div className="content-card card-padding article-body">
-          <p>{l.intro}</p>
-          <p>
-            <Link href={`/${category}/about`}>{l.aboutLink}</Link>
-          </p>
-          <div style={{ marginTop: 24, display: "flex", justifyContent: "center" }}>
-            <iframe
-              src="https://docs.google.com/forms/d/e/1FAIpQLSdAJJ6IAIGZwsfc61lO2bz1UsvEsfBSGYhYSJfX1P-uyxYW_g/viewform?embedded=true"
-              width="100%"
-              height="923"
-              style={{ border: 0, maxWidth: 640 }}
-              title={l.title}
-            >
-              Loading…
-            </iframe>
-          </div>
+        <div style={{ marginTop: 24, display: "flex", justifyContent: "center" }}>
+          <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLSdAJJ6IAIGZwsfc61lO2bz1UsvEsfBSGYhYSJfX1P-uyxYW_g/viewform?embedded=true"
+            width="100%"
+            height="923"
+            style={{ border: 0, maxWidth: 640 }}
+            title={l.title}
+          >
+            Loading…
+          </iframe>
         </div>
       </ArticleLayout>
     </>

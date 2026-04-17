@@ -130,7 +130,7 @@ export default function SpotArticle({
               </span>
               <span className="meta-author">
                 <span className="meta-date-label">{fl.authorLabel}：</span>
-                <Link href="/about/" rel="nofollow" itemProp="url"><span itemProp="name">{fl.author}</span></Link>
+                <Link href="/about/" itemProp="url"><span itemProp="name">{fl.author}</span></Link>
               </span>
             </div>
             <div className="meta-right">
@@ -241,6 +241,7 @@ export default function SpotArticle({
             url={canonicalUrl}
             title={seoTitle}
             labels={labels.share}
+            locale={currentLocale ?? "ja"}
           />
         </article>
 

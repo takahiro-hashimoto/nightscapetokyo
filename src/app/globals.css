@@ -162,6 +162,17 @@ img {
     display: none;
   }
 
+  .breadcrumb {
+    padding: 10px 0 5px;
+    font-size: 12px;
+  }
+
+  .address-category-link {
+    font-size: 0.85em;
+    color: #666;
+    display: block;
+  }
+
   .breadcrumb ol {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -200,7 +211,7 @@ img {
 }
 
 .card-padding {
-  padding: 32px;
+  padding: 24px;
 }
 
 .header-card {
@@ -234,6 +245,89 @@ img {
    ========================================= */
 .title-area {
   padding: 24px;
+}
+
+/* =========================================
+   Module - First Visual
+   記事・タグ・ページ共通のトップビジュアル
+   各子要素は任意: 欠けていても崩れない設計
+   ========================================= */
+.firstVisual {
+  background: #fff;
+  border: 1px solid #00000005;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px #00000008;
+}
+
+/* 画像: なければ header が card 上端から始まる */
+.firstVisual-image {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin: 0;
+}
+
+/* header: 常に存在。画像の有無で上余白が変わらないよう padding 固定 */
+.firstVisual-header {
+  padding: 24px;
+}
+
+/* title: meta がなければ margin-bottom を消す */
+.firstVisual-title {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin: 0 0 12px;
+}
+.firstVisual-title:last-child {
+  margin-bottom: 0;
+}
+
+/* meta: 日付・バッジ行。なければ title の margin-bottom:0 が効く */
+.firstVisual-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+.firstVisual-date {
+  color: #718096;
+}
+.firstVisual-badge {
+  color: #718096;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+/* body: リード文・PRバナーなど。なければ header の padding-bottom が閉じる */
+.firstVisual-body {
+  padding: 0 24px 24px;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.8;
+}
+.firstVisual-body p {
+  margin: 0 0 8px;
+}
+.firstVisual-body p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .firstVisual-header {
+    padding: 20px;
+  }
+  .firstVisual-title {
+    font-size: 18px;
+  }
+  .firstVisual-body {
+    padding: 0 20px 20px;
+  }
 }
 
 .seo-title {
@@ -455,6 +549,15 @@ img {
   contain-intrinsic-size: auto 500px;
 }
 
+.gallery-item figcaption {
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+  background: #f8fafc;
+  text-align: left;
+}
+
 /* =========================================
    Responsive - Tablet & Mobile
    ========================================= */
@@ -464,7 +567,11 @@ img {
   }
 
   .card-padding {
-    padding: 25px 20px;
+    padding: 25px 20px 0;
+  }
+
+  .page-lead {
+    padding: 0px 20px 20px !important;
   }
 
   .title-area {
@@ -561,7 +668,7 @@ img {
   }
 
   .article-meta .meta-right {
-    margin-left: 0;
+    display: none;
   }
 
   .article-meta > .meta-separator {
@@ -674,7 +781,7 @@ main > .home-section:nth-child(even of .home-section) {
   color: #fff;
   font-weight: 700;
   font-size: 16px;
-  padding: 14px 40px;
+  padding: 12px 16px;
   background: #333;
   border: none;
   border-radius: 999px;
@@ -918,14 +1025,14 @@ main > .home-section:nth-child(even of .home-section) {
 
 .spot-card {
   background: #fff;
+  border: 1px solid #0000001c;
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition: all 0.25s;
-  display: flex;
   flex-direction: column;
   height: 100%;
+  transition: all .25s;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 4px 12px #00000008;
 }
 
 .spot-card:hover {
@@ -957,19 +1064,19 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .ranking-badge {
+  color: #fff;
+  background: #0009;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
   position: absolute;
   top: 10px;
   left: 10px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .ranking-badge-top {
@@ -1180,7 +1287,6 @@ main > .home-section:nth-child(even of .home-section) {
   max-width: 960px;
   height: 72px;
   margin: 0 auto;
-  padding: 0 16px;
 }
 
 .site-header-right {
@@ -1291,12 +1397,12 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .site-header-bottom-inner {
-  display: flex;
   align-items: center;
   max-width: 960px;
-  height: 40px;
+  height: 48px;
   margin: 0 auto;
   padding: 0;
+  display: flex;
 }
 
 /* ---- 共通ナビ ---- */
@@ -1448,6 +1554,11 @@ main > .home-section:nth-child(even of .home-section) {
   gap: 8px;
 }
 
+.header-logo-img {
+  height: 42px;
+  width: auto;
+}
+
 /* Hamburger button — SP only */
 .hamburger {
   display: none;
@@ -1585,12 +1696,14 @@ main > .home-section:nth-child(even of .home-section) {
   .site-header-inner {
     justify-content: center;
     position: relative;
+    padding: 10px;
   }
 
   /* 2段ヘッダー (ja) */
   .site-header-top-inner {
     justify-content: center;
     position: relative;
+    padding: 10px;
   }
 
   .site-header-tagline,
@@ -1601,6 +1714,10 @@ main > .home-section:nth-child(even of .home-section) {
 
   .site-header-bottom {
     display: none;
+  }
+
+  .header-logo-img {
+    height: 36px;
   }
 
   .hamburger {
@@ -2030,7 +2147,7 @@ main > .home-section:nth-child(even of .home-section) {
   color: var(--color-text-secondary);
   font-size: 15px;
   line-height: 1.8;
-  padding: 0 40px 40px !important;
+  padding: 0 !important;
 }
 
 .content-top-link {
@@ -2426,4 +2543,44 @@ main > .home-section:nth-child(even of .home-section) {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
   }
+}
+
+/* =========================================
+   TOC Title
+   ========================================= */
+.toc-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: #333;
+  text-align: center;
+  border-radius: 24px;
+  padding: 8px 24px;
+  display: block;
+  width: fit-content;
+  margin: 0 auto 16px;
+}
+
+/* =========================================
+   Meta Description
+   ========================================= */
+.meta-desc {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  color: inherit;
+  font-size: 13px;
+}
+
+/* =========================================
+   Modal Overlay Base
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
@@ -36,7 +37,7 @@ export default function CautionPage() {
           東京夜景ナビ（以下、当サイトとする）で掲載している写真、画像、文章等の全てに著作権があります。無断転載、複製、加工することは一切お断りします。
         </p>
         <p>
-          当サイトに掲載されている写真はフリー素材ではございません。写真のご利用は原則有償となります。写真の商用利用・ご購入等に関しては<a href="/contact">お問い合わせフォーム</a>よりご連絡ください。
+          当サイトに掲載されている写真はフリー素材ではございません。写真のご利用は原則有償となります。写真の商用利用・ご購入等に関しては<Link href="/contact">お問い合わせフォーム</Link>よりご連絡ください。
         </p>
         <p>
           無料配布しているスマホの壁紙をWEBサイトやSNSにて公開したり配布するのはご遠慮ください。

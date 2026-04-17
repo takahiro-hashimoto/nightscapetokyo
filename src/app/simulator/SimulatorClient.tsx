@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo, useEffect } from "react";
+import Link from "next/link";
 import { calculateSunData } from "@/lib/sun-calc";
 import { loadMapState, saveMapState } from "@/lib/map-persistence";
 import SimulatorMap from "@/components/simulator/SimulatorMap";
@@ -143,7 +144,7 @@ export default function SimulatorClient() {
       {/* PC: Menu buttons */}
       <ul className="sim-menu">
         <li>
-          <a href="/">サイトTOP</a>
+          <Link href="/">サイトTOP</Link>
         </li>
         <li>
           <button onClick={() => openPcModal("howto")}>使い方</button>

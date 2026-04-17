@@ -69,6 +69,7 @@ export default async function EditSpotPage({ params }: Props) {
           <Link
             href={previewUrl}
             target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-sm font-medium !text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md shadow-sm transition-colors shrink-0"
           >
             <ExternalLink size={15} />

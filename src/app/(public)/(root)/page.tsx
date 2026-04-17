@@ -16,6 +16,7 @@ import { calculateSunData } from "@/lib/sun-calc";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildHomeHreflangAlternates } from "@/lib/types";
 import { buildFaqJsonLd, buildItemListJsonLd } from "@/lib/json-ld";
+import SpotShare from "@/components/spot/SpotShare";
 
 export async function generateMetadata(): Promise<Metadata> {
   const hp = getComponentLabels("ja").homePage;
@@ -29,9 +30,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       locale: "ja_JP",
       alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
-      images: [{ url: "/hero.jpg", width: 1200, height: 630, alt: title }],
+      images: [{ url: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/cta-mv.jpg", width: 1200, height: 630, alt: title }],
     },
-    twitter: { title, description },
+    twitter: { card: "summary_large_image", title, description, images: ["https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/cta-mv.jpg"] },
     alternates: {
       canonical: SITE_URL,
       languages: buildHomeHreflangAlternates(SITE_URL, ALL_LOCALE_SLUGS),
@@ -84,6 +85,12 @@ export default async function Home() {
       <HomeNewsAndVideos recentSpots={recentSpots} />
       <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={labels.homePage.faq} />
       <HomeAuthor />
+      <SpotShare
+        url={SITE_URL}
+        title="東京夜景ナビ｜東京都内の夜景スポット情報サイト"
+        locale="ja"
+        labels={labels.share}
+      />
       {spots.length > 0 && (
         <script
           type="application/ld+json"

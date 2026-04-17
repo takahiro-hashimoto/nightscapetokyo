@@ -35,7 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: article.title,
     description: article.description ?? undefined,
-    alternates: { canonical: canonicalUrl },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        ja: canonicalUrl,
+        "x-default": canonicalUrl,
+      },
+    },
     openGraph: {
       type: "article",
       title: article.title,
@@ -161,10 +167,10 @@ export default async function ArticleDetailPage({ params }: Props) {
               }}
             />
 
-            {/* ① ヒーロー画像 + ヘッダー wrapper */}
-            <div className="content-card">
+            {/* ① firstVisual: ヒーロー画像 + ヘッダー + リード文 */}
+            <div className="firstVisual">
               {thumbnail && (
-                <figure className="page-hero">
+                <figure className="firstVisual-image">
                   <Image
                     src={thumbnail}
                     alt={article.title}
@@ -176,25 +182,23 @@ export default async function ArticleDetailPage({ params }: Props) {
                   />
                 </figure>
               )}
-              <header className="card-padding">
-                <h1 className="page-title" itemProp="name">{article.title}</h1>
-                <div className="page-meta">
-                  <time className="page-date" dateTime={article.updated_at} itemProp="dateModified">
+              <header className="firstVisual-header">
+                <h1 className="firstVisual-title" itemProp="name">{article.title}</h1>
+                <div className="firstVisual-meta">
+                  <time className="firstVisual-date" dateTime={article.updated_at} itemProp="dateModified">
                     最終更新: {new Date(article.updated_at).toLocaleDateString("ja-JP", {
                       year: "numeric", month: "2-digit", day: "2-digit",
                     })}
                   </time>
-                  <span className="page-pr">一部PRを含みます</span>
+                  <span className="firstVisual-badge">一部PRを含みます</span>
                 </div>
               </header>
               {leadHtml && (
                 <div
-                  className="page-lead article-body card-padding"
+                  className="firstVisual-body article-body"
                   dangerouslySetInnerHTML={{ __html: leadHtml }}
                 />
               )}
-
-
             </div>
 
             {/* ② 目次カード */}
@@ -286,6 +290,32 @@ export default async function ArticleDetailPage({ params }: Props) {
         </div>
       </main>
       <Footer locale={null} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: article.title,
+            description: article.description ?? undefined,
+            url: `${SITE_URL}/article/${slug}/`,
+            inLanguage: "ja",
+            ...(thumbnail ? { image: { "@type": "ImageObject", url: thumbnail, width: 1200, height: 630 } } : {}),
+            datePublished: publishedDate,
+            dateModified: article.updated_at,
+            author: {
+              "@type": "Person",
+              name: "タカヒロ",
+              url: `${SITE_URL}/about/`,
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "nightscape.tokyo",
+              logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
+            },
+          }),
+        }}
+      />
     </>
   );
 }

@@ -1,11 +1,14 @@
+import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import AreaMapLoader from "@/components/map/AreaMapLoader";
 import RecommendCta from "@/components/common/RecommendCta";
+import SpotShare from "@/components/spot/SpotShare";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import type { SpotListItem } from "@/lib/types";
 import { SITE_URL, LOCALE_LABELS, LOCALE_SLUG_MAP } from "@/lib/types";
 import type { AreaPageLabels } from "@/lib/i18n-labels";
+import { getComponentLabels } from "@/lib/i18n-labels";
 import type { MapSpotItem } from "@/lib/supabase/queries";
 
 type Props = {
@@ -83,6 +86,9 @@ export default function TranslatedAreaContent({
 }: Props) {
   const faqs = generateAreaFaq(al, areaName, spots);
   const bcp47Locale = LOCALE_SLUG_MAP[localeSlug] ?? localeSlug;
+  const componentLabels = getComponentLabels(localeSlug);
+  const shareLabels = componentLabels.share;
+  const { topLink, topLinkHref } = componentLabels.rating;
 
   const itemListJsonLd = spots.length > 0 ? {
     "@context": "https://schema.org",
@@ -124,10 +130,15 @@ export default function TranslatedAreaContent({
         />
         <Breadcrumb items={[{ label: al.title(areaName) }]} locale={localeSlug} />
 
-        <header className="content-card card-padding">
-          <h1 className="area-page-heading">{al.title(areaName)}</h1>
-          <p className="area-page-lead">{al.lead(areaName)}</p>
-        </header>
+        <div className="firstVisual">
+          <header className="firstVisual-header">
+            <h1 className="firstVisual-title">{al.title(areaName)}</h1>
+          </header>
+          <div className="firstVisual-body">
+            <p>{al.lead(areaName)}</p>
+            <Link href={topLinkHref} className="content-top-link">{topLink}</Link>
+          </div>
+        </div>
 
         {spots.length === 0 ? (
           <p className="area-page-empty">
@@ -159,13 +170,12 @@ export default function TranslatedAreaContent({
               countLabel={al.mapCount(areaName, mapSpots.length)}
               nameOverrides={Object.fromEntries(spots.map((s) => [s.slug, s.name]))}
             />
-            <RecommendCta locale={localeSlug} />
           </section>
         )}
 
         {faqs.length > 0 && (
-          <section className="content-card card-padding area-faq" aria-label="FAQ">
-            <h2 className="area-section-heading">{al.faqHeading(areaName)}</h2>
+          <section className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
+            <h2 className="area-section-heading" id="faq-heading">{al.faqHeading(areaName)}</h2>
             <dl className="area-faq-list">
               {faqs.map((faq, i) => (
                 <div key={i} className="faq-item">
@@ -176,6 +186,14 @@ export default function TranslatedAreaContent({
             </dl>
           </section>
         )}
+
+        <RecommendCta locale={localeSlug} />
+        <SpotShare
+          url={`${SITE_URL}/${localeSlug}/${categorySlug}`}
+          title={al.title(areaName)}
+          labels={shareLabels}
+          locale={localeSlug}
+        />
 
         {itemListJsonLd && (
           <script

@@ -63,7 +63,7 @@ export function buildOrganizationJsonLd() {
     name: "nightscape.tokyo",
     url: SITE_URL,
     description:
-      "夜景フォトグラファーが運営する東京の夜景スポット情報サイト。月間20〜30万PV。",
+      "Tokyo night view spot guide operated by a night view photographer. 200,000–300,000 monthly visitors.",
     logo: {
       "@type": "ImageObject",
       url: `${SITE_URL}/logo.png`,
@@ -71,7 +71,7 @@ export function buildOrganizationJsonLd() {
     founder: {
       "@type": "Person",
       name: "タカヒロ",
-      jobTitle: "Webディレクター / ブロガー / フォトグラファー",
+      jobTitle: "Web Director / Blogger / Photographer",
       url: `${SITE_URL}/about/`,
       sameAs: [
         "https://www.youtube.com/@nightscape-tokyo",
@@ -116,6 +116,83 @@ export function buildSiteNavigationJsonLd() {
     "@type": "SiteNavigationElement",
     name: navLinks.map((l) => l.name),
     url: navLinks.map((l) => l.url),
+  };
+}
+
+/** ロケール別ナビゲーションリンク定義 */
+const SITE_NAV_BY_LOCALE: Record<string, { name: string; path: string }[]> = {
+  en: [
+    { name: "Tokyo Night View Spots", path: "/en/" },
+    { name: "Minato Ward Night View", path: "/en/minato/" },
+    { name: "Shibuya Ward Night View", path: "/en/shibuya/" },
+    { name: "Chiyoda Ward Night View", path: "/en/chiyoda/" },
+    { name: "Shinjuku Ward Night View", path: "/en/shinjuku/" },
+    { name: "Chuo Ward Night View", path: "/en/chuo/" },
+    { name: "Sumida Ward Night View", path: "/en/sumida/" },
+    { name: "Toshima Ward Night View", path: "/en/toshima/" },
+    { name: "Shinagawa Ward Night View", path: "/en/shinagawa/" },
+    { name: "Free Night View Spots", path: "/en/tag/free/" },
+    { name: "Date Night View Spots", path: "/en/tag/date/" },
+    { name: "Observatory Night View", path: "/en/tag/observatory/" },
+    { name: "Contact", path: "/en/contact/" },
+  ],
+  ko: [
+    { name: "도쿄 야경 스폿", path: "/ko/" },
+    { name: "미나토구 야경 스폿", path: "/ko/minato/" },
+    { name: "시부야구 야경 스폿", path: "/ko/shibuya/" },
+    { name: "치요다구 야경 스폿", path: "/ko/chiyoda/" },
+    { name: "신주쿠구 야경 스폿", path: "/ko/shinjuku/" },
+    { name: "주오구 야경 스폿", path: "/ko/chuo/" },
+    { name: "스미다구 야경 스폿", path: "/ko/sumida/" },
+    { name: "도시마구 야경 스폿", path: "/ko/toshima/" },
+    { name: "시나가와구 야경 스폿", path: "/ko/shinagawa/" },
+    { name: "무료 야경 스폿", path: "/ko/tag/free/" },
+    { name: "데이트 야경 스폿", path: "/ko/tag/date/" },
+    { name: "전망대 야경 스폿", path: "/ko/tag/observatory/" },
+    { name: "문의하기", path: "/ko/contact/" },
+  ],
+  tw: [
+    { name: "東京夜景景點", path: "/tw/" },
+    { name: "港區夜景景點", path: "/tw/minato/" },
+    { name: "澀谷區夜景景點", path: "/tw/shibuya/" },
+    { name: "千代田區夜景景點", path: "/tw/chiyoda/" },
+    { name: "新宿區夜景景點", path: "/tw/shinjuku/" },
+    { name: "中央區夜景景點", path: "/tw/chuo/" },
+    { name: "墨田區夜景景點", path: "/tw/sumida/" },
+    { name: "豐島區夜景景點", path: "/tw/toshima/" },
+    { name: "品川區夜景景點", path: "/tw/shinagawa/" },
+    { name: "免費夜景景點", path: "/tw/tag/free/" },
+    { name: "約會夜景景點", path: "/tw/tag/date/" },
+    { name: "展望台夜景景點", path: "/tw/tag/observatory/" },
+    { name: "聯絡我們", path: "/tw/contact/" },
+  ],
+  cn: [
+    { name: "东京夜景景点", path: "/cn/" },
+    { name: "港区夜景景点", path: "/cn/minato/" },
+    { name: "涩谷区夜景景点", path: "/cn/shibuya/" },
+    { name: "千代田区夜景景点", path: "/cn/chiyoda/" },
+    { name: "新宿区夜景景点", path: "/cn/shinjuku/" },
+    { name: "中央区夜景景点", path: "/cn/chuo/" },
+    { name: "墨田区夜景景点", path: "/cn/sumida/" },
+    { name: "丰岛区夜景景点", path: "/cn/toshima/" },
+    { name: "品川区夜景景点", path: "/cn/shinagawa/" },
+    { name: "免费夜景景点", path: "/cn/tag/free/" },
+    { name: "约会夜景景点", path: "/cn/tag/date/" },
+    { name: "展望台夜景景点", path: "/cn/tag/observatory/" },
+    { name: "联系我们", path: "/cn/contact/" },
+  ],
+};
+
+/** SiteNavigationElement ロケール版（i18n ページ用） */
+export function buildSiteNavigationJsonLdForLocale(locale: string) {
+  const links = SITE_NAV_BY_LOCALE[locale];
+  if (!links) return buildSiteNavigationJsonLd();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    name: links.map((l) => l.name),
+    url: links.map((l) => `${SITE_URL}${l.path}`),
   };
 }
 

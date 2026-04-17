@@ -10,8 +10,8 @@ type Props = {
   title?: string;
   /** SVG icon shown before the title */
   icon?: React.ReactNode;
-  /** Short summary shown below the title */
-  summary?: string;
+  /** Short summary shown below the title (string or array for multiple lines) */
+  summary?: string | string[];
   description?: string;
   heroImage?: string;
   heroAlt?: string;
@@ -58,7 +58,9 @@ export default function ArticleLayout({
               {icon && <span className="heading-icon">{icon}</span>}
               {title}
             </h1>
-            {summary && <p className="article-summary">{summary}</p>}
+            {Array.isArray(summary)
+              ? summary.map((s, i) => <p key={i} className="article-summary">{s}</p>)
+              : summary && <p className="article-summary">{summary}</p>}
             {lastUpdated && (
               <p className="article-meta">
                 <time dateTime={lastUpdated}>

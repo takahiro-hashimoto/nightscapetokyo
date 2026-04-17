@@ -246,6 +246,8 @@ export default async function TranslatedTagPage({ params }: Props) {
         allSpots={allSpots}
         mapSpots={mapSpots}
         locale={localeSlug}
+        spotHeadingLevel="h3"
+        shareUrl={`${SITE_URL}/${localeSlug}/tag/${tagSlug}`}
       />
     </>
   );

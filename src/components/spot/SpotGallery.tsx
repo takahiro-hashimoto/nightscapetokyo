@@ -94,7 +94,7 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
       {/* ライトボックス モーダル */}
       {current && (
         <div
-          className="gallery-modal-overlay"
+          className="modal-overlay gallery-modal-overlay"
           onClick={close}
           role="dialog"
           aria-modal="true"

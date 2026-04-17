@@ -4,8 +4,11 @@ import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import RecommendCta from "@/components/common/RecommendCta";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
+import HomeAuthor from "@/components/home/HomeAuthor";
+import SpotShare from "@/components/spot/SpotShare";
 import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
+import { getComponentLabels } from "@/lib/i18n-labels";
 
 /* ─── 翻訳ラベル ─── */
 type WallpaperLabels = {
@@ -356,6 +359,7 @@ export default async function WallpaperPageI18n({ params }: Props) {
   const { category: locale } = await params;
   const labels = WALLPAPER_LABELS[locale];
   if (!labels) return null;
+  const componentLabels = getComponentLabels(locale);
 
   return (
     <>
@@ -370,15 +374,17 @@ export default async function WallpaperPageI18n({ params }: Props) {
           <Breadcrumb items={[{ label: labels.title }]} locale={locale} />
 
           <article>
-            <div className="content-card card-padding">
-              <h1 className="page-title">{labels.title}</h1>
-              <div className="page-lead">
+            <div className="firstVisual">
+              <header className="firstVisual-header">
+                <h1 className="firstVisual-title">{labels.title}</h1>
+              </header>
+              <div className="firstVisual-body">
                 <p>{labels.lead1}</p>
                 <p>{labels.lead2}</p>
+                <Link href={`/${locale}`} className="content-top-link">
+                  {labels.topLink}
+                </Link>
               </div>
-              <Link href={`/${locale}`} className="content-top-link">
-                {labels.topLink}
-              </Link>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4">
@@ -409,6 +415,13 @@ export default async function WallpaperPageI18n({ params }: Props) {
           </article>
         </div>
       </div>
+      <HomeAuthor labels={componentLabels.homeAuthor} locale={locale} />
+      <SpotShare
+        url={`${SITE_URL}/${locale}/wallpaper/`}
+        title={labels.title}
+        locale={locale}
+        labels={componentLabels.share}
+      />
     </>
   );
 }

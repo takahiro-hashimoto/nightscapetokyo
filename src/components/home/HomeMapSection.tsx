@@ -1,21 +1,33 @@
+import Link from "next/link";
 import SpotMapLoader from "@/components/map/SpotMapLoader";
 import type { MapSpotItem } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";
 
 type Category = { slug: string; name: string };
 
+type MapSectionLabels = {
+  heading: string;
+  desc: (count: number) => string;
+};
+
+const JA_LABELS: MapSectionLabels = {
+  heading: "地図から夜景スポットを探す",
+  desc: (n) => `東京・横浜エリアの夜景スポット${n}ヶ所を地図上に表示。マーカーをクリックすると詳細を確認できます。`,
+};
+
 type Props = {
   spots: MapSpotItem[];
   categories: Category[];
+  labels?: MapSectionLabels;
 };
 
-export default function HomeMapSection({ spots, categories }: Props) {
+export default function HomeMapSection({ spots, categories, labels = JA_LABELS }: Props) {
   if (spots.length === 0) return null;
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "Map",
-    name: "東京・横浜 夜景スポットマップ",
+    name: labels.heading,
     url: `${SITE_URL}/`,
     hasPart: spots.slice(0, 50).map((spot) => ({
       "@type": "TouristAttraction",
@@ -37,10 +49,10 @@ export default function HomeMapSection({ spots, categories }: Props) {
       />
       <div className="home-container">
         <h2 className="home-section-heading" itemProp="name">
-          地図から夜景スポットを探す
+          {labels.heading}
         </h2>
         <p className="home-section-desc" itemProp="description">
-          東京・横浜エリアの夜景スポット{spots.length}ヶ所を地図上に表示。マーカーをクリックすると詳細を確認できます。
+          {labels.desc(spots.length)}
         </p>
 
         <SpotMapLoader spots={spots} categories={categories} />
@@ -49,7 +61,7 @@ export default function HomeMapSection({ spots, categories }: Props) {
           <ul>
             {spots.map((spot) => (
               <li key={spot.id}>
-                <a href={`/${spot.categorySlug}/${spot.slug}`}>{spot.name}</a>
+                <Link href={`/${spot.categorySlug}/${spot.slug}`}>{spot.name}</Link>
               </li>
             ))}
           </ul>

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import SimulatorLoader from "./SimulatorLoader";
+
+const SITE_URL = "https://nightscape.tokyo";
 
 export const metadata: Metadata = {
   title: "日の出・日の入りナビ|朝日と夕日の方角と時刻がわかるシミュレーションアプリ",
@@ -18,12 +21,37 @@ export const metadata: Metadata = {
     "冬至",
     "初日の出",
   ],
+  alternates: {
+    canonical: `${SITE_URL}/simulator/`,
+    languages: {
+      ja: `${SITE_URL}/simulator/`,
+      "x-default": `${SITE_URL}/simulator/`,
+    },
+  },
 };
 
 export default function SimulatorPage() {
   return (
     <>
       <SimulatorLoader />
+      {/* 関連する夜景撮影スポット */}
+      <div className="l-article-container" style={{ marginTop: "32px" }}>
+        <section className="content-card card-padding">
+          <h2 className="area-section-heading">夕景・夜景撮影におすすめのスポット</h2>
+          <p className="area-page-lead" style={{ marginBottom: "16px" }}>
+            日の出・日の入り方角を確認したら、実際の撮影地を探してみましょう。夕日・朝日を活かした夜景スポットをご紹介しています。
+          </p>
+          <div className="pill-tag-list">
+            <Link href="/tag/date/" className="pill-tag">デートにおすすめ</Link>
+            <Link href="/tag/free/" className="pill-tag">無料で楽しめる</Link>
+            <Link href="/tag/observatory/" className="pill-tag">展望台・展望スポット</Link>
+            <Link href="/tag/park/" className="pill-tag">公園からの夜景</Link>
+            <Link href="/minato/" className="pill-tag">港区の夜景スポット</Link>
+            <Link href="/sumida/" className="pill-tag">墨田区の夜景スポット</Link>
+            <Link href="/recommend/" className="pill-tag">おすすめ夜景スポット一覧</Link>
+          </div>
+        </section>
+      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

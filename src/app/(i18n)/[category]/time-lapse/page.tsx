@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
+import HomeAuthor from "@/components/home/HomeAuthor";
+import SpotShare from "@/components/spot/SpotShare";
+import { getComponentLabels } from "@/lib/i18n-labels";
 
 /* ===== 翻訳ラベル ===== */
 
@@ -238,6 +242,7 @@ export const revalidate = 3600;
 export default async function TimeLapseLocalePage({ params }: PageProps) {
   const { category: locale } = await params;
   const l = LABELS[locale] ?? LABELS.en;
+  const componentLabels = getComponentLabels(locale);
 
   const tocItems = [
     { key: "collection", label: l.collectionHeading, children: COLLECTION_SUBSECTIONS.map((s) => s.heading) },
@@ -258,19 +263,22 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
           <Breadcrumb items={[{ label: l.title }]} locale={locale} />
 
           <article>
-            {/* ヒーロー画像 */}
-            <div className="page-hero">
-              <img
-                src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"
-                alt={l.title}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </div>
-
-            {/* タイトル + リード */}
-            <div className="content-card card-padding">
-              <h1 className="page-title">{l.title}</h1>
-              <div className="page-lead">
+            {/* firstVisual: ヒーロー画像 + タイトル + リード文 */}
+            <div className="firstVisual">
+              <figure className="firstVisual-image">
+                <Image
+                  src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"
+                  alt={l.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 800px"
+                />
+              </figure>
+              <header className="firstVisual-header">
+                <h1 className="firstVisual-title">{l.title}</h1>
+              </header>
+              <div className="firstVisual-body">
                 {l.leadLines.map((line, i) => {
                   if (line.includes(l.contactLinkText)) {
                     const parts = line.split(l.contactLinkText);
@@ -364,6 +372,13 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
           </article>
         </div>
       </div>
+      <HomeAuthor labels={componentLabels.homeAuthor} locale={locale} />
+      <SpotShare
+        url={`${SITE_URL}/${locale}/time-lapse/`}
+        title={l.title}
+        locale={locale}
+        labels={componentLabels.share}
+      />
     </>
   );
 }
