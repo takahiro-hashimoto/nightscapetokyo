@@ -125,16 +125,26 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
             </button>
           )}
 
-          {/* 画像 */}
-          <Image
-            src={current.url}
-            alt={current.alt || ""}
-            width={1200}
-            height={800}
-            className="gallery-modal-image"
-            unoptimized
-            onClick={(e) => e.stopPropagation()}
-          />
+          {/* 画像 + フッター */}
+          <div className="gallery-modal-body" onClick={(e) => e.stopPropagation()}>
+            <Image
+              src={current.url}
+              alt={current.alt || ""}
+              width={1200}
+              height={800}
+              className="gallery-modal-image"
+              unoptimized
+            />
+            {/* キャプション + カウンター */}
+            <div className="gallery-modal-footer">
+              {current.alt && (
+                <p className="gallery-modal-caption">{current.alt}</p>
+              )}
+              <p className="gallery-modal-counter">
+                {selectedIndex! + 1} / {images.length}
+              </p>
+            </div>
+          </div>
 
           {/* 次へ */}
           {images.length > 1 && (
@@ -150,19 +160,6 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
               <ChevronRight size={36} />
             </button>
           )}
-
-          {/* キャプション + カウンター */}
-          <div
-            className="gallery-modal-footer"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {current.alt && (
-              <p className="gallery-modal-caption">{current.alt}</p>
-            )}
-            <p className="gallery-modal-counter">
-              {selectedIndex! + 1} / {images.length}
-            </p>
-          </div>
         </div>
       )}
     </section>

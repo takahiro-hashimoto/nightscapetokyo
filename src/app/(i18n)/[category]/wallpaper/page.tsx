@@ -352,7 +352,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 /* ─── Page ─── */
 export default async function WallpaperPageI18n({ params }: Props) {

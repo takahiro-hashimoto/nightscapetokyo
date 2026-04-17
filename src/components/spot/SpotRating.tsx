@@ -46,7 +46,7 @@ export default function SpotRating({
   labels,
 }: Props) {
   const l = labels ?? {
-    header: (n: string, area: string) => `${n || "スポット"} の夜景（${area}）`,
+    header: (n: string, area: string) => `${n || "スポット"}の夜景（${area}）`,
     beautiful: "美しさ",
     access: "アクセス",
     atmosphere: "雰囲気",

@@ -14,7 +14,6 @@ export const metadata: Metadata = {
     default: "東京夜景ナビ | 東京の夜景スポットガイド",
     template: "%s | 東京夜景ナビ",
   },
-  description: DEFAULT_DESCRIPTION,
   metadataBase: new URL(SITE_URL),
   icons: {
     icon: "/favicon.ico",
@@ -27,7 +26,6 @@ export const metadata: Metadata = {
     alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
     url: SITE_URL,
     title: "東京夜景ナビ | 東京の夜景スポットガイド",
-    description: DEFAULT_DESCRIPTION,
     images: [{ url: "/hero.jpg", width: 1200, height: 630, alt: "東京夜景ナビ | 東京の夜景スポットガイド" }],
   },
   twitter: {

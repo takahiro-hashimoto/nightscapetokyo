@@ -199,7 +199,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export default async function TranslatedTagPage({ params }: Props) {
   const { category: localeSlug, slug: tagSlug } = await params;

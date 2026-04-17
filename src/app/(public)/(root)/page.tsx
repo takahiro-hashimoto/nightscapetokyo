@@ -40,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 export const fetchCache = "force-cache";
 
 export default async function Home() {

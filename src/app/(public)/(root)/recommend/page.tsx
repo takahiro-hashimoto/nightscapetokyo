@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { getTopSpots, getSpotsBySlugs, getTotalSpotCount, type MapSpotItem } from "@/lib/supabase/queries";
-import { summarizeReport } from "@/lib/summarize-report";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
 import { AREA_NAME } from "@/lib/constants";
@@ -49,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 export const fetchCache = "force-cache";
 
 export default async function RecommendPage() {
@@ -84,17 +83,9 @@ export default async function RecommendPage() {
     },
   ];
 
-  // 訪問レポートをAIで要約して説明文を生成（reportがない場合はleadにフォールバック）
+  // 説明文はleadをそのまま使用
   const descriptions: Record<string, string> = Object.fromEntries(
-    await Promise.all(
-      sortedSpots.map(async (s) => {
-        if (s.report) {
-          const summary = await summarizeReport(s.report).catch(() => s.lead ?? "");
-          return [s.slug, summary];
-        }
-        return [s.slug, s.lead ?? ""];
-      })
-    )
+    sortedSpots.map((s) => [s.slug, s.lead ?? ""])
   );
 
   const heroImage = sortedSpots[0]?.featured_image || topSpots[0]?.featured_image || undefined;

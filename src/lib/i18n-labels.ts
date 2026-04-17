@@ -267,7 +267,7 @@ const LABELS = {
     },
     heroImageAlt: (name) => `${name}の夜景`,
     rating: {
-      header: (name, area) => `${name || "スポット"} の夜景（${area}）`,
+      header: (name, area) => `${name || "スポット"}の夜景（${area}）`,
       beautiful: "美しさ",
       access: "アクセス",
       atmosphere: "雰囲気",

@@ -163,7 +163,7 @@ img {
   }
 
   .breadcrumb {
-    padding: 10px 0 5px;
+    padding: 8px 0 12px;
     font-size: 12px;
   }
 
@@ -238,6 +238,20 @@ img {
 .heading-icon {
   color: #4a5568;
   flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+  .gallery-modal-footer {
+    display: none;
+  }
+
+  .best-time-desc br {
+    display: none;
+  }
+
+  .heading-icon {
+    display: none;
+  }
 }
 
 /* =========================================
@@ -331,11 +345,11 @@ img {
 }
 
 .seo-title {
-  line-height: 1.1;
-  font-size: 13px;
   color: #718096;
-  margin: 0 0 8px;
+  margin: 0 0 12px;
+  font-size: 13px;
   font-weight: 500;
+  line-height: 1.1;
   display: block;
 }
 
