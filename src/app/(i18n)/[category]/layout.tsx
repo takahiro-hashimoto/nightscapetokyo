@@ -1,5 +1,6 @@
 import Footer from "@/components/layout/Footer";
 import { LOCALE_HTML_LANG } from "@/lib/types";
+import { buildSiteNavigationJsonLdForLocale } from "@/lib/json-ld";
 
 export default async function CategoryLayout({
   children,
@@ -13,6 +14,12 @@ export default async function CategoryLayout({
 
   return (
     <div lang={lang}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildSiteNavigationJsonLdForLocale(locale)),
+        }}
+      />
       {children}
       <Footer locale={locale} />
     </div>
