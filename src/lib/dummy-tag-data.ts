@@ -1492,6 +1492,7 @@ function spot(
     rating_cost: null,
     featured_image: null,
     published: true,
+    closed: false,
     published_at: "2024-08-01T00:00:00+09:00",
     created_at: "2024-08-01T00:00:00+09:00",
     updated_at: "2025-02-23T00:00:00+09:00",
