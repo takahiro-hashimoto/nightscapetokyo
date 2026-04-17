@@ -5,6 +5,7 @@ type Props = {
   visualTitle: string | null;
   featuredImage: string | null;
   imageAlt?: string;
+  closed?: boolean;
 };
 
 export default function SpotHero({
@@ -12,6 +13,7 @@ export default function SpotHero({
   visualTitle,
   featuredImage,
   imageAlt,
+  closed,
 }: Props) {
   return (
     <header className="content-card header-card">
@@ -33,6 +35,9 @@ export default function SpotHero({
             itemProp="contentUrl"
           />
           <meta itemProp="url" content={featuredImage} />
+          {closed && (
+            <span className="spot-card-closed-badge">閉鎖済み</span>
+          )}
         </figure>
       )}
     </header>

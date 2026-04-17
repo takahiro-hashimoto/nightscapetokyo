@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/types";
 import { buildWebSiteJsonLd, buildOrganizationJsonLd } from "@/lib/json-ld";
 import NonCriticalCss from "@/components/layout/NonCriticalCss";
+import NavigationProgress from "@/components/layout/NavigationProgress";
 import "./globals.css";
 
 const SITE_NAME = "東京夜景ナビ";
@@ -58,6 +59,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen flex flex-col">
+        <NavigationProgress />
         {children}
       </body>
     </html>

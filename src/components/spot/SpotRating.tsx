@@ -30,6 +30,7 @@ type Props = {
   access: number | null;
   atmosphere: number | null;
   cost: number | null;
+  closed?: boolean;
   labels?: RatingLabels;
 };
 
@@ -41,6 +42,7 @@ export default function SpotRating({
   access,
   atmosphere,
   cost,
+  closed,
   labels,
 }: Props) {
   const l = labels ?? {

@@ -41,7 +41,7 @@ import {
 import type { SpotListItem } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { calculateSunData } from "@/lib/sun-calc";
-import { buildFaqJsonLd, buildItemListJsonLd, buildAreaItemListJsonLd, localeToLanguage } from "@/lib/json-ld";
+import { buildFaqJsonLd, buildItemListJsonLd, buildAreaItemListJsonLd, buildCollectionPageJsonLd, localeToLanguage } from "@/lib/json-ld";
 
 type Props = {
   params: Promise<{ category: string }>;
@@ -66,9 +66,32 @@ function buildAreaDisplayName(slug: string, categoryName: string): string {
   return sub ? `${categoryName}（${sub}）` : categoryName;
 }
 
-/** エリアページの説明文を生成 */
-function buildAreaDescription(areaName: string): string {
-  return `東京都${areaName}のおすすめ夜景スポット情報（夜景が綺麗な場所）を紹介。各夜景スポットの詳細記事には実際に訪問した感想や写真を複数枚を掲載しています。デート、旅行、撮影スポットなどを決めるのにぜひお役立てください！`;
+/**
+ * エリアページの説明文を生成（エリアごとに固有の内容）
+ * スポット数・上位スポット名を含めることで重複コンテンツを回避。
+ * 上位2件のみ使用し文字数超過を防ぐ。無料スポットがあれば動的に追記。
+ */
+function buildAreaDescription(areaName: string, spots: SpotListItem[]): string {
+  const count = spots.length;
+  if (count === 0) {
+    return `東京都${areaName}のおすすめ夜景スポット情報を紹介。実際に訪問した感想や写真を掲載。`;
+  }
+  const sorted = [...spots].sort((a, b) => b.rating_avg - a.rating_avg);
+  const top2Names = sorted.slice(0, 2).map((s) => s.name).join("・");
+  return `東京${areaName}のおすすめ夜景スポット${count}件を厳選掲載。${top2Names}などの人気スポットを実際に訪問して撮影した写真や訪問レポートを紹介。デート・旅行・夜景撮影スポット選びにぜひご活用ください。`;
+}
+
+/** 月別の東京の平均日没時刻（概算） */
+const MONTHLY_SUNSET: Record<number, string> = {
+  1: "16:40", 2: "17:10", 3: "17:40", 4: "18:10", 5: "18:35",
+  6: "19:00", 7: "19:00", 8: "18:40", 9: "18:00", 10: "17:20",
+  11: "16:45", 12: "16:30",
+};
+
+function offsetTime(hhmm: string, mins: number): string {
+  const [h, m] = hhmm.split(":").map(Number);
+  const t = h * 60 + m + mins;
+  return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
 }
 
 /** エリアFAQを自動生成 */
@@ -79,6 +102,8 @@ function generateAreaFaq(
   if (spots.length === 0) return [];
 
   const faqs: { question: string; answer: string }[] = [];
+  const sorted = [...spots].sort((a, b) => b.rating_avg - a.rating_avg);
+  const topSpot = sorted[0];
 
   // Q1: スポット数
   faqs.push({
@@ -87,8 +112,6 @@ function generateAreaFaq(
   });
 
   // Q2: 一番評価が高いスポット
-  const sorted = [...spots].sort((a, b) => b.rating_avg - a.rating_avg);
-  const topSpot = sorted[0];
   faqs.push({
     question: `${categoryName}で一番おすすめの夜景スポットは？`,
     answer: `${topSpot.name}が当サイトの評価で最も高く、平均${topSpot.rating_avg.toFixed(1)}点（5点満点）です。${topSpot.lead ? topSpot.lead : ""}`,
@@ -104,10 +127,16 @@ function generateAreaFaq(
     });
   }
 
-  // Q4: デートにおすすめ
+  // Q4: デートにおすすめ（リード文にデート系キーワードを含むスポットを優先）
+  const dateKeywords = ["デート", "カップル", "ロマンチック", "ロマンス"];
+  const dateSpots = spots.filter((s) =>
+    dateKeywords.some((kw) => (s.lead || "").includes(kw))
+  );
+  const dateCandidates = dateSpots.length >= 2 ? dateSpots.slice(0, 3) : sorted.slice(0, Math.min(3, sorted.length));
+  const dateNames = dateCandidates.map((s) => s.name).join("、");
   faqs.push({
     question: `${categoryName}でデートにおすすめの夜景スポットは？`,
-    answer: `${categoryName}エリアでは${topSpot.name}が特におすすめです。各スポットの詳細ページでは雰囲気やアクセス情報も掲載しているので、デートの計画にぜひご活用ください。`,
+    answer: `${categoryName}エリアでデートにおすすめの夜景スポットは${dateNames}です。各スポットのページには実際の雰囲気写真やアクセス情報を掲載しているので、デートの計画にぜひご活用ください。`,
   });
 
   // Q5: 無料スポット
@@ -122,10 +151,14 @@ function generateAreaFaq(
       : `${categoryName}には無料または低料金で楽しめるスポットが多数あります。各スポットの詳細ページで料金情報をご確認ください。`,
   });
 
-  // Q6: ベストタイム
+  // Q6: ベストタイム（現在の月に応じた日没時刻を使用）
+  const currentMonth = new Date().getMonth() + 1;
+  const sunsetHhmm = MONTHLY_SUNSET[currentMonth] ?? "17:30";
+  const blueFrom = offsetTime(sunsetHhmm, 20);
+  const blueTo = offsetTime(sunsetHhmm, 50);
   faqs.push({
     question: `${categoryName}で夜景を見るベストな時間帯は？`,
-    answer: `日没後30分、空にまだ色が残る「ブルーアワー」が最も美しい時間帯です。東京の日没は冬は16:30頃、夏は19:00頃と季節で変わります。各スポットページの日没計算機をご活用ください。`,
+    answer: `日没後20〜50分の「ブルーアワー」が最も美しい時間帯です。現在の季節（${currentMonth}月）の東京の日没は${sunsetHhmm}頃なので、${blueFrom}〜${blueTo}が狙い目です。${topSpot.name}など${categoryName}のスポットでぜひ試してみてください。`,
   });
 
   return faqs;
@@ -193,10 +226,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!cat) return {};
 
   const displayName = buildAreaDisplayName(categorySlug, cat.name);
-  const title = `${displayName}の夜景スポット一覧`;
-  const description = buildAreaDescription(cat.name);
+  const title = spots.length > 0
+    ? `${displayName}のおすすめ夜景スポット一覧【${spots.length}件掲載】`
+    : `${displayName}のおすすめ夜景スポット一覧`;
+  const description = buildAreaDescription(cat.name, spots);
   const canonicalUrl = `${SITE_URL}/${categorySlug}`;
-  const heroImage = spots[0]?.featured_image || undefined;
+  const topRatedSpot = [...spots].sort((a, b) => b.rating_avg - a.rating_avg)[0];
+  const heroImage = topRatedSpot?.featured_image || undefined;
   const areaAlternateLocale = availableLocales
     .map((s) => OG_LOCALE_MAP[s])
     .filter(Boolean);
@@ -315,22 +351,28 @@ export default async function AreaPage({ params }: Props) {
   // ── 通常のエリアページ ──
   if (NON_AREA_SLUGS.includes(categorySlug)) notFound();
 
-  const [cat, spots, availableLocales, mapSpots] = await Promise.all([
+  const [cat, spots, availableLocales, mapSpots, allAreas] = await Promise.all([
     getCategoryBySlug(categorySlug),
     getSpotsByCategory(categorySlug),
     getAvailableAreaLocales(categorySlug),
     getMapSpotsByCategory(categorySlug),
+    getAreas(),
   ]);
 
   if (!cat) notFound();
 
   const displayName = buildAreaDisplayName(categorySlug, cat.name);
+  const areaDescription = buildAreaDescription(cat.name, spots);
   const faqs = generateAreaFaq(cat.name, spots);
+  const relatedAreas = allAreas
+    .filter((a) => a.slug !== categorySlug && !NON_AREA_SLUGS.includes(a.slug))
+    .sort((a, b) => b.spot_count - a.spot_count)
+    .slice(0, 8);
 
   return (
     <div className="l-article-body" itemScope itemType="https://schema.org/CollectionPage">
       <meta itemProp="name" content={`${displayName}の夜景スポット一覧`} />
-      <meta itemProp="description" content={buildAreaDescription(cat.name)} />
+      <meta itemProp="description" content={areaDescription} />
       <link itemProp="url" href={`${SITE_URL}/${categorySlug}`} />
       <div className="l-article-container">
         <LanguageSwitcher
@@ -348,7 +390,7 @@ export default async function AreaPage({ params }: Props) {
             </h1>
           </header>
           <div className="firstVisual-body">
-            <p>{buildAreaDescription(cat.name)}</p>
+            <p>{areaDescription}</p>
             <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
           </div>
         </div>
@@ -395,11 +437,42 @@ export default async function AreaPage({ params }: Props) {
           </section>
         )}
 
+        {/* 関連エリアリンク */}
+        {relatedAreas.length > 0 && (
+          <section className="content-card card-padding" id="related-areas" aria-labelledby="related-areas-heading">
+            <h2 className="area-section-heading" id="related-areas-heading">他のエリアの夜景スポット</h2>
+            <ul className="related-areas-list">
+              {relatedAreas.map((area) => (
+                <li key={area.slug}>
+                  <Link href={`/${area.slug}`} className="related-area-link">
+                    {area.name}の夜景
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         <RecommendCta locale={null} />
         <SpotShare
           url={`${SITE_URL}/${categorySlug}`}
           title={`${displayName}の夜景スポット一覧`}
           labels={getComponentLabels("ja").share}
+        />
+
+        {/* CollectionPage JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              buildCollectionPageJsonLd({
+                name: `${displayName}の夜景スポット一覧`,
+                description: areaDescription,
+                url: `${SITE_URL}/${categorySlug}`,
+                numberOfItems: spots.length,
+              })
+            ),
+          }}
         />
 
         {/* ItemList JSON-LD */}

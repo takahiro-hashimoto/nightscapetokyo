@@ -57,12 +57,13 @@ function mapSpotToListing(s: any): SpotListItem {
     rating_atmosphere: s.rating_atmosphere ?? null,
     rating_cost: s.rating_cost ?? null,
     lead: s.lead || "",
+    closed: s.closed ?? false,
   };
 }
 
 /** 一覧クエリ共通の select カラム */
 const LISTING_SELECT =
-  "id, slug, name, title, lead, featured_image, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(slug, name)";
+  "id, slug, name, title, lead, featured_image, closed, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(slug, name)";
 
 /** フルリレーション取得の select カラム */
 const FULL_SELECT =

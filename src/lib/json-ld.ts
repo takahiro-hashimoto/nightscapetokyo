@@ -256,19 +256,38 @@ export function buildAreaItemListJsonLd(
   options: { name?: string; inLanguage?: string } = {}
 ) {
   const { name, inLanguage = "ja" } = options;
+  const sorted = [...spots].sort((a, b) => b.rating_avg - a.rating_avg);
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
     ...(name ? { name } : {}),
+    numberOfItems: spots.length,
     inLanguage,
-    itemListElement: spots
-      .sort((a, b) => b.rating_avg - a.rating_avg)
-      .map((spot, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        url: `${SITE_URL}/${categorySlug}/${spot.slug}`,
-        name: spot.name,
-        ...(spot.featured_image ? { image: spot.featured_image } : {}),
-      })),
+    itemListElement: sorted.map((spot, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE_URL}/${categorySlug}/${spot.slug}`,
+      name: spot.name,
+      ...(spot.featured_image ? { image: spot.featured_image } : {}),
+    })),
+  };
+}
+
+/** CollectionPage（エリアページ用） */
+export function buildCollectionPageJsonLd(options: {
+  name: string;
+  description: string;
+  url: string;
+  numberOfItems?: number;
+  inLanguage?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: options.name,
+    description: options.description,
+    url: options.url,
+    inLanguage: options.inLanguage ?? "ja",
+    ...(options.numberOfItems != null ? { numberOfItems: options.numberOfItems } : {}),
   };
 }

@@ -40,6 +40,7 @@ export async function createSpot(formData: FormData) {
     category_id: (formData.get("category_id") as string) || null,
     published: formData.get("published") === "on",
     published_at: formData.get("published") === "on" ? new Date().toISOString() : null,
+    closed: formData.get("closed") === "on",
     name: (formData.get("name") as string)?.trim() || null,
     lead: (formData.get("lead") as string)?.trim() || null,
     report: (formData.get("report") as string)?.trim() || null,
@@ -177,6 +178,7 @@ export async function updateSpot(id: string, formData: FormData) {
     type: (formData.get("type") as string) || "spot",
     category_id: (formData.get("category_id") as string) || null,
     published,
+    closed: formData.get("closed") === "on",
     published_at: published && !current?.published_at
       ? new Date().toISOString()
       : current?.published_at ?? null,

@@ -118,6 +118,7 @@ export default function SpotArticle({
             visualTitle={spot.name}
             featuredImage={spot.featured_image}
             imageAlt={imageAlt}
+            closed={spot.closed}
           />
 
           <div className="article-meta" itemProp="author" itemScope itemType="https://schema.org/Person">
@@ -149,6 +150,7 @@ export default function SpotArticle({
             access={spot.rating_access}
             atmosphere={spot.rating_atmosphere}
             cost={spot.rating_cost}
+            closed={spot.closed}
             labels={labels.rating}
           />
 

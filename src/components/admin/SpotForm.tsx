@@ -46,6 +46,7 @@ type SpotData = {
   type: string;
   category_id: string;
   published: boolean;
+  closed: boolean;
   name: string | null;
   lead: string | null;
   report: string | null;
@@ -423,6 +424,17 @@ export default function SpotForm({ spot, categories, tags, translations = [] }: 
                 className="w-4 h-4"
               />
               <span className="text-sm text-gray-600">公開する</span>
+            </label>
+          </Field>
+          <Field label="閉鎖">
+            <label className="flex items-center gap-2 mt-2">
+              <input
+                name="closed"
+                type="checkbox"
+                defaultChecked={spot?.closed ?? false}
+                className="w-4 h-4 accent-red-500"
+              />
+              <span className="text-sm text-red-600 font-medium">閉鎖済み（評点グレーアウト・ラベル表示）</span>
             </label>
           </Field>
         </div>

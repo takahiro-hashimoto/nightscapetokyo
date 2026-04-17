@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const canonicalUrl = `${SITE_URL}/recommend`;
 
   const allTopSpots = await getTopSpots(60).catch(() => []);
-  const firstSpot = allTopSpots.find((s) => TOKYO_AREA_SLUGS.has(s.category.slug));
+  const firstSpot = allTopSpots.find((s) => TOKYO_AREA_SLUGS.has(s.category.slug) && !s.closed);
   const heroImage = firstSpot?.featured_image || undefined;
 
   return {
@@ -60,9 +60,9 @@ export default async function RecommendPage() {
     getTotalSpotCount().catch(() => 0),
   ]);
 
-  // 東京都内のカテゴリーのみに絞り込み、上位30件を取得
+  // 東京都内のカテゴリーのみに絞り込み・閉鎖済み除外・上位30件を取得
   const topSpots = allTopSpots
-    .filter((s) => TOKYO_AREA_SLUGS.has(s.category.slug))
+    .filter((s) => TOKYO_AREA_SLUGS.has(s.category.slug) && !s.closed)
     .slice(0, 30);
 
   // スラグリストを評価順で保持
