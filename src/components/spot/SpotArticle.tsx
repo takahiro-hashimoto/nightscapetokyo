@@ -37,6 +37,7 @@ type Props = {
   categorySlug: string;
   spotSlug: string;
   availableLocales: string[];
+  isRecommended?: boolean;
 
   relatedSpots?: SpotListItem[];
   recommendedSpots?: SpotListItem[];
@@ -49,6 +50,7 @@ export default function SpotArticle({
   categorySlug,
   spotSlug,
   availableLocales,
+  isRecommended = false,
 
   relatedSpots = [],
   recommendedSpots = [],
@@ -119,6 +121,7 @@ export default function SpotArticle({
             featuredImage={spot.featured_image}
             imageAlt={imageAlt}
             closed={spot.closed}
+            isRecommended={isRecommended}
           />
 
           <div className="article-meta" itemProp="author" itemScope itemType="https://schema.org/Person">

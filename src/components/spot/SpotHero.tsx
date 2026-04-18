@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
   seoTitle: string;
@@ -6,6 +7,7 @@ type Props = {
   featuredImage: string | null;
   imageAlt?: string;
   closed?: boolean;
+  isRecommended?: boolean;
 };
 
 export default function SpotHero({
@@ -14,6 +16,7 @@ export default function SpotHero({
   featuredImage,
   imageAlt,
   closed,
+  isRecommended,
 }: Props) {
   return (
     <header className="content-card header-card">
@@ -37,6 +40,9 @@ export default function SpotHero({
           <meta itemProp="url" content={featuredImage} />
           {closed && (
             <span className="spot-card-closed-badge">閉鎖済み</span>
+          )}
+          {isRecommended && !closed && (
+            <Link href="/recommend/" className="spot-card-recommend-badge">おすすめTOP30</Link>
           )}
         </figure>
       )}

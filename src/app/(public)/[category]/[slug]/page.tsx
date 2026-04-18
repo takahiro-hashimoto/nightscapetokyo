@@ -13,7 +13,9 @@ import {
   getTranslatedAreaSlugs,
   getAvailableAreaLocales,
   getMapSpotsByCategory,
+  getTopSpots,
 } from "@/lib/supabase/queries";
+import { TOKYO_AREA_SLUGS } from "@/lib/constants";
 import { ALL_LOCALE_SLUGS, SITE_URL, buildAreaHreflangAlternates, LOCALE_LABELS } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { buildSpotMetadata } from "@/lib/metadata";
@@ -139,11 +141,21 @@ export default async function SpotOrAreaPage({ params }: Props) {
   if (!spot) notFound();
 
   const tagIds = spot.tags.map((t) => t.id);
-  const [translations, relatedSpots, recommendedSpots] = await Promise.all([
+  const [translations, relatedSpots, recommendedSpots, topSpots] = await Promise.all([
     getAvailableTranslations(spot.id),
     getRelatedSpots(spot.category_id, spot.id, 8),
     getRecommendedSpotsByTags(spot.id, spot.category_id, tagIds, 8),
+    getTopSpots(60).catch(() => []),
   ]);
+
+  const recommendSlugs = new Set(
+    topSpots
+      .filter((s) => TOKYO_AREA_SLUGS.has(s.category.slug) && !s.closed)
+      .slice(0, 30)
+      .map((s) => s.slug)
+  );
+  const isRecommended = recommendSlugs.has(spot.slug);
+
   const labels = getComponentLabels("ja");
 
   return (
@@ -154,7 +166,7 @@ export default async function SpotOrAreaPage({ params }: Props) {
       categorySlug={category}
       spotSlug={slug}
       availableLocales={translations.map((t) => t.locale)}
-
+      isRecommended={isRecommended}
       relatedSpots={relatedSpots}
       recommendedSpots={recommendedSpots}
     />

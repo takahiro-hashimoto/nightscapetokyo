@@ -34,6 +34,11 @@ export const AREA_NAME: Record<string, Record<SiteLocale, string>> = {
   yokohama:  { ja: "横浜",   en: "Yokohama",  ko: "요코하마",  tw: "橫濱",   cn: "横滨"   },
 };
 
+/** 東京都内のエリア slug セット（横浜など都外を除く） */
+export const TOKYO_AREA_SLUGS = new Set(
+  Object.keys(AREA_NAME).filter((s) => s !== "yokohama")
+);
+
 /** タグ slug → ロケール別表示名 */
 export const TAG_NAME: Record<string, Record<SiteLocale, string>> = {
   "free":          { ja: "無料スポット",           en: "Free spots",        ko: "무료 스팟",   tw: "免費景點",   cn: "免费景点"   },

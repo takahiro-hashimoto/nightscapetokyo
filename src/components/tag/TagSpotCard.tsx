@@ -64,11 +64,16 @@ export default function TagSpotCard({ spot, description, locale, headingLevel = 
         </div>
       ) : null}
 
-      <div className="article-body">
-        {description.split("\n").map((line, i) => (
-          <p key={i}>{line}</p>
-        ))}
-      </div>
+      <div
+        className="article-body"
+        dangerouslySetInnerHTML={{
+          __html: sanitizeHtml(
+            description.includes("<")
+              ? description
+              : description.split("\n").filter(Boolean).map((l) => `<p>${l}</p>`).join("")
+          ),
+        }}
+      />
 
       <div className="table-wrapper" style={{ marginTop: 24 }}>
         <table className="info-table">

@@ -4,12 +4,7 @@ import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { getTopSpots, getSpotsBySlugs, getTotalSpotCount, type MapSpotItem } from "@/lib/supabase/queries";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
-import { AREA_NAME } from "@/lib/constants";
-
-/** 東京都内のカテゴリーslugセット（横浜など都外を除く） */
-const TOKYO_AREA_SLUGS = new Set(
-  Object.keys(AREA_NAME).filter((s) => s !== "yokohama")
-);
+import { TOKYO_AREA_SLUGS } from "@/lib/constants";
 
 const TITLE = "東京都内のおすすめ夜景スポットランキング30";
 const DESCRIPTION =
