@@ -31,7 +31,9 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
 
   const sorted = [...spots].sort((a, b) => {
     // 閉鎖済みは常に最後尾
-    if (a.closed !== b.closed) return a.closed ? 1 : -1;
+    const aClosed = a.closed ?? false;
+    const bClosed = b.closed ?? false;
+    if (aClosed !== bClosed) return aClosed ? 1 : -1;
     if (sortKey === "rating") return b.rating_avg - a.rating_avg;
     return b.id.localeCompare(a.id);
   });

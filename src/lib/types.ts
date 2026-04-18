@@ -96,7 +96,7 @@ export type Spot = {
   rating_atmosphere: number | null;
   rating_cost: number | null;
   featured_image: string | null;
-  closed: boolean;
+  closed?: boolean;
   published: boolean;
   published_at: string | null;
   created_at: string;
@@ -244,7 +244,7 @@ export type SpotListItem = {
   rating_atmosphere: number | null;
   rating_cost: number | null;
   lead: string;
-  closed: boolean;
+  closed?: boolean;
 };
 
 /**
