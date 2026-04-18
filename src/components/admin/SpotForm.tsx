@@ -49,6 +49,7 @@ type SpotData = {
   closed: boolean;
   name: string | null;
   lead: string | null;
+  recommend_description: string | null;
   report: string | null;
   content: string | null;
   featured_image: string | null;
@@ -455,6 +456,14 @@ export default function SpotForm({ spot, categories, tags, translations = [] }: 
             name="lead"
             defaultValue={spot?.lead ?? ""}
             className={textareaClass}
+          />
+        </Field>
+        <Field label="おすすめページ説明文（未入力時はリード文を使用）">
+          <textarea
+            name="recommend_description"
+            defaultValue={spot?.recommend_description ?? ""}
+            className={textareaClass}
+            placeholder="未入力の場合はリード文が使用されます"
           />
         </Field>
         <Field label="レポート">

@@ -83,9 +83,9 @@ export default async function RecommendPage() {
     },
   ];
 
-  // 説明文はleadをそのまま使用
+  // recommend_descriptionが設定されていればそれを、なければleadを使用
   const descriptions: Record<string, string> = Object.fromEntries(
-    sortedSpots.map((s) => [s.slug, s.lead ?? ""])
+    sortedSpots.map((s) => [s.slug, s.recommend_description || s.lead || ""])
   );
 
   const heroImage = sortedSpots[0]?.featured_image || topSpots[0]?.featured_image || undefined;
