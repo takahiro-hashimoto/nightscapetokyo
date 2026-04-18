@@ -8,7 +8,7 @@ export default async function SpotsPage() {
   const [spotsRes, categoriesRes, translationsRes] = await Promise.all([
     admin
       .from("spots")
-      .select("id, slug, title, type, published, featured_image, updated_at, category:categories(name)")
+      .select("id, slug, title, type, published, featured_image, updated_at, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(name)")
       .order("updated_at", { ascending: false }) as any,
     admin.from("categories").select("id, name").order("name"),
     admin.from("spot_translations").select("spot_id, locale") as any,

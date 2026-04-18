@@ -19,7 +19,16 @@ type SpotItem = {
   category: { name: string } | null;
   updated_at: string;
   locales: string[];
+  rating_beautiful: number | null;
+  rating_access: number | null;
+  rating_atmosphere: number | null;
+  rating_cost: number | null;
 };
+
+function calcAvg(s: SpotItem): number {
+  const vals = [s.rating_beautiful, s.rating_access, s.rating_atmosphere, s.rating_cost].filter((v): v is number => v !== null);
+  return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+}
 
 type Category = {
   id: string;
@@ -67,19 +76,25 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
   const [typeFilter, setTypeFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [publishedFilter, setPublishedFilter] = useState("");
+  const [sortKey, setSortKey] = useState<"updated" | "rating">("updated");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const filtered = spots.filter((s) => {
-    if (search && !s.title.toLowerCase().includes(search.toLowerCase()) && !s.slug.includes(search.toLowerCase()))
-      return false;
-    if (typeFilter && s.type !== typeFilter) return false;
-    if (categoryFilter && s.category?.name !== categoryFilter) return false;
-    if (publishedFilter === "published" && !s.published) return false;
-    if (publishedFilter === "unpublished" && s.published) return false;
-    return true;
-  });
+  const filtered = spots
+    .filter((s) => {
+      if (search && !s.title.toLowerCase().includes(search.toLowerCase()) && !s.slug.includes(search.toLowerCase()))
+        return false;
+      if (typeFilter && s.type !== typeFilter) return false;
+      if (categoryFilter && s.category?.name !== categoryFilter) return false;
+      if (publishedFilter === "published" && !s.published) return false;
+      if (publishedFilter === "unpublished" && s.published) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortKey === "rating") return calcAvg(b) - calcAvg(a);
+      return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+    });
 
   function handleTogglePublished(id: string, currentPublished: boolean) {
     setError(null);
@@ -165,6 +180,14 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
             <option value="published">公開</option>
             <option value="unpublished">非公開</option>
           </select>
+          <select
+            value={sortKey}
+            onChange={(e) => setSortKey(e.target.value as "updated" | "rating")}
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+          >
+            <option value="updated">更新日新しい順</option>
+            <option value="rating">評点が高い順</option>
+          </select>
         </div>
         <Link
           href="/admin/spots/new"
@@ -192,6 +215,9 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
               </th>
               <th className="text-left px-4 py-3 font-medium text-gray-600">
                 タイプ
+              </th>
+              <th className="text-left px-4 py-3 font-medium text-gray-600">
+                評点
               </th>
               <th className="text-left px-4 py-3 font-medium text-gray-600">
                 公開
@@ -247,6 +273,9 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
                   >
                     {typeLabel(spot.type)}
                   </span>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-600 tabular-nums">
+                  {calcAvg(spot) > 0 ? calcAvg(spot).toFixed(1) : <span className="text-gray-300">—</span>}
                 </td>
                 <td className="px-4 py-2">
                   <button
