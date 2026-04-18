@@ -71,7 +71,7 @@ export type Spot = {
   content: string | null;
   name: string | null;
   lead: string | null;
-  recommend_description: string | null;
+  recommend_description?: string | null;
   report: string | null;
   address: string | null;
   official_url: string | null;
