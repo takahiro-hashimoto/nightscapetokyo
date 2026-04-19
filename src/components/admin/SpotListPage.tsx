@@ -103,7 +103,7 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
     startTransition(async () => {
       const result = await toggleSpotPublished(id, !currentPublished);
       if (result.error) {
-        setError(result.error);
+        setError(result.error ?? null);
       } else {
         setSpots((prev) =>
           prev.map((s) => (s.id === id ? { ...s, published: !s.published } : s))
@@ -117,7 +117,7 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
     try {
       const result = await translateSpot(id);
       if ("error" in result) {
-        setError(result.error);
+        setError(result.error ?? null);
       } else {
         setSpots((prev) =>
           prev.map((s) =>
@@ -141,7 +141,7 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
     startTransition(async () => {
       const result = await deleteSpot(id);
       if (result.error) {
-        setError(result.error);
+        setError(result.error ?? null);
       } else {
         setSpots((prev) => prev.filter((s) => s.id !== id));
       }
