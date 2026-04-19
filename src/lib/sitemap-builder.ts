@@ -100,11 +100,28 @@ export async function buildAllEntries(): Promise<AllEntries> {
     });
   }
 
+  // ── /recommend（重要度が高いため個別設定） ──
+  const recommendAlts = buildAlternates("/recommend");
+  result.ja.push({
+    loc: `${SITE_URL}/recommend`,
+    changefreq: "weekly",
+    priority: 0.8,
+    alternates: recommendAlts,
+  });
+  for (const slug of locales) {
+    result[slug as keyof AllEntries].push({
+      loc: `${SITE_URL}/${slug}/recommend`,
+      changefreq: "weekly",
+      priority: 0.7,
+      alternates: recommendAlts,
+    });
+  }
+
   // ── 固定ページ ──
   const staticPages = [
     "/about", "/contact", "/guidelines", "/privacy-policy",
-    "/caution", "/links", "/sitemap", "/recommend",
-    "/time-lapse", "/search",
+    "/caution", "/links", "/sitemap",
+    "/time-lapse", "/search", "/wallpaper",
   ];
   for (const page of staticPages) {
     const alts = buildAlternates(page);
@@ -126,6 +143,9 @@ export async function buildAllEntries(): Promise<AllEntries> {
 
   // simulator (JA only)
   result.ja.push({ loc: `${SITE_URL}/simulator`, changefreq: "monthly", priority: 0.5 });
+
+  // timelapse-calculator (JA only — DB外の静的ページ)
+  result.ja.push({ loc: `${SITE_URL}/article/timelapse-calculator/`, changefreq: "monthly", priority: 0.6 });
 
   if (!db) return result;
 

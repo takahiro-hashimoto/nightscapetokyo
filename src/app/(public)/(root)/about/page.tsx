@@ -16,6 +16,8 @@ import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import { SNS_LINKS } from "@/lib/constants";
 
+export const dynamic = "force-static";
+
 const TITLE = "運営者情報";
 const DESCRIPTION =
   "東京夜景ナビの運営者タカヒロのプロフィール・活動実績・撮影機材について紹介します。";
@@ -320,6 +322,7 @@ export default function AboutPage() {
         </svg>
       }
       summary="東京夜景ナビの運営者タカヒロのプロフィール・活動実績・撮影機材について紹介します。"
+      topLink={{ href: "/", label: "東京都内の夜景情報一覧" }}
       breadcrumb={[
         
         { label: TITLE },

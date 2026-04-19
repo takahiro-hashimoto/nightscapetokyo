@@ -12,27 +12,29 @@ const DESCRIPTION =
 
 export async function generateMetadata(): Promise<Metadata> {
   const canonicalUrl = `${SITE_URL}/recommend`;
+  const currentYear = new Date().getFullYear();
+  const metaTitle = `${TITLE}【${currentYear}年版】`;
+  const modifiedTime = `${currentYear}-04-15T00:00:00+09:00`;
 
-  const allTopSpots = await getTopSpots(60).catch(() => []);
-  const firstSpot = allTopSpots.find((s) => TOKYO_AREA_SLUGS.has(s.category.slug) && !s.closed);
-  const heroImage = firstSpot?.featured_image || undefined;
+  const heroImage = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/02/skytree-02.jpg";
 
   return {
-    title: TITLE,
+    title: metaTitle,
     description: DESCRIPTION,
     openGraph: {
       type: "article",
-      title: TITLE,
+      title: metaTitle,
       description: DESCRIPTION,
       url: canonicalUrl,
       siteName: "nightscape.tokyo",
       locale: "ja_JP",
       alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
-      images: heroImage ? [{ url: heroImage, width: 1200, height: 630, alt: TITLE }] : undefined,
+      images: heroImage ? [{ url: heroImage, width: 1200, height: 630, alt: metaTitle }] : undefined,
+      modifiedTime,
     },
     twitter: {
       card: "summary_large_image",
-      title: TITLE,
+      title: metaTitle,
       description: DESCRIPTION,
       images: heroImage ? [heroImage] : undefined,
     },
@@ -83,7 +85,7 @@ export default async function RecommendPage() {
     sortedSpots.map((s) => [s.slug, s.recommend_description || s.lead || ""])
   );
 
-  const heroImage = sortedSpots[0]?.featured_image || topSpots[0]?.featured_image || undefined;
+  const heroImage = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/02/skytree-02.jpg";
 
   const leadCount = totalCount > 0 ? `当サイトに掲載中の${totalCount}スポット` : "東京の夜景スポット";
 
@@ -151,6 +153,7 @@ export default async function RecommendPage() {
         allSpots={sortedSpots}
         mapSpots={mapSpots}
         shareUrl={`${SITE_URL}/recommend`}
+        showRank
       />
     </>
   );

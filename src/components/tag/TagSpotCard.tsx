@@ -4,8 +4,9 @@ import Link from "next/link";
 import { Star, MapPin, Clock, Banknote, Mountain, Train } from "lucide-react";
 import type { SpotWithRelations, SiteLocale } from "@/lib/types";
 import { calcRatingAvg } from "@/lib/types";
-import { TAG_SPOT_CARD_LABELS } from "@/lib/i18n-labels";
+import { TAG_SPOT_CARD_LABELS, TAG_SLIDER_LABELS, localizeAffiliateHtml } from "@/lib/i18n-labels";
 import TagImageSlider from "./TagImageSlider";
+import InfoTableCollapsible from "./InfoTableCollapsible";
 
 
 type Props = {
@@ -13,14 +14,19 @@ type Props = {
   description: string;
   locale?: string;
   headingLevel?: "h2" | "h3";
+  priority?: boolean;
+  rank?: number;
 };
 
-export default function TagSpotCard({ spot, description, locale, headingLevel = "h2" }: Props) {
+export default function TagSpotCard({ spot, description, locale, headingLevel = "h2", priority, rank }: Props) {
   const Heading = headingLevel;
   const l = TAG_SPOT_CARD_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_SPOT_CARD_LABELS.ja;
+  const sl = TAG_SLIDER_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_SLIDER_LABELS.ja;
   const name = spot.name || spot.title;
   const categorySlug = spot.category?.slug ?? "";
-  const detailHref = `/${categorySlug}/${spot.slug}`;
+  const detailHref = locale
+    ? `/${locale}/${categorySlug}/${spot.slug}`
+    : `/${categorySlug}/${spot.slug}`;
   const isHotel = !!spot.hotel;
 
   const affiliates = spot.hotel
@@ -52,6 +58,8 @@ export default function TagSpotCard({ spot, description, locale, headingLevel = 
             .map((img) => ({ url: img.url, alt: img.alt }))}
           name={name}
           locale={locale}
+          priority={priority}
+          rank={rank}
         />
       ) : spot.featured_image ? (
         <div className="tag-spot-image">
@@ -60,7 +68,11 @@ export default function TagSpotCard({ spot, description, locale, headingLevel = 
             alt={`${name}${l.nightView}`}
             fill
             sizes="(max-width: 768px) 100vw, 880px"
+            priority={priority}
           />
+          {rank != null && (
+            <span className="tag-slider-rank-badge">{sl.rankBadge(rank)}</span>
+          )}
         </div>
       ) : null}
 
@@ -75,6 +87,7 @@ export default function TagSpotCard({ spot, description, locale, headingLevel = 
         }}
       />
 
+      <InfoTableCollapsible expand={l.expand} collapse={l.collapse}>
       <div className="table-wrapper" style={{ marginTop: 24 }}>
         <table className="info-table">
           <caption className="visually-hidden">{l.facilityInfo(name)}</caption>
@@ -192,6 +205,7 @@ export default function TagSpotCard({ spot, description, locale, headingLevel = 
           </tbody>
         </table>
       </div>
+      </InfoTableCollapsible>
 
       <div className="tag-detail-link-wrapper">
         <Link href={detailHref} className="tag-detail-link">
@@ -202,7 +216,7 @@ export default function TagSpotCard({ spot, description, locale, headingLevel = 
       {affiliates.length > 0 && (
         <div className="panel-link-grid">
           {affiliates.map((link, i) => (
-            <div key={i} dangerouslySetInnerHTML={{ __html: sanitizeHtml(link!) }} />
+            <div key={i} dangerouslySetInnerHTML={{ __html: sanitizeHtml(localizeAffiliateHtml(link!, locale)) }} />
           ))}
         </div>
       )}

@@ -8,6 +8,7 @@ type Props = {
   imageAlt?: string;
   closed?: boolean;
   isRecommended?: boolean;
+  closedBadge?: string;
 };
 
 export default function SpotHero({
@@ -17,6 +18,7 @@ export default function SpotHero({
   imageAlt,
   closed,
   isRecommended,
+  closedBadge = "閉鎖済み",
 }: Props) {
   return (
     <header className="content-card header-card">
@@ -39,7 +41,7 @@ export default function SpotHero({
           />
           <meta itemProp="url" content={featuredImage} />
           {closed && (
-            <span className="spot-card-closed-badge">閉鎖済み</span>
+            <span className="spot-card-closed-badge">{closedBadge}</span>
           )}
           {isRecommended && !closed && (
             <Link href="/recommend/" className="spot-card-recommend-badge">おすすめTOP30</Link>

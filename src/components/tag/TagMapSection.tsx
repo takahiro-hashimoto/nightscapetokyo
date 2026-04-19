@@ -1,5 +1,6 @@
 import AreaMapLoader from "@/components/map/AreaMapLoader";
 import type { MapSpotItem } from "@/lib/supabase/queries";
+import { getComponentLabels } from "@/lib/i18n-labels";
 
 type Props = {
   spots: MapSpotItem[];
@@ -15,6 +16,9 @@ type Props = {
 export default function TagMapSection({ spots, heading, intro, localeSlug }: Props) {
   if (spots.length === 0) return null;
 
+  const labels = getComponentLabels(localeSlug ?? "ja");
+  const countLabel = labels.homePage.mapSection.countLabel.replace("{n}", String(spots.length));
+
   return (
     <section id="map" className="content-card card-padding" aria-labelledby="map-heading">
       <h2 className="section-heading" id="map-heading">
@@ -25,7 +29,7 @@ export default function TagMapSection({ spots, heading, intro, localeSlug }: Pro
         spots={spots}
         areaName=""
         localeSlug={localeSlug}
-        countLabel={`${spots.length}件の夜景スポットを表示中`}
+        countLabel={countLabel}
       />
     </section>
   );

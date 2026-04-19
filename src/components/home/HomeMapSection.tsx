@@ -8,20 +8,27 @@ type Category = { slug: string; name: string };
 type MapSectionLabels = {
   heading: string;
   desc: (count: number) => string;
+  allLabel?: string;
+  countLabel?: string;
+  loadingLabel?: string;
 };
 
 const JA_LABELS: MapSectionLabels = {
   heading: "地図から夜景スポットを探す",
   desc: (n) => `東京・横浜エリアの夜景スポット${n}ヶ所を地図上に表示。マーカーをクリックすると詳細を確認できます。`,
+  allLabel: "すべて",
+  countLabel: "{n}件のスポットを表示中",
+  loadingLabel: "マップを読み込み中...",
 };
 
 type Props = {
   spots: MapSpotItem[];
   categories: Category[];
   labels?: MapSectionLabels;
+  localePrefix?: string;
 };
 
-export default function HomeMapSection({ spots, categories, labels = JA_LABELS }: Props) {
+export default function HomeMapSection({ spots, categories, labels = JA_LABELS, localePrefix }: Props) {
   if (spots.length === 0) return null;
 
   const itemListJsonLd = {
@@ -55,7 +62,16 @@ export default function HomeMapSection({ spots, categories, labels = JA_LABELS }
           {labels.desc(spots.length)}
         </p>
 
-        <SpotMapLoader spots={spots} categories={categories} />
+        <SpotMapLoader
+          spots={spots}
+          categories={categories}
+          labels={labels.allLabel ? {
+            allLabel: labels.allLabel,
+            countLabel: labels.countLabel ?? "{n}",
+            loadingLabel: labels.loadingLabel ?? "Loading...",
+          } : undefined}
+          localePrefix={localePrefix}
+        />
 
         <div className="visually-hidden" aria-hidden="true">
           <ul>

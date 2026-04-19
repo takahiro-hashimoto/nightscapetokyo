@@ -15,6 +15,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import type { InfoLabels } from "@/lib/i18n-labels";
+import { localizeAffiliateHtml } from "@/lib/i18n-labels";
 import type { SpotHotel, SpotEvent } from "@/lib/types";
 
 type Tag = {
@@ -85,6 +86,12 @@ export default function SpotInfo({
     sns: "SNS",
     relatedSite: "関連サイト",
     categoryListLabel: (name: string) => `${name}の夜景スポット一覧`,
+    eventPeriod: "開催期間",
+    eventVenue: "開催場所",
+    eventHours: "開催時間",
+    hotelInfo: "ホテル情報",
+    checkinCheckout: "チェックイン / アウト",
+    amenity: "アメニティ",
   };
 
   const heading = l.heading(spotName);
@@ -111,7 +118,7 @@ export default function SpotInfo({
     // イベントカテゴリーでは営業時間・定休日を非表示
     ...(!isEvent ? [
       { icon: <Clock size={16} />, label: l.hours, value: hours, itemProp: "openingHours", isHtml: true },
-      { icon: <CalendarOff size={16} />, label: l.holiday, value: holiday },
+      { icon: <CalendarOff size={16} />, label: l.holiday, value: holiday, isHtml: true },
     ] : []),
     // ホテルでは料金・高さを非表示
     ...(!isHotel ? [
@@ -120,9 +127,9 @@ export default function SpotInfo({
     ] : []),
     // イベントカテゴリーのみイベント情報を表示
     ...(isEvent ? [
-      { icon: <CalendarDays size={16} />, label: "開催期間", value: eventDateValue },
-      { icon: <MapPin size={16} />, label: "開催場所", value: event?.place ?? null },
-      { icon: <Clock size={16} />, label: "開催時間", value: event?.event_hour ?? null },
+      { icon: <CalendarDays size={16} />, label: l.eventPeriod, value: eventDateValue },
+      { icon: <MapPin size={16} />, label: l.eventVenue, value: event?.place ?? null },
+      { icon: <Clock size={16} />, label: l.eventHours, value: event?.event_hour ?? null },
     ] : []),
   ].filter((r) => r.value);
 
@@ -291,7 +298,7 @@ export default function SpotInfo({
         <>
           <div className="table-wrapper">
             <table className="info-table">
-              <caption className="visually-hidden">ホテル情報</caption>
+              <caption className="visually-hidden">{l.hotelInfo}</caption>
               <tbody>
                 {(hotel!.checkin || hotel!.checkout) && (
                   <tr>
@@ -299,7 +306,7 @@ export default function SpotInfo({
                       <span className="th-icon">
                         <BedDouble size={16} />
                       </span>
-                      チェックイン / アウト
+                      {l.checkinCheckout}
                     </th>
                     <td>
                       {hotel!.checkin || "—"} / {hotel!.checkout || "—"}
@@ -312,7 +319,7 @@ export default function SpotInfo({
                       <span className="th-icon">
                         <Sparkles size={16} />
                       </span>
-                      アメニティ
+                      {l.amenity}
                     </th>
                     <td>{hotel!.amenity}</td>
                   </tr>
@@ -326,7 +333,7 @@ export default function SpotInfo({
               {hotelAffiliates.map((link, i) => (
                 <div
                   key={i}
-                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(link!) }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(localizeAffiliateHtml(link!, localeSlug)) }}
                 />
               ))}
             </div>

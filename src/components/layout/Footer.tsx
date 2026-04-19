@@ -2,6 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { SITE_NAMES } from "@/lib/types";
 import type { SiteLocale } from "@/lib/types";
+
+const LOCALE_LINKS: { locale: string | null; label: string; href: string }[] = [
+  { locale: null, label: "日本語", href: "/" },
+  { locale: "en",  label: "English",  href: "/en" },
+  { locale: "ko",  label: "한국어",   href: "/ko" },
+  { locale: "tw",  label: "繁體中文", href: "/tw" },
+  { locale: "cn",  label: "简体中文", href: "/cn" },
+];
 import { getAreas, getAreasTranslated, getPurposeTags, getTotalSpotCount } from "@/lib/supabase/queries";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { SNS_LINKS } from "@/lib/constants";
@@ -49,7 +57,6 @@ const FOOTER_LABELS = {
       { label: "Recommended Spots", href: "/recommend" },
       { label: "Free Wallpapers", href: "/wallpaper" },
       { label: "Time-lapse Videos", href: "/time-lapse" },
-      { label: "Sunrise/Sunset Simulator", href: "/simulator" },
     ],
     siteHeading: "Site Info",
     siteLinks: [
@@ -58,7 +65,6 @@ const FOOTER_LABELS = {
       { label: "Content Policy", href: "/guidelines" },
       { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms of Use", href: "/caution" },
-      { label: "Links", href: "/links" },
       { label: "Sitemap", href: "/sitemap" },
     ],
   },
@@ -71,7 +77,6 @@ const FOOTER_LABELS = {
       { label: "추천 스폿", href: "/recommend" },
       { label: "무료 배경화면", href: "/wallpaper" },
       { label: "타임랩스 영상", href: "/time-lapse" },
-      { label: "일출·일몰 시뮬레이터", href: "/simulator" },
     ],
     siteHeading: "사이트 정보",
     siteLinks: [
@@ -80,7 +85,6 @@ const FOOTER_LABELS = {
       { label: "콘텐츠 제작 정책", href: "/guidelines" },
       { label: "개인정보 처리방침", href: "/privacy-policy" },
       { label: "이용약관", href: "/caution" },
-      { label: "링크 모음", href: "/links" },
       { label: "사이트맵", href: "/sitemap" },
     ],
   },
@@ -93,7 +97,6 @@ const FOOTER_LABELS = {
       { label: "推薦景點", href: "/recommend" },
       { label: "免費桌布", href: "/wallpaper" },
       { label: "縮時攝影影片", href: "/time-lapse" },
-      { label: "日出・日落模擬器", href: "/simulator" },
     ],
     siteHeading: "網站資訊",
     siteLinks: [
@@ -102,7 +105,6 @@ const FOOTER_LABELS = {
       { label: "內容製作政策", href: "/guidelines" },
       { label: "隱私權政策", href: "/privacy-policy" },
       { label: "使用條款", href: "/caution" },
-      { label: "連結集", href: "/links" },
       { label: "網站地圖", href: "/sitemap" },
     ],
   },
@@ -115,7 +117,6 @@ const FOOTER_LABELS = {
       { label: "推荐景点", href: "/recommend" },
       { label: "免费壁纸", href: "/wallpaper" },
       { label: "延时摄影视频", href: "/time-lapse" },
-      { label: "日出・日落模拟器", href: "/simulator" },
     ],
     siteHeading: "网站信息",
     siteLinks: [
@@ -124,7 +125,6 @@ const FOOTER_LABELS = {
       { label: "内容制作政策", href: "/guidelines" },
       { label: "隐私政策", href: "/privacy-policy" },
       { label: "使用条款", href: "/caution" },
-      { label: "链接集", href: "/links" },
       { label: "网站地图", href: "/sitemap" },
     ],
   },
@@ -231,6 +231,13 @@ export default async function Footer({ locale }: { locale: string | null }) {
                 <li key={link.href}>
                   <Link href={`${prefix}${link.href}`} className="footer-nav-link">
                     {link.label}
+                  </Link>
+                </li>
+              ))}
+              {LOCALE_LINKS.filter((l) => l.locale !== (locale ?? null)).map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="footer-nav-link">
+                    {l.label}
                   </Link>
                 </li>
               ))}

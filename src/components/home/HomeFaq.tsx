@@ -46,6 +46,18 @@ function renderAnswer(
     );
   }
 
+  if (answer === "__TWILIGHT_LINK__") {
+    return (
+      <>
+        {faqLabels?.twilightPrefix ?? "日没とともに点灯を始めるライトアップが多く、空に夕焼け色が残る「マジックアワー」から深い青に染まる「ブルーアワー」にかけてが夜景鑑賞・撮影の黄金時間です。詳しくは"}
+        <Link href="/article/twilight/">
+          {faqLabels?.twilightLinkText ?? "マジックアワーとは？夜景鑑賞・撮影の黄金時間を解説"}
+        </Link>
+        {faqLabels?.twilightSuffix ?? "をご覧ください。"}
+      </>
+    );
+  }
+
   return answer;
 }
 

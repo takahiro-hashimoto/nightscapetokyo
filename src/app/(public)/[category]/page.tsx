@@ -187,7 +187,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const labels = getComponentLabels(categorySlug);
     const hp = labels.homePage;
     const spotCount = await getTotalSpotCount().catch(() => 200);
-    const title = hp.hero.subtitle(spotCount);
+    const title = hp.seoTitle(new Date().getFullYear());
     const description = hp.seoDescription;
     const canonicalUrl = `${SITE_URL}/${categorySlug}`;
     const ogLocale = OG_LOCALE_MAP[categorySlug] ?? "en_US";
@@ -308,6 +308,7 @@ export default async function AreaPage({ params }: Props) {
           spots={mapSpots}
           categories={areas.map((a) => ({ slug: a.slug, name: a.name }))}
           labels={hp.mapSection}
+          localePrefix={`/${localeSlug}`}
         />
         <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={hp.faq} />
         <HomeAuthor labels={labels.homeAuthor} locale={localeSlug} />
@@ -381,7 +382,7 @@ export default async function AreaPage({ params }: Props) {
           availableLocales={availableLocales}
           localeLabels={LOCALE_LABELS}
         />
-        <Breadcrumb items={[{ label: `${cat.name}の夜景スポット一覧` }]} />
+        <Breadcrumb items={[{ label: `${cat.name}の夜景スポット一覧`, href: `/${categorySlug}/` }]} />
 
         <div className="firstVisual">
           <header className="firstVisual-header">

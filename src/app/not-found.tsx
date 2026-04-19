@@ -5,9 +5,8 @@ import { ALL_LOCALE_SLUGS } from "@/lib/types";
 
 export default async function NotFound() {
   const headersList = await headers();
-  const pathname = headersList.get("x-pathname") ?? "/";
-  const firstSegment = pathname.split("/")[1] ?? "";
-  const locale = ALL_LOCALE_SLUGS.includes(firstSegment) ? firstSegment : "ja";
+  const localeSlug = headersList.get("x-locale") ?? "";
+  const locale = ALL_LOCALE_SLUGS.includes(localeSlug) ? localeSlug : "ja";
 
   const labels = getComponentLabels(locale).notFound;
   const homeHref = locale === "ja" ? "/" : `/${locale}`;

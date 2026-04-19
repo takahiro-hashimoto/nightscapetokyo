@@ -4,6 +4,8 @@ import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "利用規約 | 東京夜景ナビ",
   description:

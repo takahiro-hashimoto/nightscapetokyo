@@ -16,6 +16,7 @@ type Props = {
     sortLabel: string;
     sortRating: string;
     sortUpdated: string;
+    closedBadge?: string;
   };
   /** Image alt pattern: "{name}" is replaced with spot name */
   imageAltPattern?: string;
@@ -28,6 +29,7 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
   const sortLabel = labels?.sortLabel ?? "並び替え：";
   const sortRating = labels?.sortRating ?? "評価高い順";
   const sortUpdated = labels?.sortUpdated ?? "更新日新しい順";
+  const closedBadge = labels?.closedBadge ?? "閉鎖済み";
 
   const sorted = [...spots].sort((a, b) => {
     // 閉鎖済みは常に最後尾
@@ -88,7 +90,7 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
                   />
                 )}
                 {spot.closed && (
-                  <span className="spot-card-closed-badge" aria-label="閉鎖済み">閉鎖済み</span>
+                  <span className="spot-card-closed-badge" aria-label={closedBadge}>{closedBadge}</span>
                 )}
               </div>
               <div className="spot-card-body">

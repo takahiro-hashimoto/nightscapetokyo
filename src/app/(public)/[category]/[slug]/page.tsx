@@ -38,6 +38,13 @@ const OG_LOCALE_MAP: Record<string, string> = {
   cn: "zh_CN",
 };
 
+const LOCALE_SITE_NAME: Record<string, string> = {
+  en: "Tokyo Night View Guide",
+  ko: "도쿄 야경 가이드",
+  tw: "東京夜景導覽",
+  cn: "东京夜景导览",
+};
+
 export async function generateStaticParams() {
   const [spotSlugs, areaSlugs] = await Promise.all([
     getAllSpotSlugs(),
@@ -64,24 +71,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     const translatedAreaName = spots[0]?.category.name ?? cat.name;
     const labels = getComponentLabels(category);
-    const title = labels.areaPage.title(translatedAreaName);
-    const description = labels.areaPage.lead(translatedAreaName);
+    const areaTitle = labels.areaPage.title(translatedAreaName);
+    const siteName = LOCALE_SITE_NAME[category] ?? "Tokyo Night View Guide";
+    const title = `${areaTitle} | ${siteName}`;
+    const description = labels.areaPage.lead(translatedAreaName, spots);
     const canonicalUrl = `${SITE_URL}/${category}/${slug}`;
 
     return {
-      title,
+      title: { absolute: title },
       description,
       openGraph: {
         type: "website",
-        title,
+        title: areaTitle,
         description,
         url: canonicalUrl,
-        siteName: "nightscape.tokyo",
+        siteName,
         locale: OG_LOCALE_MAP[category] ?? "en_US",
       },
       twitter: {
         card: "summary_large_image",
-        title,
+        title: areaTitle,
         description,
       },
       alternates: {

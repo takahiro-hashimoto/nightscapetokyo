@@ -13,6 +13,7 @@ type ProseFields = {
   title: string | null;
   name: string | null;
   lead: string | null;
+  recommend_description: string | null;
   report: string | null;
   content: string | null;
   faqs: { question: string; answer: string }[];
@@ -76,6 +77,7 @@ Bad examples (NEVER do this):
 ## Field-specific rules
 - "title", "name": Proper nouns — FULLY translate/transliterate. Use locally established name. No Japanese remaining.
 - "lead": Short summary — keep concise and vivid. Fully localized.
+- "recommend_description": Short description for recommend page. If null, output null. Otherwise translate concisely and naturally, similar tone to "lead".
 - "report", "content": Long-form with HTML. Preserve ALL HTML tags as-is (<br>, <a>, <strong>, etc.). Natural prose, same paragraph structure.
 - "faqs": Translate Q&A pairs naturally. Same number of items, same topics.`;
 
@@ -165,6 +167,7 @@ export async function translateSpot(spotId: string, targetLocales?: string[]) {
     title: spot.title,
     name: spot.name,
     lead: spot.lead,
+    recommend_description: spot.recommend_description ?? null,
     report: spot.report,
     content: spot.content,
     faqs: faqs ?? [],
@@ -237,6 +240,7 @@ export async function translateSpot(spotId: string, targetLocales?: string[]) {
           title: translated.title,
           name: translated.name,
           lead: translated.lead,
+          recommend_description: translated.recommend_description || null,
           report: translated.report,
           content: translated.content,
           address: translated.address,

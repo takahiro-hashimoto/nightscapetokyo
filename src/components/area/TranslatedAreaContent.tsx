@@ -135,7 +135,7 @@ export default function TranslatedAreaContent({
             <h1 className="firstVisual-title">{al.title(areaName)}</h1>
           </header>
           <div className="firstVisual-body">
-            <p>{al.lead(areaName)}</p>
+            <p>{al.lead(areaName, spots)}</p>
             <Link href={topLinkHref} className="content-top-link">{topLink}</Link>
           </div>
         </div>
@@ -154,6 +154,7 @@ export default function TranslatedAreaContent({
                 sortLabel: al.sortLabel,
                 sortRating: al.sortRating,
                 sortUpdated: al.sortUpdated,
+                closedBadge: al.closedBadge,
               }}
               imageAltPattern={al.imageAlt("{name}")}
             />

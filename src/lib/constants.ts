@@ -31,7 +31,8 @@ export const AREA_NAME: Record<string, Record<SiteLocale, string>> = {
   taito:     { ja: "台東区",  en: "Taito",     ko: "다이토구",  tw: "台東區", cn: "台东区" },
   meguro:    { ja: "目黒区",  en: "Meguro",    ko: "메구로구",  tw: "目黒區", cn: "目黒区" },
   kita:      { ja: "北区",   en: "Kita",      ko: "기타구",    tw: "北區",   cn: "北区"   },
-  yokohama:  { ja: "横浜",   en: "Yokohama",  ko: "요코하마",  tw: "橫濱",   cn: "横滨"   },
+  yokohama:  { ja: "横浜",    en: "Yokohama",   ko: "요코하마",   tw: "橫濱",      cn: "横滨"      },
+  other:     { ja: "その他エリア", en: "Other areas", ko: "기타 지역", tw: "其他地區",  cn: "其他地区"  },
 };
 
 /** 東京都内のエリア slug セット（横浜など都外を除く） */
@@ -41,18 +42,28 @@ export const TOKYO_AREA_SLUGS = new Set(
 
 /** タグ slug → ロケール別表示名 */
 export const TAG_NAME: Record<string, Record<SiteLocale, string>> = {
-  "free":          { ja: "無料スポット",           en: "Free spots",        ko: "무료 스팟",   tw: "免費景點",   cn: "免费景点"   },
-  "date":          { ja: "デート向け",             en: "For dates",         ko: "데이트 추천", tw: "約會推薦",   cn: "约会推荐"   },
-  "waterfront":    { ja: "ウォーターフロント",       en: "Waterfront",        ko: "워터프론트",  tw: "海濱",       cn: "滨水区"     },
-  "park":          { ja: "公園・広場",             en: "Parks",             ko: "공원·광장",   tw: "公園·廣場",  cn: "公园·广场"  },
-  "observatory":   { ja: "展望台",                en: "Observatories",     ko: "전망대",      tw: "展望台",     cn: "展望台"     },
-  "tokyo-tower":   { ja: "東京タワーが見える",      en: "Tokyo Tower view",  ko: "도쿄타워 뷰", tw: "東京鐵塔景色", cn: "东京塔景色" },
-  "tokyo-sky-tree":{ ja: "東京スカイツリーが見える", en: "Skytree view",      ko: "스카이트리 뷰",tw: "晴空塔景色",  cn: "晴空塔景色" },
-  "mt-fuji":       { ja: "富士山が見える",          en: "Mt. Fuji view",     ko: "후지산 뷰",   tw: "富士山景色",  cn: "富士山景色" },
-  "drive":         { ja: "ドライブ向け",            en: "Drive spots",       ko: "드라이브",    tw: "兜風景點",   cn: "兜风景点"   },
-  "rooftop":       { ja: "屋上スポット",            en: "Rooftop",           ko: "루프탑",      tw: "屋頂景點",   cn: "屋顶景点"   },
-  "walking":       { ja: "散歩・街歩き",            en: "Walking",           ko: "산책",        tw: "散步",       cn: "散步"       },
-  "photography":   { ja: "写真撮影向け",            en: "Photography",       ko: "사진 촬영",   tw: "攝影景點",   cn: "摄影景点"   },
+  "free":                  { ja: "無料スポット",                 en: "Free spots",                   ko: "무료 스팟",        tw: "免費景點",      cn: "免费景点"      },
+  "date":                  { ja: "デート向け",                   en: "For dates",                    ko: "데이트 추천",      tw: "約會推薦",      cn: "约会推荐"      },
+  "waterfront":            { ja: "ウォーターフロント",             en: "Waterfront",                   ko: "워터프론트",       tw: "海濱",          cn: "滨水区"        },
+  "park":                  { ja: "公園・広場",                   en: "Parks",                        ko: "공원·광장",        tw: "公園·廣場",     cn: "公园·广场"     },
+  "observatory":           { ja: "展望台",                      en: "Observatories",                ko: "전망대",           tw: "展望台",        cn: "展望台"        },
+  "tokyo-tower":           { ja: "東京タワーが見える",             en: "Tokyo Tower view",             ko: "도쿄타워 뷰",      tw: "東京鐵塔景色",   cn: "东京塔景色"    },
+  "tokyo-sky-tree":        { ja: "東京スカイツリーが見える",        en: "Skytree view",                 ko: "스카이트리 뷰",     tw: "晴空塔景色",    cn: "晴空塔景色"    },
+  "mt-fuji":               { ja: "富士山が見える",                en: "Mt. Fuji view",                ko: "후지산 뷰",        tw: "富士山景色",    cn: "富士山景色"    },
+  "drive":                 { ja: "ドライブ向け",                  en: "Drive spots",                  ko: "드라이브",         tw: "兜風景點",      cn: "兜风景点"      },
+  "rooftop":               { ja: "屋上スポット",                  en: "Rooftop",                      ko: "루프탑",           tw: "屋頂景點",      cn: "屋顶景点"      },
+  "walking":               { ja: "散歩・街歩き",                  en: "Walking",                      ko: "산책",             tw: "散步",          cn: "散步"          },
+  "photography":           { ja: "写真撮影向け",                  en: "Photography",                  ko: "사진 촬영",        tw: "攝影景點",      cn: "摄影景点"      },
+  "hotel":                 { ja: "夜景が綺麗なホテル",             en: "Hotels with night views",      ko: "야경이 예쁜 호텔", tw: "夜景優美的飯店", cn: "夜景美丽的酒店" },
+  "cherry-blossoms":       { ja: "夜桜",                        en: "Cherry blossoms at night",     ko: "야간 벚꽃",        tw: "夜間賞櫻",      cn: "夜樱"          },
+  "tokyo-station":         { ja: "東京駅が見える",                en: "Tokyo Station view",           ko: "도쿄역 뷰",        tw: "東京車站景色",   cn: "东京站景色"    },
+  "illumination":          { ja: "イルミネーション",               en: "Illuminations",                ko: "일루미네이션",      tw: "燈飾活動",      cn: "灯饰活动"      },
+  "rainbow-bridge":        { ja: "レインボーブリッジが見える",        en: "Rainbow Bridge view",          ko: "레인보우 브릿지 뷰",   tw: "彩虹橋景色",    cn: "彩虹桥景色"    },
+  "tokyo-gate-bridge":     { ja: "東京ゲートブリッジが見える",        en: "Tokyo Gate Bridge view",       ko: "도쿄 게이트 브릿지 뷰", tw: "東京大橋景色", cn: "东京门大桥景色" },
+  "gate-bridge":           { ja: "東京ゲートブリッジが見える",        en: "Tokyo Gate Bridge view",       ko: "도쿄 게이트 브릿지 뷰", tw: "東京大橋景色", cn: "东京门大桥景色" },
+  "scramble-intersection": { ja: "渋谷スクランブル交差点が見える",   en: "Shibuya Scramble view",        ko: "시부야 스크램블 뷰", tw: "澀谷路口景色",  cn: "涩谷路口景色"  },
+  "autumn-leaves":         { ja: "紅葉のライトアップ",             en: "Autumn leaves illumination",   ko: "단풍 라이트업",     tw: "楓葉燈光秀",    cn: "红叶灯光秀"    },
+  "restaurant":            { ja: "夜景が綺麗なレストラン",          en: "Restaurants with night views", ko: "야경 레스토랑",     tw: "夜景餐廳",      cn: "夜景餐厅"      },
 };
 
 /** SP ドロワー用ナビリンク（ロケール別） */

@@ -7,6 +7,8 @@ import type { CategoryPageProps as Props } from "@/lib/types";
 import { supabase } from "@/lib/supabase/client";
 import { SITEMAP_LABELS } from "@/lib/i18n-static-pages";
 
+export const revalidate = 86400;
+
 export async function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((c) => ({ category: c }));
 }
@@ -42,7 +44,10 @@ async function getSitemapData(dbLocale: string) {
   const [catRes, tagRes, transRes] = await Promise.all([
     supabase.from("categories").select("slug, name, spots:spots(slug, title)").order("name"),
     supabase.from("tags").select("slug, name").order("name"),
-    supabase.from("spot_translations").select("locale, title, spot:spots(slug)").eq("locale", dbLocale),
+    supabase
+      .from("spot_translations")
+      .select("locale, title, category_name, spot:spots(slug, category:categories(slug))")
+      .eq("locale", dbLocale),
   ]);
 
   const categories = (catRes.data ?? []) as CategoryRow[];
@@ -50,25 +55,35 @@ async function getSitemapData(dbLocale: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const translations = (transRes.data ?? []) as any[];
 
-  // Build translation map: spot slug -> translated title
+  // Build translation maps
   const titleMap = new Map<string, string>();
+  const catNameMap = new Map<string, string>();
   for (const t of translations) {
     const spot = Array.isArray(t.spot) ? t.spot[0] : t.spot;
     if (spot?.slug && t.title) {
       titleMap.set(spot.slug, t.title);
+    }
+    const catSlug = Array.isArray(spot?.category) ? spot.category[0]?.slug : spot?.category?.slug;
+    if (catSlug && t.category_name && !catNameMap.has(catSlug)) {
+      catNameMap.set(catSlug, t.category_name);
     }
   }
 
   // Apply translations
   const localizedCategories = categories.map((cat) => ({
     ...cat,
+    name: catNameMap.get(cat.slug) ?? cat.name,
     spots: cat.spots.map((spot) => ({
       ...spot,
       title: titleMap.get(spot.slug) ?? spot.title,
     })),
   }));
 
-  return { categories: localizedCategories, tags };
+  const sortedCategories = localizedCategories.sort(
+    (a, b) => b.spots.length - a.spots.length
+  );
+
+  return { categories: sortedCategories, tags };
 }
 
 export default async function I18nSitemapPage({ params }: Props) {

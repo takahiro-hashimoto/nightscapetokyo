@@ -18,6 +18,8 @@ type Props = {
   lastUpdated?: string;
   jsonLd?: object;
   className?: string;
+  /** Link rendered at the bottom of the title card */
+  topLink?: { href: string; label: string };
 };
 
 export default function ArticleLayout({
@@ -33,6 +35,7 @@ export default function ArticleLayout({
   lastUpdated,
   jsonLd,
   className,
+  topLink,
 }: Props) {
   return (
     <div className="l-article-body">
@@ -69,6 +72,9 @@ export default function ArticleLayout({
               </p>
             )}
             {description && <p className="article-lead">{description}</p>}
+            {topLink && (
+              <a className="content-top-link" href={topLink.href}>{topLink.label}</a>
+            )}
           </div>
         )}
 

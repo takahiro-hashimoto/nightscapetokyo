@@ -10,9 +10,11 @@ type Props = {
   images: { url: string; alt: string | null }[];
   name: string;
   locale?: string;
+  priority?: boolean;
+  rank?: number;
 };
 
-export default function TagImageSlider({ images, name, locale }: Props) {
+export default function TagImageSlider({ images, name, locale, priority, rank }: Props) {
   const l = TAG_SLIDER_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_SLIDER_LABELS.ja;
   const [current, setCurrent] = useState(0);
   const total = images.length;
@@ -38,7 +40,11 @@ export default function TagImageSlider({ images, name, locale }: Props) {
           alt={altText}
           fill
           sizes="(max-width: 768px) 100vw, 880px"
+          priority={priority}
         />
+        {rank != null && (
+          <span className="tag-slider-rank-badge">{l.rankBadge(rank)}</span>
+        )}
         {altText && (
           <span className="tag-slider-caption">{altText}</span>
         )}

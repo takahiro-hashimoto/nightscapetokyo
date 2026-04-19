@@ -1,91 +1,127 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { Crown, Star, Sparkles, TrainFront, Heart, Coins } from "lucide-react";
-import Breadcrumb from "@/components/layout/Breadcrumb";
+import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import HomeAuthor from "@/components/home/HomeAuthor";
-import SpotShare from "@/components/spot/SpotShare";
-import { getTopSpotsTranslated, getSpotCount } from "@/lib/supabase/queries";
-import { ALL_LOCALE_SLUGS, SITE_NAMES, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
+import { getTopSpotsTranslated, getSpotsBySlugsTranslated, getTotalSpotCount, type MapSpotItem } from "@/lib/supabase/queries";
+import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { AREA_NAME } from "@/lib/constants";
-import { getComponentLabels } from "@/lib/i18n-labels";
+import type { TagPageContent } from "@/lib/dummy-tag-data";
 
 /** 東京都内のカテゴリーslugセット（横浜など都外を除く） */
 const TOKYO_AREA_SLUGS = new Set(
   Object.keys(AREA_NAME).filter((s) => s !== "yokohama")
 );
 
-/* ─── 翻訳ラベル ─── */
 type RecommendLabels = {
   title: string;
+  breadcrumb: string;
   description: string;
-  descWithCount: (count: number) => string;
-  criteria: { label: string; desc: string }[];
+  lead: (count: number) => string;
+  faqs: { question: string; answer: string }[];
 };
 
 const RECOMMEND_LABELS: Record<string, RecommendLabels> = {
   en: {
-    title: "Top 30 Night View Spots in Tokyo",
+    title: "Top 30 Night View Spots in Tokyo, Japan",
+    breadcrumb: "Top 30 Night View Spots in Tokyo, Japan",
     description:
       "We've handpicked the 30 best night view spots in Tokyo from our collection. Perfect for dates and photography.",
-    descWithCount: (n) =>
-      `Handpicked top 30 from ${n} spots on our site. Perfect for dates and photography in Tokyo.`,
-    criteria: [
-      { label: "Beauty", desc: "Rated on a 5-point scale for beauty, impact, and impressiveness" },
-      { label: "Access", desc: "Proximity to nearest station and ease of transportation" },
-      { label: "Ambiance", desc: "Suitability for dates and photography" },
-      { label: "Value", desc: "Satisfaction relative to admission fees" },
+    lead: (n) =>
+      `From ${n} spots on our site, our editorial team handpicked the top 30 night view spots in Tokyo.\nObservation decks, hotels, parks and more — find the perfect spot for dates and night photography.`,
+    faqs: [
+      {
+        question: "What is the best night view spot in Tokyo?",
+        answer:
+          "Our editorial team rates spots on beauty, access, ambiance, and value. The top-rated spot changes as we visit more locations — check our current ranking for the latest.",
+      },
+      {
+        question: "How are the spots rated?",
+        answer:
+          "We rate each spot on four criteria — Beauty (visual impact), Access (proximity to nearest station), Ambiance (suitability for dates and photography), and Value (satisfaction relative to admission fees) — on a 5-point scale.",
+      },
+      {
+        question: "Are there free night view spots in Tokyo?",
+        answer:
+          "Yes, many of Tokyo's best night views are free to enjoy. Parks, bridges, and public observation areas are included in our ranking. Check each spot's detail page for admission fee information.",
+      },
     ],
   },
   ko: {
-    title: "도쿄 추천 야경 명소 랭킹 30",
+    title: "일본 도쿄 추천 야경 명소 랭킹 30",
+    breadcrumb: "일본 도쿄 추천 야경 명소 랭킹 30",
     description:
       "직접 방문한 도쿄의 야경 명소 중 특히 추천하는 30곳을 엄선하여 랭킹 형식으로 소개합니다.",
-    descWithCount: (n) =>
-      `사이트에 게재된 ${n}개 스폿 중 엄선한 상위 30곳을 소개합니다. 데이트나 촬영 장소 선택에 참고하세요.`,
-    criteria: [
-      { label: "아름다움", desc: "야경의 아름다움·박력·감동을 5단계로 평가" },
-      { label: "접근성", desc: "가까운 역까지의 거리·교통편을 고려" },
-      { label: "분위기", desc: "데이트·촬영에 적합한 공간인지 평가" },
-      { label: "가성비", desc: "입장료 대비 만족도를 평가" },
+    lead: (n) =>
+      `사이트에 게재된 ${n}개 스폿 중 실제로 방문한 편집부가 특히 추천하는 30곳을 엄선하여 소개합니다.\n전망대·호텔·공원 등 다양한 장르에서 데이트나 야경 촬영에 유용한 정보를 제공합니다.`,
+    faqs: [
+      {
+        question: "도쿄에서 가장 추천하는 야경 명소는 어디인가요?",
+        answer:
+          "저희 사이트에서는 아름다움·접근성·분위기·가성비의 종합 평가로 랭킹을 매기고 있습니다. 자세한 내용은 현재 랭킹을 확인해 주세요.",
+      },
+      {
+        question: "랭킹의 평가 기준을 알려주세요.",
+        answer:
+          "아름다움(야경의 아름다움·박력·감동도)·접근성(가까운 역까지의 거리)·분위기(데이트·촬영에 적합한 공간인지)·가성비(입장료 대비 만족도)의 4항목을 각각 5단계로 평가하여 종합 점수로 랭킹합니다.",
+      },
+      {
+        question: "무료로 즐길 수 있는 야경 명소가 있나요?",
+        answer:
+          "네, 도쿄에는 무료로 즐길 수 있는 야경 명소도 많습니다. 공원이나 다리 등 공공 공간도 랭킹에 포함되어 있습니다. 각 스폿의 상세 페이지에서 요금 정보를 확인해 주세요.",
+      },
     ],
   },
   tw: {
-    title: "東京推薦夜景景點排行榜30",
+    title: "日本東京推薦夜景景點排行榜30",
+    breadcrumb: "日本東京推薦夜景景點排行榜30",
     description:
       "從實際走訪過的東京夜景景點中，嚴選30處最值得推薦的景點，以排行榜形式介紹。",
-    descWithCount: (n) =>
-      `從本站收錄的${n}個景點中嚴選前30名。適合約會及攝影的東京夜景景點推薦。`,
-    criteria: [
-      { label: "美麗度", desc: "以5級評分評估夜景的美感、震撼與感動" },
-      { label: "交通", desc: "考量離最近車站的距離與交通便利性" },
-      { label: "氛圍", desc: "評估是否適合約會及攝影" },
-      { label: "性價比", desc: "評估門票費用的滿意度" },
+    lead: (n) =>
+      `從本站收錄的${n}個景點中，實際走訪的編輯部嚴選30處最值得推薦的景點。\n觀景台、飯店、公園等多樣類型，為您提供適合約會和夜景攝影的實用資訊。`,
+    faqs: [
+      {
+        question: "東京最推薦的夜景景點是哪裡？",
+        answer:
+          "本站以美麗度、交通、氛圍、性價比四項綜合評分進行排名。詳情請參閱目前的排行榜。",
+      },
+      {
+        question: "請問排名的評分標準是什麼？",
+        answer:
+          "以美麗度（夜景的美感、震撼與感動）、交通（離最近車站的距離與交通便利性）、氛圍（是否適合約會及攝影）、性價比（門票費用的滿意度）四項，各以5級評分，以總分進行排名。",
+      },
+      {
+        question: "有可以免費欣賞夜景的景點嗎？",
+        answer:
+          "是的，東京有許多可以免費欣賞夜景的景點。公園、橋梁等公共空間也包含在排行榜中。請在各景點的詳細頁面確認費用資訊。",
+      },
     ],
   },
   cn: {
-    title: "东京推荐夜景景点排行榜30",
+    title: "日本东京推荐夜景景点排行榜30",
+    breadcrumb: "日本东京推荐夜景景点排行榜30",
     description:
       "从实际走访过的东京夜景景点中，精选30处最值得推荐的景点，以排行榜形式介绍。",
-    descWithCount: (n) =>
-      `从本站收录的${n}个景点中精选前30名。适合约会及摄影的东京夜景景点推荐。`,
-    criteria: [
-      { label: "美丽度", desc: "以5级评分评估夜景的美感、震撼与感动" },
-      { label: "交通", desc: "考量离最近车站的距离与交通便利性" },
-      { label: "氛围", desc: "评估是否适合约会及摄影" },
-      { label: "性价比", desc: "评估门票费用的满意度" },
+    lead: (n) =>
+      `从本站收录的${n}个景点中，实际走访的编辑部精选30处最值得推荐的景点。\n观景台、酒店、公园等多种类型，为您提供适合约会和夜景摄影的实用信息。`,
+    faqs: [
+      {
+        question: "东京最推荐的夜景景点是哪里？",
+        answer:
+          "本站以美丽度、交通、氛围、性价比四项综合评分进行排名。详情请查阅当前排行榜。",
+      },
+      {
+        question: "请问排名的评分标准是什么？",
+        answer:
+          "以美丽度（夜景的美感、震撼与感动）、交通（离最近车站的距离与交通便利性）、氛围（是否适合约会及摄影）、性价比（门票费用的满意度）四项，各以5级评分，以总分进行排名。",
+      },
+      {
+        question: "有可以免费欣赏夜景的景点吗？",
+        answer:
+          "是的，东京有许多可以免费欣赏夜景的景点。公园、桥梁等公共空间也包含在排行榜中。请在各景点的详细页面确认费用信息。",
+      },
     ],
   },
 };
-
-const CRITERIA_ICONS = [
-  { icon: Sparkles, color: "#eab308" },
-  { icon: TrainFront, color: "#3b82f6" },
-  { icon: Heart, color: "#ec4899" },
-  { icon: Coins, color: "#22c55e" },
-];
 
 /* ─── Static params ─── */
 export function generateStaticParams() {
@@ -93,18 +129,20 @@ export function generateStaticParams() {
 }
 
 /* ─── Metadata ─── */
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: locale } = await params;
   const labels = RECOMMEND_LABELS[locale];
   if (!labels) return {};
+  const currentYear = new Date().getFullYear();
   const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
   const canonicalUrl = `${SITE_URL}/${locale}/recommend`;
+  const metaTitle = `${labels.title}【${currentYear}】`;
   return {
-    title: labels.title,
+    title: metaTitle,
     description: labels.description,
     openGraph: {
-      title: labels.title,
+      type: "article",
+      title: metaTitle,
       description: labels.description,
       url: canonicalUrl,
       locale: ogLocale,
@@ -118,6 +156,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 86400;
+export const fetchCache = "force-cache";
 
 /* ─── Page ─── */
 export default async function RecommendPageI18n({ params }: Props) {
@@ -126,13 +165,65 @@ export default async function RecommendPageI18n({ params }: Props) {
   if (!labels) return null;
 
   const currentYear = new Date().getFullYear();
-  const [spots, totalCount] = await Promise.all([
+
+  const [topSpotsTranslated, totalCount] = await Promise.all([
     getTopSpotsTranslated(locale, 30, TOKYO_AREA_SLUGS).catch(() => []),
-    getSpotCount().catch(() => 0),
+    getTotalSpotCount().catch(() => 0),
   ]);
 
-  const siteName = SITE_NAMES[locale] ?? "Tokyo Night View Guide";
-  const componentLabels = getComponentLabels(locale);
+  // スラグリストと評価順・翻訳マップを保持
+  const slugs = topSpotsTranslated.map((s) => s.slug);
+  const ratingMap = new Map(topSpotsTranslated.map((s) => [s.slug, s.rating_avg]));
+
+  // フルデータを翻訳込みで取得し、評価順に並び替え
+  const fullSpots = await getSpotsBySlugsTranslated(slugs, locale).catch(() => []);
+  const sortedSpots = [...fullSpots].sort(
+    (a, b) => (ratingMap.get(b.slug) ?? 0) - (ratingMap.get(a.slug) ?? 0)
+  );
+
+  const sections: TagPageContent["sections"] = [
+    {
+      key: "all",
+      heading: "",
+      intro: "",
+      spotSlugs: sortedSpots.map((s) => s.slug),
+    },
+  ];
+
+  // 翻訳済み recommend_description を優先、なければ lead にフォールバック
+  const descriptions: Record<string, string> = Object.fromEntries(
+    sortedSpots.map((s) => [s.slug, s.recommend_description || s.lead || ""])
+  );
+
+  const heroImage = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/02/skytree-02.jpg";
+  const leadText = totalCount > 0 ? labels.lead(totalCount) : labels.description;
+
+  const content: TagPageContent = {
+    title: `${labels.title}【${currentYear}】`,
+    breadcrumb: labels.breadcrumb,
+    heroImage,
+    updatedAt: `${currentYear}.04.15`,
+    prNotice: "",
+    lead: leadText,
+    sections,
+    descriptions,
+    faqs: labels.faqs,
+  };
+
+  // 座標があるスポットだけマップ用に変換
+  const mapSpots: MapSpotItem[] = sortedSpots
+    .filter((s) => s.latitude != null && s.longitude != null)
+    .map((s) => ({
+      id: s.id,
+      slug: s.slug,
+      name: s.name || s.title,
+      featured_image: s.featured_image || "",
+      categorySlug: s.category?.slug ?? "",
+      categoryName: s.category?.name ?? "",
+      latitude: s.latitude as number,
+      longitude: s.longitude as number,
+      rating_avg: ratingMap.get(s.slug) ?? 0,
+    }));
 
   return (
     <>
@@ -142,128 +233,14 @@ export default async function RecommendPageI18n({ params }: Props) {
         availableLocales={ALL_LOCALE_SLUGS}
         localeLabels={LOCALE_LABELS}
       />
-      <article className="home-section" style={{ paddingTop: 0 }}>
-        <div className="home-container">
-          <Breadcrumb
-            items={[{ label: labels.title }]}
-            locale={locale}
-          />
-
-        <h1 className="home-section-heading" style={{ marginTop: 24 }}>
-          <span className="heading-icon">
-            <Crown size={20} />
-          </span>
-          {`${labels.title}【${currentYear}】`}
-        </h1>
-
-        <p className="home-section-desc">
-          {totalCount > 0
-            ? labels.descWithCount(totalCount)
-            : labels.description}
-        </p>
-
-        {/* 評価基準カード */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: 16,
-            marginTop: 28,
-          }}
-          className="recommend-criteria-grid"
-        >
-          {labels.criteria.map((c, idx) => {
-            const Icon = CRITERIA_ICONS[idx].icon;
-            const color = CRITERIA_ICONS[idx].color;
-            return (
-              <div
-                key={c.label}
-                style={{
-                  background: "#fff",
-                  border: "1px solid rgba(0,0,0,0.06)",
-                  borderRadius: 12,
-                  padding: "20px 16px",
-                  textAlign: "center",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
-                }}
-              >
-                <div
-                  style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: "50%",
-                    background: `${color}14`,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <Icon size={22} color={color} />
-                </div>
-                <div
-                  style={{
-                    fontWeight: 800,
-                    fontSize: 15,
-                    color: "#1a202c",
-                    marginBottom: 6,
-                  }}
-                >
-                  {c.label}
-                </div>
-                <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.5 }}>
-                  {c.desc}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* ランキンググリッド */}
-        <div className="ranking-grid ranking-grid-3">
-          {spots.map((spot, i) => (
-            <Link
-              key={spot.id}
-              href={`/${locale}/${spot.category.slug}/${spot.slug}`}
-              className="spot-card"
-            >
-              <div className="spot-card-image">
-                <Image
-                  src={spot.featured_image}
-                  alt={spot.name}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 300px"
-                />
-                <span
-                  className={`ranking-badge ${i < 3 ? "ranking-badge-top" : ""}`}
-                >
-                  {i + 1}
-                </span>
-              </div>
-              <div className="spot-card-body">
-                <div className="spot-card-meta">
-                  <span className="badge spot-card-category">
-                    {spot.category.name}
-                  </span>
-                  <div className="spot-card-rating">
-                    <Star size={14} fill="#eab308" stroke="none" />
-                    <span>{spot.rating_avg.toFixed(1)}</span>
-                  </div>
-                </div>
-                <h3 className="spot-card-title">{spot.name}</h3>
-                <p className="spot-card-lead">{spot.lead}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-        </div>
-      </article>
-      <HomeAuthor labels={componentLabels.homeAuthor} locale={locale} />
-      <SpotShare
-        url={`${SITE_URL}/${locale}/recommend`}
-        title={labels.title}
+      <TagArticle
+        tagName={labels.breadcrumb}
+        content={content}
+        allSpots={sortedSpots}
+        mapSpots={mapSpots}
         locale={locale}
-        labels={componentLabels.share}
+        shareUrl={`${SITE_URL}/${locale}/recommend`}
+        showRank
       />
     </>
   );

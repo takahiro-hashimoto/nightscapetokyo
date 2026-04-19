@@ -48,9 +48,12 @@ export default async function Home() {
   const labels = getComponentLabels("ja");
 
   const ARTICLE_SLUGS = [
-    "how-to-night-photo",
+    "itabu-station-cherry-blossoms",
+    "restaurant-luke",
+    "airos-skyview",
     "my-photographic-equipment",
     "camera-beginner-item",
+    "how-to-night-photo",
   ];
 
   const [spots, hotels, areas, purposeTags, spotCount, recentSpots, mapSpots, articles] = await Promise.all([

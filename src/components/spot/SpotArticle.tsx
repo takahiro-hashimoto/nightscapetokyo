@@ -122,6 +122,7 @@ export default function SpotArticle({
             imageAlt={imageAlt}
             closed={spot.closed}
             isRecommended={isRecommended}
+            closedBadge={labels.closedBadge}
           />
 
           <div className="article-meta" itemProp="author" itemScope itemType="https://schema.org/Person">
@@ -129,7 +130,14 @@ export default function SpotArticle({
               <span className="meta-date">
                 <span className="meta-date-label">{fl.updated}：</span>
                 <time dateTime={spot.updated_at}>
-                  {new Date(spot.updated_at).toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit" }).replace(/\//g, "/")}
+                  {new Date(spot.updated_at).toLocaleDateString(
+                currentLocale === "en" ? "en-US"
+                : currentLocale === "ko" ? "ko-KR"
+                : currentLocale === "tw" ? "zh-TW"
+                : currentLocale === "cn" ? "zh-CN"
+                : "ja-JP",
+                { year: "numeric", month: "2-digit", day: "2-digit" }
+              )}
                 </time>
               </span>
               <span className="meta-author">
@@ -137,12 +145,14 @@ export default function SpotArticle({
                 <Link href="/about/" itemProp="url"><span itemProp="name">{fl.author}</span></Link>
               </span>
             </div>
-            <div className="meta-right">
-              <span className="meta-desc">
-                <Camera size={13} aria-hidden="true" />
-                {fl.desc}
-              </span>
-            </div>
+            {!currentLocale && (
+              <div className="meta-right">
+                <span className="meta-desc">
+                  <Camera size={13} aria-hidden="true" />
+                  {fl.desc}
+                </span>
+              </div>
+            )}
           </div>
 
           <SpotRating
@@ -201,7 +211,7 @@ export default function SpotArticle({
 
           <SpotInfo
             spotName={spot.name}
-            address={spot.address}
+            address={spot.address && currentLocale ? `${spot.address}, Japan` : spot.address}
             hours={spot.hours}
             holiday={spot.holiday}
             money={spot.money}
@@ -250,7 +260,7 @@ export default function SpotArticle({
           />
         </article>
 
-        <aside aria-label="関連スポット">
+        <aside aria-label={labels.related.asideLabel}>
           <SpotRelated
             spots={relatedSpots}
             areaName={spot.category.name}

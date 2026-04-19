@@ -272,20 +272,6 @@ export default async function TimeLapsePage() {
 
           </article>
 
-          {/* 関連する夜景スポット */}
-          <section className="content-card card-padding">
-            <h2 className="area-section-heading">映像に登場する夜景スポットを探す</h2>
-            <p className="area-page-lead" style={{ marginBottom: "16px" }}>タイムラプスの撮影地を実際に訪れてみませんか？各エリアの夜景スポット情報をご覧いただけます。</p>
-            <div className="pill-tag-list">
-              <Link href="/chiyoda/" className="pill-tag">千代田区（東京駅・丸の内）</Link>
-              <Link href="/shibuya/" className="pill-tag">渋谷区（スクランブル交差点）</Link>
-              <Link href="/minato/" className="pill-tag">港区（東京タワー）</Link>
-              <Link href="/sumida/" className="pill-tag">墨田区（スカイツリー）</Link>
-              <Link href="/tag/timelapse/" className="pill-tag">タイムラプス撮影スポット一覧</Link>
-              <Link href="/recommend/" className="pill-tag">おすすめ夜景スポット一覧</Link>
-            </div>
-          </section>
-
           <RecommendCta locale={null} />
           <SpotShare
             url={`${SITE_URL}/time-lapse/`}

@@ -34,6 +34,9 @@ export function resolveFaqAnswerText(
   if (answer === "__SIMULATOR_LINK__") {
     return "日の出・日の入り方角シミュレーターを利用すると簡単に夕日が沈む方向をチェックすることができます。";
   }
+  if (answer === "__TWILIGHT_LINK__") {
+    return "日没とともに点灯を始めるライトアップが多く、空に夕焼け色が残る「マジックアワー」から深い青に染まる「ブルーアワー」にかけてが夜景鑑賞・撮影の黄金時間です。詳しくはマジックアワーとは？夜景鑑賞・撮影の黄金時間を解説（/article/twilight/）をご覧ください。";
+  }
   return answer;
 }
 

@@ -21,7 +21,7 @@ export function buildSpotMetadata(
   const spotName = spot.name || spot.title;
   const pageTitle = labels.seoH1(spotName);
   const areaName = spot.category?.name || categorySlug;
-  const description = labels.seoDescription(spotName, areaName, spot.type);
+  const description = labels.seoDescription(spotName, areaName, spot.type, spot.lead ?? null);
 
   const canonicalUrl = localeSlug === "ja"
     ? `${SITE_URL}/${categorySlug}/${spotSlug}`

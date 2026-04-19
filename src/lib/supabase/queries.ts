@@ -271,79 +271,149 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels, loca
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const spotMap = new Map<string, { spot: any; matchedFields: Set<string>; matchedTokens: Set<string>; titleMatchTokens: Set<string> }>();
 
-  for (const keyword of allKeywords) {
-    const kw = keyword.toLowerCase();
-    const q = `%${keyword}%`;
+  // 全キーワードをOR条件にまとめてバッチクエリ化（キーワード数×クエリ数 → 固定6クエリ以内）
+  const textOr = allKeywords
+    .flatMap((kw) => [
+      `title.ilike.%${kw}%`,
+      `name.ilike.%${kw}%`,
+      `address.ilike.%${kw}%`,
+      `station.ilike.%${kw}%`,
+      `report.ilike.%${kw}%`,
+      `lead.ilike.%${kw}%`,
+    ])
+    .join(",");
+  const tagOr = allKeywords.map((kw) => `name.ilike.%${kw}%`).join(",");
+  const catOr = allKeywords.map((kw) => `name.ilike.%${kw}%`).join(",");
 
-    // 1. テキストフィールド検索
+  // ロケールが指定されている場合、翻訳テーブルも検索対象にする
+  const dbLocale = localeSlug ? LOCALE_SLUG_MAP[localeSlug] : null;
+  const transOr = dbLocale
+    ? allKeywords.flatMap((kw) => [`name.ilike.%${kw}%`, `lead.ilike.%${kw}%`]).join(",")
+    : null;
+
+  // Phase 1: テキスト・タグ・カテゴリ（＋翻訳）を並列検索
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [textHitsResult, matchedTagsResult, matchedCatsResult, transHitsResult] = await Promise.all([
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: textHits } = (await supabase
+    (supabase.from("spots").select(searchSelect).eq("published", true).or(textOr)) as any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (supabase.from("tags").select("id, name").or(tagOr)) as any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (supabase.from("categories").select("id, name").or(catOr)) as any,
+    transOr
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ? (supabase.from("spot_translations").select("spot_id, name, lead, category_name").eq("locale", dbLocale!).or(transOr)) as any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      : Promise.resolve({ data: [] as any[] }),
+  ]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const allTextHits: any[] = textHitsResult.data ?? [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const matchedTags: any[] = matchedTagsResult.data ?? [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const matchedCats: any[] = matchedCatsResult.data ?? [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transHits: any[] = transHitsResult.data ?? [];
+
+  // 翻訳マッチマップ（spot_id → 翻訳データ）
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transMap = new Map<string, any>();
+  for (const t of transHits) transMap.set(t.spot_id, t);
+
+  const tagIds: string[] = matchedTags.map((t: { id: string }) => t.id);
+  const catIds: string[] = matchedCats.map((c: { id: string }) => c.id);
+
+  // Phase 2: タグ・カテゴリのスポット関連を並列取得
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [tagRelationsResult, catSpotsResult] = await Promise.all([
+    tagIds.length > 0
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ? (supabase.from("spot_tags").select("spot_id, tag_id").in("tag_id", tagIds)) as any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      : Promise.resolve({ data: [] as any[] }),
+    catIds.length > 0
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ? (supabase.from("spots").select("id, category_id").eq("published", true).in("category_id", catIds)) as any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      : Promise.resolve({ data: [] as any[] }),
+  ]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const tagRelations: any[] = tagRelationsResult.data ?? [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const catSpots: any[] = catSpotsResult.data ?? [];
+
+  const tagSpotIds = tagRelations.map((r: { spot_id: string }) => r.spot_id);
+  const categorySpotIds = catSpots.map((s: { id: string }) => s.id);
+
+  // Phase 3: テキスト検索にないスポットを追加取得（翻訳マッチ含む）
+  const textHitIds = new Set(allTextHits.map((s: { id: string }) => s.id));
+  const transHitSpotIds = transHits.map((t: { spot_id: string }) => t.spot_id);
+  const extraIds = [...new Set([...tagSpotIds, ...categorySpotIds, ...transHitSpotIds])].filter(
+    (id) => !textHitIds.has(id)
+  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let extraSpots: any[] = [];
+  if (extraIds.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = (await supabase
       .from("spots")
       .select(searchSelect)
       .eq("published", true)
-      .or(`title.ilike.${q},name.ilike.${q},address.ilike.${q},station.ilike.${q},report.ilike.${q},lead.ilike.${q}`)) as any;
+      .in("id", extraIds)) as any;
+    extraSpots = data ?? [];
+  }
 
-    // 2. タグ名マッチ
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: matchedTags } = (await supabase
-      .from("tags")
-      .select("id, name")
-      .ilike("name", q)) as any;
-
-    let tagSpotIds: string[] = [];
-    if (matchedTags && matchedTags.length > 0) {
-      const tagIds = matchedTags.map((t: { id: string }) => t.id);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: tagRelations } = (await supabase
-        .from("spot_tags")
-        .select("spot_id, tag_id")
-        .in("tag_id", tagIds)) as any;
-      if (tagRelations) {
-        tagSpotIds = tagRelations.map((r: { spot_id: string }) => r.spot_id);
-      }
-    }
-
-    // 3. カテゴリ名マッチ
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: matchedCategories } = (await supabase
-      .from("categories")
-      .select("id, name")
-      .ilike("name", q)) as any;
-
-    let categorySpotIds: string[] = [];
-    if (matchedCategories && matchedCategories.length > 0) {
-      const catIds = matchedCategories.map((c: { id: string }) => c.id);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: catSpots } = (await supabase
-        .from("spots")
-        .select("id")
-        .eq("published", true)
-        .in("category_id", catIds)) as any;
-      if (catSpots) {
-        categorySpotIds = catSpots.map((s: { id: string }) => s.id);
-      }
-    }
-
-    // テキスト検索にないタグ・カテゴリヒットを追加取得
-    const textHitIds = new Set((textHits ?? []).map((s: { id: string }) => s.id));
-    const extraIds = [...new Set([...tagSpotIds, ...categorySpotIds])].filter(
-      (id) => !textHitIds.has(id)
+  // キーワード別のタグ・カテゴリ・翻訳マッチマップを事前構築（JS側で解決）
+  const tagMatchByKw = new Map<string, Set<string>>();
+  const catMatchByKw = new Map<string, Set<string>>();
+  const transMatchByKw = new Map<string, Set<string>>();
+  for (const keyword of allKeywords) {
+    const kw = keyword.toLowerCase();
+    const matchingTagIds = new Set(
+      matchedTags
+        .filter((t: { name: string }) => t.name.toLowerCase().includes(kw))
+        .map((t: { id: string }) => t.id)
     );
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let extraSpots: any[] = [];
-    if (extraIds.length > 0) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data } = (await supabase
-        .from("spots")
-        .select(searchSelect)
-        .eq("published", true)
-        .in("id", extraIds)) as any;
-      extraSpots = data ?? [];
-    }
+    tagMatchByKw.set(
+      kw,
+      new Set(
+        tagRelations
+          .filter((r: { tag_id: string }) => matchingTagIds.has(r.tag_id))
+          .map((r: { spot_id: string }) => r.spot_id)
+      )
+    );
+    const matchingCatIds = new Set(
+      matchedCats
+        .filter((c: { name: string }) => c.name.toLowerCase().includes(kw))
+        .map((c: { id: string }) => c.id)
+    );
+    catMatchByKw.set(
+      kw,
+      new Set(
+        catSpots
+          .filter((s: { category_id: string }) => matchingCatIds.has(s.category_id))
+          .map((s: { id: string }) => s.id)
+      )
+    );
+    transMatchByKw.set(
+      kw,
+      new Set(
+        transHits
+          .filter((t: { name: string; lead: string }) =>
+            (t.name || "").toLowerCase().includes(kw) || (t.lead || "").toLowerCase().includes(kw)
+          )
+          .map((t: { spot_id: string }) => t.spot_id)
+      )
+    );
+  }
 
-    const tagSpotIdSet = new Set(tagSpotIds);
-    const categorySpotIdSet = new Set(categorySpotIds);
-    const allSpots = [...(textHits ?? []), ...extraSpots];
+  const allSpots = [...allTextHits, ...extraSpots];
+
+  for (const keyword of allKeywords) {
+    const kw = keyword.toLowerCase();
+    const tagSpotIdSet = tagMatchByKw.get(kw) ?? new Set<string>();
+    const categorySpotIdSet = catMatchByKw.get(kw) ?? new Set<string>();
+    const transSpotIdSet = transMatchByKw.get(kw) ?? new Set<string>();
 
     for (const s of allSpots) {
       let entry = spotMap.get(s.id);
@@ -361,6 +431,8 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels, loca
       if ((s.lead || "").toLowerCase().includes(kw)) { entry.matchedFields.add(labels.lead); hit = true; }
       if (tagSpotIdSet.has(s.id)) { entry.matchedFields.add(labels.tag); hit = true; }
       if (categorySpotIdSet.has(s.id)) { entry.matchedFields.add(labels.category); hit = true; }
+      // 翻訳テーブルのname/leadにマッチした場合はタイトルマッチ扱い
+      if (transSpotIdSet.has(s.id)) { entry.matchedFields.add(labels.spotName); entry.titleMatchTokens.add(kw); hit = true; }
       if (hit) entry.matchedTokens.add(kw);
     }
   }
@@ -386,24 +458,23 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels, loca
     return b.rating_avg - a.rating_avg;
   });
 
-  // ロケールが指定されている場合、翻訳を適用
-  const dbLocale = localeSlug ? LOCALE_SLUG_MAP[localeSlug] : null;
+  // ロケールが指定されている場合、翻訳を表示に適用
   if (dbLocale && sorted.length > 0) {
-    const spotIds = sorted.map((s) => s.id);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: translations } = (await supabase
-      .from("spot_translations")
-      .select("spot_id, name, lead, category_name")
-      .eq("locale", dbLocale)
-      .in("spot_id", spotIds)) as any;
-
-    if (translations?.length) {
+    // キーワード検索で取得済みでないスポットの翻訳を追加取得
+    const missingIds = sorted.map((s) => s.id).filter((id) => !transMap.has(id));
+    if (missingIds.length > 0) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const tMap = new Map<string, any>();
-      for (const t of translations) tMap.set(t.spot_id, t);
+      const { data: extra } = (await supabase
+        .from("spot_translations")
+        .select("spot_id, name, lead, category_name")
+        .eq("locale", dbLocale)
+        .in("spot_id", missingIds)) as any;
+      for (const t of extra ?? []) transMap.set(t.spot_id, t);
+    }
 
+    if (transMap.size > 0) {
       return sorted.map((s) => {
-        const t = tMap.get(s.id);
+        const t = transMap.get(s.id);
         if (!t) return s;
         return {
           ...s,
@@ -493,7 +564,7 @@ export async function getTopSpotsTranslated(
     .filter((s: any) => tMap.has(s.id))
     .map(mapSpotToListing)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .filter((s: SpotListItem) => !allowedCategorySlugs || allowedCategorySlugs.has(s.category.slug))
+    .filter((s: SpotListItem) => (!allowedCategorySlugs || allowedCategorySlugs.has(s.category.slug)) && !s.closed)
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg)
     .slice(0, limit)
     .map((base: SpotListItem) => {
@@ -959,30 +1030,31 @@ export const getAreas = cache(async function getAreas() {
   const supabase = await getSupabaseClient();
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const { data: spots } = (await supabase
-    .from("spots")
-    .select("category:categories(slug, name)")
-    .eq("published", true)) as any;
+  // カテゴリ一覧とスポットのcategory_idを並列取得（全スポット詳細を不要に転送しない）
+  const [catsResult, spotsResult] = await Promise.all([
+    supabase.from("categories").select("id, slug, name") as any,
+    supabase.from("spots").select("category_id").eq("published", true) as any,
+  ]);
 
-  if (!spots) return [];
+  const categories: { id: string; slug: string; name: string }[] = catsResult.data ?? [];
+  const spots: { category_id: string }[] = spotsResult.data ?? [];
 
-  const countMap = new Map<string, { name: string; count: number }>();
-  for (const s of spots) {
-    const slug = s.category?.slug;
-    if (!slug || NON_AREA_SLUGS.includes(slug)) continue;
-    const existing = countMap.get(slug);
-    if (existing) {
-      existing.count++;
-    } else {
-      countMap.set(slug, { name: s.category.name, count: 1 });
+  if (!categories.length) return [];
+
+  const catMap = new Map<string, { slug: string; name: string; count: number }>();
+  for (const cat of categories) {
+    if (!NON_AREA_SLUGS.includes(cat.slug)) {
+      catMap.set(cat.id, { slug: cat.slug, name: cat.name, count: 0 });
     }
   }
+  for (const s of spots) {
+    const entry = catMap.get(s.category_id);
+    if (entry) entry.count++;
+  }
 
-  const areas = [...countMap.entries()].map(([slug, v]) => ({
-    slug,
-    name: v.name,
-    spot_count: v.count,
-  }));
+  const areas = [...catMap.values()]
+    .filter((v) => v.count > 0)
+    .map(({ slug, name, count }) => ({ slug, name, spot_count: count }));
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const TAIL_ORDER = ["横浜", "その他エリア"];
@@ -1005,30 +1077,21 @@ export const getPurposeTags = cache(async function getPurposeTags() {
   const supabase = await getSupabaseClient();
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const { data: relations } = (await supabase
-    .from("spot_tags")
-    .select("tag:tags(slug, name, image_url)")) as any;
+  // tags側からspot_tags数を集計（全spot_tags行を転送せずカウントのみ取得）
+  const { data: tags } = (await supabase
+    .from("tags")
+    .select("slug, name, image_url, spot_tags(count)")) as any;
 
-  if (!relations) return [];
+  if (!tags) return [];
 
-  const countMap = new Map<string, { name: string; image_url: string | null; count: number }>();
-  for (const r of relations) {
-    const slug = r.tag?.slug;
-    if (!slug) continue;
-    const existing = countMap.get(slug);
-    if (existing) {
-      existing.count++;
-    } else {
-      countMap.set(slug, { name: r.tag.name, image_url: r.tag.image_url || null, count: 1 });
-    }
-  }
-
-  const result = [...countMap.entries()].map(([slug, v]) => ({
-    slug,
-    name: v.name,
-    image_url: v.image_url,
-    spot_count: v.count,
-  }));
+  const result = (tags as any[])
+    .map((t) => ({
+      slug: t.slug as string,
+      name: t.name as string,
+      image_url: (t.image_url || null) as string | null,
+      spot_count: (t.spot_tags?.[0]?.count ?? 0) as number,
+    }))
+    .filter((t) => t.spot_count > 0);
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
   return result.sort((a, b) => b.spot_count - a.spot_count);
@@ -1078,23 +1141,17 @@ export async function getSpotsByTagSlug(
   const supabase = await getSupabaseClient();
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  // まずタグに紐づくspot_idを取得
-  const { data: tag } = await supabase
+  // タグとspot_idを1クエリで取得
+  const { data: tagData } = (await supabase
     .from("tags")
-    .select("id")
+    .select("id, spot_tags(spot_id)")
     .eq("slug", tagSlug)
-    .single();
+    .single()) as any;
 
-  if (!tag) return [];
+  if (!tagData) return [];
 
-  const { data: relations } = await supabase
-    .from("spot_tags")
-    .select("spot_id")
-    .eq("tag_id", tag.id);
-
-  if (!relations || relations.length === 0) return [];
-
-  const spotIds = relations.map((r) => r.spot_id);
+  const spotIds: string[] = (tagData.spot_tags ?? []).map((r: { spot_id: string }) => r.spot_id);
+  if (spotIds.length === 0) return [];
 
   let query = supabase
     .from("spots")
@@ -1113,6 +1170,140 @@ export async function getSpotsByTagSlug(
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return spots.map((spot: any) => normalizeSpotRelations({ ...spot, tags: [] }));
+}
+
+/**
+ * タグに紐づくスポットを SpotListItem（軽量）で取得。
+ * excludeSlugs に含まれるスポット（記事セクション掲載済み）は除外する。
+ */
+export async function getSpotListByTagSlug(
+  tagSlug: string,
+  excludeSlugs: string[] = [],
+): Promise<SpotListItem[]> {
+  if (!isSupabaseConfigured) return [];
+
+  const supabase = await getSupabaseClient();
+
+  const { data: tag } = await supabase
+    .from("tags")
+    .select("id")
+    .eq("slug", tagSlug)
+    .single();
+
+  if (!tag) return [];
+
+  const { data: relations } = await supabase
+    .from("spot_tags")
+    .select("spot_id")
+    .eq("tag_id", tag.id);
+
+  if (!relations || relations.length === 0) return [];
+
+  const spotIds = relations.map((r) => r.spot_id);
+
+  const { data: spots } = await supabase
+    .from("spots")
+    .select(LISTING_SELECT)
+    .in("id", spotIds)
+    .eq("published", true);
+
+  if (!spots) return [];
+
+  const excludeSet = new Set(excludeSlugs);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (spots as any[])
+    .filter((s) => !excludeSet.has(s.slug))
+    .map((s) => ({
+      id: s.id,
+      slug: s.slug,
+      name: s.name || s.title,
+      featured_image: s.featured_image ?? "",
+      category: s.category
+        ? { slug: s.category.slug, name: s.category.name }
+        : { slug: "", name: "" },
+      rating_avg: calcRatingAvg(s),
+      rating_beautiful: s.rating_beautiful ?? null,
+      rating_access: s.rating_access ?? null,
+      rating_atmosphere: s.rating_atmosphere ?? null,
+      rating_cost: s.rating_cost ?? null,
+      lead: s.lead ?? "",
+      closed: s.closed ?? false,
+    }));
+}
+
+/**
+ * タグに紐づくスポットを SpotListItem（翻訳済み）で取得。
+ * excludeSlugs に含まれるスポット（記事セクション掲載済み）は除外する。
+ */
+export async function getSpotListByTagSlugTranslated(
+  tagSlug: string,
+  excludeSlugs: string[] = [],
+  urlSlug: string,
+): Promise<SpotListItem[]> {
+  const dbLocale = LOCALE_SLUG_MAP[urlSlug];
+  if (!isSupabaseConfigured || !dbLocale) return [];
+
+  const supabase = await getSupabaseClient();
+
+  const { data: tag } = await supabase
+    .from("tags")
+    .select("id")
+    .eq("slug", tagSlug)
+    .single();
+
+  if (!tag) return [];
+
+  const { data: relations } = await supabase
+    .from("spot_tags")
+    .select("spot_id")
+    .eq("tag_id", tag.id);
+
+  if (!relations || relations.length === 0) return [];
+
+  const spotIds = relations.map((r) => r.spot_id);
+
+  const { data: spots } = await supabase
+    .from("spots")
+    .select(LISTING_SELECT)
+    .in("id", spotIds)
+    .eq("published", true);
+
+  if (!spots) return [];
+
+  const excludeSet = new Set(excludeSlugs);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const filteredSpots = (spots as any[]).filter((s) => !excludeSet.has(s.slug));
+  if (filteredSpots.length === 0) return [];
+
+  const filteredIds = filteredSpots.map((s) => s.id);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: translations } = (await supabase
+    .from("spot_translations")
+    .select("spot_id, name, lead, category_name")
+    .eq("locale", dbLocale)
+    .in("spot_id", filteredIds)) as any;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const tMap = new Map<string, any>();
+  if (translations) {
+    for (const t of translations) tMap.set(t.spot_id, t);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return filteredSpots.map((s: any) => {
+    const t = tMap.get(s.id);
+    const base = mapSpotToListing(s);
+    if (!t) return base;
+    return {
+      ...base,
+      name: t.name || base.name,
+      category: t.category_name
+        ? { slug: s.category?.slug ?? "", name: t.category_name }
+        : base.category,
+      lead: t.lead || base.lead,
+    };
+  });
 }
 
 /** スラッグ一覧からフル情報のスポットを取得 */
@@ -1134,6 +1325,69 @@ export async function getSpotsBySlugs(
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return spots.map((spot: any) => normalizeSpotRelations({ ...spot, tags: [] }));
+}
+
+/** スラッグ一覧からフル情報のスポットを取得し翻訳をマージ (urlSlug = "en", "ko", "tw", "cn") */
+export async function getSpotsBySlugsTranslated(
+  slugs: string[],
+  urlSlug: string
+): Promise<SpotWithRelations[]> {
+  const dbLocale = LOCALE_SLUG_MAP[urlSlug];
+  if (!dbLocale) return getSpotsBySlugs(slugs);
+
+  const spots = await getSpotsBySlugs(slugs);
+  if (spots.length === 0) return spots;
+
+  const supabase = await getSupabaseClient();
+  const spotIds = spots.map((s) => s.id);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: translations } = (await supabase
+    .from("spot_translations")
+    .select("*")
+    .eq("locale", dbLocale)
+    .in("spot_id", spotIds)) as any;
+
+  if (!translations?.length) return spots;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const tMap = new Map<string, any>(translations.map((t: any) => [t.spot_id, t]));
+
+  const fields = [
+    "title", "name", "lead", "recommend_description", "report", "content",
+    "address", "station", "parking", "hours", "holiday", "money", "height",
+    "official_label", "sns_label", "relation_label",
+  ] as const;
+
+  return spots.map((spot) => {
+    const t = tMap.get(spot.id);
+    if (!t) return spot;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const merged: any = { ...spot };
+    for (const field of fields) {
+      if (t[field]) merged[field] = t[field];
+    }
+    // recommend_description は翻訳が null でも明示的に上書き（日本語原文が残らないようにする）
+    if ("recommend_description" in t) {
+      merged.recommend_description = t.recommend_description ?? null;
+    }
+    if (t.category_name) {
+      merged.category = { ...spot.category, name: t.category_name };
+    }
+
+    const parsedAlts = parseJsonField<{ sort_order: number; alt: string }[]>(t.image_alts);
+    if (parsedAlts) {
+      const altMap = new Map<number, string>(parsedAlts.map((a) => [a.sort_order, a.alt]));
+      merged.images = spot.images.map((img) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const translatedAlt = altMap.get((img as any).sort_order);
+        return translatedAlt ? { ...img, alt: translatedAlt } : img;
+      });
+    }
+
+    return merged as SpotWithRelations;
+  });
 }
 
 /** スポット + 翻訳をマージして取得 (urlSlug = "tw", "cn", "en", "ko") */
@@ -1565,7 +1819,6 @@ export async function getSpotsForMap(): Promise<MapSpotItem[]> {
     .select(
       "id, slug, name, title, featured_image, latitude, longitude, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(slug, name)"
     )
-    .eq("type", "spot")
     .eq("published", true)
     .not("latitude", "is", null)
     .not("longitude", "is", null)) as any;

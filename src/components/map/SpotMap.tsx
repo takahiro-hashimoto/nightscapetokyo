@@ -22,12 +22,24 @@ const defaultIcon = L.icon({
   shadowSize: [41, 41],
 });
 
+type MapLabels = {
+  allLabel: string;
+  countLabel: string;
+};
+
 type Props = {
   spots: MapSpotItem[];
   categories: { slug: string; name: string }[];
+  labels?: MapLabels;
+  localePrefix?: string;
 };
 
-export default function SpotMap({ spots, categories }: Props) {
+const DEFAULT_LABELS: MapLabels = {
+  allLabel: "すべて",
+  countLabel: "{n}件のスポットを表示中",
+};
+
+export default function SpotMap({ spots, categories, labels = DEFAULT_LABELS, localePrefix = "" }: Props) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const filtered = useMemo(
@@ -36,6 +48,11 @@ export default function SpotMap({ spots, categories }: Props) {
         ? spots
         : spots.filter((s) => s.categorySlug === selectedCategory),
     [spots, selectedCategory]
+  );
+
+  const categoryNameMap = useMemo(
+    () => Object.fromEntries(categories.map((c) => [c.slug, c.name])),
+    [categories]
   );
 
   const center: [number, number] = [35.68, 139.76]; // 東京駅付近
@@ -62,7 +79,7 @@ export default function SpotMap({ spots, categories }: Props) {
               <Popup>
                 <div className="spot-map-popup">
                   {spot.featured_image && (
-                    <a href={`/${spot.categorySlug}/${spot.slug}`}>
+                    <a href={`${localePrefix}/${spot.categorySlug}/${spot.slug}`}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={spot.featured_image}
@@ -73,14 +90,14 @@ export default function SpotMap({ spots, categories }: Props) {
                   )}
                   <div className="spot-map-popup-body">
                     <a
-                      href={`/${spot.categorySlug}/${spot.slug}`}
+                      href={`${localePrefix}/${spot.categorySlug}/${spot.slug}`}
                       className="spot-map-popup-name"
                     >
                       {spot.name}
                     </a>
                     <div className="spot-map-popup-meta">
                       <span className="spot-map-popup-category">
-                        {spot.categoryName}
+                        {categoryNameMap[spot.categorySlug] ?? spot.categoryName}
                       </span>
                       {spot.rating_avg > 0 && (
                         <span className="spot-map-popup-rating">
@@ -99,7 +116,7 @@ export default function SpotMap({ spots, categories }: Props) {
             className={`spot-map-filter-btn ${selectedCategory === "all" ? "is-active" : ""}`}
             onClick={() => setSelectedCategory("all")}
           >
-            すべて ({spots.length})
+            {labels.allLabel} ({spots.length})
           </button>
           {categories.map((cat) => {
             const count = spots.filter((s) => s.categorySlug === cat.slug).length;
@@ -118,7 +135,7 @@ export default function SpotMap({ spots, categories }: Props) {
       </div>
 
       <p className="spot-map-count">
-        {filtered.length}件のスポットを表示中
+        {labels.countLabel.replace("{n}", String(filtered.length))}
       </p>
     </div>
   );

@@ -5,8 +5,8 @@
       "name": "dev",
       "runtimeExecutable": "/usr/local/bin/node",
       "runtimeArgs": ["node_modules/.bin/next", "dev", "--webpack"],
-      "port": 63256,
-      "autoPort": true
+      "port": 3000,
+      "autoPort": false
     }
   ]
 }

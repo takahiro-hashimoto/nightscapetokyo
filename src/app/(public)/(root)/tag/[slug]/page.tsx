@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import TagArticle from "@/components/tag/TagArticle";
 import RecommendCta from "@/components/common/RecommendCta";
@@ -9,13 +10,31 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
-import { getTagBySlug, getSpotsByTagSlug, getSpotsBySlugs, getTagPageBySlug, getAvailableTagPageLocales, getMapSpotsByTag } from "@/lib/supabase/queries";
-import { SITE_URL, calcRatingAvg, LOCALE_SLUG_MAP, LOCALE_LABELS, OG_LOCALE_MAP } from "@/lib/types";
+import { getTagBySlug, getSpotsByTagSlug, getSpotsBySlugs, getSpotListByTagSlug, getTagPageBySlug, getAvailableTagPageLocales, getMapSpotsByTag } from "@/lib/supabase/queries";
+import { SITE_URL, calcRatingAvg, LOCALE_SLUG_MAP, LOCALE_LABELS, OG_LOCALE_MAP, ALL_LOCALE_SLUGS } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import type { SpotListItem, SpotWithRelations } from "@/lib/types";
 import { tagPageContents, dummyTagSpots } from "@/lib/dummy-tag-data";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
 
+
+/** スラッグ別の関連外部リンク */
+function getTagExternalLinks(slug: string): ReactNode[] | undefined {
+  if (slug === "rainbow-bridge") {
+    return [
+      <a key="1" href="https://www.navikuru.jp/" target="_blank" rel="noopener noreferrer">ナビクル</a>,
+      <a key="2" href="https://www.hanamaru870.net/" target="_blank" rel="noopener noreferrer">はなまる870</a>,
+      <a key="3" href="https://www.jackery.jp/pages/jackery-power-station" target="_blank" rel="noopener noreferrer">Jackery ポータブル電源</a>,
+    ];
+  }
+  if (slug === "date") {
+    return [
+      <span key="1">特別な日を清潔感のある装いでより華やかに過ごすなら<a href="https://www.global-style.jp/" target="_blank" rel="noopener noreferrer">オーダースーツのGlobal Style</a>。約5,000種類の生地から選べる本格スーツを、1着2万円台〜と手頃な価格で提供しています。</span>,
+      <span key="2"><a href="https://hana-yume.net/pref/tokyo/" target="_blank" rel="noopener noreferrer">東京の結婚式場</a>を探すなら花嫁の夢を叶える結婚式場探しサイト「<a href="https://hana-yume.net/" target="_blank" rel="noopener noreferrer">ハナユメ</a>」がおすすめ</span>,
+    ];
+  }
+  return undefined;
+}
 
 /** シンプルタグ一覧ページ用FAQを自動生成 */
 function generateSimpleTagFaq(
@@ -264,50 +283,43 @@ export default async function TagPage({ params }: Props) {
     // セクション内のスポットslugsからスポットデータを取得
     const allSpotSlugs = content.sections.flatMap((s) => s.spotSlugs);
 
-    const [tag, spotsBySlugs, spotsByTag, availableLocales, mapSpots] = await Promise.all([
+    const [tag, spotsBySlugs, otherSpots, availableLocales, mapSpots] = await Promise.all([
       getTagBySlug(slug),
       allSpotSlugs.length > 0 ? getSpotsBySlugs(allSpotSlugs) : Promise.resolve([]),
-      getSpotsByTagSlug(slug),
+      getSpotListByTagSlug(slug, allSpotSlugs),
       getAvailableTagPageLocales(slug),
       getMapSpotsByTag(slug),
     ]);
 
-    // slugs指定で取得したものを優先し、タグ紐付け分もマージ（重複除去）
-    const seenIds = new Set(spotsBySlugs.map((s) => s.id));
-    const dbSpots = [
-      ...spotsBySlugs,
-      ...spotsByTag.filter((s) => !seenIds.has(s.id)),
-    ];
-
     // DB に存在しないスポットはダミーデータからフォールバック
-    const dbSlugs = new Set(dbSpots.map((s) => s.slug));
+    const dbSlugs = new Set(spotsBySlugs.map((s) => s.slug));
     const missingSlugs = allSpotSlugs.filter((s) => !dbSlugs.has(s));
     const dummySpots = dummyTagSpots[slug] ?? [];
     const fallbackSpots = missingSlugs.length > 0
       ? dummySpots.filter((s) => missingSlugs.includes(s.slug))
       : [];
-    const allSpots = [...dbSpots, ...fallbackSpots];
+    const allSpots = [...spotsBySlugs, ...fallbackSpots];
 
     const tagName = tag?.name ?? slug;
 
     return (
       <>
         {dbPage && <DevEditLink href={`/admin/tag-pages/${dbPage.id}/edit`} />}
-        {availableLocales.length > 0 && (
-          <LanguageSwitcher
-            currentLocale={null}
-            categorySlug={`tag/${slug}`}
-            availableLocales={availableLocales}
-            localeLabels={LOCALE_LABELS}
-          />
-        )}
+        <LanguageSwitcher
+          currentLocale={null}
+          categorySlug={`tag/${slug}`}
+          availableLocales={ALL_LOCALE_SLUGS}
+          localeLabels={LOCALE_LABELS}
+        />
         <TagArticle
           tagName={tagName}
           content={content}
           allSpots={allSpots}
+          otherSpots={otherSpots}
           mapSpots={mapSpots}
           spotHeadingLevel="h3"
           shareUrl={`${SITE_URL}/tag/${slug}`}
+          externalLinks={getTagExternalLinks(slug)}
         />
       </>
     );
@@ -362,6 +374,13 @@ export default async function TagPage({ params }: Props) {
     : null;
 
   return (
+    <>
+      <LanguageSwitcher
+        currentLocale={null}
+        categorySlug={`tag/${slug}`}
+        availableLocales={ALL_LOCALE_SLUGS}
+        localeLabels={LOCALE_LABELS}
+      />
     <div className="l-article-body" itemScope itemType="https://schema.org/CollectionPage">
       <meta itemProp="name" content={`${tagName}の夜景スポット一覧`} />
       <link itemProp="url" href={`${SITE_URL}/tag/${slug}`} />
@@ -436,5 +455,6 @@ export default async function TagPage({ params }: Props) {
         )}
       </div>
     </div>
+    </>
   );
 }

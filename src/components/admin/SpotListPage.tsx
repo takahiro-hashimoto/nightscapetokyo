@@ -3,11 +3,12 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Languages, Loader2 } from "lucide-react";
 import {
   deleteSpot,
   toggleSpotPublished,
 } from "@/app/admin/spots/actions";
+import { translateSpot } from "@/app/admin/spots/translate-action";
 
 type SpotItem = {
   id: string;
@@ -79,6 +80,7 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
   const [sortKey, setSortKey] = useState<"updated" | "rating">("updated");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [translatingIds, setTranslatingIds] = useState<Set<string>>(new Set());
   const router = useRouter();
 
   const filtered = spots
@@ -108,6 +110,28 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
         );
       }
     });
+  }
+
+  async function handleTranslate(id: string) {
+    setTranslatingIds((prev) => new Set(prev).add(id));
+    try {
+      const result = await translateSpot(id);
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setSpots((prev) =>
+          prev.map((s) =>
+            s.id === id ? { ...s, locales: ["en", "ko", "zh-Hant", "zh-Hans"] } : s
+          )
+        );
+      }
+    } finally {
+      setTranslatingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
   }
 
   function handleDelete(id: string, title: string) {
@@ -299,6 +323,17 @@ export default function SpotListPage({ spots: initial, categories }: Props) {
                 </td>
                 <td className="px-4 py-2">
                   <div className="flex gap-2 justify-end">
+                    <button
+                      onClick={() => handleTranslate(spot.id)}
+                      disabled={translatingIds.size > 0}
+                      className="text-gray-400 hover:text-violet-600 p-1 disabled:opacity-40"
+                      title="4言語に翻訳"
+                    >
+                      {translatingIds.has(spot.id)
+                        ? <Loader2 size={16} className="animate-spin" />
+                        : <Languages size={16} />
+                      }
+                    </button>
                     <Link
                       href={`/admin/spots/${spot.id}/edit`}
                       className="text-gray-400 hover:text-blue-600 p-1"
