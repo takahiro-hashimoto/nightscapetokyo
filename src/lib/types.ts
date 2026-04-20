@@ -322,6 +322,29 @@ export function buildHomeHreflangAlternates(
   return languages;
 }
 
+/**
+ * タグページ用 hreflang alternate links を生成
+ * ja: /tag/{tagSlug}, 各locale: /{locale}/tag/{tagSlug}, x-default: ja版
+ */
+export function buildTagHreflangAlternates(
+  siteUrl: string,
+  tagSlug: string,
+  availableLocales: readonly string[]
+): Record<string, string> {
+  const jaUrl = `${siteUrl}/tag/${tagSlug}`;
+  const languages: Record<string, string> = {
+    ja: jaUrl,
+    "x-default": jaUrl,
+  };
+  for (const urlSlug of availableLocales) {
+    const hreflang = LOCALE_SLUG_MAP[urlSlug];
+    if (hreflang) {
+      languages[hreflang] = `${siteUrl}/${urlSlug}/tag/${tagSlug}`;
+    }
+  }
+  return languages;
+}
+
 export type SpotWithRelations = Spot & {
   category: Category;
   tags: Tag[];

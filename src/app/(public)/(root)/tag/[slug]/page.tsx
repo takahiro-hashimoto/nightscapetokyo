@@ -11,7 +11,7 @@ import AreaSpotList from "@/components/area/AreaSpotList";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
 import { getTagBySlug, getSpotsByTagSlug, getSpotsBySlugs, getSpotListByTagSlug, getTagPageBySlug, getAvailableTagPageLocales, getMapSpotsByTag } from "@/lib/supabase/queries";
-import { SITE_URL, calcRatingAvg, LOCALE_SLUG_MAP, LOCALE_LABELS, OG_LOCALE_MAP, ALL_LOCALE_SLUGS } from "@/lib/types";
+import { SITE_URL, calcRatingAvg, LOCALE_LABELS, OG_LOCALE_MAP, ALL_LOCALE_SLUGS, buildTagHreflangAlternates } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import type { SpotListItem, SpotWithRelations } from "@/lib/types";
 import { tagPageContents, dummyTagSpots } from "@/lib/dummy-tag-data";
@@ -67,25 +67,6 @@ function generateSimpleTagFaq(
   }
 
   return faqs;
-}
-
-/** タグページ用 hreflang alternates を構築 */
-function buildTagHreflangAlternates(
-  tagSlug: string,
-  availableLocales: string[]
-): Record<string, string> {
-  const jaUrl = `${SITE_URL}/tag/${tagSlug}`;
-  const languages: Record<string, string> = {
-    ja: jaUrl,
-    "x-default": jaUrl,
-  };
-  for (const urlSlug of availableLocales) {
-    const hreflang = LOCALE_SLUG_MAP[urlSlug];
-    if (hreflang) {
-      languages[hreflang] = `${SITE_URL}/${urlSlug}/tag/${tagSlug}`;
-    }
-  }
-  return languages;
 }
 
 type Props = {
@@ -216,7 +197,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       alternates: {
         canonical: canonicalUrl,
         languages: availableLocales.length > 0
-          ? buildTagHreflangAlternates(slug, availableLocales)
+          ? buildTagHreflangAlternates(SITE_URL, slug, availableLocales)
           : undefined,
       },
     };

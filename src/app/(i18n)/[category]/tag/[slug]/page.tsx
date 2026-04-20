@@ -15,9 +15,9 @@ import {
 import {
   SITE_URL,
   ALL_LOCALE_SLUGS,
-  LOCALE_SLUG_MAP,
   LOCALE_LABELS,
   OG_LOCALE_MAP,
+  buildTagHreflangAlternates,
 } from "@/lib/types";
 import type { SpotWithRelations, TagPageTranslation } from "@/lib/types";
 import { tagPageContents, dummyTagSpots } from "@/lib/dummy-tag-data";
@@ -225,17 +225,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternateOgLocales.unshift(OG_LOCALE_MAP.ja);
   }
 
-  const jaUrl = `${SITE_URL}/tag/${tagSlug}`;
-  const languages: Record<string, string> = {
-    ja: jaUrl,
-    "x-default": jaUrl,
-  };
-  for (const urlSlug of availableLocales) {
-    const hl = LOCALE_SLUG_MAP[urlSlug];
-    if (hl) {
-      languages[hl] = `${SITE_URL}/${urlSlug}/tag/${tagSlug}`;
-    }
-  }
+  const languages = buildTagHreflangAlternates(SITE_URL, tagSlug, availableLocales);
 
   return {
     title,

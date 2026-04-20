@@ -5,18 +5,10 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
+import { YouTubeEmbed, extractYouTubeIds, type Video } from "@/components/time-lapse/YouTubeEmbed";
 import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import { getTimeLapseSpots } from "@/lib/supabase/queries";
 import { getComponentLabels } from "@/lib/i18n-labels";
-
-/* ===== Types ===== */
-
-type Video = {
-  id: string;
-  title: string;
-  caption?: string;
-  captionLink?: string;
-};
 
 type SubsectionLabel = {
   heading: string;
@@ -288,38 +280,6 @@ const LABELS: Record<string, Labels> = {
   },
 };
 
-/* ===== Utilities ===== */
-
-function extractYouTubeIds(html: string): string[] {
-  return [...html.matchAll(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/g)].map((m) => m[1]);
-}
-
-/* ===== YouTube embed ===== */
-
-function YouTubeEmbed({ video }: { video: Video }) {
-  return (
-    <figure className="tl-video-figure">
-      <div className="video-embed">
-        <iframe
-          src={`https://www.youtube.com/embed/${video.id}`}
-          title={video.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        />
-      </div>
-      {video.caption && (
-        <figcaption className="video-caption">
-          {video.captionLink ? (
-            <Link href={video.captionLink}>{video.caption}</Link>
-          ) : (
-            video.caption
-          )}
-        </figcaption>
-      )}
-    </figure>
-  );
-}
-
 /* ===== Metadata + Page ===== */
 
 type PageProps = { params: Promise<{ category: string }> };
@@ -359,12 +319,13 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
   const l = LABELS[locale] ?? LABELS.en;
   const componentLabels = getComponentLabels(locale);
 
-  const timeLapseSpots = await getTimeLapseSpots();
+  const timeLapseSpots = await getTimeLapseSpots(locale);
   const materialVideos: Video[] = timeLapseSpots.flatMap((spot) => {
     const ids = extractYouTubeIds(spot.movie);
     return ids.map((id) => ({
       id,
       title: spot.name,
+      caption: spot.name,
       captionLink: `/${locale}/${spot.categorySlug}/${spot.slug}/`,
     }));
   });

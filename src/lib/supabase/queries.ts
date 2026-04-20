@@ -26,6 +26,14 @@ function normalizeSpotRelations(spot: any): SpotWithRelations {
   };
 }
 
+/** spot_id をキーとした翻訳マップを生成 */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function buildTranslationMap(translations: any[]): Map<string, any> {
+  const map = new Map<string, any>();
+  for (const t of translations) map.set(t.spot_id, t);
+  return map;
+}
+
 /** sort_order 昇順ソート */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function sortByOrder(arr: any): any[] {
@@ -191,22 +199,41 @@ export type TimeLapseSpot = {
   movie: string;
 };
 
-export const getTimeLapseSpots = cache(async function getTimeLapseSpots(): Promise<TimeLapseSpot[]> {
+export const getTimeLapseSpots = cache(async function getTimeLapseSpots(localeSlug?: string): Promise<TimeLapseSpot[]> {
   if (!isSupabaseConfigured) return [];
   const supabase = await getSupabaseClient();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data } = (await supabase
     .from("spots")
-    .select("slug, name, title, movie, category:categories(slug)")
+    .select("id, slug, name, title, movie, category:categories(slug)")
     .eq("published", true)
     .not("movie", "is", null)
     .order("published_at", { ascending: false })) as any;
 
   if (!data) return [];
+
+  const dbLocale = localeSlug ? LOCALE_SLUG_MAP[localeSlug] : null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let tMap = new Map<string, any>();
+  if (dbLocale) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const spotIds = data.map((s: any) => s.id);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: translations } = (await supabase
+      .from("spot_translations")
+      .select("spot_id, name")
+      .eq("locale", dbLocale)
+      .in("spot_id", spotIds)) as any;
+    if (translations?.length) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      for (const t of translations) tMap.set(t.spot_id, t);
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return data.map((s: any) => ({
     slug: s.slug,
-    name: s.name || s.title,
+    name: tMap.get(s.id)?.name || s.name || s.title,
     categorySlug: s.category?.slug ?? "",
     movie: s.movie,
   }));
@@ -555,9 +582,7 @@ export async function getTopSpotsTranslated(
 
   if (!translations?.length) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tMap = new Map<string, any>();
-  for (const t of translations) tMap.set(t.spot_id, t);
+  const tMap = buildTranslationMap(translations);
 
   return spots
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -613,9 +638,7 @@ export async function getHotelSpotsTranslated(
 
   if (!translations?.length) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tMap = new Map<string, any>();
-  for (const t of translations) tMap.set(t.spot_id, t);
+  const tMap = buildTranslationMap(translations);
 
   return spots
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -769,7 +792,7 @@ export async function getRecommendedSpotsByTagsTranslated(
 
   if (!translations?.length) return spots;
 
-  const tMap = new Map(translations.map((t: any) => [t.spot_id, t]));
+  const tMap = buildTranslationMap(translations);
 
   return spots.map((base) => {
     const t: any = tMap.get(base.id);
@@ -820,9 +843,7 @@ export async function getRelatedSpotsTranslated(
 
   if (!translations?.length) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tMap = new Map<string, any>();
-  for (const t of translations) tMap.set(t.spot_id, t);
+  const tMap = buildTranslationMap(translations);
 
   return spots
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -878,9 +899,7 @@ export async function getSpotsByCategoryTranslated(
 
   if (!translations?.length) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tMap = new Map<string, any>();
-  for (const t of translations) tMap.set(t.spot_id, t);
+  const tMap = buildTranslationMap(translations);
 
   return categorySpots
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1284,11 +1303,7 @@ export async function getSpotListByTagSlugTranslated(
     .eq("locale", dbLocale)
     .in("spot_id", filteredIds)) as any;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tMap = new Map<string, any>();
-  if (translations) {
-    for (const t of translations) tMap.set(t.spot_id, t);
-  }
+  const tMap = buildTranslationMap(translations ?? []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return filteredSpots.map((s: any) => {
@@ -1350,8 +1365,7 @@ export async function getSpotsBySlugsTranslated(
 
   if (!translations?.length) return spots;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tMap = new Map<string, any>(translations.map((t: any) => [t.spot_id, t]));
+  const tMap = buildTranslationMap(translations);
 
   const fields = [
     "title", "name", "lead", "recommend_description", "report", "content",

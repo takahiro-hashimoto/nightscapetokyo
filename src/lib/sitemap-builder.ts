@@ -367,3 +367,15 @@ export function toSitemapIndexXml(): string {
     `</sitemapindex>`,
   ].join("\n");
 }
+
+/** 指定ロケールのサイトマップ Response を生成する（各 route.ts から呼び出す共通ハンドラ） */
+export async function makeSitemapResponse(locale: keyof Awaited<ReturnType<typeof buildAllEntries>>) {
+  const entries = await buildAllEntries();
+  const xml = toSitemapXml(entries[locale]);
+  return new Response(xml, {
+    headers: {
+      "Content-Type": "application/xml",
+      "Cache-Control": "public, max-age=3600, s-maxage=3600",
+    },
+  });
+}

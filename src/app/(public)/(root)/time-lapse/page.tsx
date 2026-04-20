@@ -5,6 +5,7 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
+import { YouTubeEmbed, extractYouTubeIds, type Video } from "@/components/time-lapse/YouTubeEmbed";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import { getTimeLapseSpots } from "@/lib/supabase/queries";
 import { getComponentLabels } from "@/lib/i18n-labels";
@@ -36,13 +37,6 @@ export const revalidate = 86400;
 export const fetchCache = "force-cache";
 
 /* ===== Video data ===== */
-
-type Video = {
-  id: string;
-  title: string;
-  caption?: string;
-  captionLink?: string;
-};
 
 type Subsection = { heading: string; description: string[]; videos: Video[]; areaHref?: string };
 
@@ -108,40 +102,6 @@ const COLLECTION_SUBSECTIONS: Subsection[] = [
     ],
   },
 ];
-
-/* ===== Utilities ===== */
-
-/** movie フィールドの HTML から YouTube ID をすべて抽出する */
-function extractYouTubeIds(html: string): string[] {
-  return [...html.matchAll(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/g)].map((m) => m[1]);
-}
-
-/* ===== YouTube embed component ===== */
-
-function YouTubeEmbed({ video }: { video: Video }) {
-  return (
-    <figure className="tl-video-figure">
-      <div className="video-embed">
-        <iframe
-          src={`https://www.youtube.com/embed/${video.id}`}
-          title={video.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        />
-      </div>
-      {video.caption && (
-        <figcaption className="video-caption">
-          {video.captionLink ? (
-            <Link href={video.captionLink}>{video.caption}</Link>
-          ) : (
-            video.caption
-          )}
-          {video.captionLink ? "の夕景タイムラプス" : ""}
-        </figcaption>
-      )}
-    </figure>
-  );
-}
 
 /* ===== Page component ===== */
 
@@ -262,7 +222,7 @@ export default async function TimeLapsePage() {
                 <div className="tl-material-grid">
                   {materialVideos.map((v) => (
                     <div key={v.id} className="tl-material-item">
-                      <YouTubeEmbed video={v} />
+                      <YouTubeEmbed video={v} captionSuffix="の夕景タイムラプス" />
                     </div>
                   ))}
                 </div>
