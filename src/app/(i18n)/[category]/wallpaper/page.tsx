@@ -415,7 +415,7 @@ export default async function WallpaperPageI18n({ params }: Props) {
           </article>
         </div>
       </div>
-      <HomeAuthor labels={componentLabels.homeAuthor} locale={locale} />
+      <HomeAuthor locale={locale} />
       <SpotShare
         url={`${SITE_URL}/${locale}/wallpaper/`}
         title={labels.title}

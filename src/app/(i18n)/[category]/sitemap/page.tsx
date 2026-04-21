@@ -41,7 +41,7 @@ type CategoryRow = { slug: string; name: string; spots: SpotRow[] };
 type TagLink = { slug: string; name: string };
 type TranslationRow = { locale: string; title: string; spot: { slug: string } | { slug: string }[] };
 
-async function getSitemapData(dbLocale: string) {
+async function getSitemapData(dbLocale: string, locale: string) {
   const [catRes, tagRes, transRes, tagTransRes] = await Promise.all([
     supabase.from("categories").select("slug, name, spots:spots(slug, title)").order("name"),
     supabase.from("tags").select("slug, name").order("name"),
@@ -113,7 +113,7 @@ export default async function I18nSitemapPage({ params }: Props) {
   const locale = category;
   const dbLocale = LOCALE_SLUG_MAP[locale] ?? "en";
   const l = SITEMAP_LABELS[locale] ?? SITEMAP_LABELS.en;
-  const { categories, tags } = await getSitemapData(dbLocale);
+  const { categories, tags } = await getSitemapData(dbLocale, locale);
 
   return (
     <>

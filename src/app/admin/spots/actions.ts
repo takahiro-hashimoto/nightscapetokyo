@@ -3,25 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
-
-function parseArrayFields(
-  formData: FormData,
-  prefix: string
-): Record<string, string>[] {
-  const items = new Map<number, Record<string, string>>();
-  for (const [key, value] of formData.entries()) {
-    if (!key.startsWith(`${prefix}.`)) continue;
-    const parts = key.split(".");
-    const index = parseInt(parts[1]);
-    const field = parts[2];
-    if (isNaN(index) || !field) continue;
-    if (!items.has(index)) items.set(index, {});
-    items.get(index)![field] = value as string;
-  }
-  return [...items.entries()]
-    .sort((a, b) => a[0] - b[0])
-    .map(([, v]) => v);
-}
+import { parseArrayFields } from "@/lib/admin/parse-form";
 
 export async function createSpot(formData: FormData) {
   const admin = createAdminClient();

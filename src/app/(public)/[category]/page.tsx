@@ -311,7 +311,7 @@ export default async function AreaPage({ params }: Props) {
           localePrefix={`/${localeSlug}`}
         />
         <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={hp.faq} />
-        <HomeAuthor labels={labels.homeAuthor} locale={localeSlug} />
+        <HomeAuthor locale={localeSlug} />
         <SpotShare
           url={`${SITE_URL}/${localeSlug}`}
           title={hp.hero.subtitle(spotCount)}

@@ -1,35 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { AFFILIATE_URL, COUPON_CODE } from '@/lib/luminar/config'
-
-type SaleSettings = {
-  isActive: boolean
-  saleName: string
-  hasCoupon: boolean
-}
+import { useSaleSettings } from '@/hooks/useSaleSettings'
 
 export default function LuminarCtaSale() {
-  const [settings, setSettings] = useState<SaleSettings>({
-    isActive: false,
-    saleName: 'セール',
-    hasCoupon: true,
-  })
+  const settings = useSaleSettings()
   const [copied, setCopied] = useState(false)
-
-  useEffect(() => {
-    fetch('/api/luminar/sale-settings')
-      .then((r) => r.json())
-      .then((data) =>
-        setSettings({
-          isActive: data.isActive,
-          saleName: data.saleName,
-          hasCoupon: data.hasCoupon,
-        }),
-      )
-      .catch(() => {/* keep defaults */})
-  }, [])
 
   const handleCopy = async () => {
     try {
@@ -41,7 +19,9 @@ export default function LuminarCtaSale() {
     }
   }
 
-  const { isActive, saleName, hasCoupon } = settings
+  const isActive = settings?.isActive ?? false
+  const saleName = settings?.saleName ?? 'セール'
+  const hasCoupon = settings?.hasCoupon ?? true
 
   return (
     <section className="m-cta-sale" aria-labelledby="cta-title">

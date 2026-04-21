@@ -1,22 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-
-type SaleSettings = {
-  isActive: boolean
-  saleName: string
-  hasCoupon: boolean
-}
+import { useSaleSettings } from '@/hooks/useSaleSettings'
 
 export default function LuminarSaleStatusNote() {
-  const [settings, setSettings] = useState<SaleSettings | null>(null)
-
-  useEffect(() => {
-    fetch('/api/luminar/sale-settings/')
-      .then((r) => r.json())
-      .then((data: SaleSettings) => setSettings(data))
-      .catch(() => {/* keep null → no note shown */})
-  }, [])
+  const settings = useSaleSettings()
 
   if (!settings) return null
 

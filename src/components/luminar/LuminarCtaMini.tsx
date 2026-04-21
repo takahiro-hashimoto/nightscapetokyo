@@ -1,23 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-
-type SaleSettings = {
-  isActive: boolean
-  saleName: string
-  hasCoupon: boolean
-}
+import { useState } from 'react'
+import { useSaleSettings } from '@/hooks/useSaleSettings'
 
 export default function LuminarCtaMini() {
+  const sale = useSaleSettings()
   const [copied, setCopied] = useState(false)
-  const [sale, setSale] = useState<SaleSettings | null>(null)
-
-  useEffect(() => {
-    fetch('/api/luminar/sale-settings/')
-      .then((r) => r.json())
-      .then((data: SaleSettings) => setSale(data))
-      .catch(() => {})
-  }, [])
 
   const handleCopy = async () => {
     const code = 'nightscape10'

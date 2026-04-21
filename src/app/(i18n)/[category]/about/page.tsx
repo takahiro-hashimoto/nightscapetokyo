@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import type { LucideProps } from "lucide-react";
 import {
   Camera,
   Award,
@@ -9,7 +8,6 @@ import {
   BookOpen,
   Mail,
   ExternalLink,
-  Leaf,
 } from "lucide-react";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
@@ -22,108 +20,7 @@ import {
   buildAreaHreflangAlternates,
 } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
-
-/* ─── SNS Links ─── */
-type SnsLink =
-  | { label: string; href: string; icon: string; Icon?: never }
-  | { label: string; href: string; Icon: React.ComponentType<LucideProps>; icon?: never };
-
-const ABOUT_SNS_LINKS: SnsLink[] = [
-  { label: "X (Twitter)",  href: "https://twitter.com/takahiro__1202",                           icon: "M18.9 1.2h3.7l-8 9.2L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4z" },
-  { label: "Instagram",    href: "https://www.instagram.com/nightscape.tokyo/",                   icon: "M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6zm9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" },
-  { label: "YouTube",      href: "https://www.youtube.com/@nightscape-tokyo?sub_confirmation=1",   icon: "M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" },
-  { label: "TikTok",       href: "https://www.tiktok.com/@nightscape_tokyo",                      icon: "M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.79 1.54V6.78a4.85 4.85 0 0 1-1.02-.09z" },
-  { label: "Lemon8",       href: "https://www.lemon8-app.com/nightscape_tokyo",                   Icon: Leaf },
-  { label: "Pinterest",    href: "https://www.pinterest.jp/0gsnym2k9zr0vps04rfjjkkb4fwsu4/",      icon: "M12 0a12 12 0 0 0-4.4 23.2c-.1-.9-.2-2.4 0-3.4l1.3-5.5s-.3-.7-.3-1.7c0-1.6.9-2.8 2.1-2.8 1 0 1.5.7 1.5 1.6 0 1-.6 2.4-1 3.7-.3 1.1.6 2 1.7 2 2.1 0 3.7-2.2 3.7-5.4 0-2.8-2-4.8-4.9-4.8-3.4 0-5.3 2.5-5.3 5.1 0 1 .4 2.1.9 2.7.1.1.1.2.1.3l-.3 1.3c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.6 0-3.8 2.7-7.2 7.9-7.2 4.1 0 7.4 3 7.4 6.9 0 4.1-2.6 7.5-6.2 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 2.9c-.3 1.1-1 2.5-1.5 3.3A12 12 0 1 0 12 0z" },
-];
-
-/* ─── Equipment (shared) ─── */
-const EQUIPMENT = [
-  { name: "Sony α7Ⅳ",                                              href: "https://amzn.to/3LI54Xb" },
-  { name: "Sony α7III",                                             href: "https://amzn.to/3WJ8Rd1" },
-  { name: "Sony α7C",                                               href: "https://amzn.to/3LEzwBn" },
-  { name: "Sony FE 24-105mm F4 G OSS",                              href: "https://amzn.to/3SzE4Nh" },
-  { name: "TAMRON 28-75mm F/2.8 Di III RXD",                        href: "https://amzn.to/3WCvRu4" },
-  { name: "TAMRON 17-28mm F/2.8 Di III RXD",                        href: "https://amzn.to/3WDiWrU" },
-  { name: "TAMRON 70-180mm F/2.8 Di III VXD",                       href: "https://amzn.to/3YkH0kD" },
-  { name: "SONY Sonnar T* FE 55mm F1.8 ZA",                         href: "https://amzn.to/4c4xlSm" },
-  { name: "Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 Aspherical III", href: "https://amzn.to/3A6HpNk" },
-];
-
-/* ─── Achievements base (shared image/link data) ─── */
-type AchievementBase = {
-  image: string;
-  imageAlt: string;
-  link: { title: string; href: string; siteName?: string; thumbnail?: string; excerpt?: string };
-};
-
-const ACHIEVEMENTS_BASE: AchievementBase[] = [
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/tokyo-station-4.jpg",
-    imageAlt: "Night view from Tokyo Tower observatory",
-    link: { title: "Tokyo Tower", href: "https://www.tokyotower.co.jp/", siteName: "tokyotower.co.jp", excerpt: "Tokyo Tower, opened on December 23, 1958, is a landmark of Tokyo." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/prince-hotel-room-02.jpg",
-    imageAlt: "Corner room atmosphere at The Prince Park Tower Tokyo",
-    link: { title: "View from the Room", href: "https://www.princehotels.co.jp/parktower/plan/guestroom_view/", siteName: "The Prince Park Tower Tokyo", thumbnail: "https://www.princehotels.co.jp/image/pla_guestroomview.jpg", excerpt: "A luxury stay in the heart of the city, recommended for those who love night views." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2025/10/tower-1.jpg",
-    imageAlt: "The Prince Park Tower Tokyo renovation floor",
-    link: { title: "20th ANNIVERSARY | The Prince Park Tower Tokyo", href: "https://www.princehotels.co.jp/parktower/contents/20th/renewal.html", siteName: "The Prince Park Tower Tokyo", excerpt: "The Prince Park Tower Tokyo celebrates its 20th anniversary in 2025." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/02/aserf-1-2.jpg",
-    imageAlt: "Night view from Nagoya Prince Hotel Sky Tower",
-    link: { title: "Hotel View Introduction", href: "https://www.princehotels.co.jp/nagoya/plan/view/", siteName: "Nagoya Prince Hotel Sky Tower", thumbnail: "https://www.princehotels.co.jp/nagoya/images/north-night-03.jpg", excerpt: "Enjoy the night view spreading out below from Nagoya Prince Hotel Sky Tower." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/12/minatu-ugoku.jpg",
-    imageAlt: "Video contest \"Minato, Ugoku\"",
-    link: { title: "Minato, Ugoku", href: "https://minato-ugoku.com/", siteName: "minato-ugoku.com", excerpt: "Official website of the video contest promoting the appeal of Minato Ward's night spots." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2025/01/nihon-densetu.jpg",
-    imageAlt: "Nippon Densetsu Kogyo website",
-    link: { title: "HOME – Nippon Densetsu Kogyo Co., Ltd.", href: "https://www.densetsuko.co.jp/", siteName: "Nippon Densetsu Kogyo Co., Ltd.", thumbnail: "https://www.densetsuko.co.jp/wp/wp-content/uploads/2024/11/og-image.png", excerpt: "Supporting Japan's infrastructure and building the future — NDK's official website." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/02/08.jpg",
-    imageAlt: "Tokyo night view photographed from a helicopter",
-    link: { title: "AIROS Skyview Helicopter Tour Experience Report", href: "https://nightscape.tokyo/pickup/airos-skyview/", siteName: "Tokyo Night View Guide", thumbnail: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/02/21.jpg", excerpt: "A helicopter tour experience report enjoying Tokyo's night views from above." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2025/02/restaurant-luke-2-1.jpg",
-    imageAlt: "Night view of Tokyo Tower and Minato Ward",
-    link: { title: "Our 'SKY TERRACE' was featured on \"Tokyo Night View Guide\"", href: "https://www.restaurant-luke.com/news/8381/", siteName: "Restaurant LUKE with SKY LOUNGE", thumbnail: "https://www.restaurant-luke.com/wp-content/uploads/2024/02/221029-10.jpg", excerpt: "Our limited-time plan 'SKY TERRACE' was introduced on 'Tokyo Night View Guide'." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/marunouchi-builuding-35-03.jpg",
-    imageAlt: "Night view toward Kasumigaseki from Marunouchi Building 35F",
-    link: { title: "Tokyo Daikairou Photo Contest | Visit Chiyoda", href: "https://visit-chiyoda.tokyo/photo_contest/", siteName: "Visit Chiyoda", excerpt: "Tokyo Daikairou Photo Contest | Official tourism website for Chiyoda City, Tokyo." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2025/04/sample-tbs-1.jpg",
-    imageAlt: "BS TBS Kannin Takeyama's Afternoon Sake",
-    link: { title: "Kannin Takeyama no Hiruzake wa Jinsei no Aji", href: "https://bs.tbs.co.jp/entertainment/hiruzake/", siteName: "BS-TBS", thumbnail: "https://bs.tbs.co.jp/images/program/5476.jpg", excerpt: "A daytime drinking show searching for drinking companions in the city." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/07/shibuya-scrabble-1.jpg",
-    imageAlt: "Night view from Magnet by Shibuya109 rooftop observatory",
-    link: { title: "Stanislav Bunin — Genius Pianist: 10 Years of Silence", href: "https://www.nhk.jp/p/ts/581332RQ53/episode/te/M6NWNQX4YG/", siteName: "NHK", thumbnail: "https://imgu.web.nhk/static/assets/images/tvseries/ts/581332RQ53/581332RQ53-eyecatch_3661a0c5dee272b624595807286efb99.jpg", excerpt: "Genius pianist Stanislav Bunin overcomes injury and resumes full-scale touring after 10 years." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/11/zawatuku.jpg",
-    imageAlt: "Zawatsuku! Friday",
-    link: { title: "Zawatsuku! Friday | TV Asahi", href: "https://www.tv-asahi.co.jp/zawatsukufriday/", siteName: "TV Asahi", thumbnail: "https://www.tv-asahi.co.jp/zawatsukufriday/OG.jpg", excerpt: "TV Asahi 'Zawatsuku! Friday' official website." },
-  },
-  {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/harumi-futo-1.jpg",
-    imageAlt: "Reflection of Fubai Ginran",
-    link: { title: "Column / Art Trip / Fubai Ginran by Michio Ihara — Asahi Mullion", href: "https://www.asahi-mullion.com/column/article/artrip/2470", siteName: "Asahi Mullion", thumbnail: "https://dn9bqdq7w42e9.cloudfront.net/articles/main/2f4ab2392d105ce4b877a8e038f18e0800091395.jpg", excerpt: "Dusk falls over Tokyo Bay. At Harumi Passenger Terminal, photographers gather." },
-  },
-];
+import { EQUIPMENT, ABOUT_SNS_LINKS, ACHIEVEMENTS_BASE } from "@/lib/about-content";
 
 /* ─── Per-locale text ─── */
 type AboutLabels = {
@@ -585,7 +482,7 @@ export default async function AboutPageI18n({ params }: Props) {
               <div className="about-achievement-image">
                 <Image
                   src={base.image}
-                  alt={base.imageAlt}
+                  alt={l.achievementTitles[i] ?? ''}
                   width={960}
                   height={640}
                   style={{ width: "100%", height: "auto", borderRadius: 8 }}
