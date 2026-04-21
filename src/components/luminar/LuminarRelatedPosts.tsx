@@ -24,10 +24,10 @@ export default function LuminarRelatedPosts({ articles }: Props) {
     <aside className="m-related-posts" aria-labelledby="related-title">
       <h2 className="m-related-posts__title" id="related-title">関連記事</h2>
 
-      <div className="l-grid-2">
+      <div className="l-grid-3">
         {articles.map((article) => (
           <article className="m-post-card" key={article.slug}>
-            <Link href={`/luminar/${article.slug}/`}>
+            <Link href={`/luminar/${article.slug}/`} aria-labelledby={`related-title-${article.slug}`}>
               <div className="m-post-card__thumb">
                 {article.featuredImage ? (
                   <Image
@@ -38,7 +38,7 @@ export default function LuminarRelatedPosts({ articles }: Props) {
                     sizes="(max-width: 768px) 100vw, 400px"
                   />
                 ) : (
-                  <div style={{ width: '100%', height: '100%', background: 'var(--c-bg-sub)' }} />
+                  <div style={{ width: '100%', height: '100%', background: 'var(--c-bg-sub)' }} aria-hidden="true" />
                 )}
               </div>
               <div className="m-post-card__content">
@@ -46,6 +46,7 @@ export default function LuminarRelatedPosts({ articles }: Props) {
                   <span className="m-post-card__cat">{article.category}</span>
                 )}
                 <h3
+                  id={`related-title-${article.slug}`}
                   className="m-post-card__title"
                   dangerouslySetInnerHTML={{ __html: article.title }}
                 />

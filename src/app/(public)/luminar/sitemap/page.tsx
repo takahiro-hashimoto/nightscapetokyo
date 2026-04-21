@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getAllPostsSummary, normalizePostSummary } from '@/lib/luminar/wp-api'
+import { getAllPostsSummary, normalizePostSummary } from '@/lib/luminar/articles-meta'
 import { LUMINAR_SITE_NAME, LUMINAR_SITE_URL, FOOTER_NAV_ITEMS } from '@/lib/luminar/config'
 
 export const metadata: Metadata = {

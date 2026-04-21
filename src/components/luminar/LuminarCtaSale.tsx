@@ -49,14 +49,14 @@ export default function LuminarCtaSale() {
       <div className="m-cta-sale__bg m-cta-sale__bg--2" aria-hidden="true"></div>
 
       <div className="m-cta-sale__content">
-        <p className="m-cta-sale__title" id="cta-title">
+        <h2 className="m-cta-sale__title" id="cta-title">
           <i className="fa fa-bolt" aria-hidden="true"></i>{' '}
           {isActive ? (
             <>Luminar Neoの<br className="sp-only" />{saleName}実施中！</>
           ) : (
             <>Luminar Neoを<br className="sp-only" />お得に購入する</>
           )}
-        </p>
+        </h2>
 
         <div className="m-cta-sale__desc">
           {isActive ? (
@@ -78,33 +78,33 @@ export default function LuminarCtaSale() {
           )}
         </div>
 
-        {hasCoupon && (
-          <div className="m-cta-coupon-area">
-            <button className="m-cta-coupon-btn" onClick={handleCopy} type="button">
-              <span className="m-cta-coupon__label">10%OFF COUPON</span>
-              <div className="m-cta-coupon__code">
-                <span>{COUPON_CODE}</span>
-                <i className="fa-regular fa-copy m-cta-coupon__icon" aria-hidden="true"></i>
-              </div>
-              <p className="m-cta-coupon__hint">クリックしてコピー</p>
-            </button>
-            <p
-              className="m-cta-msg"
-              aria-live="polite"
-              style={{ display: copied ? 'block' : 'none', color: '#10b981' }}
-            >
-              コピーしました！
-            </p>
-          </div>
-        )}
+        <div className="m-cta-bottom">
+          {hasCoupon && (
+            <div className="m-cta-coupon-area">
+              <button className="m-cta-coupon-btn" onClick={handleCopy} type="button" aria-label="クーポンコードをコピー">
+                <span className="m-cta-coupon__label">10%OFF COUPON</span>
+                <div className="m-cta-coupon__code">
+                  <span>{COUPON_CODE}</span>
+                  <i className="fa-regular fa-copy m-cta-coupon__icon" aria-hidden="true"></i>
+                </div>
+                <p className="m-cta-coupon__hint">クリックしてコピー</p>
+              </button>
+              {copied && (
+                <p className="m-cta-msg" aria-live="polite" style={{ color: '#10b981' }}>
+                  コピーしました！
+                </p>
+              )}
+            </div>
+          )}
 
-        <div className="m-cta-actions">
+          <div className="m-cta-actions">
           <p>
             <a
               href={AFFILIATE_URL}
               className="m-btn m-btn--primary m-btn--shiny"
               target="_blank"
-              rel="noopener sponsored"
+              rel="noopener noreferrer sponsored"
+              aria-label={`${isActive ? '公式サイトでセール情報をチェック' : '公式サイトを見る'}（新しいタブで開く）`}
             >
               <span>
                 {isActive ? '公式サイトでセール情報をチェック' : '公式サイトを見る'}{' '}
@@ -112,13 +112,13 @@ export default function LuminarCtaSale() {
               </span>
             </a>
           </p>
-          <p className="text-xxsmall">
-            <Link href="/luminar/sale-and-coupon-info/" className="m-btn m-btn--glass">
-              {isActive ? 'Luminar Neoのセール情報詳細' : 'Luminar Neoを安く買う方法'}{' '}
-              <i className="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          <p className="text-small l-top-small" style={{ textAlign: 'center' }}>
+            <Link href="/luminar/sale-and-coupon-info/">
+              {isActive ? 'Luminar Neoのセール情報詳細' : 'Luminar Neoを安く買う方法'}
             </Link>
           </p>
         </div>
+        </div>{/* /.m-cta-bottom */}
       </div>
     </section>
   )

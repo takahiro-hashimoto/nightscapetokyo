@@ -74,7 +74,7 @@ function buildMainNavItems(
       { label: "無料スマホ壁紙", href: "/wallpaper/" },
       { label: "タイムラプス動画", href: "/time-lapse/" },
       { label: "ブログ", href: "/article/" },
-      { label: "おすすめ現像ソフト", href: "/luminar/", newTab: true },
+      { label: "おすすめ現像ソフト", href: "/luminar/" },
     );
   } else {
     items.push(
@@ -172,6 +172,7 @@ export default function Header({
   const router = useRouter();
   const firstSegment = pathname.split("/")[1] ?? "";
   const locale = ALL_LOCALE_SLUGS.includes(firstSegment) ? firstSegment : null;
+  const prefix = locale ? `/${locale}` : "";
   const topNavItems = buildTopNavItems(locale);
   const mainNavItems = buildMainNavItems(locale, areaData, tagData);
   const profileLabels = PROFILE_LABELS[(locale ?? "ja") as SiteLocale];
@@ -274,6 +275,15 @@ export default function Header({
                 {child.count != null ? `${child.label}（${child.count}）` : child.label}
               </Link>
             ))}
+            {item.dropdownClass === "site-header-dropdown--area" && (
+              <Link
+                href={`${locale ? `/${locale}` : ""}/event/`}
+                className="site-header-dropdown-link"
+                onClick={() => handleDropdownLinkClick(item.label)}
+              >
+                イベント別に探す
+              </Link>
+            )}
           </div>
         </div>
       ) : (
@@ -388,7 +398,15 @@ export default function Header({
                   <AccordionSection
                     key={item.label}
                     title={item.label}
-                    items={item.children}
+                    items={
+                      item.dropdownClass === "site-header-dropdown--area"
+                        ? [
+                            ...item.children,
+                            { label: "その他エリア", href: `${locale ? `/${locale}` : ""}/other/` },
+                            { label: "イベント別に探す", href: `${locale ? `/${locale}` : ""}/event/` },
+                          ]
+                        : item.children
+                    }
                     onLinkClick={closeMenu}
                     menuOpen={menuOpen}
                   />

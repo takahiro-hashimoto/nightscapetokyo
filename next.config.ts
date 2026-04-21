@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
 
   images: {
-    unoptimized: isDev,
+    unoptimized: false,
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 2592000, // 30日: 最適化済み画像をサーバー側でキャッシュ
+    deviceSizes: [640, 828, 960, 1280, 1920],
     remotePatterns: [
       {
         protocol: "https",
@@ -41,6 +44,11 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         has: [{ type: "host", value: "www.nightscape.tokyo" }],
         destination: "https://nightscape.tokyo/:path*",
+        permanent: true,
+      },
+      {
+        source: "/article/timelapse-calculator/",
+        destination: "/article/create-timelapse/",
         permanent: true,
       },
       {

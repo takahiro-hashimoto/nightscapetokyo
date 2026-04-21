@@ -1,4 +1,4 @@
-import { getAllPostsSummary } from '@/lib/luminar/wp-api'
+import { getAllPostsSummary } from '@/lib/luminar/articles-meta'
 import { LUMINAR_SITE_URL } from '@/lib/luminar/config'
 
 const NOINDEX_SLUGS = new Set(['privacy-policy', 'about'])
@@ -43,7 +43,7 @@ export async function GET() {
     if (NOINDEX_SLUGS.has(post.slug)) continue
     entries.push({
       loc: `${LUMINAR_SITE_URL}/${post.slug}/`,
-      lastmod: new Date(post.modified).toISOString(),
+      lastmod: new Date(post.updatedAt).toISOString(),
       changefreq: 'monthly',
       priority: 0.7,
     })

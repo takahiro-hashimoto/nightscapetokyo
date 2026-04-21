@@ -80,6 +80,7 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
         latitude: spot.latitude,
         longitude: spot.longitude,
       };
+      mainSchema.hasMap = `https://www.google.com/maps?q=${spot.latitude},${spot.longitude}`;
     }
 
     if (spot.hours) {

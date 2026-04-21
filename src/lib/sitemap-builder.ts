@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { SITE_URL, ALL_LOCALE_SLUGS } from "@/lib/types";
+import { getAllPostsSummary } from "@/lib/luminar/articles-meta";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -299,6 +300,26 @@ export async function buildAllEntries(): Promise<AllEntries> {
     result.ja.push({
       loc: `${SITE_URL}/article/${article.slug}/`,
       lastmod: article.updated_at ? new Date(article.updated_at).toISOString() : undefined,
+      changefreq: "monthly",
+      priority: 0.7,
+    });
+  }
+
+  // ── Luminar Neo ──
+  const LUMINAR_NOINDEX = new Set(['privacy-policy', 'about']);
+  const luminarPosts = await getAllPostsSummary();
+
+  result.ja.push({
+    loc: `${SITE_URL}/luminar/`,
+    changefreq: "weekly",
+    priority: 0.8,
+  });
+
+  for (const post of luminarPosts) {
+    if (LUMINAR_NOINDEX.has(post.slug)) continue;
+    result.ja.push({
+      loc: `${SITE_URL}/luminar/${post.slug}/`,
+      lastmod: new Date(post.updatedAt).toISOString(),
       changefreq: "monthly",
       priority: 0.7,
     });

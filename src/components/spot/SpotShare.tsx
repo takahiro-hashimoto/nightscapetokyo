@@ -125,9 +125,9 @@ export default function SpotShare({ url, title, labels, locale = "ja" }: Props) 
   };
 
   return (
-    <div className="share-section">
+    <aside className="share-section" aria-labelledby="share-heading">
       <div className="home-container">
-      <p className="share-heading">{labels.heading}</p>
+      <h2 className="share-heading" id="share-heading">{labels.heading}</h2>
       <div className="share-buttons">
         {buttons.includes("x") && (
           <button type="button" className="share-btn share-btn-x" onClick={shareOnX}>
@@ -177,6 +177,6 @@ export default function SpotShare({ url, title, labels, locale = "ja" }: Props) 
         )}
       </div>
       </div>
-    </div>
+    </aside>
   );
 }

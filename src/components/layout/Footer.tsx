@@ -36,6 +36,7 @@ const FOOTER_LABELS = {
       { label: "タイムラプス動画", href: "/time-lapse" },
       { label: "日の出・日の入りシミュレーター", href: "/simulator" },
       { label: "Luminar Neo ガイド", href: "/luminar" },
+      { label: "ブログ", href: "/article" },
     ],
     siteHeading: "サイト情報",
     siteLinks: [

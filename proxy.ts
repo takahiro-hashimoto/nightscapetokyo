@@ -50,11 +50,11 @@ function detectLocaleFromHeader(header: string): string | null {
 function buildCsp(nonce: string): string {
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' https://maps.googleapis.com https://maps.gstatic.com`,
+    `script-src 'self' 'nonce-${nonce}' https://maps.googleapis.com https://maps.gstatic.com https://platform.twitter.com`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' data: https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
-    "frame-src https://www.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com",
+    "frame-src https://www.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://platform.twitter.com",
     "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://maps.googleapis.com https:",
     "worker-src 'self' blob:",
   ].join("; ");

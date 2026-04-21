@@ -1,22 +1,11 @@
 import type { Metadata } from 'next'
-import { Noto_Sans_JP } from 'next/font/google'
 import Script from 'next/script'
-import LuminarHeader from '@/components/luminar/LuminarHeader'
-import LuminarFooter from '@/components/luminar/LuminarFooter'
 import { LUMINAR_SITE_NAME, LUMINAR_SITE_DESCRIPTION, LUMINAR_SITE_URL } from '@/lib/luminar/config'
-import './luminar.css'
 
 const FA_CSS_URL =
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
 
 const OG_IMAGE = 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/main-after.jpg'
-
-const notoSansJP = Noto_Sans_JP({
-  weight: ['400', '500', '700', '900'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-noto-sans-jp',
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL(LUMINAR_SITE_URL),
@@ -39,15 +28,14 @@ export const metadata: Metadata = {
 
 export default function LuminarLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className={notoSansJP.variable}
-      style={{ fontFamily: "'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}
-    >
-      {/* Font Awesome — lazyOnload で非ブロッキング読み込み */}
+    <>
+      {/* luminar.css — /luminar/ 配下のみに限定して読み込む */}
+      <link rel="stylesheet" href="/css/luminar.css" precedence="default" />
+      {/* Font Awesome — luminar コンテンツ HTML のアイコンに必要 */}
       <Script id="fa-css" strategy="lazyOnload">{`(function(){var l=document.createElement('link');l.rel='stylesheet';l.crossOrigin='anonymous';l.href='${FA_CSS_URL}';document.head.appendChild(l)})();`}</Script>
-      <LuminarHeader />
+      {/* Twitter widget — React 19 が <head> に hoist・dedupe してくれる */}
+      <script src="https://platform.twitter.com/widgets.js" async />
       {children}
-      <LuminarFooter />
-    </div>
+    </>
   )
 }

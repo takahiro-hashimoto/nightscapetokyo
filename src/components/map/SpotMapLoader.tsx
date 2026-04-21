@@ -1,9 +1,7 @@
 "use client";
 
-import { Suspense, lazy } from "react";
+import { useState, useEffect, type ComponentType } from "react";
 import type { MapSpotItem } from "@/lib/supabase/queries";
-
-const SpotMap = lazy(() => import("./SpotMap"));
 
 type MapLabels = {
   allLabel: string;
@@ -18,7 +16,7 @@ type Props = {
   localePrefix?: string;
 };
 
-function SpotMapLoading({ label }: { label: string }) {
+function SpotMapLoading() {
   return (
     <div className="spot-map-wrapper">
       <div
@@ -30,22 +28,27 @@ function SpotMapLoading({ label }: { label: string }) {
           justifyContent: "center",
         }}
       >
-        <p style={{ color: "#888" }}>{label}</p>
+        <p style={{ color: "#888" }}>マップを読み込み中...</p>
       </div>
     </div>
   );
 }
 
 export default function SpotMapLoader({ spots, categories, labels, localePrefix }: Props) {
-  const loadingLabel = labels?.loadingLabel ?? "マップを読み込み中...";
+  const [SpotMap, setSpotMap] = useState<ComponentType<Props> | null>(null);
+
+  useEffect(() => {
+    import("./SpotMap").then((mod) => setSpotMap(() => mod.default));
+  }, []);
+
+  if (!SpotMap) return <SpotMapLoading />;
+
   return (
-    <Suspense fallback={<SpotMapLoading label={loadingLabel} />}>
-      <SpotMap
-        spots={spots}
-        categories={categories}
-        labels={labels}
-        localePrefix={localePrefix}
-      />
-    </Suspense>
+    <SpotMap
+      spots={spots}
+      categories={categories}
+      labels={labels}
+      localePrefix={localePrefix}
+    />
   );
 }

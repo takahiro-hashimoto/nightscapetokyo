@@ -94,14 +94,16 @@ export default function SpotInfo({
     amenity: "アメニティ",
   };
 
-  const heading = l.heading(spotName);
-
   const categoryHref =
     categorySlug
       ? `${tagPrefix}/${categorySlug}`
       : null;
 
   const isEvent = categorySlug === "event";
+
+  const heading = isEvent
+    ? (spotName ? `${spotName}のイベント情報（開催期間・時間）` : "イベント情報（開催期間・時間）")
+    : l.heading(spotName);
   const isHotel = !!hotel;
 
   const eventDateValue = event

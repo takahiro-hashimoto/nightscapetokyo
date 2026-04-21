@@ -48,7 +48,7 @@ export default async function Home() {
   const labels = getComponentLabels("ja");
 
   const ARTICLE_SLUGS = [
-    "itabu-station-cherry-blossoms",
+    "how-to-camera-setting",
     "restaurant-luke",
     "airos-skyview",
     "my-photographic-equipment",

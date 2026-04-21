@@ -3,9 +3,10 @@ import Link from "next/link";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { LOCALE_LABELS, LOCALE_SLUG_MAP, ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
-import type { CategoryPageProps as Props } from "@/lib/types";
+import type { CategoryPageProps as Props, SiteLocale } from "@/lib/types";
 import { supabase } from "@/lib/supabase/client";
 import { SITEMAP_LABELS } from "@/lib/i18n-static-pages";
+import { TAG_NAME } from "@/lib/constants";
 
 export const revalidate = 86400;
 
@@ -41,12 +42,16 @@ type TagLink = { slug: string; name: string };
 type TranslationRow = { locale: string; title: string; spot: { slug: string } | { slug: string }[] };
 
 async function getSitemapData(dbLocale: string) {
-  const [catRes, tagRes, transRes] = await Promise.all([
+  const [catRes, tagRes, transRes, tagTransRes] = await Promise.all([
     supabase.from("categories").select("slug, name, spots:spots(slug, title)").order("name"),
     supabase.from("tags").select("slug, name").order("name"),
     supabase
       .from("spot_translations")
       .select("locale, title, category_name, spot:spots(slug, category:categories(slug))")
+      .eq("locale", dbLocale),
+    supabase
+      .from("tag_page_translations")
+      .select("title, tag_page:tag_pages(tag:tags(slug, name))")
       .eq("locale", dbLocale),
   ]);
 
@@ -54,6 +59,8 @@ async function getSitemapData(dbLocale: string) {
   const tags = (tagRes.data ?? []) as TagLink[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const translations = (transRes.data ?? []) as any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const tagTranslations = (tagTransRes.data ?? []) as any[];
 
   // Build translation maps
   const titleMap = new Map<string, string>();
@@ -66,6 +73,16 @@ async function getSitemapData(dbLocale: string) {
     const catSlug = Array.isArray(spot?.category) ? spot.category[0]?.slug : spot?.category?.slug;
     if (catSlug && t.category_name && !catNameMap.has(catSlug)) {
       catNameMap.set(catSlug, t.category_name);
+    }
+  }
+
+  // Build tag name translation map (tagSlug → translated title)
+  const tagNameMap = new Map<string, string>();
+  for (const tt of tagTranslations) {
+    const tagPage = Array.isArray(tt.tag_page) ? tt.tag_page[0] : tt.tag_page;
+    const tag = tagPage ? (Array.isArray(tagPage.tag) ? tagPage.tag[0] : tagPage.tag) : null;
+    if (tag?.slug && tt.title) {
+      tagNameMap.set(tag.slug, tt.title);
     }
   }
 
@@ -83,7 +100,12 @@ async function getSitemapData(dbLocale: string) {
     (a, b) => b.spots.length - a.spots.length
   );
 
-  return { categories: sortedCategories, tags };
+  const localizedTags = tags.map((tag) => ({
+    ...tag,
+    name: tagNameMap.get(tag.slug) ?? TAG_NAME[tag.slug]?.[locale as SiteLocale] ?? tag.name,
+  }));
+
+  return { categories: sortedCategories, tags: localizedTags };
 }
 
 export default async function I18nSitemapPage({ params }: Props) {
@@ -134,6 +156,17 @@ export default async function I18nSitemapPage({ params }: Props) {
             {tags.map((tag) => (
               <li key={tag.slug}>
                 <Link href={`/${category}/tag/${tag.slug}`}>{tag.name}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="content-card card-padding article-body">
+          <h2>{l.otherHeading}</h2>
+          <ul>
+            {l.otherLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href === "/" ? `/${category}` : `/${category}${link.href}`}>{link.label}</Link>
               </li>
             ))}
           </ul>

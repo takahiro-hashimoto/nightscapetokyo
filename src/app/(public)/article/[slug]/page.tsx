@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles, getSpotImagesBySlugs } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";
-import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks, convertPostLinks, convertShortcodes } from "@/lib/sanitize";
+import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks, convertPostLinks, convertShortcodes, wrapTables } from "@/lib/sanitize";
 import { prefetchAmazonProducts } from "@/lib/amazon";
 import { prefetchOgpData } from "@/lib/ogp";
 import { ARTICLE_SPOT_LINKS } from "@/lib/article-spot-links";
@@ -16,6 +16,9 @@ import { buildToc } from "@/lib/toc";
 import Footer from "@/components/layout/Footer";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import SpotShare from "@/components/spot/SpotShare";
+import TwitterEmbed from "@/components/luminar/TwitterEmbed";
+import HomeAuthorCard from "@/components/common/HomeAuthorCard";
+import TimeLapseCalculatorScript from "@/components/article/TimeLapseCalculatorScript";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -107,12 +110,14 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   const { html: processedContent, toc } = buildToc(
     injectH3SpotLinks(
-      embedYoutubeUrls(
-        replaceWpImagesInHtml(
-          sanitizeHtml(
-            convertPostLinks(
-              convertShortcodes(rawContent, amazonProducts, ogpData),
-              ogpData
+      wrapTables(
+        embedYoutubeUrls(
+          replaceWpImagesInHtml(
+            sanitizeHtml(
+              convertPostLinks(
+                convertShortcodes(rawContent, amazonProducts, ogpData),
+                ogpData
+              )
             )
           )
         )
@@ -128,7 +133,10 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   return (
     <>
-      <main className="l-main l-article-body">
+      <script src="https://platform.twitter.com/widgets.js" async />
+      <TwitterEmbed />
+      {slug === "create-timelapse" && <TimeLapseCalculatorScript />}
+      <div className="l-article-body">
         <div className="l-article-container">
           <Breadcrumb
             locale={null}
@@ -246,12 +254,6 @@ export default async function ArticleDetailPage({ params }: Props) {
             ))}
           </article>
 
-          <SpotShare
-            url={`${SITE_URL}/article/${slug}/`}
-            title={article.title}
-            labels={{ heading: "この記事が役に立ったらシェアしてください", x: "ポスト", line: "LINE", hatena: "はてブ", copy: "URLコピー", copied: "コピーしました" }}
-          />
-
           {related.length > 0 && (
             <aside className="related-articles">
               <h2 className="related-articles-heading">関連記事</h2>
@@ -287,8 +289,14 @@ export default async function ArticleDetailPage({ params }: Props) {
               </ul>
             </aside>
           )}
+          <HomeAuthorCard authorLabel="この記事の著者" />
         </div>
-      </main>
+      </div>
+      <SpotShare
+        url={`${SITE_URL}/article/${slug}/`}
+        title={article.title}
+        labels={{ heading: "この記事が役に立ったらシェアしてください", x: "ポスト", line: "LINE", hatena: "はてブ", copy: "URLコピー", copied: "コピーしました" }}
+      />
       <Footer locale={null} />
       <script
         type="application/ld+json"

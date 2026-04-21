@@ -61,7 +61,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev" crossOrigin="anonymous" />
         <link rel="preload" as="image" href="/hero.webp" fetchPriority="high" />
         {/* non-critical CSS: 非ブロッキングロード (Client Component でイベント処理) */}
-        <NonCriticalCss href="/css/non-critical.min.css?v=20260419a" />
+        <NonCriticalCss href="/css/non-critical.min.css?v=20260421g" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}

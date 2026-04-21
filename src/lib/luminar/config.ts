@@ -44,6 +44,7 @@ export const NAV_ITEMS = [
 ] as const
 
 export const FOOTER_NAV_ITEMS = [
+  { href: '/blog/', label: 'ブログ' },
   { href: '/luminar/privacy-policy/', label: 'プライバシーポリシー' },
-  { href: '/luminar/about/', label: '運営者情報' },
+  { href: '/about/', label: '運営者情報' },
 ] as const

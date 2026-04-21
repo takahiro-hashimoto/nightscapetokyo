@@ -4,6 +4,8 @@ import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
 import { supabase } from "@/lib/supabase/client";
+import { getArticles } from "@/lib/supabase/queries";
+import { getAllPostsSummary } from '@/lib/luminar/articles-meta';
 
 export const revalidate = 86400;
 
@@ -24,13 +26,17 @@ type TagLink = {
   name: string;
 };
 
+const LUMINAR_NOINDEX_SLUGS = new Set(['privacy-policy', 'about']);
+
 async function getSitemapData() {
-  const [catRes, tagRes] = await Promise.all([
+  const [catRes, tagRes, luminarPosts, articles] = await Promise.all([
     supabase
       .from("categories")
       .select("slug, name, spots:spots(slug, title)")
       .order("name"),
     supabase.from("tags").select("slug, name").order("name"),
+    getAllPostsSummary(),
+    getArticles(),
   ]);
 
   const categories = ((catRes.data ?? []) as CategoryWithSpots[]).sort(
@@ -40,11 +46,13 @@ async function getSitemapData() {
   return {
     categories,
     tags: (tagRes.data ?? []) as TagLink[],
+    luminarPosts: luminarPosts.filter((p) => !LUMINAR_NOINDEX_SLUGS.has(p.slug)),
+    articles,
   };
 }
 
 export default async function SitemapPage() {
-  const { categories, tags } = await getSitemapData();
+  const { categories, tags, luminarPosts, articles } = await getSitemapData();
 
   return (
     <>
@@ -96,6 +104,34 @@ export default async function SitemapPage() {
         </ul>
       </div>
 
+      {/* ブログ記事 */}
+      {articles.length > 0 && (
+        <div className="content-card card-padding article-body">
+          <h2>ブログ記事</h2>
+          <ul>
+            <li><Link href="/article">記事一覧</Link></li>
+            {articles.map((article) => (
+              <li key={article.slug}>
+                <Link href={`/article/${article.slug}`}>{article.title}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Luminar Neo */}
+      <div className="content-card card-padding article-body">
+        <h2>Luminar Neo 関連記事</h2>
+        <ul>
+          <li><Link href="/luminar">Luminar Neo トップ</Link></li>
+          {luminarPosts.map((post) => (
+            <li key={post.slug}>
+              <Link href={`/luminar/${post.slug}`}>{post.title}</Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {/* その他 */}
       <div className="content-card card-padding article-body">
 
@@ -105,9 +141,14 @@ export default async function SitemapPage() {
           <li><Link href="/search">スポット検索</Link></li>
           <li><Link href="/recommend">おすすめの夜景スポット</Link></li>
           <li><Link href="/time-lapse">タイムラプス映像集</Link></li>
+          <li><Link href="/wallpaper">スマホ壁紙</Link></li>
           <li><Link href="/simulator">日の出・日の入り方角シミュレーター</Link></li>
           <li><Link href="/about">運営者情報</Link></li>
-          <li><Link href="/privacy">プライバシーポリシー</Link></li>
+          <li><Link href="/contact">お問い合わせ</Link></li>
+          <li><Link href="/guidelines">コンテンツ制作ポリシー</Link></li>
+          <li><Link href="/caution">利用規約</Link></li>
+          <li><Link href="/links">リンク集</Link></li>
+          <li><Link href="/privacy-policy">プライバシーポリシー</Link></li>
         </ul>
       </div>
     </ArticleLayout>

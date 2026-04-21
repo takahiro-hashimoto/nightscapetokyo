@@ -783,10 +783,9 @@ img {
 }
 .m-cta-sale__desc {
     color: var(--c-text-muted);
+    margin: 0 auto;
     font-size: 1rem;
     line-height: 1.7;
-    max-width: 32rem;
-    margin: 0 auto;
     text-align: left !important;
 }
 .m-cta-sale__desc p {
@@ -794,6 +793,21 @@ img {
 }
 .m-cta-sale__desc p:last-child {
     margin-bottom: 0;
+}
+.m-cta-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+}
+@media (min-width: 768px) {
+    .m-cta-bottom {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+    }
 }
 .m-cta-coupon-area {
     display: inline-block;
@@ -812,12 +826,12 @@ img {
     background: rgba(255, 255, 255, 0.1);
 }
 .m-cta-coupon__label {
-    font-size: 0.9rem;
-    font-weight: 700;
     color: var(--c-primary-hover);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.25rem;
+    letter-spacing: .1em;
+    margin-bottom: 0;
+    font-size: .9rem;
+    font-weight: 700;
     display: block;
 }
 .m-cta-coupon__code {
@@ -844,10 +858,10 @@ img {
     color: var(--c-primary);
 }
 .m-cta-coupon__hint {
-    font-size: 0.9rem;
     color: var(--c-text-light);
-    margin-top: 0.5rem;
+    margin-top: 0;
     margin-bottom: 0;
+    font-size: .9rem;
 }
 .m-cta-msg {
     font-size: 0.9rem;
@@ -1063,10 +1077,10 @@ img {
     }
 }
 .hero-section__desc {
-    color: #cbd5e1;
+    color: var(--color-text-light);
+    margin-bottom: .5rem;
     font-size: .7rem;
     line-height: 1.8;
-    margin-bottom: .5rem;
 }
 @media (min-width: 768px) {
     .hero-section__desc {
@@ -2654,14 +2668,12 @@ img {
     overflow-x: auto;
     border-radius: var(--radius-lg);
     border: 1px solid var(--c-slate-200);
-    box-shadow: var(--shadow-sw);
     margin-bottom: 32px;
 }
 .m-table {
     width: 100%;
     border-collapse: collapse;
     white-space: nowrap;
-    vertical-align: center !important;
     margin: 0 !important;
 }
 
@@ -2671,31 +2683,37 @@ img {
     color: #111;
 }
 
-.m-table th {
-    background: var(--c-slate-600);
+.m-table-wrap .m-table th {
+    background: var(--c-slate-800);
     color: white;
     font-weight: 700;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--c-slate-500);
+    padding: 0.9rem 1.25rem;
+    border: none;
     font-size: .9rem;
     line-height: 1.2;
-    text-align: center !important;
+    text-align: center;
 }
-.m-table th:first-child {
-    background: var(--c-slate-500);
+.m-table-wrap .m-table th:first-child {
+    background: var(--c-slate-800);
+    text-align: left;
 }
-.m-table td {
-    padding: 0.7rem !important;
-    border: 1px solid var(--c-slate-200);
+.m-table-wrap .m-table td {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-bottom: 1px solid var(--c-slate-200);
     font-size: .9rem;
-    vertical-align: middle !important;
+    vertical-align: middle;
     text-align: center;
     line-height: 1.2;
+    background: #fff;
 }
-.m-table td:first-child {
-    background: var(--c-slate-50);
-    font-weight: 500;
+.m-table-wrap .m-table td:first-child {
+    background: #fff;
+    font-weight: 400;
     text-align: left;
+}
+.m-table-wrap .m-table tr:last-child td {
+    border-bottom: none;
 }
 /* Components: Compare Table */
 .m-compare {
@@ -3254,38 +3272,30 @@ img {
    ========================================= */
 
 .m-cta-mini {
+    box-sizing: border-box;
     background-color: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    margin: 2.5rem 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin: 2.5rem 0 0;
     overflow: hidden;
-    box-sizing: border-box;
 }
 
 .m-cta-mini__header {
-    background-color: #f8fafc;
-    padding: 0.75rem 1rem;
     text-align: center;
+    background-color: var(--color-header-bg, #28292b);
+    padding: .75rem 1rem;
+    color: #fff;
+    margin: 0 -1px;
 }
 
 .m-cta-mini__title {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: #475569; /* slate-600 */
-    display: flex;
-    align-items: center;
+    color: #fff;
     justify-content: center;
-    gap: 0.75rem;
-}
-
-/* タイトルの横に線を引いて装飾 */
-.m-cta-mini__title::before,
-.m-cta-mini__title::after {
-    content: "";
-    height: 1px;
-    width: 15px;
-    background-color: #cbd5e1;
+    align-items: center;
+    gap: .75rem;
+    font-size: .875rem;
+    font-weight: 700;
+    display: flex;
 }
 
 /* 内部レイアウト */
@@ -3501,16 +3511,16 @@ img {
 ------------------------------------- */
 
 .comparison-container {
-    position: relative;
-    width: 100%;
-    max-width: 960px;
     aspect-ratio: 16 / 10;
-    overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     cursor: ew-resize;
     user-select: none;
-    margin-bottom: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 960px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px #0000000d;
 }
 
 .comparison-container img {
@@ -3665,4 +3675,154 @@ img {
 .m-btn--glass:hover {
     background: rgba(255, 255, 255, 0.2);
     color: white !important;
+}
+
+/* ── About page ─────────────────────────────────────── */
+.l-about {
+    padding: 3rem 0 5rem;
+}
+.l-about__inner {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+}
+.l-about__heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--c-text-dark);
+}
+.l-about__section {
+    margin-bottom: 2rem;
+}
+.l-about__section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--c-text-dark);
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--c-primary);
+}
+.l-about__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    color: var(--c-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-size: 0.95rem;
+}
+.l-about__link:hover {
+    opacity: 0.75;
+}
+.l-about__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+.l-about__socials a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+.l-about__socials a:hover {
+    color: var(--c-primary);
+}
+
+/* ==========================================================================
+   Override: WP legacy classes → main site design
+   ========================================================================== */
+
+/* ── FAQ ── */
+.m-faq-item {
+    padding: 16px 0;
+    border-bottom: 1px dashed var(--color-border, #eee);
+}
+.m-faq-item:last-child {
+    border-bottom: none;
+}
+.m-faq-q {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text, #333);
+    margin: 0 0 6px;
+    padding: 0;
+    display: block;
+}
+.m-faq-q::before {
+    content: "Q. ";
+    color: var(--color-main, #0056b3);
+    font-weight: 800;
+}
+.m-faq-a {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #4a5568;
+    margin: 0;
+    padding-left: 25px;
+    display: block;
+}
+.m-faq-a a {
+    color: #0071e3;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.m-faq-icon {
+    display: none;
+}
+
+/* ── Definition list ── */
+.m-def-list {
+    border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+.m-def-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border, #e2e8f0);
+}
+.m-def-item:last-child {
+    border-bottom: none;
+}
+.m-def-dt {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--color-text, #333);
+    margin-bottom: 6px;
+    padding-left: 16px;
+    position: relative;
+    display: block;
+}
+.m-def-dt::before {
+    content: "";
+    position: absolute;
+    left: 1px;
+    top: 10px;
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid var(--color-main, #0071e3);
+    border-bottom: 2px solid var(--color-main, #0071e3);
+    transform: rotate(-45deg);
+}
+.m-def-dd {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--color-text-light, #666);
+}
+
+/* ── Share section: 背景削除 ── */
+.l-article-body .share-section {
+    background: none;
+    padding: 24px 0;
+    margin-bottom: 24px;
 }

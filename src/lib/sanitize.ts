@@ -331,6 +331,22 @@ export function convertPostLinks(html: string, ogpData?: Map<string, OgpData>): 
 }
 
 /**
+ * HTML 内の <table> に m-table クラスを付与し、
+ * <div class="m-table-wrap"> でラップする。
+ */
+export function wrapTables(html: string): string {
+  return html.replace(
+    /<table(\b[^>]*)>([\s\S]*?)<\/table>/gi,
+    (_match, attrs: string, content: string) => {
+      const newAttrs = /class="/i.test(attrs)
+        ? attrs.replace(/class="/i, 'class="m-table ')
+        : attrs + ' class="m-table"'
+      return `<div class="m-table-wrap"><table${newAttrs}>${content}</table></div>`
+    }
+  )
+}
+
+/**
  * DB / CMS 由来の HTML を dangerouslySetInnerHTML に渡す前にサニタイズする。
  * - <script> タグを除去
  * - インラインイベントハンドラ (on*) を除去

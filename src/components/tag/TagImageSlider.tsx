@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { SiteLocale } from "@/lib/types";
@@ -17,6 +17,8 @@ type Props = {
 export default function TagImageSlider({ images, name, locale, priority, rank }: Props) {
   const l = TAG_SLIDER_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_SLIDER_LABELS.ja;
   const [current, setCurrent] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const loadedUrls = useRef<Set<string>>(new Set());
   const total = images.length;
 
   const prev = useCallback(() => {
@@ -27,6 +29,11 @@ export default function TagImageSlider({ images, name, locale, priority, rank }:
     setCurrent((c) => (c + 1) % total);
   }, [total]);
 
+  // 未ロードの画像のみスケルトンを表示
+  useEffect(() => {
+    setIsLoading(!loadedUrls.current.has(images[current].url));
+  }, [current, images]);
+
   if (total === 0) return null;
 
   const altText = images[current].alt ?? `${name}${l.nightView}`;
@@ -34,14 +41,22 @@ export default function TagImageSlider({ images, name, locale, priority, rank }:
   return (
     <div className="tag-slider">
       <div className="tag-slider-viewport">
-        <Image
-          key={images[current].url}
-          src={images[current].url}
-          alt={altText}
-          fill
-          sizes="(max-width: 768px) 100vw, 880px"
-          priority={priority}
-        />
+        {isLoading && <div className="tag-slider-skeleton" aria-hidden="true" />}
+        {images.map((img, i) => (
+          <Image
+            key={img.url}
+            src={img.url}
+            alt={i === current ? altText : ""}
+            fill
+            sizes="(max-width: 768px) 100vw, 880px"
+            priority={priority && i === 0}
+            style={{ opacity: i === current ? 1 : 0 }}
+            onLoad={() => {
+              loadedUrls.current.add(img.url);
+              if (i === current) setIsLoading(false);
+            }}
+          />
+        ))}
         {rank != null && (
           <span className="tag-slider-rank-badge">{l.rankBadge(rank)}</span>
         )}
