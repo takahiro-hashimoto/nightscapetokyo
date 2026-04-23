@@ -10,6 +10,7 @@ import AreaSpotList from "@/components/area/AreaSpotList";
 import ExternalLinkCallout from "@/components/common/ExternalLinkCallout";
 import SpotFaq from "@/components/spot/SpotFaq";
 import SpotShare from "@/components/spot/SpotShare";
+import HomeAuthorCard from "@/components/common/HomeAuthorCard";
 import type { ReactNode } from "react";
 import type { SpotWithRelations, SiteLocale, SpotListItem } from "@/lib/types";
 import { SITE_URL, calcRatingAvg, LOCALE_SLUG_MAP } from "@/lib/types";
@@ -194,11 +195,13 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
                             </ol>
                           </li>
                         ) : (
-                          sec.spots.map((s) => (
-                            <li key={s.slug}>
-                              <a href={`#spot-${s.slug}`}>{s.name}</a>
-                            </li>
-                          ))
+                          <Fragment key={sec.key}>
+                            {sec.spots.map((s) => (
+                              <li key={s.slug}>
+                                <a href={`#spot-${s.slug}`}>{s.name}</a>
+                              </li>
+                            ))}
+                          </Fragment>
                         )
                       )
                   )}
@@ -222,17 +225,28 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
             </>
           )}
 
-          {/* セクション */}
+          {/* セクション（render外でランクを事前計算し、render中のmutationを回避） */}
           {(() => {
-            let globalRank = 0;
-            return content.sections.map((section, sectionIndex) => {
-              const sectionSpots = section.spotSlugs
-                .map((slug) => spotMap.get(slug))
-                .filter((s): s is SpotWithRelations => !!s);
-
-              if (sectionSpots.length === 0) return null;
-
-              return (
+            let rank = 0;
+            return content.sections
+              .map((section, sectionIndex) => {
+                const seenIds = new Set<string>();
+                const spots = section.spotSlugs
+                  .map((slug) => spotMap.get(slug))
+                  .filter((s): s is SpotWithRelations => {
+                    if (!s || seenIds.has(s.id)) return false;
+                    seenIds.add(s.id);
+                    return true;
+                  })
+                  .map((spot, spotIndex) => ({
+                    spot,
+                    isFirst: sectionIndex === 0 && spotIndex === 0,
+                    rank: ++rank,
+                  }));
+                return { section, spots };
+              })
+              .filter(({ spots }) => spots.length > 0)
+              .map(({ section, spots }) => (
                 <section key={section.key} id={`section-${section.key}`} {...(section.heading ? { "aria-labelledby": `heading-${section.key}` } : {})}>
                   {(section.heading || section.intro) && (
                     <div className="spot-section-header">
@@ -240,21 +254,16 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
                       {section.intro && <p className="section-intro">{section.intro}</p>}
                     </div>
                   )}
-
-                  {sectionSpots.map((spot, spotIndex) => {
-                    const desc =
-                      content.descriptions[spot.slug] ?? spot.lead ?? "";
-                    const isFirst = sectionIndex === 0 && spotIndex === 0;
-                    globalRank += 1;
+                  {spots.map(({ spot, isFirst, rank: spotRank }) => {
+                    const desc = content.descriptions[spot.slug] ?? spot.lead ?? "";
                     return (
                       <div key={spot.id} id={`spot-${spot.slug}`}>
-                        <TagSpotCard spot={spot} description={desc} locale={locale} headingLevel={spotHeadingLevel} priority={isFirst} rank={showRank ? globalRank : undefined} />
+                        <TagSpotCard spot={spot} description={desc} locale={locale} headingLevel={spotHeadingLevel} priority={isFirst} rank={showRank ? spotRank : undefined} />
                       </div>
                     );
                   })}
                 </section>
-              );
-            });
+              ));
           })()}
 
           {/* その他のスポット */}
@@ -327,6 +336,8 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
           {externalLinks && externalLinks.length > 0 && (
             <ExternalLinkCallout items={externalLinks} />
           )}
+
+          <HomeAuthorCard locale={locale ?? "ja"} />
 
           {shareUrl && (
             <SpotShare

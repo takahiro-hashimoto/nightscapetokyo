@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Globe } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,11 @@ type Props = {
   localeLabels: Record<string, string>;
 };
 
+// サーバーサイドでは false、クライアントでは true を返す（effect なし）
+const isClient = () => true;
+const isServer = () => false;
+const noSubscribe = () => () => {};
+
 export default function LanguageSwitcher({
   currentLocale,
   categorySlug,
@@ -24,11 +29,7 @@ export default function LanguageSwitcher({
   localeLabels,
 }: Props) {
   const router = useRouter();
-  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    setPortalTarget(document.getElementById("header-trailing"));
-  }, []);
+  const mounted = useSyncExternalStore(noSubscribe, isClient, isServer);
 
   if (availableLocales.length === 0) return null;
 
@@ -69,10 +70,9 @@ export default function LanguageSwitcher({
     </div>
   );
 
-  // ヘッダー内の #header-trailing に portal で描画
-  if (portalTarget) {
-    return createPortal(switcher, portalTarget);
-  }
-
+  // クライアントでのみ portal 描画（SSR では null）
+  if (!mounted) return null;
+  const portalTarget = document.getElementById("header-trailing");
+  if (portalTarget) return createPortal(switcher, portalTarget);
   return null;
 }

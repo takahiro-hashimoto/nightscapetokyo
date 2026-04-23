@@ -75,7 +75,7 @@
   color: #64748b;
   line-height: 1.4;
   background: #f8fafc;
-  min-height: 36px;
+  min-height: 68px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -898,7 +898,6 @@
    ========================================= */
 .share-section {
   margin-top: 0;
-  background: #ffffff;
   border-radius: 12px;
   padding: 36px 0;
   text-align: center;
@@ -909,6 +908,10 @@
   font-weight: 800;
   color: #1a202c;
   margin: 0 0 10px;
+}
+
+.sp-newline {
+  display: none;
 }
 
 .share-sub {
@@ -1203,8 +1206,7 @@
   background: #fff;
   border-radius: 12px;
   padding: 32px;
-  border: 1px solid #efefef;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  border: 1px solid #0000001c;
 }
 
 .home-author-left {
@@ -1330,7 +1332,9 @@
   }
 
   .home-author-left {
-    width: 160px;
+    width: 100%;
+    align-items: center;
+    text-align: center;
   }
 }
 
@@ -1437,7 +1441,7 @@
   }
 
   .area-spot-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
 }
@@ -1958,7 +1962,8 @@
   }
 
   .pr-banner-image {
-    width: 100%;
+    width: 80%;
+    margin: 0 auto;
   }
 
   .pr-banner-links {
@@ -2262,6 +2267,7 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   padding: 12px;
+  border: 1px solid #0000001c;
 }
 
 .news-list {
@@ -2626,7 +2632,7 @@
   border: 1px solid var(--color-border, #e2e8f0);
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 24px;
+  margin: 24px 0;
 }
 
 .definition .definition-body {
@@ -2636,8 +2642,8 @@
 
 .definition .definition-body dt {
   font-weight: 700;
-  font-size: 15px;
-  color: var(--color-text, #333);
+  font-size: 1.1rem;
+  color: var(--color-text, #1a202c);
   margin-bottom: 6px;
   padding-left: 16px;
   position: relative;
@@ -2658,10 +2664,10 @@
 .definition .definition-body dd {
   margin: 0 0 16px;
   padding-bottom: 16px;
-  border-bottom: 1px dashed var(--color-border, #e2e8f0);
-  font-size: 14px;
+  border-bottom: 1px solid var(--color-bg-muted);
+  font-size: 1rem;
   line-height: 1.8;
-  color: var(--color-text-light, #666);
+  color: var(--c-text-main);
 }
 
 .definition .definition-body dd:last-child {
@@ -2777,7 +2783,7 @@
 .article-body h4 {
   font-size: 16px;
   font-weight: bold;
-  margin: 24px 0 12px;
+  margin: 32px 0 12px;
 }
 
 .article-body p {
@@ -2976,12 +2982,6 @@ p.definition-title {
 }
 
 /* Related articles */
-.related-articles {
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 2px solid var(--color-border, #e2e8f0);
-}
-
 .related-articles-heading {
   font-size: 18px;
   font-weight: 700;

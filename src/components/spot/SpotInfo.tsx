@@ -315,7 +315,7 @@ export default function SpotInfo({
                     </td>
                   </tr>
                 )}
-                {hotel!.amenity && (
+                {hotel!.amenity && !localeSlug && (
                   <tr>
                     <th scope="row">
                       <span className="th-icon">

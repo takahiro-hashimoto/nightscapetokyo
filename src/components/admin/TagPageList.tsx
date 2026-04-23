@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { Pencil, Trash2, Loader2, ExternalLink } from "lucide-react";
-import { deleteTagPage } from "@/app/admin/tag-pages/actions";
+import { deleteTagPage } from "@/app/(ja)/admin/tag-pages/actions";
 
 type TagPageItem = {
   id: string;

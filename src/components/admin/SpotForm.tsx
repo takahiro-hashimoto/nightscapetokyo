@@ -26,8 +26,8 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { createSpot, updateSpot } from "@/app/admin/spots/actions";
-import { translateSpot } from "@/app/admin/spots/translate-action";
+import { createSpot, updateSpot } from "@/app/(ja)/admin/spots/actions";
+import { translateSpot } from "@/app/(ja)/admin/spots/translate-action";
 import { LOCALE_DISPLAY_NAMES } from "@/lib/types";
 
 type Category = { id: string; name: string; slug: string };

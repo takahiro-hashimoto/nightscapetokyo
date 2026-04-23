@@ -2794,6 +2794,7 @@ img {
 }
 .m-pc-box--pros .m-pc-body {
     background: var(--c-emerald-50);
+    margin: 0;
 }
 .m-pc-box--cons {
     border-color: var(--c-red-200);
@@ -2803,6 +2804,7 @@ img {
 }
 .m-pc-box--cons .m-pc-body {
     background: var(--c-red-50);
+    margin: 0;
 }
 .m-pc-head {
     color: white;

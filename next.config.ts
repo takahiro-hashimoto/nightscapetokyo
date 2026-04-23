@@ -1,7 +1,5 @@
 import type { NextConfig } from "next";
 
-const isDev = process.env.NODE_ENV === "development";
-
 const nextConfig: NextConfig = {
   trailingSlash: true,
 
@@ -49,6 +47,16 @@ const nextConfig: NextConfig = {
       {
         source: "/article/timelapse-calculator/",
         destination: "/article/create-timelapse/",
+        permanent: true,
+      },
+      {
+        source: "/pickup/",
+        destination: "/article/",
+        permanent: true,
+      },
+      {
+        source: "/pickup/sumida-river-bridge/",
+        destination: "/article/itabu-station-cherry-blossoms/",
         permanent: true,
       },
       {

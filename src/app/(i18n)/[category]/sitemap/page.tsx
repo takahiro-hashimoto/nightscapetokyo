@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
   const l = SITEMAP_LABELS[category] ?? SITEMAP_LABELS.en;
   const ogLocale = OG_LOCALE_MAP[category] ?? "en_US";
-  const canonicalUrl = `${SITE_URL}/${category}/sitemap`;
+  const canonicalUrl = `${SITE_URL}/${category}/sitemap/`;
   return {
     title: l.title,
     description: l.description,

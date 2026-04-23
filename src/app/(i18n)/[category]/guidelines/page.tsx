@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = category;
   const l = GUIDELINES_LABELS[locale] ?? GUIDELINES_LABELS.en;
   const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
-  const canonicalUrl = `${SITE_URL}/${locale}/guidelines`;
+  const canonicalUrl = `${SITE_URL}/${locale}/guidelines/`;
   return {
     title: l.title,
     description: l.description,
@@ -52,13 +52,40 @@ export default async function I18nGuidelinesPage({ params }: Props) {
         breadcrumb={[{ label: l.title }]}
       >
         <div className="content-card card-padding article-body">
+          {l.intro && <p>{l.intro}</p>}
           {l.sections.map((sec) => (
             <div key={sec.heading}>
               <h2>{sec.heading}</h2>
-              <p>{sec.text}</p>
+              {sec.texts.map((t, i) => (
+                <p key={i}>{t}</p>
+              ))}
             </div>
           ))}
         </div>
+
+        {l.refSites.length > 0 && (
+          <div className="content-card card-padding article-body">
+            <h2>{l.refSitesHeading}</h2>
+            <p>{l.refSitesIntro}</p>
+            {l.refSites.map((group) => (
+              <div key={group.category} style={{ marginBottom: 24 }}>
+                <h3>{group.category}</h3>
+                <dl className="guidelines-dl">
+                  {group.sites.map((site) => (
+                    <div key={site.href} className="guidelines-dl-item">
+                      <dt>
+                        <a href={site.href} target="_blank" rel="noopener noreferrer">
+                          {site.name}
+                        </a>
+                      </dt>
+                      <dd>{site.description}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ))}
+          </div>
+        )}
       </ArticleLayout>
     </>
   );

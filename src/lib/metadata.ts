@@ -24,8 +24,8 @@ export function buildSpotMetadata(
   const description = labels.seoDescription(spotName, areaName, spot.type, spot.lead ?? null);
 
   const canonicalUrl = localeSlug === "ja"
-    ? `${SITE_URL}/${categorySlug}/${spotSlug}`
-    : `${SITE_URL}/${localeSlug}/${categorySlug}/${spotSlug}`;
+    ? `${SITE_URL}/${categorySlug}/${spotSlug}/`
+    : `${SITE_URL}/${localeSlug}/${categorySlug}/${spotSlug}/`;
 
   const ogLocale = OG_LOCALE_MAP[localeSlug] || "ja_JP";
   const ogImages = spot.featured_image

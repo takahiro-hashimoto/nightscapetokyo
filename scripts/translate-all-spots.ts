@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * 未翻訳スポットをすべて一括翻訳するスクリプト
  *

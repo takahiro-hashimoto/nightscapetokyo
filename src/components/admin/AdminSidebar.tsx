@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, MapPin, FolderOpen, Tag, FileText, Newspaper, LogOut, Zap } from "lucide-react";
-import { logoutAction } from "@/app/admin/actions";
+import { logoutAction } from "@/app/(ja)/admin/actions";
 
 const navItems = [
   { href: "/admin", label: "ダッシュボード", icon: LayoutDashboard },

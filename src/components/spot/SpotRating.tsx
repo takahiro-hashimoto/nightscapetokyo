@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Star, MapPin } from "lucide-react";
 import type { RatingLabels } from "@/lib/i18n-labels";
 
@@ -92,7 +93,7 @@ export default function SpotRating({
             <div className="rating-divider" aria-hidden="true" />
             <div className="rating-right" itemProp="description">
               {lead}
-              <p><a className="content-top-link" href={l.topLinkHref}>{l.topLink}</a></p>
+              <p><Link className="content-top-link" href={l.topLinkHref}>{l.topLink}</Link></p>
             </div>
           </>
         )}

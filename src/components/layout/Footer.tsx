@@ -10,7 +10,7 @@ const LOCALE_LINKS: { locale: string | null; label: string; href: string }[] = [
   { locale: "tw",  label: "繁體中文", href: "/tw" },
   { locale: "cn",  label: "简体中文", href: "/cn" },
 ];
-import { getAreas, getAreasTranslated, getPurposeTags, getTotalSpotCount } from "@/lib/supabase/queries";
+import { getSiteChromeData } from "@/lib/supabase/queries";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { SNS_LINKS } from "@/lib/constants";
 
@@ -141,11 +141,7 @@ export default async function Footer({ locale }: { locale: string | null }) {
     ? getComponentLabels(siteLocale).homePage.purposeSearch.tagNames
     : undefined;
 
-  const [areas, tags, spotCount] = await Promise.all([
-    locale ? getAreasTranslated(locale) : getAreas(),
-    getPurposeTags(),
-    getTotalSpotCount(),
-  ]);
+  const { areas, tags, spotCount } = await getSiteChromeData(locale);
 
   return (
     <footer className="site-footer">

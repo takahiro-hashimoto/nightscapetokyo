@@ -4,7 +4,6 @@ import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import RecommendCta from "@/components/common/RecommendCta";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import HomeAuthor from "@/components/home/HomeAuthor";
 import SpotShare from "@/components/spot/SpotShare";
 import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
@@ -415,7 +414,6 @@ export default async function WallpaperPageI18n({ params }: Props) {
           </article>
         </div>
       </div>
-      <HomeAuthor locale={locale} />
       <SpotShare
         url={`${SITE_URL}/${locale}/wallpaper/`}
         title={labels.title}

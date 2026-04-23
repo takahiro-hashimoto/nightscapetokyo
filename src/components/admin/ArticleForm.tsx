@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Save, Loader2, Trash2, ExternalLink, Link2, ShoppingCart, X } from "lucide-react";
-import { createArticle, updateArticle, deleteArticle } from "@/app/admin/articles/actions";
+import { createArticle, updateArticle, deleteArticle } from "@/app/(ja)/admin/articles/actions";
 import type { Article } from "@/lib/types";
 
 type Props = {

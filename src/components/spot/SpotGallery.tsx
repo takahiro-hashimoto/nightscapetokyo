@@ -40,10 +40,12 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
 
     document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
+    document.body.classList.add("modal-open");
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
+      document.body.classList.remove("modal-open");
     };
   }, [selectedIndex, close, prev, next]);
 

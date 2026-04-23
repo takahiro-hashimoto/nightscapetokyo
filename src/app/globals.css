@@ -148,8 +148,8 @@ img {
    ========================================= */
 .breadcrumb {
   color: var(--color-text-light);
-  padding: 16px 0;
-  font-size: 14px;
+  padding: 20px 0;
+  font-size: 12px;
 }
 
 @media (max-width: 767px) {
@@ -163,7 +163,7 @@ img {
   }
 
   .breadcrumb {
-    padding: 12px 0;
+    padding: 16px 0;
     font-size: 12px;
     line-height: 1.4;
   }
@@ -782,6 +782,10 @@ img {
     font-size: 18px;
   }
 
+  .sp-newline {
+    display: block !important;
+  }
+
   .share-btn {
     font-size: 14px;
     padding: 12px 8px;
@@ -891,9 +895,6 @@ main > .home-section:nth-child(even of .home-section) {
 .hero-section {
   position: relative;
   min-height: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   background: linear-gradient(to bottom, #0a1628 0%, #0f2044 50%, #060d1a 100%);
 }
@@ -901,8 +902,6 @@ main > .home-section:nth-child(even of .home-section) {
 .hero-section picture {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .hero-bg {
@@ -915,10 +914,9 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .hero-overlay {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  width: 100%;
-  min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1195,11 +1193,12 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .badge {
-  font-size: 12px;
-  font-weight: 700;
-  padding: 2px 8px;
   border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 700;
   display: inline-block;
+  margin-bottom: 8px;
 }
 .spot-card-category {
   color: var(--color-main);
@@ -1274,10 +1273,6 @@ main > .home-section:nth-child(even of .home-section) {
    ========================================= */
 @media (max-width: 768px) {
   .hero-section {
-    min-height: 420px;
-  }
-
-  .hero-overlay {
     min-height: 420px;
   }
 
@@ -2719,6 +2714,16 @@ main > .home-section:nth-child(even of .home-section) {
   gap: 5px;
   color: inherit;
   font-size: 13px;
+}
+
+/* =========================================
+   Modal Open: AdSense を オーバーレイの背面へ
+   ========================================= */
+body.modal-open ins.adsbygoogle,
+body.modal-open .google-auto-placed,
+body.modal-open [id*="google_ads"],
+body.modal-open [id*="aswift"] {
+  z-index: 0 !important;
 }
 
 /* =========================================

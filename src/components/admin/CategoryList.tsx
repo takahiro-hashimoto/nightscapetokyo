@@ -6,7 +6,7 @@ import {
   createCategory,
   updateCategory,
   deleteCategory,
-} from "@/app/admin/categories/actions";
+} from "@/app/(ja)/admin/categories/actions";
 
 type Category = {
   id: string;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { LOCALE_LABELS, ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = category;
   const l = CAUTION_LABELS[locale] ?? CAUTION_LABELS.en;
   const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
-  const canonicalUrl = `${SITE_URL}/${locale}/caution`;
+  const canonicalUrl = `${SITE_URL}/${locale}/caution/`;
   return {
     title: l.title,
     description: l.description,
@@ -61,6 +62,11 @@ export default async function I18nCautionPage({ params }: Props) {
               {sec.texts.map((t, i) => (
                 <p key={i}>{t}</p>
               ))}
+              {sec.contactLink && (
+                <p>
+                  <Link href={`/${locale}/contact`}>{sec.contactLink}</Link>
+                </p>
+              )}
             </div>
           ))}
         </div>

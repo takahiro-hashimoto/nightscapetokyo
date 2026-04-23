@@ -9,6 +9,7 @@ type Props = {
   title: string;
   labels: ShareLabels;
   locale?: string;
+  className?: string;
 };
 
 /** ロケールごとに表示するボタンの順序を定義 */
@@ -68,7 +69,7 @@ function WeiboIcon() {
   );
 }
 
-export default function SpotShare({ url, title, labels, locale = "ja" }: Props) {
+export default function SpotShare({ url, title, labels, locale = "ja", className }: Props) {
   const [copied, setCopied] = useState(false);
   const buttons = LOCALE_BUTTONS[locale] ?? LOCALE_BUTTONS.ja;
 
@@ -125,9 +126,13 @@ export default function SpotShare({ url, title, labels, locale = "ja" }: Props) 
   };
 
   return (
-    <aside className="share-section" aria-labelledby="share-heading">
+    <aside className={`share-section${className ? ` ${className}` : ""}`} aria-labelledby="share-heading">
       <div className="home-container">
-      <h2 className="share-heading" id="share-heading">{labels.heading}</h2>
+      <p className="share-heading" id="share-heading">
+        {locale === "ja" ? (
+          <>この記事が役に立ったら<br className="sp-newline" />シェアしてください</>
+        ) : labels.heading}
+      </p>
       <div className="share-buttons">
         {buttons.includes("x") && (
           <button type="button" className="share-btn share-btn-x" onClick={shareOnX}>

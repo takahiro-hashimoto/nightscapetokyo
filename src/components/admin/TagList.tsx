@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Plus, Pencil, Trash2, Check, X } from "lucide-react";
-import { createTag, updateTag, deleteTag } from "@/app/admin/tags/actions";
+import { createTag, updateTag, deleteTag } from "@/app/(ja)/admin/tags/actions";
 
 type TagItem = {
   id: string;

@@ -24,7 +24,7 @@ export default function LuminarCtaSale() {
   const hasCoupon = settings?.hasCoupon ?? true
 
   return (
-    <section className="m-cta-sale" aria-labelledby="cta-title">
+    <aside className="m-cta-sale" aria-labelledby="cta-title">
       <div className="m-cta-sale__bg m-cta-sale__bg--1" aria-hidden="true"></div>
       <div className="m-cta-sale__bg m-cta-sale__bg--2" aria-hidden="true"></div>
 
@@ -100,6 +100,6 @@ export default function LuminarCtaSale() {
         </div>
         </div>{/* /.m-cta-bottom */}
       </div>
-    </section>
+    </aside>
   )
 }

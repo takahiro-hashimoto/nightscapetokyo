@@ -25,7 +25,7 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { createTagPage, updateTagPage } from "@/app/admin/tag-pages/actions";
+import { createTagPage, updateTagPage } from "@/app/(ja)/admin/tag-pages/actions";
 import { LOCALE_DISPLAY_NAMES } from "@/lib/types";
 
 /* ------------------------------------------------------------------ */
@@ -529,7 +529,7 @@ export default function TagPageForm({
 
     try {
       const { translateTagPage } = await import(
-        "@/app/admin/tag-pages/translate-action"
+        "@/app/(ja)/admin/tag-pages/translate-action"
       );
       const result = await translateTagPage(tagPage.id);
       if (result.error) {

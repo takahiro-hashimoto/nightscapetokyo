@@ -365,7 +365,7 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
                     return (
                       <p key={i}>
                         {parts[0]}
-                        <Link href="/contact/">{l.contactLinkText}</Link>
+                        <Link href={`/${locale}/contact/`}>{l.contactLinkText}</Link>
                         {parts[1]}
                       </p>
                     );

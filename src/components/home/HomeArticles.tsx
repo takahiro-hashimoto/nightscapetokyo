@@ -20,7 +20,7 @@ export default function HomeArticles({ articles }: Props) {
         <div className="area-spot-grid">
           {articles.map((article) => (
             <article key={article.id} className="spot-card">
-              <Link href={`/article/${article.slug}/`} className="spot-card-link">
+              <Link href={article.href ?? `/article/${article.slug}/`} className="spot-card-link">
                 <div className="spot-card-image">
                   {article.thumbnail && (
                     <Image

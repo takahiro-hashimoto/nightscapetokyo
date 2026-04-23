@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/HeaderWrapper";
+import RootShell from "@/components/layout/RootShell";
 import { LOCALE_HTML_LANG } from "@/lib/types";
 import { buildSiteNavigationJsonLdForLocale } from "@/lib/json-ld";
+import "../../globals.css";
 
 const LOCALE_SITE_NAME: Record<string, string> = {
   en: "Tokyo Night View Guide",
@@ -36,16 +39,20 @@ export default async function CategoryLayout({
   const { category: locale } = await params;
   const lang = LOCALE_HTML_LANG[locale] ?? "en";
 
+  const headContent = (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(buildSiteNavigationJsonLdForLocale(locale)),
+      }}
+    />
+  );
+
   return (
-    <div lang={lang}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(buildSiteNavigationJsonLdForLocale(locale)),
-        }}
-      />
-      {children}
+    <RootShell lang={lang} headContent={headContent}>
+      <Header locale={locale} />
+      <main className="flex-1">{children}</main>
       <Footer locale={locale} />
-    </div>
+    </RootShell>
   );
 }

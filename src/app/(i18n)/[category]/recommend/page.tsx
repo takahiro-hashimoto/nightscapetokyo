@@ -135,7 +135,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!labels) return {};
   const currentYear = new Date().getFullYear();
   const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
-  const canonicalUrl = `${SITE_URL}/${locale}/recommend`;
+  const canonicalUrl = `${SITE_URL}/${locale}/recommend/`;
   const metaTitle = `${labels.title}【${currentYear}】`;
   return {
     title: metaTitle,

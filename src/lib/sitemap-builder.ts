@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
-import { SITE_URL, ALL_LOCALE_SLUGS } from "@/lib/types";
+import { unstable_cache } from "next/cache";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_TO_SLUG } from "@/lib/types";
 import { getAllPostsSummary } from "@/lib/luminar/articles-meta";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -34,9 +35,11 @@ export const SITEMAP_LOCALES = ["ja", ...ALL_LOCALE_SLUGS] as const;
 /**
  * Build hreflang alternates for a given JA path.
  * Always includes ja + x-default + all locale versions.
+ * jaPath must start with "/" and must NOT end with "/" (trailing slash is added here).
  */
 function buildAlternates(jaPath: string): SitemapUrl["alternates"] {
-  const jaUrl = `${SITE_URL}${jaPath}`;
+  const normalizedPath = jaPath.endsWith("/") ? jaPath : `${jaPath}/`;
+  const jaUrl = `${SITE_URL}${normalizedPath}`;
   const alts: { hreflang: string; href: string }[] = [
     { hreflang: "ja", href: jaUrl },
     { hreflang: "x-default", href: jaUrl },
@@ -45,22 +48,44 @@ function buildAlternates(jaPath: string): SitemapUrl["alternates"] {
   for (const slug of ALL_LOCALE_SLUGS) {
     const hl = LOCALE_HREFLANG[slug];
     if (hl) {
-      alts.push({ hreflang: hl, href: `${SITE_URL}/${slug}${jaPath}` });
+      alts.push({ hreflang: hl, href: `${SITE_URL}/${slug}${normalizedPath}` });
     }
   }
 
   return alts;
 }
 
+/**
+ * Build hreflang alternates for a path that exists only in specific locales.
+ * ja + x-default always point to the Japanese URL.
+ * Only the locales in availableUrlSlugs get locale-specific alternates.
+ */
+function buildPartialAlternates(
+  jaPath: string,
+  availableUrlSlugs: readonly string[]
+): SitemapUrl["alternates"] {
+  const normalizedPath = jaPath.endsWith("/") ? jaPath : `${jaPath}/`;
+  const jaUrl = `${SITE_URL}${normalizedPath}`;
+  const alts: { hreflang: string; href: string }[] = [
+    { hreflang: "ja", href: jaUrl },
+    { hreflang: "x-default", href: jaUrl },
+  ];
+  for (const slug of availableUrlSlugs) {
+    const hl = LOCALE_HREFLANG[slug];
+    if (hl) alts.push({ hreflang: hl, href: `${SITE_URL}/${slug}${normalizedPath}` });
+  }
+  return alts;
+}
+
 /** Build hreflang alternates for the top page */
 function buildTopAlternates(): SitemapUrl["alternates"] {
   const alts: { hreflang: string; href: string }[] = [
-    { hreflang: "ja", href: SITE_URL },
-    { hreflang: "x-default", href: SITE_URL },
+    { hreflang: "ja", href: `${SITE_URL}/` },
+    { hreflang: "x-default", href: `${SITE_URL}/` },
   ];
   for (const slug of ALL_LOCALE_SLUGS) {
     const hl = LOCALE_HREFLANG[slug];
-    if (hl) alts.push({ hreflang: hl, href: `${SITE_URL}/${slug}` });
+    if (hl) alts.push({ hreflang: hl, href: `${SITE_URL}/${slug}/` });
   }
   return alts;
 }
@@ -80,8 +105,9 @@ type AllEntries = {
 
 /**
  * Fetch all data once and return URLs grouped by locale.
+ * Cached for 1 hour to reduce Supabase reads on sitemap requests.
  */
-export async function buildAllEntries(): Promise<AllEntries> {
+export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   const db = await getDb();
   const now = new Date().toISOString();
 
@@ -90,10 +116,10 @@ export async function buildAllEntries(): Promise<AllEntries> {
 
   // ── トップページ ──
   const topAlts = buildTopAlternates();
-  result.ja.push({ loc: SITE_URL, lastmod: now, changefreq: "daily", priority: 1.0, alternates: topAlts });
+  result.ja.push({ loc: `${SITE_URL}/`, lastmod: now, changefreq: "daily", priority: 1.0, alternates: topAlts });
   for (const slug of locales) {
     result[slug as keyof AllEntries].push({
-      loc: `${SITE_URL}/${slug}`,
+      loc: `${SITE_URL}/${slug}/`,
       lastmod: now,
       changefreq: "daily",
       priority: 0.9,
@@ -104,14 +130,14 @@ export async function buildAllEntries(): Promise<AllEntries> {
   // ── /recommend（重要度が高いため個別設定） ──
   const recommendAlts = buildAlternates("/recommend");
   result.ja.push({
-    loc: `${SITE_URL}/recommend`,
+    loc: `${SITE_URL}/recommend/`,
     changefreq: "weekly",
     priority: 0.8,
     alternates: recommendAlts,
   });
   for (const slug of locales) {
     result[slug as keyof AllEntries].push({
-      loc: `${SITE_URL}/${slug}/recommend`,
+      loc: `${SITE_URL}/${slug}/recommend/`,
       changefreq: "weekly",
       priority: 0.7,
       alternates: recommendAlts,
@@ -127,14 +153,14 @@ export async function buildAllEntries(): Promise<AllEntries> {
   for (const page of staticPages) {
     const alts = buildAlternates(page);
     result.ja.push({
-      loc: `${SITE_URL}${page}`,
+      loc: `${SITE_URL}${page}/`,
       changefreq: "monthly",
       priority: 0.5,
       alternates: alts,
     });
     for (const slug of locales) {
       result[slug as keyof AllEntries].push({
-        loc: `${SITE_URL}/${slug}${page}`,
+        loc: `${SITE_URL}/${slug}${page}/`,
         changefreq: "monthly",
         priority: 0.4,
         alternates: alts,
@@ -143,7 +169,7 @@ export async function buildAllEntries(): Promise<AllEntries> {
   }
 
   // simulator (JA only)
-  result.ja.push({ loc: `${SITE_URL}/simulator`, changefreq: "monthly", priority: 0.5 });
+  result.ja.push({ loc: `${SITE_URL}/simulator/`, changefreq: "monthly", priority: 0.5 });
 
   // timelapse-calculator (JA only — DB外の静的ページ)
   result.ja.push({ loc: `${SITE_URL}/article/timelapse-calculator/`, changefreq: "monthly", priority: 0.6 });
@@ -172,7 +198,7 @@ export async function buildAllEntries(): Promise<AllEntries> {
     const alts = buildAlternates(jaPath);
     const lastmod = cat.updated_at ? new Date(cat.updated_at).toISOString() : undefined;
     result.ja.push({
-      loc: `${SITE_URL}${jaPath}`,
+      loc: `${SITE_URL}${jaPath}/`,
       lastmod,
       changefreq: "weekly",
       priority: 0.8,
@@ -180,7 +206,7 @@ export async function buildAllEntries(): Promise<AllEntries> {
     });
     for (const slug of locales) {
       result[slug as keyof AllEntries].push({
-        loc: `${SITE_URL}/${slug}${jaPath}`,
+        loc: `${SITE_URL}/${slug}${jaPath}/`,
         lastmod,
         changefreq: "weekly",
         priority: 0.7,
@@ -195,92 +221,106 @@ export async function buildAllEntries(): Promise<AllEntries> {
     .select("slug, updated_at, category:categories(slug)")
     .eq("published", true) as { data: Row[] | null };
 
-  const { data: translatedSlugs } = await db
+  // locale 単位で取得し、スポットごとに「実在するロケール集合」を構築する
+  const { data: spotTranslationRows } = await db
     .from("spot_translations")
-    .select("spot:spots(slug)")
+    .select("spot:spots(slug), locale")
     .not("spot", "is", null) as { data: Row[] | null };
 
-  const translatedSet = new Set(
-    (translatedSlugs ?? []).map((r) => {
-      const s = Array.isArray(r.spot) ? r.spot[0] : r.spot;
-      return s?.slug;
-    }).filter(Boolean)
-  );
+  const spotLocaleMap = new Map<string, Set<string>>();
+  for (const row of spotTranslationRows ?? []) {
+    const s = Array.isArray(row.spot) ? row.spot[0] : row.spot;
+    const spotSlug = s?.slug as string | undefined;
+    const urlSlug = LOCALE_TO_SLUG[row.locale as string];
+    if (spotSlug && urlSlug) {
+      if (!spotLocaleMap.has(spotSlug)) spotLocaleMap.set(spotSlug, new Set());
+      spotLocaleMap.get(spotSlug)!.add(urlSlug);
+    }
+  }
 
   for (const spot of spots ?? []) {
     const catSlug = Array.isArray(spot.category) ? spot.category[0]?.slug : spot.category?.slug;
     if (!catSlug) continue;
     const jaPath = `/${catSlug}/${spot.slug}`;
     const lastmod = spot.updated_at ? new Date(spot.updated_at).toISOString() : undefined;
-    const hasTranslation = translatedSet.has(spot.slug);
-    const alts = hasTranslation ? buildAlternates(jaPath) : undefined;
+    const availableLocales = spotLocaleMap.get(spot.slug as string) ?? new Set<string>();
+    const alts = availableLocales.size > 0
+      ? buildPartialAlternates(jaPath, [...availableLocales])
+      : undefined;
 
     result.ja.push({
-      loc: `${SITE_URL}${jaPath}`,
+      loc: `${SITE_URL}${jaPath}/`,
       lastmod,
       changefreq: "monthly",
       priority: 0.7,
       alternates: alts,
     });
 
-    if (hasTranslation) {
-      for (const slug of locales) {
-        result[slug as keyof AllEntries].push({
-          loc: `${SITE_URL}/${slug}${jaPath}`,
-          lastmod,
-          changefreq: "monthly",
-          priority: 0.6,
-          alternates: alts,
-        });
-      }
+    for (const urlSlug of availableLocales) {
+      result[urlSlug as keyof AllEntries]?.push({
+        loc: `${SITE_URL}/${urlSlug}${jaPath}/`,
+        lastmod,
+        changefreq: "monthly",
+        priority: 0.6,
+        alternates: alts,
+      });
     }
   }
 
   // ── タグページ ──
   const { data: tagPages } = await db
     .from("tag_pages")
-    .select("updated_at, tag:tags(slug)")
+    .select("id, updated_at, tag:tags(slug)")
     .eq("published", true) as { data: Row[] | null };
 
-  const { data: translatedTagPages } = await db
+  // tag_page_translations から locale 単位でタグごとのロケール集合を構築する
+  const { data: tagTranslationRows } = await db
     .from("tag_page_translations")
-    .select("tag_page:tag_pages(tag:tags(slug))")
-    .not("tag_page", "is", null) as { data: Row[] | null };
+    .select("tag_page_id, locale") as { data: Row[] | null };
 
-  const translatedTagSet = new Set(
-    (translatedTagPages ?? []).map((r) => {
-      const tp = Array.isArray(r.tag_page) ? r.tag_page[0] : r.tag_page;
-      const tag = tp ? (Array.isArray(tp.tag) ? tp.tag[0] : tp.tag) : null;
-      return tag?.slug;
-    }).filter(Boolean)
-  );
+  // tag_page.id → tag slug のマッピングを作成
+  const tagPageIdToSlug = new Map<string, string>();
+  for (const tp of tagPages ?? []) {
+    const tagSlug = Array.isArray(tp.tag) ? tp.tag[0]?.slug : tp.tag?.slug;
+    if (tp.id && tagSlug) tagPageIdToSlug.set(String(tp.id), tagSlug as string);
+  }
+
+  const tagLocaleMap = new Map<string, Set<string>>();
+  for (const row of tagTranslationRows ?? []) {
+    const tagSlug = tagPageIdToSlug.get(String(row.tag_page_id));
+    const urlSlug = LOCALE_TO_SLUG[row.locale as string];
+    if (tagSlug && urlSlug) {
+      if (!tagLocaleMap.has(tagSlug)) tagLocaleMap.set(tagSlug, new Set());
+      tagLocaleMap.get(tagSlug)!.add(urlSlug);
+    }
+  }
 
   for (const tp of tagPages ?? []) {
     const tagSlug = Array.isArray(tp.tag) ? tp.tag[0]?.slug : tp.tag?.slug;
     if (!tagSlug) continue;
     const jaPath = `/tag/${tagSlug}`;
     const lastmod = tp.updated_at ? new Date(tp.updated_at).toISOString() : undefined;
-    const hasTranslation = translatedTagSet.has(tagSlug);
-    const alts = hasTranslation ? buildAlternates(jaPath) : undefined;
+    const availableLocales = tagLocaleMap.get(tagSlug as string) ?? new Set<string>();
+    const alts = availableLocales.size > 0
+      ? buildPartialAlternates(jaPath, [...availableLocales])
+      : undefined;
 
     result.ja.push({
-      loc: `${SITE_URL}${jaPath}`,
+      loc: `${SITE_URL}${jaPath}/`,
       lastmod,
       changefreq: "weekly",
       priority: 0.8,
       alternates: alts,
     });
 
-    if (hasTranslation) {
-      for (const slug of locales) {
-        result[slug as keyof AllEntries].push({
-          loc: `${SITE_URL}/${slug}${jaPath}`,
-          lastmod,
-          changefreq: "weekly",
-          priority: 0.7,
-          alternates: alts,
-        });
-      }
+    for (const urlSlug of availableLocales) {
+      result[urlSlug as keyof AllEntries]?.push({
+        loc: `${SITE_URL}/${urlSlug}${jaPath}/`,
+        lastmod,
+        changefreq: "weekly",
+        priority: 0.7,
+        alternates: alts,
+      });
     }
   }
 
@@ -337,14 +377,14 @@ export async function buildAllEntries(): Promise<AllEntries> {
   for (const tag of tags ?? []) {
     if (tagPageSlugs.has(tag.slug)) continue;
     result.ja.push({
-      loc: `${SITE_URL}/tag/${tag.slug}`,
+      loc: `${SITE_URL}/tag/${tag.slug}/`,
       changefreq: "weekly",
       priority: 0.5,
     });
   }
 
   return result;
-}
+}, ["sitemap-all-entries"], { revalidate: 3600, tags: ["spots", "areas", "articles"] });
 
 /**
  * Convert a list of SitemapUrl entries to XML string.

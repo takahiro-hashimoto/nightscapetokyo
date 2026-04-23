@@ -1,4 +1,6 @@
+ 
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import type { SpotWithRelations, SpotListItem, TagPageWithRelations, TagPageTranslation, Article } from "../types";
 import { calcRatingAvg, parseJsonField, LOCALE_SLUG_MAP, LOCALE_TO_SLUG } from "../types";
 import { dummySpot } from "../dummy-data";
@@ -13,7 +15,7 @@ async function getSupabaseClient() {
 }
 
 /** Supabase が返す配列リレーションを正規化する共通処理 */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function normalizeSpotRelations(spot: any): SpotWithRelations {
   return {
     ...spot,
@@ -27,7 +29,7 @@ function normalizeSpotRelations(spot: any): SpotWithRelations {
 }
 
 /** spot_id をキーとした翻訳マップを生成 */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function buildTranslationMap(translations: any[]): Map<string, any> {
   const map = new Map<string, any>();
   for (const t of translations) map.set(t.spot_id, t);
@@ -35,14 +37,14 @@ function buildTranslationMap(translations: any[]): Map<string, any> {
 }
 
 /** sort_order 昇順ソート */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function sortByOrder(arr: any): any[] {
   if (!Array.isArray(arr)) return [];
   return [...arr].sort((a, b) => a.sort_order - b.sort_order);
 }
 
 /** created_at 降順ソート */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function sortByDateDesc(arr: any): any[] {
   if (!Array.isArray(arr)) return [];
   return [...arr].sort(
@@ -51,7 +53,7 @@ function sortByDateDesc(arr: any): any[] {
 }
 
 /** DB のスポット行を一覧用の SpotListItem に変換 */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function mapSpotToListing(s: any): SpotListItem {
   return {
     id: s.id,
@@ -93,7 +95,7 @@ export const getSpotBySlug = cache(async function getSpotBySlug(
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data: spot, error } = (await supabase
     .from("spots")
     .select(`${FULL_SELECT}, spot_tags(tag:tags(*))`)
@@ -103,7 +105,7 @@ export const getSpotBySlug = cache(async function getSpotBySlug(
 
   if (error || !spot || spot.category?.slug !== categorySlug) return null;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const tags = spot.spot_tags?.map((r: any) => r.tag) ?? [];
 
   return normalizeSpotRelations({ ...spot, tags });
@@ -118,7 +120,7 @@ export async function getAllSpotSlugs(): Promise<
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data, error } = (await supabase
     .from("spots")
     .select("slug, category:categories(slug)")
@@ -130,7 +132,7 @@ export async function getAllSpotSlugs(): Promise<
     category: item.category?.slug ?? "",
     slug: item.slug,
   }));
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 }
 
 export type RecentSpotItem = {
@@ -143,7 +145,7 @@ export type RecentSpotItem = {
 export async function getRecentSpots(limit = 10): Promise<RecentSpotItem[]> {
   if (!isSupabaseConfigured) return [];
   const supabase = await getSupabaseClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spots")
     .select("slug, name, title, updated_at, category:categories(slug)")
@@ -151,7 +153,7 @@ export async function getRecentSpots(limit = 10): Promise<RecentSpotItem[]> {
     .order("updated_at", { ascending: false })
     .limit(limit)) as any;
   if (!data) return [];
-  return data.map((s: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
+  return data.map((s: any) => ({  
     slug: s.slug,
     name: s.name || s.title,
     categorySlug: s.category?.slug ?? "",
@@ -159,7 +161,7 @@ export async function getRecentSpots(limit = 10): Promise<RecentSpotItem[]> {
   }));
 }
 
-export const getTotalSpotCount = cache(async function getTotalSpotCount(): Promise<number> {
+export const getTotalSpotCount = cache(unstable_cache(async (): Promise<number> => {
   if (!isSupabaseConfigured) return 200;
   const supabase = await getSupabaseClient();
   const { count } = await supabase
@@ -167,9 +169,9 @@ export const getTotalSpotCount = cache(async function getTotalSpotCount(): Promi
     .select("*", { count: "exact", head: true })
     .eq("published", true);
   return count ?? 0;
-});
+}, ["spot-count"], { revalidate: 3600, tags: ["spots"] }));
 
-export async function getTopSpots(limit = 6): Promise<SpotListItem[]> {
+export const getTopSpots = cache(unstable_cache(async (limit = 6): Promise<SpotListItem[]> => {
   if (!isSupabaseConfigured) {
     const { dummyTopSpots } = await import("../dummy-home-data");
     return dummyTopSpots.slice(0, limit);
@@ -177,7 +179,7 @@ export async function getTopSpots(limit = 6): Promise<SpotListItem[]> {
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spots")
     .select(LISTING_SELECT)
@@ -186,11 +188,17 @@ export async function getTopSpots(limit = 6): Promise<SpotListItem[]> {
 
   if (!data) return [];
 
+  const seen = new Set<string>();
   return data
     .map(mapSpotToListing)
+    .filter((s: SpotListItem) => {
+      if (seen.has(s.id)) return false;
+      seen.add(s.id);
+      return true;
+    })
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg)
     .slice(0, limit);
-}
+}, ["top-spots"], { revalidate: 3600, tags: ["spots"] }));
 
 export type TimeLapseSpot = {
   slug: string;
@@ -202,7 +210,7 @@ export type TimeLapseSpot = {
 export const getTimeLapseSpots = cache(async function getTimeLapseSpots(localeSlug?: string): Promise<TimeLapseSpot[]> {
   if (!isSupabaseConfigured) return [];
   const supabase = await getSupabaseClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spots")
     .select("id, slug, name, title, movie, category:categories(slug)")
@@ -213,24 +221,24 @@ export const getTimeLapseSpots = cache(async function getTimeLapseSpots(localeSl
   if (!data) return [];
 
   const dbLocale = localeSlug ? LOCALE_SLUG_MAP[localeSlug] : null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let tMap = new Map<string, any>();
+   
+  const tMap = new Map<string, any>();
   if (dbLocale) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const spotIds = data.map((s: any) => s.id);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const { data: translations } = (await supabase
       .from("spot_translations")
       .select("spot_id, name")
       .eq("locale", dbLocale)
       .in("spot_id", spotIds)) as any;
     if (translations?.length) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       for (const t of translations) tMap.set(t.spot_id, t);
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   return data.map((s: any) => ({
     slug: s.slug,
     name: tMap.get(s.id)?.name || s.name || s.title,
@@ -291,11 +299,15 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels, loca
 
   // 形態素解析でトークン分割し、元のクエリも含める
   const tokens = tokenizeQuery(query);
-  const allKeywords = [query.trim(), ...tokens.filter((t) => t !== query.trim().toLowerCase())];
+  // PostgREST フィルター文字列への埋め込み前に特殊文字を除去
+  const sanitizeForPostgrest = (kw: string) => kw.replace(/[,()'"\\]/g, "");
+  const allKeywords = [query.trim(), ...tokens.filter((t) => t !== query.trim().toLowerCase())]
+    .map(sanitizeForPostgrest)
+    .filter(Boolean);
 
   // 各トークンごとにスポットを検索し、ヒット情報を集約
   // spotId → { spot data, matchedFields set, matchedTokens (トークン別ヒット数), titleMatchTokens (タイトルにマッチしたトークン数) }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const spotMap = new Map<string, { spot: any; matchedFields: Set<string>; matchedTokens: Set<string>; titleMatchTokens: Set<string> }>();
 
   // 全キーワードをOR条件にまとめてバッチクエリ化（キーワード数×クエリ数 → 固定6クエリ以内）
@@ -319,31 +331,31 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels, loca
     : null;
 
   // Phase 1: テキスト・タグ・カテゴリ（＋翻訳）を並列検索
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const [textHitsResult, matchedTagsResult, matchedCatsResult, transHitsResult] = await Promise.all([
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     (supabase.from("spots").select(searchSelect).eq("published", true).or(textOr)) as any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     (supabase.from("tags").select("id, name").or(tagOr)) as any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     (supabase.from("categories").select("id, name").or(catOr)) as any,
     transOr
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       ? (supabase.from("spot_translations").select("spot_id, name, lead, category_name").eq("locale", dbLocale!).or(transOr)) as any
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       : Promise.resolve({ data: [] as any[] }),
   ]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const allTextHits: any[] = textHitsResult.data ?? [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const matchedTags: any[] = matchedTagsResult.data ?? [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const matchedCats: any[] = matchedCatsResult.data ?? [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const transHits: any[] = transHitsResult.data ?? [];
 
   // 翻訳マッチマップ（spot_id → 翻訳データ）
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const transMap = new Map<string, any>();
   for (const t of transHits) transMap.set(t.spot_id, t);
 
@@ -351,22 +363,22 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels, loca
   const catIds: string[] = matchedCats.map((c: { id: string }) => c.id);
 
   // Phase 2: タグ・カテゴリのスポット関連を並列取得
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const [tagRelationsResult, catSpotsResult] = await Promise.all([
     tagIds.length > 0
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       ? (supabase.from("spot_tags").select("spot_id, tag_id").in("tag_id", tagIds)) as any
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       : Promise.resolve({ data: [] as any[] }),
     catIds.length > 0
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       ? (supabase.from("spots").select("id, category_id").eq("published", true).in("category_id", catIds)) as any
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       : Promise.resolve({ data: [] as any[] }),
   ]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const tagRelations: any[] = tagRelationsResult.data ?? [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const catSpots: any[] = catSpotsResult.data ?? [];
 
   const tagSpotIds = tagRelations.map((r: { spot_id: string }) => r.spot_id);
@@ -378,10 +390,10 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels, loca
   const extraIds = [...new Set([...tagSpotIds, ...categorySpotIds, ...transHitSpotIds])].filter(
     (id) => !textHitIds.has(id)
   );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   let extraSpots: any[] = [];
   if (extraIds.length > 0) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const { data } = (await supabase
       .from("spots")
       .select(searchSelect)
@@ -490,7 +502,7 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels, loca
     // キーワード検索で取得済みでないスポットの翻訳を追加取得
     const missingIds = sorted.map((s) => s.id).filter((id) => !transMap.has(id));
     if (missingIds.length > 0) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       const { data: extra } = (await supabase
         .from("spot_translations")
         .select("spot_id, name, lead, category_name")
@@ -529,7 +541,7 @@ export async function getSpotCount(): Promise<number> {
   return count ?? 0;
 }
 
-export async function getHotelSpots(limit = 4): Promise<SpotListItem[]> {
+export const getHotelSpots = cache(unstable_cache(async (limit = 4): Promise<SpotListItem[]> => {
   if (!isSupabaseConfigured) {
     const { dummyHotelSpots } = await import("../dummy-home-data");
     return dummyHotelSpots.slice(0, limit);
@@ -537,7 +549,7 @@ export async function getHotelSpots(limit = 4): Promise<SpotListItem[]> {
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spots")
     .select(LISTING_SELECT)
@@ -549,7 +561,7 @@ export async function getHotelSpots(limit = 4): Promise<SpotListItem[]> {
   if (!data) return [];
 
   return data.map(mapSpotToListing);
-}
+}, ["hotel-spots"], { revalidate: 3600, tags: ["spots"] }));
 
 /** 翻訳付きトップスポット取得（ホームページ翻訳版用） */
 export async function getTopSpotsTranslated(
@@ -562,45 +574,41 @@ export async function getTopSpotsTranslated(
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: spots } = (await supabase
-    .from("spots")
-    .select(LISTING_SELECT)
-    .eq("type", "spot")
-    .eq("published", true)) as any;
+  // spots と translations を並列取得（上位100件に絞ることで転送量を削減）
+   
+  const [{ data: spots }, { data: translations }] = await Promise.all([
+    supabase
+      .from("spots")
+      .select(LISTING_SELECT)
+      .eq("type", "spot")
+      .eq("published", true)
+      .order("rating_beautiful", { ascending: false })
+      .limit(100) as any,
+    supabase
+      .from("spot_translations")
+      .select("spot_id, name, lead, category_name")
+      .eq("locale", dbLocale) as any,
+  ]);
 
-  if (!spots?.length) return [];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const spotIds = spots.map((s: any) => s.id);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: translations } = (await supabase
-    .from("spot_translations")
-    .select("spot_id, name, lead, category_name")
-    .eq("locale", dbLocale)
-    .in("spot_id", spotIds)) as any;
-
-  if (!translations?.length) return [];
+  if (!spots?.length || !translations?.length) return [];
 
   const tMap = buildTranslationMap(translations);
 
   return spots
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     .filter((s: any) => tMap.has(s.id))
     .map(mapSpotToListing)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     .filter((s: SpotListItem) => (!allowedCategorySlugs || allowedCategorySlugs.has(s.category.slug)) && !s.closed)
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg)
     .slice(0, limit)
     .map((base: SpotListItem) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const orig = spots.find((s: any) => s.id === base.id);
       const t = tMap.get(base.id);
       return {
         ...base,
         name: t.name || base.name,
         category: t.category_name
-          ? { slug: orig?.category?.slug ?? base.category.slug, name: t.category_name }
+          ? { slug: base.category.slug, name: t.category_name }
           : base.category,
         lead: t.lead || base.lead,
       };
@@ -617,34 +625,31 @@ export async function getHotelSpotsTranslated(
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: spots } = (await supabase
-    .from("spots")
-    .select(LISTING_SELECT)
-    .eq("type", "hotel")
-    .eq("published", true)
-    .order("rating_beautiful", { ascending: false })) as any;
+  // spots と translations を並列取得
+   
+  const [{ data: spots }, { data: translations }] = await Promise.all([
+    supabase
+      .from("spots")
+      .select(LISTING_SELECT)
+      .eq("type", "hotel")
+      .eq("published", true)
+      .order("rating_beautiful", { ascending: false })
+      .limit(limit * 5) as any,
+    supabase
+      .from("spot_translations")
+      .select("spot_id, name, lead, category_name")
+      .eq("locale", dbLocale) as any,
+  ]);
 
-  if (!spots?.length) return [];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const spotIds = spots.map((s: any) => s.id);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: translations } = (await supabase
-    .from("spot_translations")
-    .select("spot_id, name, lead, category_name")
-    .eq("locale", dbLocale)
-    .in("spot_id", spotIds)) as any;
-
-  if (!translations?.length) return [];
+  if (!spots?.length || !translations?.length) return [];
 
   const tMap = buildTranslationMap(translations);
 
   return spots
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     .filter((s: any) => tMap.has(s.id))
     .slice(0, limit)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     .map((s: any) => {
       const t = tMap.get(s.id);
       const base = mapSpotToListing(s);
@@ -660,14 +665,14 @@ export async function getHotelSpotsTranslated(
 }
 
 /** 翻訳付きエリアデータ取得（ホームページ翻訳版用） */
-export async function getAreasTranslated(urlSlug: string) {
+export const getAreasTranslated = cache(unstable_cache(async (urlSlug: string) => {
   const dbLocale = LOCALE_SLUG_MAP[urlSlug];
   const areas = await getAreas();
   if (!isSupabaseConfigured || !dbLocale) return areas;
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spot_translations")
     .select("category_name, spot:spots!inner(category:categories!inner(slug))")
@@ -677,7 +682,7 @@ export async function getAreasTranslated(urlSlug: string) {
   if (!data?.length) return areas;
 
   const nameMap = new Map<string, string>();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   for (const d of data) {
     const slug = d.spot?.category?.slug;
     if (slug && d.category_name && !nameMap.has(slug)) {
@@ -689,7 +694,7 @@ export async function getAreasTranslated(urlSlug: string) {
     ...a,
     name: nameMap.get(a.slug) || a.name,
   }));
-}
+}, ["areas-translated"], { revalidate: 3600, tags: ["areas", "translations"] }));
 
 export async function getRelatedSpots(
   categoryId: string,
@@ -700,7 +705,7 @@ export async function getRelatedSpots(
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spots")
     .select(LISTING_SELECT)
@@ -726,42 +731,43 @@ export async function getRecommendedSpotsByTags(
 
   const supabase = await getSupabaseClient();
 
-  // 同じタグを持つスポットIDを取得（自分自身は除外）と全スポット一覧を並列取得
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [{ data: tagLinks }, { data: allSpots }] = await Promise.all([
-    supabase
-      .from("spot_tags")
-      .select("spot_id, tag_id")
-      .in("tag_id", tagIds)
-      .neq("spot_id", spotId) as any,
-    supabase
-      .from("spots")
-      .select(LISTING_SELECT)
-      .eq("published", true)
-      .eq("type", "spot")
-      .neq("category_id", categoryId) as any,
-  ]);
+  // ① タグ一致スポットIDとスコアを先に集計（自分自身・同エリアは除外）
+   
+  const { data: tagLinks } = (await supabase
+    .from("spot_tags")
+    .select("spot_id, tag_id")
+    .in("tag_id", tagIds)
+    .neq("spot_id", spotId)) as any;
 
   if (!tagLinks?.length) return [];
 
-  // タグの一致数でスコアリング
+  // タグ一致数を集計してスコアマップ作成
   const scoreMap = new Map<string, number>();
   for (const link of tagLinks) {
     scoreMap.set(link.spot_id, (scoreMap.get(link.spot_id) || 0) + 1);
   }
 
-  const candidateIds = new Set(scoreMap.keys());
-  const spots = allSpots?.filter((s: any) => candidateIds.has(s.id)) ?? [];
+  // ② 候補IDだけを絞ってDBから取得（全スポット取得を廃止）
+  const candidateIds = [...scoreMap.keys()];
+   
+  const { data: spots } = (await supabase
+    .from("spots")
+    .select(LISTING_SELECT)
+    .in("id", candidateIds)
+    .eq("published", true)
+    .eq("type", "spot")
+    .neq("category_id", categoryId)
+    .eq("closed", false)) as any;
 
   if (!spots?.length) return [];
 
+  // ③ 複合スコア（タグ一致数×2 + rating_avg）で降順ソート
   return spots
     .map(mapSpotToListing)
     .sort((a: SpotListItem, b: SpotListItem) => {
-      const scoreA = scoreMap.get(a.id) || 0;
-      const scoreB = scoreMap.get(b.id) || 0;
-      if (scoreB !== scoreA) return scoreB - scoreA;
-      return b.rating_avg - a.rating_avg;
+      const scoreA = (scoreMap.get(a.id) || 0) * 2 + a.rating_avg;
+      const scoreB = (scoreMap.get(b.id) || 0) * 2 + b.rating_avg;
+      return scoreB - scoreA;
     })
     .slice(0, limit);
 }
@@ -783,7 +789,7 @@ export async function getRecommendedSpotsByTagsTranslated(
   const supabase = await getSupabaseClient();
   const spotIds = spots.map((s) => s.id);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data: translations } = (await supabase
     .from("spot_translations")
     .select("spot_id, name, lead, category_name")
@@ -820,7 +826,7 @@ export async function getRelatedSpotsTranslated(
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data: spots } = (await supabase
     .from("spots")
     .select(LISTING_SELECT)
@@ -832,9 +838,9 @@ export async function getRelatedSpotsTranslated(
 
   if (!spots?.length) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const spotIds = spots.map((s: any) => s.id);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data: translations } = (await supabase
     .from("spot_translations")
     .select("spot_id, name, lead, category_name")
@@ -846,10 +852,10 @@ export async function getRelatedSpotsTranslated(
   const tMap = buildTranslationMap(translations);
 
   return spots
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     .filter((s: any) => tMap.has(s.id))
     .slice(0, limit)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     .map((s: any) => {
       const t = tMap.get(s.id);
       const base = mapSpotToListing(s);
@@ -872,39 +878,34 @@ export async function getSpotsByCategoryTranslated(
   const dbLocale = LOCALE_SLUG_MAP[urlSlug];
   if (!isSupabaseConfigured || !dbLocale) return [];
 
-  const supabase = await getSupabaseClient();
+  const [supabase, category] = await Promise.all([
+    getSupabaseClient(),
+    getCategoryBySlug(categorySlug),
+  ]);
+  if (!category) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: spots } = (await supabase
-    .from("spots")
-    .select(LISTING_SELECT)
-    .eq("published", true)) as any;
+  // spots と translations を並列取得（category_id でDB側フィルタリング）
+   
+  const [{ data: spots }, { data: translations }] = await Promise.all([
+    supabase
+      .from("spots")
+      .select(LISTING_SELECT)
+      .eq("published", true)
+      .eq("category_id", category.id) as any,
+    supabase
+      .from("spot_translations")
+      .select("spot_id, name, lead, category_name")
+      .eq("locale", dbLocale) as any,
+  ]);
 
-  if (!spots?.length) return [];
-
-  const categorySpots = spots.filter(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (s: any) => s.category?.slug === categorySlug
-  );
-  if (!categorySpots.length) return [];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const spotIds = categorySpots.map((s: any) => s.id);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: translations } = (await supabase
-    .from("spot_translations")
-    .select("spot_id, name, lead, category_name")
-    .eq("locale", dbLocale)
-    .in("spot_id", spotIds)) as any;
-
-  if (!translations?.length) return [];
+  if (!spots?.length || !translations?.length) return [];
 
   const tMap = buildTranslationMap(translations);
 
-  return categorySpots
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return spots
+     
     .filter((s: any) => tMap.has(s.id))
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     .map((s: any) => {
       const t = tMap.get(s.id);
       const base = mapSpotToListing(s);
@@ -928,12 +929,12 @@ export async function getTranslatedAreaSlugs(): Promise<
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data } = (await supabase
     .from("spot_translations")
     .select("locale, spot:spots(category:categories(slug))")
   ) as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   if (!data) return [];
 
@@ -961,12 +962,12 @@ export const getAvailableAreaLocales = cache(async function getAvailableAreaLoca
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data } = (await supabase
     .from("spot_translations")
     .select("locale, spot:spots!inner(category:categories!inner(slug))")
   ) as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   if (!data) return [];
 
@@ -990,21 +991,23 @@ export const getSpotsByCategory = cache(async function getSpotsByCategory(
     return dummyTopSpots.filter((s) => s.category.slug === categorySlug);
   }
 
-  const supabase = await getSupabaseClient();
+  const [supabase, category] = await Promise.all([
+    getSupabaseClient(),
+    getCategoryBySlug(categorySlug),
+  ]);
+  if (!category) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spots")
     .select(LISTING_SELECT)
-    .eq("published", true)) as any;
+    .eq("published", true)
+    .eq("category_id", category.id)
+    .order("rating_beautiful", { ascending: false })) as any;
 
   if (!data) return [];
 
-  return data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .filter((s: any) => s.category?.slug === categorySlug)
-    .map(mapSpotToListing)
-    .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg);
+  return data.map(mapSpotToListing);
 });
 
 /** カテゴリslugからカテゴリ情報を取得 */
@@ -1016,7 +1019,7 @@ export const getCategoryBySlug = cache(async function getCategoryBySlug(
   const supabase = await getSupabaseClient();
 
   // description カラムがまだ存在しない場合にフォールバック
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data, error } = (await supabase
     .from("categories")
     .select("id, name, slug, description")
@@ -1040,7 +1043,7 @@ export const getCategoryBySlug = cache(async function getCategoryBySlug(
 /** エリア別カテゴリ（スポット数付き） */
 const NON_AREA_SLUGS = ["article", "pickup", "event"];
 
-export const getAreas = cache(async function getAreas() {
+export const getAreas = cache(unstable_cache(async () => {
   if (!isSupabaseConfigured) {
     const { dummyAreas } = await import("../dummy-home-data");
     return dummyAreas;
@@ -1048,7 +1051,7 @@ export const getAreas = cache(async function getAreas() {
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   // カテゴリ一覧とスポットのcategory_idを並列取得（全スポット詳細を不要に転送しない）
   const [catsResult, spotsResult] = await Promise.all([
     supabase.from("categories").select("id, slug, name") as any,
@@ -1074,7 +1077,7 @@ export const getAreas = cache(async function getAreas() {
   const areas = [...catMap.values()]
     .filter((v) => v.count > 0)
     .map(({ slug, name, count }) => ({ slug, name, spot_count: count }));
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   const TAIL_ORDER = ["横浜", "その他エリア"];
   return areas.sort((a, b) => {
@@ -1085,17 +1088,17 @@ export const getAreas = cache(async function getAreas() {
     if (bi !== -1) return -1;
     return b.spot_count - a.spot_count;
   });
-});
+}, ["areas"], { revalidate: 86400, tags: ["areas"] }));
 
 /** 目的別タグ（スポット数付き） */
-export const getPurposeTags = cache(async function getPurposeTags() {
+export const getPurposeTags = cache(unstable_cache(async () => {
   if (!isSupabaseConfigured) {
     return [];
   }
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   // tags側からspot_tags数を集計（全spot_tags行を転送せずカウントのみ取得）
   const { data: tags } = (await supabase
     .from("tags")
@@ -1111,10 +1114,10 @@ export const getPurposeTags = cache(async function getPurposeTags() {
       spot_count: (t.spot_tags?.[0]?.count ?? 0) as number,
     }))
     .filter((t) => t.spot_count > 0);
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   return result.sort((a, b) => b.spot_count - a.spot_count);
-});
+}, ["purpose-tags"], { revalidate: 86400, tags: ["tags"] }));
 
 /** タグ情報をslugで取得 */
 export const getTagBySlug = cache(async function getTagBySlug(tagSlug: string) {
@@ -1159,7 +1162,7 @@ export async function getSpotsByTagSlug(
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   // タグとspot_idを1クエリで取得
   const { data: tagData } = (await supabase
     .from("tags")
@@ -1182,12 +1185,12 @@ export async function getSpotsByTagSlug(
     query = query.eq("type", type);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data: spots } = (await query) as any;
 
   if (!spots) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   return spots.map((spot: any) => normalizeSpotRelations({ ...spot, tags: [] }));
 }
 
@@ -1230,7 +1233,7 @@ export async function getSpotListByTagSlug(
 
   const excludeSet = new Set(excludeSlugs);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   return (spots as any[])
     .filter((s) => !excludeSet.has(s.slug))
     .map((s) => ({
@@ -1291,12 +1294,12 @@ export async function getSpotListByTagSlugTranslated(
   if (!spots) return [];
 
   const excludeSet = new Set(excludeSlugs);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const filteredSpots = (spots as any[]).filter((s) => !excludeSet.has(s.slug));
   if (filteredSpots.length === 0) return [];
 
   const filteredIds = filteredSpots.map((s) => s.id);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data: translations } = (await supabase
     .from("spot_translations")
     .select("spot_id, name, lead, category_name")
@@ -1305,7 +1308,7 @@ export async function getSpotListByTagSlugTranslated(
 
   const tMap = buildTranslationMap(translations ?? []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   return filteredSpots.map((s: any) => {
     const t = tMap.get(s.id);
     const base = mapSpotToListing(s);
@@ -1329,7 +1332,7 @@ export async function getSpotsBySlugs(
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data: spots } = (await supabase
     .from("spots")
     .select(FULL_SELECT)
@@ -1338,7 +1341,7 @@ export async function getSpotsBySlugs(
 
   if (!spots) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   return spots.map((spot: any) => normalizeSpotRelations({ ...spot, tags: [] }));
 }
 
@@ -1356,7 +1359,7 @@ export async function getSpotsBySlugsTranslated(
   const supabase = await getSupabaseClient();
   const spotIds = spots.map((s) => s.id);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data: translations } = (await supabase
     .from("spot_translations")
     .select("*")
@@ -1377,7 +1380,7 @@ export async function getSpotsBySlugsTranslated(
     const t = tMap.get(spot.id);
     if (!t) return spot;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const merged: any = { ...spot };
     for (const field of fields) {
       if (t[field]) merged[field] = t[field];
@@ -1394,7 +1397,7 @@ export async function getSpotsBySlugsTranslated(
     if (parsedAlts) {
       const altMap = new Map<number, string>(parsedAlts.map((a) => [a.sort_order, a.alt]));
       merged.images = spot.images.map((img) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         const translatedAlt = altMap.get((img as any).sort_order);
         return translatedAlt ? { ...img, alt: translatedAlt } : img;
       });
@@ -1419,14 +1422,14 @@ export const getSpotWithTranslation = cache(async function getSpotWithTranslatio
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data: translation } = (await supabase
     .from("spot_translations")
     .select("*")
     .eq("spot_id", spot.id)
     .eq("locale", dbLocale)
     .single()) as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   if (!translation) return null;
 
@@ -1440,7 +1443,7 @@ export const getSpotWithTranslation = cache(async function getSpotWithTranslatio
 
   for (const field of fields) {
     if (translation[field]) {
-      (merged as any)[field] = translation[field]; // eslint-disable-line @typescript-eslint/no-explicit-any
+      (merged as any)[field] = translation[field];  
     }
   }
 
@@ -1465,7 +1468,7 @@ export const getSpotWithTranslation = cache(async function getSpotWithTranslatio
   if (parsedAlts) {
     const altMap = new Map<number, string>();
     for (const item of parsedAlts) altMap.set(item.sort_order, item.alt);
-    merged.images = merged.images.map((img: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    merged.images = merged.images.map((img: any) => {  
       const translatedAlt = altMap.get(img.sort_order);
       return translatedAlt ? { ...img, alt: translatedAlt } : img;
     });
@@ -1474,7 +1477,7 @@ export const getSpotWithTranslation = cache(async function getSpotWithTranslatio
   // タグ名翻訳をマージ
   const parsedTagNames = parseJsonField<Record<string, string>>(translation.tag_names);
   if (parsedTagNames && !Array.isArray(parsedTagNames)) {
-    merged.tags = (merged.tags ?? []).map((tag: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
+    merged.tags = (merged.tags ?? []).map((tag: any) => ({  
       ...tag,
       name: parsedTagNames[tag.name] ?? tag.name,
     }));
@@ -1522,12 +1525,12 @@ export async function getAllTranslatedSlugs(): Promise<
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data } = (await supabase
     .from("spot_translations")
     .select("locale, spot:spots!inner(slug, published, category:categories(slug))")
     .eq("spot.published", true)) as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   if (!data) return [];
 
@@ -1552,13 +1555,13 @@ export async function getAvailableTagPageLocales(
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data: tagPage } = (await supabase
     .from("tag_pages")
     .select("id, tag:tags!inner(slug)")
     .eq("tag.slug", tagSlug)
     .single()) as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   if (!tagPage) return [];
 
@@ -1584,13 +1587,13 @@ export async function getPublishedTagPages(): Promise<
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data, error } = (await supabase
     .from("tag_pages")
     .select("tag:tags(name, slug)")
     .eq("published", true)
     .order("updated_at", { ascending: false })) as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   if (error || !data) return [];
   return data.map((d: { tag: { name: string; slug: string } }) => d.tag).filter(Boolean);
@@ -1603,12 +1606,12 @@ export async function getTagPages(): Promise<
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data, error } = (await supabase
     .from("tag_pages")
     .select("id, title, published, updated_at, tag:tags(name, slug)")
     .order("updated_at", { ascending: false })) as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   if (error || !data) return [];
   return data;
@@ -1622,7 +1625,7 @@ export async function getTagPageById(
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data: page, error } = (await supabase
     .from("tag_pages")
     .select("*, tag:tags(*)")
@@ -1677,7 +1680,7 @@ export async function getTagPageById(
     .from("tag_page_translations")
     .select("*")
     .eq("tag_page_id", tagPageId)) as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   return {
     ...page,
@@ -1696,7 +1699,7 @@ export const getTagPageBySlug = cache(async function getTagPageBySlug(
 
   const supabase = await getSupabaseClient();
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
+   
   const { data: tag } = await supabase
     .from("tags")
     .select("id")
@@ -1711,7 +1714,7 @@ export const getTagPageBySlug = cache(async function getTagPageBySlug(
     .eq("tag_id", tag.id)
     .eq("published", true)
     .single()) as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+   
 
   if (!page) return null;
 
@@ -1780,7 +1783,7 @@ export async function getMapSpotsByTag(tagSlug: string): Promise<MapSpotItem[]> 
 
   const spotIds = relations.map((r) => r.spot_id);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spots")
     .select(
@@ -1793,7 +1796,7 @@ export async function getMapSpotsByTag(tagSlug: string): Promise<MapSpotItem[]> 
 
   if (!data) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   return data.map((s: any) => ({
     id: s.id,
     slug: s.slug,
@@ -1822,12 +1825,12 @@ export type MapSpotItem = {
   rating_avg: number;
 };
 
-export async function getSpotsForMap(): Promise<MapSpotItem[]> {
+export const getSpotsForMap = cache(unstable_cache(async (): Promise<MapSpotItem[]> => {
   if (!isSupabaseConfigured) return [];
 
   const supabase = await getSupabaseClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spots")
     .select(
@@ -1839,25 +1842,31 @@ export async function getSpotsForMap(): Promise<MapSpotItem[]> {
 
   if (!data) return [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return data.map((s: any) => ({
-    id: s.id,
-    slug: s.slug,
-    name: s.name || s.title,
-    featured_image: s.featured_image || "",
-    categorySlug: s.category?.slug ?? "",
-    categoryName: s.category?.name ?? "",
-    latitude: s.latitude,
-    longitude: s.longitude,
-    rating_avg: calcRatingAvg(s),
-  }));
-}
+  const seenMap = new Set<string>();
+   
+  return data.reduce((acc: MapSpotItem[], s: any) => {
+    if (seenMap.has(s.id)) return acc;
+    seenMap.add(s.id);
+    acc.push({
+      id: s.id,
+      slug: s.slug,
+      name: s.name || s.title,
+      featured_image: s.featured_image || "",
+      categorySlug: s.category?.slug ?? "",
+      categoryName: s.category?.name ?? "",
+      latitude: s.latitude,
+      longitude: s.longitude,
+      rating_avg: calcRatingAvg(s),
+    });
+    return acc;
+  }, []);
+}, ["map-spots"], { revalidate: 3600, tags: ["spots"] }));
 
 /* ------------------------------------------------------------------ */
 /* Article クエリ                                                       */
 /* ------------------------------------------------------------------ */
 
-export const getArticles = cache(async function getArticles(): Promise<Article[]> {
+export const getArticles = cache(unstable_cache(async (): Promise<Article[]> => {
   if (!isSupabaseConfigured) return [];
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase
@@ -1867,7 +1876,7 @@ export const getArticles = cache(async function getArticles(): Promise<Article[]
     .order("published_at", { ascending: false });
   if (error || !data) return [];
   return data as Article[];
-});
+}, ["articles"], { revalidate: 3600, tags: ["articles"] }));
 
 export const getArticleBySlug = cache(async function getArticleBySlug(
   slug: string
@@ -1932,12 +1941,32 @@ export async function getSpotImagesBySlugs(
 ): Promise<Record<string, string>> {
   if (!isSupabaseConfigured || slugs.length === 0) return {};
   const supabase = await getSupabaseClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const { data } = (await supabase
     .from("spots")
     .select("slug, featured_image")
     .in("slug", slugs)) as any;
   if (!data) return {};
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   return Object.fromEntries(data.map((s: any) => [s.slug, s.featured_image ?? ""]));
 }
+
+/* ------------------------------------------------------------------ */
+/* Site chrome — Header/Footer 共通データ                              */
+/* ------------------------------------------------------------------ */
+
+/** Header と Footer が共有するナビゲーションデータをまとめて取得 */
+export const getSiteChromeData = cache(
+  unstable_cache(
+    async (locale: string | null) => {
+      const [areas, tags, spotCount] = await Promise.all([
+        locale ? getAreasTranslated(locale) : getAreas(),
+        getPurposeTags(),
+        getTotalSpotCount(),
+      ]);
+      return { areas, tags, spotCount };
+    },
+    ["site-chrome"],
+    { revalidate: 3600, tags: ["areas", "tags", "spots"] }
+  )
+);

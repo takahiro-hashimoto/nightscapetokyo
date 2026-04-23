@@ -50,6 +50,7 @@ export type AccessLabels = {
   caption: string;
   station: string;
   parking: string;
+  map: string;
 };
 
 export type BestTimeLabels = {
@@ -101,6 +102,7 @@ export type RelatedLabels = {
   heading: (area: React.ReactNode) => React.ReactNode;
   more: (area: string) => string;
   asideLabel: string;
+  imageAlt: (name: string) => string;
 };
 
 export type RecommendLabels = {
@@ -323,6 +325,7 @@ const LABELS = {
       caption: "アクセス情報",
       station: "電車・最寄り駅",
       parking: "駐車場",
+      map: "地図",
     },
     bestTime: {
       heading: (name) => `${name || "この場所"}の夜景鑑賞・撮影にベストな時間`,
@@ -357,6 +360,7 @@ const LABELS = {
       heading: (area) => `${area}の夜景スポット`,
       more: (area) => `${area}の夜景スポットをもっと見る`,
       asideLabel: "関連スポット",
+      imageAlt: (name) => `${name}から見える夜景`,
     },
     recommend: {
       heading: "あなたにおすすめの夜景スポット",
@@ -592,6 +596,7 @@ const LABELS = {
       caption: "Access Information",
       station: "Train / Nearest Station",
       parking: "Parking",
+      map: "Map",
     },
     bestTime: {
       heading: (name) => `Best Time to See the Night View at ${name || "This Spot"}`,
@@ -626,6 +631,7 @@ const LABELS = {
       heading: (area) => `Night View Spots in ${area}`,
       more: (area) => `See more spots in ${area}`,
       asideLabel: "Related Spots",
+      imageAlt: (name) => `Night view from ${name}`,
     },
     recommend: {
       heading: "Recommended Night View Spots for You",
@@ -907,6 +913,7 @@ const LABELS = {
       caption: "오시는 길 정보",
       station: "전철・가까운 역",
       parking: "주차장",
+      map: "지도",
     },
     bestTime: {
       heading: (name) => `${name || "이 장소"}의 야경 관람・촬영에 베스트인 시간`,
@@ -941,6 +948,7 @@ const LABELS = {
       heading: (area) => `${area}의 야경 스폿`,
       more: (area) => `${area}의 야경 스폿 더보기`,
       asideLabel: "관련 스폿",
+      imageAlt: (name) => `${name}에서 보이는 야경`,
     },
     recommend: {
       heading: "추천 야경 스폿",
@@ -1206,6 +1214,7 @@ const LABELS = {
       caption: "交通資訊",
       station: "電車・最近車站",
       parking: "停車場",
+      map: "地圖",
     },
     bestTime: {
       heading: (name) => `${name || "此景點"}的最佳夜景觀賞・拍攝時間`,
@@ -1240,6 +1249,7 @@ const LABELS = {
       heading: (area) => `${area}的夜景景點`,
       more: (area) => `查看更多${area}的夜景景點`,
       asideLabel: "相關景點",
+      imageAlt: (name) => `從${name}眺望的夜景`,
     },
     recommend: {
       heading: "為您推薦的夜景景點",
@@ -1505,6 +1515,7 @@ const LABELS = {
       caption: "交通信息",
       station: "电车・最近车站",
       parking: "停车场",
+      map: "地图",
     },
     bestTime: {
       heading: (name) => `${name || "此景点"}的最佳夜景观赏・拍摄时间`,
@@ -1539,6 +1550,7 @@ const LABELS = {
       heading: (area) => `${area}的夜景景点`,
       more: (area) => `查看更多${area}的夜景景点`,
       asideLabel: "相关景点",
+      imageAlt: (name) => `从${name}眺望的夜景`,
     },
     recommend: {
       heading: "为您推荐的夜景景点",
@@ -1771,16 +1783,21 @@ export const NAV_STATIC_LABELS: Record<SiteLocale, {
   tag: string;
   about: string;
   contact: string;
+  eventSearch: string;
+  otherArea: string;
+  openMenu: string;
+  mobileMenu: string;
 }> = {
-  ja: { recommend: "おすすめ夜景スポット", area: "エリア別に探す", tag: "目的別に探す", about: "運営者情報", contact: "お問い合わせ" },
-  en: { recommend: "Recommended Spots",    area: "Browse by Area", tag: "Browse by Purpose", about: "About", contact: "Contact" },
-  ko: { recommend: "추천 스폿",            area: "지역별 탐색",     tag: "목적별 탐색",        about: "소개",  contact: "문의"  },
-  tw: { recommend: "推薦景點",             area: "依地區搜尋",     tag: "依目的搜尋",          about: "關於",  contact: "聯絡"  },
-  cn: { recommend: "推荐景点",             area: "按地区浏览",     tag: "按目的浏览",          about: "关于",  contact: "联系"  },
+  ja: { recommend: "おすすめ夜景スポット", area: "エリア別に探す", tag: "目的別に探す", about: "運営者情報", contact: "お問い合わせ", eventSearch: "イベント別に探す", otherArea: "その他エリア", openMenu: "メニューを開く", mobileMenu: "モバイルメニュー" },
+  en: { recommend: "Recommended Spots",    area: "Browse by Area", tag: "Browse by Purpose", about: "About", contact: "Contact", eventSearch: "Events", otherArea: "Other Areas", openMenu: "Open menu", mobileMenu: "Mobile menu" },
+  ko: { recommend: "추천 스폿",            area: "지역별 탐색",     tag: "목적별 탐색",        about: "소개",  contact: "문의",  eventSearch: "이벤트별로 찾기", otherArea: "기타 지역", openMenu: "메뉴 열기", mobileMenu: "모바일 메뉴" },
+  tw: { recommend: "推薦景點",             area: "依地區搜尋",     tag: "依目的搜尋",          about: "關於",  contact: "聯絡",  eventSearch: "依活動尋找", otherArea: "其他地區", openMenu: "開啟選單", mobileMenu: "行動版選單" },
+  cn: { recommend: "推荐景点",             area: "按地区浏览",     tag: "按目的浏览",          about: "关于",  contact: "联系",  eventSearch: "按活动查找", otherArea: "其他地区", openMenu: "打开菜单", mobileMenu: "移动菜单" },
 };
 
 /* ---- Header: プロフィールラベル ---- */
-export const PROFILE_LABELS: Record<SiteLocale, { role: string; bio: string; link: string }> = {
+export type ProfileLabels = { role: string; bio: string; link: string };
+export const PROFILE_LABELS: Record<SiteLocale, ProfileLabels> = {
   ja: {
     role: "夜景フォトグラファー / Webディレクター",
     bio: "月間20〜30万PVの東京夜景専門メディア。実際に足を運んで撮影した夜景スポットを定番から穴場まで200ヶ所以上紹介しています。",

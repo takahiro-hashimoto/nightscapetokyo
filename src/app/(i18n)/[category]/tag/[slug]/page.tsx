@@ -214,7 +214,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  const canonicalUrl = `${SITE_URL}/${localeSlug}/tag/${tagSlug}`;
+  const canonicalUrl = `${SITE_URL}/${localeSlug}/tag/${tagSlug}/`;
   const availableLocales = await getAvailableTagPageLocales(tagSlug);
 
   const ogLocale = OG_LOCALE_MAP[localeSlug] ?? "en_US";

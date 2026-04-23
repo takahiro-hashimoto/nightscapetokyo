@@ -33,7 +33,7 @@ export default function SpotRelated({ spots, areaName, areaSlug, labels, localeS
                 {spot.featured_image && (
                   <Image
                     src={spot.featured_image}
-                    alt={`${spot.name}から見える夜景`}
+                    alt={labels.imageAlt(spot.name)}
                     fill
                     loading="lazy"
                     sizes="(max-width: 768px) 50vw, 240px"

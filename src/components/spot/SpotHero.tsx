@@ -18,7 +18,7 @@ export default function SpotHero({
   imageAlt,
   closed,
   isRecommended,
-  closedBadge = "閉鎖済み",
+  closedBadge = "",
 }: Props) {
   return (
     <header className="content-card header-card">
@@ -32,7 +32,7 @@ export default function SpotHero({
         <figure className="hero-image-container" itemProp="image" itemScope itemType="https://schema.org/ImageObject">
           <Image
             src={featuredImage}
-            alt={imageAlt || `${visualTitle || seoTitle}の夜景`}
+            alt={imageAlt ?? ""}
             fill
             className="object-cover"
             priority

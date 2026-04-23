@@ -342,7 +342,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = category;
   const l = ABOUT_LABELS[locale] ?? ABOUT_LABELS.en;
   const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
-  const canonicalUrl = `${SITE_URL}/${locale}/about`;
+  const canonicalUrl = `${SITE_URL}/${locale}/about/`;
   return {
     title: l.title,
     description: l.summary,

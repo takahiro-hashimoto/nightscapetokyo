@@ -5,7 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
 import type { SpotListItem } from "@/lib/types";
+import AdSenseUnit from "@/components/ads/AdSenseUnit";
+import { ADS } from "@/lib/ads";
 
+/** 何枚おきに広告を挿入するか */
+const AD_INTERVAL = 6;
 type SortKey = "rating" | "updated";
 
 type Props = {
@@ -70,46 +74,78 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
       </div>
 
       <ul className="area-spot-grid">
-        {sorted.map((spot, index) => (
-          <li key={spot.id}>
-          <article className={`spot-card${spot.closed ? " spot-card--closed" : ""}`} itemScope itemType="https://schema.org/TouristAttraction">
-            <Link
-              href={buildHref(spot)}
-              className="spot-card-link"
-              itemProp="url"
-            >
-              <div className="spot-card-image">
-                {spot.featured_image && (
-                  <Image
-                    src={spot.featured_image}
-                    alt={buildAlt(spot.name)}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 450px"
-                    itemProp="image"
-                    priority={index === 0}
-                  />
-                )}
-                {spot.closed && (
-                  <span className="spot-card-closed-badge" aria-label={closedBadge}>{closedBadge}</span>
-                )}
-              </div>
-              <div className="spot-card-body">
-                <div className="spot-card-meta">
-                  <span className="badge spot-card-category">{spot.category.name}</span>
-                  <div className={`spot-card-rating${spot.closed ? " spot-card-rating--closed" : ""}`} itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
-                    <meta itemProp="ratingValue" content={spot.rating_avg.toFixed(1)} />
-                    <meta itemProp="bestRating" content="5" />
-                    <Star size={14} fill={spot.closed ? "#aaa" : "#eab308"} stroke="none" aria-hidden="true" />
-                    <span aria-label={`評価 ${spot.rating_avg.toFixed(1)}`}>{spot.rating_avg.toFixed(1)}</span>
+        {sorted.flatMap((spot, index) => {
+          const spotCard = (
+            <li key={spot.id}>
+              <article className={`spot-card${spot.closed ? " spot-card--closed" : ""}`} itemScope itemType="https://schema.org/TouristAttraction">
+                <Link
+                  href={buildHref(spot)}
+                  className="spot-card-link"
+                  itemProp="url"
+                >
+                  <div className="spot-card-image">
+                    {spot.featured_image && (
+                      <Image
+                        src={spot.featured_image}
+                        alt={buildAlt(spot.name)}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 450px"
+                        itemProp="image"
+                        priority={index === 0}
+                      />
+                    )}
+                    {spot.closed && (
+                      <span className="spot-card-closed-badge" aria-label={closedBadge}>{closedBadge}</span>
+                    )}
                   </div>
+                  <div className="spot-card-body">
+                    <div className="spot-card-meta">
+                      <span className="badge spot-card-category">{spot.category.name}</span>
+                      <div className={`spot-card-rating${spot.closed ? " spot-card-rating--closed" : ""}`} itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
+                        <meta itemProp="ratingValue" content={spot.rating_avg.toFixed(1)} />
+                        <meta itemProp="bestRating" content="5" />
+                        <Star size={14} fill={spot.closed ? "#aaa" : "#eab308"} stroke="none" aria-hidden="true" />
+                        <span aria-label={`評価 ${spot.rating_avg.toFixed(1)}`}>{spot.rating_avg.toFixed(1)}</span>
+                      </div>
+                    </div>
+                    <h3 className="spot-card-title" itemProp="name">{spot.name}</h3>
+                    <p className="spot-card-lead" itemProp="description">{spot.lead}</p>
+                  </div>
+                </Link>
+              </article>
+            </li>
+          );
+
+          // 6枚ごと（index=5, 11, 17…）の直後に広告カードを挿入
+          if ((index + 1) % AD_INTERVAL === 0) {
+            const adCard = (
+              <li key={`ad-unit-${index}`} aria-label="広告">
+                <div className="spot-card" style={{ position: "relative", overflow: "hidden" }}>
+                  <span style={{
+                    position: "absolute",
+                    top: 6,
+                    right: 6,
+                    fontSize: 10,
+                    lineHeight: 1,
+                    background: "rgba(0,0,0,0.45)",
+                    color: "#fff",
+                    padding: "2px 5px",
+                    borderRadius: 3,
+                    zIndex: 1,
+                    pointerEvents: "none",
+                    letterSpacing: "0.05em",
+                  }}>
+                    PR
+                  </span>
+                  <AdSenseUnit {...ADS.AREA_LIST} className="w-full" />
                 </div>
-                <h3 className="spot-card-title" itemProp="name">{spot.name}</h3>
-                <p className="spot-card-lead" itemProp="description">{spot.lead}</p>
-              </div>
-            </Link>
-          </article>
-          </li>
-        ))}
+              </li>
+            );
+            return [spotCard, adCard];
+          }
+
+          return [spotCard];
+        })}
       </ul>
     </>
   );

@@ -18,6 +18,7 @@ export default function SpotAccess({ station, parking, map, spotName, labels }: 
     caption: "アクセス情報",
     station: "電車・最寄駅",
     parking: "駐車場",
+    map: "地図",
   };
 
   return (
@@ -58,7 +59,7 @@ export default function SpotAccess({ station, parking, map, spotName, labels }: 
       {map && (
         <div
           className="map-wrapper"
-          aria-label="地図"
+          aria-label={l.map}
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(map) }}
         />
       )}

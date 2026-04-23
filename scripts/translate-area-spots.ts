@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * 指定エリア（カテゴリ）の全スポットを4言語に一括翻訳するスクリプト
  *

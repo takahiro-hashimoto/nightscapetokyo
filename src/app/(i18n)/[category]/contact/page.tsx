@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = category;
   const l = CONTACT_LABELS[locale] ?? CONTACT_LABELS.en;
   const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
-  const canonicalUrl = `${SITE_URL}/${locale}/contact`;
+  const canonicalUrl = `${SITE_URL}/${locale}/contact/`;
   return {
     title: l.title,
     description: l.description,

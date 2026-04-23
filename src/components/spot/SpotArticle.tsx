@@ -16,12 +16,10 @@ import SpotRating from "@/components/spot/SpotRating";
 import SpotInfo from "@/components/spot/SpotInfo";
 import SpotAccess from "@/components/spot/SpotAccess";
 import SpotFaq from "@/components/spot/SpotFaq";
-import SpotEvent from "@/components/spot/SpotEvent";
 import SpotBestTime from "@/components/spot/SpotBestTime";
 import RecommendCta from "@/components/common/RecommendCta";
 
 import SpotRelated from "@/components/spot/SpotRelated";
-import SpotRecommended from "@/components/spot/SpotRecommended";
 import SpotShare from "@/components/spot/SpotShare";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
@@ -29,6 +27,8 @@ import type { SpotWithRelations, SpotListItem } from "@/lib/types";
 import { SITE_URL, LOCALE_LABELS, LOCALE_SLUG_MAP } from "@/lib/types";
 import type { ComponentLabels } from "@/lib/i18n-labels";
 import { buildSpotJsonLd } from "@/lib/spot-json-ld";
+import AdSenseUnit from "@/components/ads/AdSenseUnit";
+import { ADS } from "@/lib/ads";
 
 type Props = {
   spot: SpotWithRelations;
@@ -53,7 +53,7 @@ export default function SpotArticle({
   isRecommended = false,
 
   relatedSpots = [],
-  recommendedSpots = [],
+  recommendedSpots: _recommendedSpots = [],
 }: Props) {
   const al = labels.anchor;
   const fl = labels.footer;
@@ -62,8 +62,8 @@ export default function SpotArticle({
   const imageAlt = labels.heroImageAlt(spotName);
 
   const canonicalUrl = currentLocale
-    ? `${SITE_URL}/${currentLocale}/${categorySlug}/${spotSlug}`
-    : `${SITE_URL}/${categorySlug}/${spotSlug}`;
+    ? `${SITE_URL}/${currentLocale}/${categorySlug}/${spotSlug}/`
+    : `${SITE_URL}/${categorySlug}/${spotSlug}/`;
 
   const bcp47Locale = currentLocale ? (LOCALE_SLUG_MAP[currentLocale] ?? currentLocale) : "ja";
   const jsonLdSchemas = buildSpotJsonLd(spot, canonicalUrl, bcp47Locale, categorySlug);
@@ -142,7 +142,7 @@ export default function SpotArticle({
               </span>
               <span className="meta-author">
                 <span className="meta-date-label">{fl.authorLabel}：</span>
-                <Link href="/about/" itemProp="url"><span itemProp="name">{fl.author}</span></Link>
+                <Link href={currentLocale ? `/${currentLocale}/about/` : "/about/"} itemProp="url"><span itemProp="name">{fl.author}</span></Link>
               </span>
             </div>
             {!currentLocale && (
@@ -248,6 +248,7 @@ export default function SpotArticle({
             labels={labels.bestTime}
           />
 
+
 <SpotFaq faqs={spot.faqs} labels={labels.faq} />
 
           <RecommendCta locale={currentLocale} />
@@ -260,6 +261,9 @@ export default function SpotArticle({
           />
         </article>
 
+        {/* 関連スポット一覧の直前：Multiplex 広告 */}
+        <AdSenseUnit {...ADS.SPOT_MULTI} className="my-6" />
+
         <aside aria-label={labels.related.asideLabel}>
           <SpotRelated
             spots={relatedSpots}
@@ -269,11 +273,6 @@ export default function SpotArticle({
             localeSlug={currentLocale}
           />
 
-          <SpotRecommended
-            spots={recommendedSpots}
-            labels={labels.recommend}
-            localeSlug={currentLocale}
-          />
         </aside>
 
       </div>

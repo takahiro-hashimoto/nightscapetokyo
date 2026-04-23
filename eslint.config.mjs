@@ -13,6 +13,19 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  // Supabase クエリファイル: 動的クエリの戻り値が any になるのは避けられないため個別に無効化
+  {
+    files: [
+      "src/lib/supabase/queries.ts",
+      "src/lib/sitemap-builder.ts",
+      "src/app/admin/spots/translate-action.ts",
+      "scripts/translate-all-spots.ts",
+      "scripts/translate-area-spots.ts",
+    ],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

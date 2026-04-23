@@ -7,8 +7,8 @@ import { Plus, Pencil, Trash2, Eye, EyeOff, Languages, Loader2 } from "lucide-re
 import {
   deleteSpot,
   toggleSpotPublished,
-} from "@/app/admin/spots/actions";
-import { translateSpot } from "@/app/admin/spots/translate-action";
+} from "@/app/(ja)/admin/spots/actions";
+import { translateSpot } from "@/app/(ja)/admin/spots/translate-action";
 
 type SpotItem = {
   id: string;

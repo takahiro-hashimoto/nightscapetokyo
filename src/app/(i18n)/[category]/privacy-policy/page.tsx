@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = category;
   const l = PRIVACY_LABELS[locale] ?? PRIVACY_LABELS.en;
   const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
-  const canonicalUrl = `${SITE_URL}/${locale}/privacy-policy`;
+  const canonicalUrl = `${SITE_URL}/${locale}/privacy-policy/`;
   return {
     title: l.title,
     description: l.description,
@@ -57,6 +57,13 @@ export default async function I18nPrivacyPolicyPage({ params }: Props) {
               <h2>{sec.heading}</h2>
               {sec.texts.map((t, i) => (
                 <p key={i}>{t}</p>
+              ))}
+              {sec.links?.map((link) => (
+                <p key={link.href}>
+                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                    {link.text}
+                  </a>
+                </p>
               ))}
             </div>
           ))}

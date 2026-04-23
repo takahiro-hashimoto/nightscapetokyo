@@ -258,7 +258,7 @@ export function buildHreflangAlternates(
   spotSlug: string,
   availableLocales: readonly string[] // URL slugs: en, ko, tw, cn
 ): Record<string, string> {
-  const jaUrl = `${siteUrl}/${categorySlug}/${spotSlug}`;
+  const jaUrl = `${siteUrl}/${categorySlug}/${spotSlug}/`;
   const languages: Record<string, string> = {
     ja: jaUrl,
     "x-default": jaUrl,
@@ -267,7 +267,7 @@ export function buildHreflangAlternates(
   for (const urlSlug of availableLocales) {
     const hreflang = LOCALE_SLUG_MAP[urlSlug]; // tw → zh-Hant, cn → zh-Hans
     if (hreflang) {
-      languages[hreflang] = `${siteUrl}/${urlSlug}/${categorySlug}/${spotSlug}`;
+      languages[hreflang] = `${siteUrl}/${urlSlug}/${categorySlug}/${spotSlug}/`;
     }
   }
 
@@ -276,14 +276,14 @@ export function buildHreflangAlternates(
 
 /**
  * エリアページ用 hreflang alternate links を生成
- * ja: /{category}, 各locale: /{locale}/{category}, x-default: ja版
+ * ja: /{category}/, 各locale: /{locale}/{category}/, x-default: ja版
  */
 export function buildAreaHreflangAlternates(
   siteUrl: string,
   categorySlug: string,
   availableLocales: readonly string[] // URL slugs: en, ko, tw, cn
 ): Record<string, string> {
-  const jaUrl = `${siteUrl}/${categorySlug}`;
+  const jaUrl = `${siteUrl}/${categorySlug}/`;
   const languages: Record<string, string> = {
     ja: jaUrl,
     "x-default": jaUrl,
@@ -292,7 +292,7 @@ export function buildAreaHreflangAlternates(
   for (const urlSlug of availableLocales) {
     const hreflang = LOCALE_SLUG_MAP[urlSlug];
     if (hreflang) {
-      languages[hreflang] = `${siteUrl}/${urlSlug}/${categorySlug}`;
+      languages[hreflang] = `${siteUrl}/${urlSlug}/${categorySlug}/`;
     }
   }
 
@@ -301,7 +301,7 @@ export function buildAreaHreflangAlternates(
 
 /**
  * トップページ用 hreflang alternate links を生成
- * ja: /, 各locale: /{locale}, x-default: /
+ * ja: /, 各locale: /{locale}/, x-default: /
  */
 export function buildHomeHreflangAlternates(
   siteUrl: string,
@@ -315,7 +315,7 @@ export function buildHomeHreflangAlternates(
   for (const urlSlug of availableLocales) {
     const hreflang = LOCALE_SLUG_MAP[urlSlug];
     if (hreflang) {
-      languages[hreflang] = `${siteUrl}/${urlSlug}`;
+      languages[hreflang] = `${siteUrl}/${urlSlug}/`;
     }
   }
 
@@ -324,14 +324,14 @@ export function buildHomeHreflangAlternates(
 
 /**
  * タグページ用 hreflang alternate links を生成
- * ja: /tag/{tagSlug}, 各locale: /{locale}/tag/{tagSlug}, x-default: ja版
+ * ja: /tag/{tagSlug}/, 各locale: /{locale}/tag/{tagSlug}/, x-default: ja版
  */
 export function buildTagHreflangAlternates(
   siteUrl: string,
   tagSlug: string,
   availableLocales: readonly string[]
 ): Record<string, string> {
-  const jaUrl = `${siteUrl}/tag/${tagSlug}`;
+  const jaUrl = `${siteUrl}/tag/${tagSlug}/`;
   const languages: Record<string, string> = {
     ja: jaUrl,
     "x-default": jaUrl,
@@ -339,7 +339,7 @@ export function buildTagHreflangAlternates(
   for (const urlSlug of availableLocales) {
     const hreflang = LOCALE_SLUG_MAP[urlSlug];
     if (hreflang) {
-      languages[hreflang] = `${siteUrl}/${urlSlug}/tag/${tagSlug}`;
+      languages[hreflang] = `${siteUrl}/${urlSlug}/tag/${tagSlug}/`;
     }
   }
   return languages;
@@ -461,6 +461,7 @@ export type Article = {
   published_at: string | null;
   created_at: string;
   updated_at: string;
+  href?: string;
 };
 
 /** TagPage + 全リレーション */

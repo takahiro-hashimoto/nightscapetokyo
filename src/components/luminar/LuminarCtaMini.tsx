@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useSaleSettings } from '@/hooks/useSaleSettings'
 
 export default function LuminarCtaMini() {
@@ -59,7 +60,7 @@ export default function LuminarCtaMini() {
             公式サイトで価格をチェック <i className="fa-solid fa-chevron-right m-btn-icon-right" aria-hidden="true"></i>
           </a>
           <p className="m-cta-mini__micro">
-            <a href="/luminar/">Luminar Neo 完全購入ガイド</a>
+            <Link href="/luminar/">Luminar Neo 完全購入ガイド</Link>
           </p>
         </div>
       </div>

@@ -16,7 +16,7 @@ export default function HomePrBanner() {
         links={[
           {
             label: "▸ 遊覧コースの詳細を見る",
-            href: "https://airos-skyview.jp/cruising/?utm_source=nightscape&utm_medium=referral",
+            href: "https://skyview.airos.jp/tokyo/night/411/?utm_source=tokyonightscape&utm_medium=banner&utm_campaign=article",
             variant: "filled",
             external: true,
           },
