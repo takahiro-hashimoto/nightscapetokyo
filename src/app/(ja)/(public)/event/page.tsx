@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSpotsByCategory } from "@/lib/supabase/queries";
-import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
@@ -9,7 +9,10 @@ import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 export const metadata: Metadata = {
   title: "東京のイベント夜景スポット一覧",
   description: "東京で開催されるイルミネーションや夜桜のライトアップイベントなど、期間限定のイベントをまとめています。",
-  alternates: { canonical: `${SITE_URL}/event/` },
+  alternates: {
+    canonical: `${SITE_URL}/event/`,
+    languages: buildAreaHreflangAlternates(SITE_URL, "event", ALL_LOCALE_SLUGS),
+  },
   openGraph: {
     type: "website",
     title: "東京のイベント夜景スポット一覧 | nightscape.tokyo",

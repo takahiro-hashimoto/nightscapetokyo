@@ -20,11 +20,12 @@ import type { MapSpotItem } from "@/lib/supabase/queries";
 
 
 /** ItemList JSON-LD: スポットを評価順でリスト化 */
-function buildItemListJsonLd(spots: SpotWithRelations[], locale = "ja", name?: string, description?: string) {
+function buildItemListJsonLd(spots: SpotWithRelations[], bcp47Locale = "ja", name?: string, description?: string, urlSlug?: string) {
+  const prefix = urlSlug ? `/${urlSlug}` : "";
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: locale,
+    inLanguage: bcp47Locale,
     ...(name && { name }),
     ...(description && { description }),
     itemListElement: spots
@@ -33,7 +34,7 @@ function buildItemListJsonLd(spots: SpotWithRelations[], locale = "ja", name?: s
       .map(({ spot }, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        url: `${SITE_URL}/${spot.category?.slug ?? ""}/${spot.slug}`,
+        url: `${SITE_URL}${prefix}/${spot.category?.slug ?? ""}/${spot.slug}/`,
         name: spot.name || spot.title,
         ...(spot.featured_image && { image: spot.featured_image }),
       })),
@@ -354,7 +355,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(buildItemListJsonLd(allResolvedSpots, bcp47Locale, content.title, content.lead)),
+              __html: JSON.stringify(buildItemListJsonLd(allResolvedSpots, bcp47Locale, content.title, content.lead, locale)),
             }}
           />
         )}
