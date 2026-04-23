@@ -28,6 +28,9 @@ import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
 import HomeAuthor from "@/components/home/HomeAuthor";
 import HomeMapSection from "@/components/home/HomeMapSection";
+import TravelItinerarySection from "@/components/home/TravelItinerarySection";
+import HowToChooseNightView from "@/components/home/HowToChooseNightView";
+import HomeTrustNote from "@/components/home/HomeTrustNote";
 import {
   SITE_URL,
   ALL_LOCALE_SLUGS,
@@ -300,13 +303,25 @@ export default async function AreaPage({ params }: Props) {
           localeLabels={LOCALE_LABELS}
         />
         <HeroSection labels={hp.hero} localeSlug={localeSlug} spotCount={spotCount} />
+        {hp.travelItinerary && (
+          <TravelItinerarySection labels={hp.travelItinerary} localeSlug={localeSlug} />
+        )}
         <SpotRanking spots={spots} labels={hp.spotRanking} localeSlug={localeSlug} />
+        {hp.trustNote && (
+          <HomeTrustNote labels={hp.trustNote} localeSlug={localeSlug} />
+        )}
         <HotelRanking hotels={hotels} labels={hp.hotelRanking} localeSlug={localeSlug} />
+        {hp.howToChoose && (
+          <HowToChooseNightView labels={hp.howToChoose} />
+        )}
         <PurposeSearch tags={purposeTags} labels={hp.purposeSearch} localeSlug={localeSlug} />
         <AreaSearch areas={areas} labels={hp.areaSearch} localeSlug={localeSlug} />
         <HomeMapSection
           spots={mapSpots}
-          categories={areas.map((a) => ({ slug: a.slug, name: a.name }))}
+          categories={[
+            ...areas.map((a) => ({ slug: a.slug, name: a.name })),
+            ...Object.entries(hp.categoryNav.names).map(([slug, name]) => ({ slug, name })),
+          ]}
           labels={hp.mapSection}
           localePrefix={`/${localeSlug}`}
         />

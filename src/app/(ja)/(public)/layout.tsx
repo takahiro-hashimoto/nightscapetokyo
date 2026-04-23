@@ -14,7 +14,7 @@ export default function PublicLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSiteNavigationJsonLd()) }}
       />
-      <main>{children}</main>
+      {children}
     </>
   );
 }
