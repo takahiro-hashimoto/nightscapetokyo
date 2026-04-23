@@ -17,6 +17,15 @@ const eslintConfig = defineConfig([
   {
     files: [
       "src/lib/supabase/queries.ts",
+      "src/lib/supabase/queries/shared.ts",
+      "src/lib/supabase/queries/spots.ts",
+      "src/lib/supabase/queries/categories.ts",
+      "src/lib/supabase/queries/tags.ts",
+      "src/lib/supabase/queries/tag-pages.ts",
+      "src/lib/supabase/queries/articles.ts",
+      "src/lib/supabase/queries/maps.ts",
+      "src/lib/supabase/queries/site-chrome.ts",
+      "src/lib/supabase/queries/search.ts",
       "src/lib/sitemap-builder.ts",
       "src/app/admin/spots/translate-action.ts",
       "scripts/translate-all-spots.ts",

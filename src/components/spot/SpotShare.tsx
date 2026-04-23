@@ -129,9 +129,7 @@ export default function SpotShare({ url, title, labels, locale = "ja", className
     <aside className={`share-section${className ? ` ${className}` : ""}`} aria-labelledby="share-heading">
       <div className="home-container">
       <p className="share-heading" id="share-heading">
-        {locale === "ja" ? (
-          <>この記事が役に立ったら<br className="sp-newline" />シェアしてください</>
-        ) : labels.heading}
+        {labels.heading}
       </p>
       <div className="share-buttons">
         {buttons.includes("x") && (

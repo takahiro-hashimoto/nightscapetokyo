@@ -129,7 +129,6 @@ export async function translateSpot(spotId: string, targetLocales?: string[]) {
   }
 
   // Fetch category name, FAQs, images, and tags
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: categoryData } = await admin
     .from("categories")
     .select("name")
@@ -160,7 +159,6 @@ export async function translateSpot(spotId: string, targetLocales?: string[]) {
     .map((img: { alt: string | null }) => img.alt as string);
 
   // Extract tag names for translation
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tagNames = (tagRelations ?? [])
     .map((r: any) => r.tag?.name as string)
     .filter(Boolean);
@@ -287,7 +285,6 @@ export async function translateSpot(spotId: string, targetLocales?: string[]) {
     .single();
 
   if (catData) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const catSlug = (catData as any).category?.slug;
     if (catSlug) {
       for (const locale of LOCALES) {

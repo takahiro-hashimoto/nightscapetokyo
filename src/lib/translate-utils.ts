@@ -214,7 +214,7 @@ export async function translateWithRetry<T>(
     const text = await callTranslateAPI(client, locale, langName, inputJSON, systemPrompt);
     try {
       return extractJSON(text) as T;
-    } catch (e) {
+    } catch {
       if (attempt === 1) {
         let parseDetail = "";
         try {

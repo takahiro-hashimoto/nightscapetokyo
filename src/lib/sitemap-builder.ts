@@ -11,7 +11,6 @@ async function getDb() {
   return createClient(supabaseUrl, supabaseKey);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Row = Record<string, any>;
 
 const LOCALE_HREFLANG: Record<string, string> = {

@@ -37,7 +37,6 @@ import {
   buildAreaHreflangAlternates,
   buildHomeHreflangAlternates,
   LOCALE_LABELS,
-  LOCALE_SLUG_MAP,
   OG_LOCALE_MAP,
   ALL_OG_LOCALES,
 } from "@/lib/types";
@@ -189,7 +188,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (ALL_LOCALE_SLUGS.includes(categorySlug)) {
     const labels = getComponentLabels(categorySlug);
     const hp = labels.homePage;
-    const spotCount = await getTotalSpotCount().catch(() => 200);
     const title = hp.seoTitle(new Date().getFullYear());
     const description = hp.seoDescription;
     const canonicalUrl = `${SITE_URL}/${categorySlug}/`;

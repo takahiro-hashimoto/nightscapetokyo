@@ -36,8 +36,12 @@ export default function Breadcrumb({ items, locale }: Props) {
     ],
   };
 
+  const navAriaLabel = locale
+    ? { en: "Breadcrumb", ko: "탐색 경로", tw: "導覽路徑", cn: "导航路径" }[locale] ?? "Breadcrumb"
+    : "パンくずリスト";
+
   return (
-    <nav className="breadcrumb" aria-label="パンくずリスト">
+    <nav className="breadcrumb" aria-label={navAriaLabel}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

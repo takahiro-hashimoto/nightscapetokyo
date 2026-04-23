@@ -39,7 +39,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 type SpotRow = { slug: string; title: string };
 type CategoryRow = { slug: string; name: string; spots: SpotRow[] };
 type TagLink = { slug: string; name: string };
-type TranslationRow = { locale: string; title: string; spot: { slug: string } | { slug: string }[] };
 
 async function getSitemapData(dbLocale: string, locale: string) {
   const [catRes, tagRes, transRes, tagTransRes] = await Promise.all([

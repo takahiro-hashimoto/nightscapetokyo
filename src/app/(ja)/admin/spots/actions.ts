@@ -322,6 +322,7 @@ export async function toggleSpotPublished(id: string, published: boolean) {
     return { error: error.message };
   }
 
+  revalidateSpotCaches();
   revalidatePath("/admin/spots");
   return { success: true };
 }

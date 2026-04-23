@@ -264,7 +264,7 @@ export default async function TagPage({ params }: Props) {
     // セクション内のスポットslugsからスポットデータを取得
     const allSpotSlugs = content.sections.flatMap((s) => s.spotSlugs);
 
-    const [tag, spotsBySlugs, otherSpots, availableLocales, mapSpots] = await Promise.all([
+    const [tag, spotsBySlugs, otherSpots, , mapSpots] = await Promise.all([
       getTagBySlug(slug),
       allSpotSlugs.length > 0 ? getSpotsBySlugs(allSpotSlugs) : Promise.resolve([]),
       getSpotListByTagSlug(slug, allSpotSlugs),

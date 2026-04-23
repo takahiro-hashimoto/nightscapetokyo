@@ -12,10 +12,8 @@ type Props = {
   localeSlug?: string | null;
 };
 
-export default function SpotRelated({ spots, areaName, areaSlug, labels, localeSlug }: Props) {
+export default function SpotRelated({ spots, areaName, labels, localeSlug }: Props) {
   if (spots.length === 0) return null;
-
-  const areaHref = localeSlug ? `/${localeSlug}/${areaSlug}` : `/${areaSlug}`;
 
   return (
     <section className="related-section">

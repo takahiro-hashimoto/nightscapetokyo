@@ -53,7 +53,6 @@ export default function SpotArticle({
   isRecommended = false,
 
   relatedSpots = [],
-  recommendedSpots: _recommendedSpots = [],
 }: Props) {
   const al = labels.anchor;
   const fl = labels.footer;

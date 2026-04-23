@@ -43,7 +43,6 @@ export default function SpotRating({
   access,
   atmosphere,
   cost,
-  closed,
   labels,
 }: Props) {
   const l = labels ?? {

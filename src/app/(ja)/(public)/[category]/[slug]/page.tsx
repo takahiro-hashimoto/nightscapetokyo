@@ -16,7 +16,7 @@ import {
   getTopSpots,
 } from "@/lib/supabase/queries";
 import { TOKYO_AREA_SLUGS } from "@/lib/constants";
-import { ALL_LOCALE_SLUGS, SITE_URL, buildAreaHreflangAlternates, LOCALE_LABELS } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { buildSpotMetadata } from "@/lib/metadata";
 

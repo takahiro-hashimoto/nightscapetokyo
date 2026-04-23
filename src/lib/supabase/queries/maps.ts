@@ -1,0 +1,106 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
+import { calcRatingAvg } from "../../types";
+import {
+  isSupabaseConfigured,
+  getSupabaseClient,
+} from "./shared";
+
+export type MapSpotItem = {
+  id: string;
+  slug: string;
+  name: string;
+  featured_image: string;
+  categorySlug: string;
+  categoryName: string;
+  latitude: number;
+  longitude: number;
+  rating_avg: number;
+};
+
+export const getSpotsForMap = cache(unstable_cache(async (): Promise<MapSpotItem[]> => {
+  if (!isSupabaseConfigured) return [];
+
+  const supabase = await getSupabaseClient();
+
+  const { data } = (await supabase
+    .from("spots")
+    .select(
+      "id, slug, name, title, featured_image, latitude, longitude, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(slug, name)"
+    )
+    .eq("published", true)
+    .not("latitude", "is", null)
+    .not("longitude", "is", null)) as any;
+
+  if (!data) return [];
+
+  const seenMap = new Set<string>();
+  return data.reduce((acc: MapSpotItem[], s: any) => {
+    if (seenMap.has(s.id)) return acc;
+    seenMap.add(s.id);
+    acc.push({
+      id: s.id,
+      slug: s.slug,
+      name: s.name || s.title,
+      featured_image: s.featured_image || "",
+      categorySlug: s.category?.slug ?? "",
+      categoryName: s.category?.name ?? "",
+      latitude: s.latitude,
+      longitude: s.longitude,
+      rating_avg: calcRatingAvg(s),
+    });
+    return acc;
+  }, []);
+}, ["map-spots"], { revalidate: 3600, tags: ["spots"] }));
+
+export async function getMapSpotsByCategory(categorySlug: string): Promise<MapSpotItem[]> {
+  const all = await getSpotsForMap();
+  return all.filter((s) => s.categorySlug === categorySlug);
+}
+
+export async function getMapSpotsByTag(tagSlug: string): Promise<MapSpotItem[]> {
+  if (!isSupabaseConfigured) return [];
+
+  const supabase = await getSupabaseClient();
+
+  const { data: tag } = await supabase
+    .from("tags")
+    .select("id")
+    .eq("slug", tagSlug)
+    .single();
+
+  if (!tag) return [];
+
+  const { data: relations } = await supabase
+    .from("spot_tags")
+    .select("spot_id")
+    .eq("tag_id", tag.id);
+
+  if (!relations || relations.length === 0) return [];
+
+  const spotIds = relations.map((r) => r.spot_id);
+
+  const { data } = (await supabase
+    .from("spots")
+    .select(
+      "id, slug, name, title, featured_image, latitude, longitude, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(slug, name)"
+    )
+    .in("id", spotIds)
+    .eq("published", true)
+    .not("latitude", "is", null)
+    .not("longitude", "is", null)) as any;
+
+  if (!data) return [];
+
+  return data.map((s: any) => ({
+    id: s.id,
+    slug: s.slug,
+    name: s.name || s.title,
+    featured_image: s.featured_image || "",
+    categorySlug: s.category?.slug ?? "",
+    categoryName: s.category?.name ?? "",
+    latitude: s.latitude,
+    longitude: s.longitude,
+    rating_avg: calcRatingAvg(s),
+  }));
+}

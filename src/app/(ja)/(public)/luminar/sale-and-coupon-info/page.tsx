@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
-import LuminarSaleStatusNote from '@/components/luminar/LuminarSaleStatusNote'
 import type { TocItem } from '@/lib/luminar/toc'
 
 export const dynamic = 'force-static'
