@@ -152,7 +152,6 @@ export type HomePageLabels = {
     desc1: string;
     desc2: string;
     moreLink: string;
-    intro?: string;
   };
   hotelRanking: {
     heading: (year: number) => string;
@@ -163,14 +162,12 @@ export type HomePageLabels = {
     heading: string;
     desc?: string;
     tagNames?: Record<string, string>;
-    intro?: string;
   };
   areaSearch: {
     heading: string;
     desc?: string;
     areaLabel: (name: string, count: number) => string;
     areaNames?: Record<string, string>;
-    intro?: string;
   };
   faq: {
     heading: string;
@@ -189,28 +186,6 @@ export type HomePageLabels = {
     allLabel: string;
     countLabel: string;
     loadingLabel: string;
-    intro?: string;
-  };
-  travelItinerary?: {
-    heading: string;
-    intro: string;
-    cards: {
-      firstVisit: { title: string; text: string };
-      free: { title: string; text: string };
-      observatory: { title: string; text: string };
-      romantic: { title: string; text: string };
-      tokyoTower: { title: string; text: string };
-      photography: { title: string; text: string };
-    };
-  };
-  howToChoose?: {
-    heading: string;
-    items: Array<{ title: string; text: string }>;
-  };
-  trustNote?: {
-    text: string;
-    aboutLinkText: string;
-    guidelinesLinkText: string;
   };
 };
 
@@ -735,12 +710,12 @@ const LABELS = {
       mapCount: (area, n) => `${n} night view spots in ${area}`,
     },
     homePage: {
-      seoTitle: (year) => `Best Tokyo Night View Spots for Your Japan Trip (${year}) | Tokyo Nightscape Navi`,
-      seoDescription: "Plan your Tokyo night itinerary with observation decks, free skyline views, romantic spots, and photo locations. All 200+ spots personally visited and photographed — with ratings, access info, and sunset times.",
+      seoTitle: (year) => `Best Tokyo Night View Spots in Japan (${year}) — 200+ Iconic & Hidden Gems | Tokyo Night View Guide`,
+      seoDescription: "The ultimate guide to 200+ Tokyo night view spots for sightseeing and photography. Discover Tokyo Tower, Skytree, free observatories, hidden gems, and rooftop bars. Plan your Tokyo night tour with ratings, access info, and sunset times.",
       hero: {
-        catchphrase: "Best Tokyo Night View Spots for Your Japan Trip",
-        subtitle: (count) => `Plan your Tokyo night itinerary with ${count}+ spots — observation decks, free skyline views, romantic destinations, and photo locations. All personally visited and photographed.`,
-        searchPlaceholder: "e.g.) observatory, Tokyo Tower view, free, Shibuya",
+        catchphrase: "The Ultimate Guide to Tokyo Nightscapes.",
+        subtitle: (count) => `Explore ${count} Tokyo night view spots for sightseeing & photography — from iconic landmarks to hidden gems`,
+        searchPlaceholder: "e.g.) Wadakura Park, observatory, Tokyo Tower view, Shibuya",
         searchAriaLabel: "Search night view spots",
         searchButton: "Search",
         imgAlt: "Tokyo night view",
@@ -754,27 +729,25 @@ const LABELS = {
       },
       spotRanking: {
         heading: (year) => `Best Tokyo Night View Spots Ranking [${year}]`,
-        intro: "Start here if you want reliable night view spots for your Tokyo trip.",
         desc1: "Our top picks from over 200 night view spots in Tokyo, all personally visited and reviewed!",
         desc2: "Each spot is rated on beauty, accessibility, atmosphere, and value. Use this guide to plan your perfect date or photography outing.",
         moreLink: "View all Tokyo night spots",
       },
       hotelRanking: {
-        heading: (year) => `Best Hotels with Night Views in Tokyo [${year}]`,
+        heading: (year) => `Best Hotels with Night Views [${year}]`,
         desc: "Handpicked hotels offering stunning Tokyo night views from guest rooms and rooftop restaurants. Perfect for anniversaries and dates.",
         moreLink: "View all night view hotels",
       },
       purposeSearch: {
-        heading: "Search by Travel Purpose",
-        intro: "Filter by your travel purpose: free views, dates, photography, hotels, or iconic landmarks.",
-        desc: "Find night view spots that match your Tokyo trip — dates, photography, free admission, observation decks, and more.",
+        heading: "Search by Purpose",
+        desc: "Filter night view spots by scene or purpose — dates, photography, free admission, and more.",
         tagNames: {
           "無料スポット": "Free Spots",
-          "デート向け": "Romantic / Dates",
+          "デート向け": "For Dates",
           "ウォーターフロント": "Waterfront",
           "公園・広場": "Parks & Plazas",
           "東京スカイツリーが見える": "Skytree View Spots",
-          "展望台": "Observation Decks",
+          "展望台": "Observatory",
           "東京タワーが見える": "Tokyo Tower View Spots",
           "レインボーブリッジが見える": "Rainbow Bridge View Spots",
           "富士山が見える": "Mt. Fuji View Spots",
@@ -791,7 +764,6 @@ const LABELS = {
       },
       areaSearch: {
         heading: "Search by Area",
-        intro: "Choose an area near your hotel, station, or sightseeing route.",
         desc: "Explore Tokyo night view spots by neighborhood — Shibuya, Shinjuku, Odaiba, and more.",
         areaLabel: (name, count) => `${name} (${count})`,
         areaNames: {
@@ -825,11 +797,11 @@ const LABELS = {
         heading: "FAQ: Tokyo Night Views for Visitors",
         items: [
           { question: "What time is sunset today, and when is the best time to see night views?", answer: "__SUNSET_DYNAMIC__" },
-          { question: "What are the best things to do in Tokyo at night?", answer: "Tokyo's night view spots offer something for every traveler — iconic observation decks, free skyline viewpoints, riverside parks, and romantic destinations. Start with our highest-rated spots ranking for a reliable first choice, or use the purpose filters to match your travel style." },
-          { question: "Are there free night view spots in Tokyo?", answer: "Yes! Several spots offer great night views at no cost — including free observatories and public parks. Check each spot's detail page on this site for current admission information." },
-          { question: "Is Tokyo safe to visit at night?", answer: "Tokyo is widely considered one of the safest cities in the world. Major night view areas are well-lit and active late into the evening. Observation decks have set closing times, so check hours before visiting." },
-          { question: "Should I book observation deck tickets in advance?", answer: "Popular spots like SHIBUYA SKY and Tokyo Skytree often sell out on weekends and holidays — online booking via their official sites is recommended. Some free viewpoints require no reservation at all." },
-          { question: "Can I bring a tripod for night photography?", answer: "Most indoor observation decks prohibit tripods and monopods. Outdoor spots such as parks and bridges generally allow them. Always check the rules on each spot's page or the official website before visiting." },
+          { question: "Do I need to book tickets in advance for Tokyo's observation decks?", answer: "Popular spots like SHIBUYA SKY and Tokyo Skytree often sell out on weekends and holidays — online booking via their official sites is strongly recommended. Tokyo Metropolitan Government Building South Observatory is free and requires no reservation." },
+          { question: "Are there free night view spots in Tokyo?", answer: "Yes! Tokyo Metropolitan Government Building South Observatory, Odaiba Seaside Park, and several riverside parks offer stunning night views at no cost. Check each spot's detail page on this site for admission info." },
+          { question: "Is Tokyo safe to visit at night?", answer: "Tokyo is one of the safest cities in the world. Major night view areas are well-lit and active late into the night. Observation decks have set closing times, so check hours in advance. Use common sense in quiet parks after midnight." },
+          { question: "Can I bring a tripod for night photography?", answer: "Most indoor observation decks (SHIBUYA SKY, Tokyo Skytree, etc.) prohibit tripods and monopods. Outdoor spots such as parks and bridges generally allow them. Always check the rules on each spot's page before visiting." },
+          { question: "Are Tokyo's observation decks English-friendly?", answer: "Major spots like SHIBUYA SKY, Tokyo Skytree, and Tokyo Tower have English signage and multilingual staff. Online ticketing is also available in English, making it easy to plan your visit in advance." },
           { question: "What is the best season and time of day for clear night views?", answer: "Winter (December–February) offers the clearest air and best visibility. For the perfect shot, aim for the 20–50 minutes after sunset — the 'blue hour' — when the sky still glows and city lights are fully on." },
           { question: "What is magic hour / blue hour? When do illuminations switch on?", answer: "__TWILIGHT_LINK__" },
         ],
@@ -843,37 +815,10 @@ const LABELS = {
       },
       mapSection: {
         heading: "Explore Night View Spots on the Map",
-        intro: "Use the map to plan an efficient Tokyo night route.",
         desc: (n) => `Showing ${n} night view spots in Tokyo & Yokohama on the map. Click a marker to see details.`,
         allLabel: "All",
         countLabel: "Showing {n} spots",
         loadingLabel: "Loading map...",
-      },
-      travelItinerary: {
-        heading: "Plan Your Tokyo Night Itinerary",
-        intro: "Not sure where to go after sunset? Start with the route that matches your Tokyo trip.",
-        cards: {
-          firstVisit: { title: "First Tokyo trip", text: "Start with our highest-rated night view spots." },
-          free: { title: "Free skyline views", text: "Find budget-friendly viewpoints across Tokyo." },
-          observatory: { title: "Observation decks", text: "Compare classic towers and high-rise viewpoints." },
-          romantic: { title: "Romantic night views", text: "Pick memorable spots for couples and special evenings." },
-          tokyoTower: { title: "Tokyo Tower views", text: "Explore places with iconic Tokyo Tower views." },
-          photography: { title: "Night photography", text: "Find photo-friendly skyline and city-light spots." },
-        },
-      },
-      howToChoose: {
-        heading: "How to Choose a Tokyo Night View Spot",
-        items: [
-          { title: "Choose by access", text: "If you are visiting Tokyo for the first time, start with spots near major stations or areas close to your hotel." },
-          { title: "Choose by budget", text: "Tokyo has both paid observation decks and free skyline viewpoints. Check admission fees before visiting." },
-          { title: "Choose by purpose", text: "For dates, photography, hotels, or tower views, use the purpose filters below." },
-          { title: "Choose by timing", text: "For photos, sunset to blue hour is usually the best time. Use the magic hour guide on each spot page." },
-        ],
-      },
-      trustNote: {
-        text: "Every spot on this site is personally visited and photographed by Tokyo Nightscape Navi. Ratings are based on beauty, access, atmosphere, and value.",
-        aboutLinkText: "About this site",
-        guidelinesLinkText: "Rating guidelines",
       },
     },
     searchPage: {
@@ -1081,12 +1026,12 @@ const LABELS = {
       mapCount: (area, n) => `${area} 야경 스폿 ${n}곳`,
     },
     homePage: {
-      seoTitle: (year) => `도쿄 여행 야경 명소 추천 ${year} — 일본 여행자를 위한 야경 코스 가이드 | 도쿄 야경 나비`,
-      seoDescription: "도쿄 여행 중 밤에 가볼 만한 곳을 찾고 계신가요? 전망대, 무료 야경 스폿, 데이트 코스, 야경 촬영 명소 200곳 이상을 직접 방문한 후기와 함께 소개합니다. 평점·교통·일몰 정보로 도쿄 야경 코스를 계획해 보세요.",
+      seoTitle: (year) => `일본 도쿄 야경 명소 추천 ${year} — 관광・촬영에 딱! 200곳 이상 수록 | 도쿄 야경 가이드`,
+      seoDescription: "도쿄 여행에서 꼭 봐야 할 야경 명소 200곳 이상을 소개합니다. 도쿄타워, 스카이트리 전망대, 무료 관광 스폿, 숨겨진 명소까지 완벽 가이드. 평점, 교통편, 일몰 시간 정보로 도쿄 야경 여행을 계획하세요.",
       hero: {
-        catchphrase: "도쿄 여행자를 위한 야경 명소 완벽 가이드",
-        subtitle: (count) => `도쿄 야경 코스를 계획 중이신가요? 전망대·무료 야경·데이트 스폿·촬영 명소 ${count}곳을 직접 방문한 후기와 함께 소개합니다.`,
-        searchPlaceholder: "예) 전망대, 도쿄타워가 보이는, 무료, 시부야구",
+        catchphrase: "도쿄 야경 완전 가이드 : 모든 스팟을 한눈에",
+        subtitle: (count) => `관광・촬영에 추천하는 도쿄 야경 스폿을 인기 명소부터 숨겨진 장소까지 소개【${count}곳 수록】`,
+        searchPlaceholder: "예) 와다쿠라 분수공원, 전망대, 도쿄타워가 보이는, 시부야구",
         searchAriaLabel: "야경 스폿 검색",
         searchButton: "검색",
         imgAlt: "도쿄 야경",
@@ -1099,24 +1044,22 @@ const LABELS = {
         names: { observatory: "전망대", building: "고층 빌딩", park: "공원", bridge: "다리", hotel: "호텔", event: "이벤트", waterfront: "수변", mountain: "산·언덕" },
       },
       spotRanking: {
-        heading: (year) => `도쿄 야경 스폿 추천 랭킹【${year}년 최신】`,
-        intro: "도쿄 야경 여행의 첫 걸음으로 신뢰할 수 있는 평점 기반 랭킹을 확인하세요.",
+        heading: (year) => `도쿄 도내 야경 스폿 추천 랭킹【${year}년 최신】`,
         desc1: "실제로 방문한 200곳 이상의 도쿄 야경 스폿 중에서 추천 장소를 랭킹 형식으로 소개합니다!",
         desc2: "각 스폿의 평가는 아름다움, 접근성, 분위기, 가성비의 4개 항목으로 결정됩니다. 데이트나 촬영 장소를 정할 때 활용해 주세요.",
         moreLink: "도쿄 야경 스폿 전체 보기",
       },
       hotelRanking: {
-        heading: (year) => `야경이 아름다운 도쿄 호텔 추천【${year}년판】`,
+        heading: (year) => `야경이 아름다운 호텔 추천 랭킹【${year}년판】`,
         desc: "객실이나 최상층 레스토랑에서 고품격 도쿄 야경을 즐길 수 있는 호텔을 엄선. 기념일이나 데이트에도 추천합니다.",
         moreLink: "도쿄 야경 호텔 전체 보기",
       },
       purposeSearch: {
-        heading: "여행 목적별로 야경 스폿 찾기",
-        intro: "무료 야경·데이트·촬영·호텔·랜드마크 등 여행 목적에 맞게 필터링하세요.",
+        heading: "목적별로 야경이 아름다운 장소 찾기",
         desc: "데이트, 촬영, 무료 입장 등 목적에 맞는 야경 스폿을 검색할 수 있습니다.",
         tagNames: {
           "無料スポット": "무료 스폿",
-          "デート向け": "데이트·로맨틱",
+          "デート向け": "데이트 추천",
           "ウォーターフロント": "워터프론트",
           "公園・広場": "공원・광장",
           "東京スカイツリーが見える": "도쿄 스카이트리가 보이는",
@@ -1136,8 +1079,7 @@ const LABELS = {
         },
       },
       areaSearch: {
-        heading: "지역별로 야경 스폿 찾기",
-        intro: "숙소·역·관광 코스 근처 지역을 선택하세요.",
+        heading: "지역별로 야경이 아름다운 장소 찾기",
         desc: "시부야, 신주쿠, 오다이바 등 가고 싶은 지역에서 도쿄 야경 스폿을 찾아보세요.",
         areaLabel: (name, count) => `${name} 야경 (${count})`,
         areaNames: {
@@ -1154,14 +1096,14 @@ const LABELS = {
         },
       },
       faq: {
-        heading: "도쿄 여행자를 위한 자주 묻는 질문",
+        heading: "도쿄 야경 방문자를 위한 자주 묻는 질문",
         items: [
           { question: "오늘 일몰 시간과 야경 감상 추천 시간대는?", answer: "__SUNSET_DYNAMIC__" },
-          { question: "도쿄 여행 중 밤에 가볼 만한 곳은?", answer: "도쿄의 야경 스폿은 유료 전망대부터 무료 뷰포인트, 강변 공원, 로맨틱한 명소까지 다양합니다. 처음 방문이라면 평점 기반 랭킹에서 시작하거나, 목적별 필터로 나에게 맞는 코스를 찾아보세요." },
-          { question: "도쿄에서 무료로 야경을 즐길 수 있는 곳은?", answer: "무료로 아름다운 야경을 즐길 수 있는 스폿이 여러 곳 있습니다. 각 스폿 페이지에서 최신 입장료 정보를 확인하세요." },
+          { question: "도쿄 전망대는 사전 예약이 필요한가요?", answer: "시부야 스카이・도쿄 스카이트리 등 인기 전망대는 주말·공휴일에 매진될 수 있으므로 공식 사이트에서 사전 예매를 강력 권장합니다. 도쿄도청 남전망실은 무료이며 예약 불필요입니다." },
+          { question: "도쿄에서 무료로 야경을 즐길 수 있는 곳은?", answer: "도쿄도청 남전망실, 오다이바 해변공원, 강변 공원 등 무료로 아름다운 야경을 볼 수 있는 스폿이 많습니다. 각 스폿 페이지에서 입장료 정보를 확인하세요." },
           { question: "도쿄는 밤에 돌아다녀도 안전한가요?", answer: "도쿄는 세계 최고 수준의 안전 도시입니다. 주요 야경 스폿 주변은 심야에도 밝고 사람이 많아 안심하고 즐길 수 있습니다. 전망대는 영업 종료 시간이 있으므로 미리 확인하세요." },
-          { question: "도쿄 전망대는 사전 예약이 필요한가요?", answer: "시부야 스카이・도쿄 스카이트리 등 인기 전망대는 주말·공휴일에 매진될 수 있으므로 공식 사이트에서 사전 예매를 강력 권장합니다. 무료 전망대는 예약 없이 방문 가능한 곳도 있습니다." },
-          { question: "야경 촬영 시 삼각대를 가져갈 수 있나요?", answer: "시부야 스카이・도쿄 스카이트리 등 실내 전망대는 삼각대·일각대 반입이 원칙적으로 금지되어 있습니다. 야외 공원이나 다리는 대부분 사용 가능합니다. 방문 전에 각 스폿 페이지나 공식 사이트의 규정을 꼭 확인하세요." },
+          { question: "야경 촬영 시 삼각대를 가져갈 수 있나요?", answer: "시부야 스카이・도쿄 스카이트리 등 실내 전망대는 삼각대·일각대 반입이 원칙적으로 금지되어 있습니다. 야외 공원이나 다리는 대부분 사용 가능합니다. 방문 전에 각 스폿 페이지의 규정을 꼭 확인하세요." },
+          { question: "도쿄 전망대는 한국어 대응이 되나요?", answer: "시부야 스카이・도쿄 스카이트리・도쿄타워 등 주요 전망대는 한국어 안내판이 설치되어 있습니다. 온라인 티켓 구매도 한국어로 가능한 곳이 많아 방문 전 준비가 편리합니다." },
           { question: "야경 감상에 가장 좋은 계절과 시간대는?", answer: "공기가 맑은 겨울(12～2월)이 가장 멀리까지 볼 수 있어 추천합니다. 시간대는 일몰 후 20～50분의 '블루아워'가 하늘빛과 도시 불빛이 조화를 이루는 황금 타임입니다." },
           { question: "매직아워·블루아워란? 일루미네이션은 언제부터 켜지나요?", answer: "__TWILIGHT_LINK__" },
         ],
@@ -1175,37 +1117,10 @@ const LABELS = {
       },
       mapSection: {
         heading: "지도에서 야경 스폿 찾기",
-        intro: "지도를 활용해 효율적인 도쿄 야경 코스를 계획하세요.",
         desc: (n) => `도쿄·요코하마 지역의 야경 스폿 ${n}곳을 지도에 표시합니다. 마커를 클릭하면 상세 정보를 확인할 수 있습니다.`,
         allLabel: "전체",
         countLabel: "{n}개 스폿 표시 중",
         loadingLabel: "지도 불러오는 중...",
-      },
-      travelItinerary: {
-        heading: "도쿄 야경 코스 계획하기",
-        intro: "일몰 후 어디로 가야 할지 모르겠다면? 나에게 맞는 도쿄 야경 코스를 선택해 보세요.",
-        cards: {
-          firstVisit: { title: "도쿄 첫 방문", text: "평점 높은 야경 명소부터 시작하세요." },
-          free: { title: "무료 야경 스폿", text: "부담 없이 즐길 수 있는 도쿄의 뷰포인트를 찾아보세요." },
-          observatory: { title: "전망대", text: "클래식 타워와 고층 전망대를 비교해 보세요." },
-          romantic: { title: "로맨틱 야경", text: "커플과 특별한 저녁을 위한 기억에 남는 스폿을 골라보세요." },
-          tokyoTower: { title: "도쿄타워 뷰", text: "도쿄타워가 보이는 인기 장소를 살펴보세요." },
-          photography: { title: "야경 촬영", text: "스카이라인과 야경을 찍기 좋은 스폿을 찾아보세요." },
-        },
-      },
-      howToChoose: {
-        heading: "도쿄 야경 스폿 고르는 방법",
-        items: [
-          { title: "교통으로 선택하기", text: "도쿄 첫 방문이라면 주요 역 근처나 숙소 근처 스폿부터 시작하세요." },
-          { title: "예산으로 선택하기", text: "도쿄에는 유료 전망대와 무료 뷰포인트가 모두 있습니다. 방문 전에 입장료를 꼭 확인하세요." },
-          { title: "목적으로 선택하기", text: "데이트·촬영·호텔·타워 뷰 등 목적에 맞는 스폿은 아래 목적별 필터로 찾아보세요." },
-          { title: "시간으로 선택하기", text: "촬영을 원한다면 일몰부터 블루아워까지가 가장 좋은 시간대입니다. 각 스폿 페이지의 매직아워 가이드를 활용하세요." },
-        ],
-      },
-      trustNote: {
-        text: "이 사이트의 모든 스폿은 도쿄 야경 나비 편집부가 직접 방문하여 촬영하였습니다. 평점은 아름다움, 접근성, 분위기, 가성비를 기준으로 산출됩니다.",
-        aboutLinkText: "사이트 소개",
-        guidelinesLinkText: "평점 기준",
       },
     },
     searchPage: {
@@ -1412,12 +1327,12 @@ const LABELS = {
       mapCount: (area, n) => `${area}共有 ${n} 個夜景景點`,
     },
     homePage: {
-      seoTitle: (year) => `東京旅遊夜景景點推薦（${year}最新）— 日本自由行夜景行程完整攻略 | 東京夜景導覽`,
-      seoDescription: "規劃東京夜景行程的旅行者必看！收錄觀景台、免費夜景、浪漫景點、攝影勝地等200處以上，全部實地走訪拍攝，幫助您找到最適合的東京夜晚景點。",
+      seoTitle: (year) => `日本東京夜景景點推薦（${year}最新）— 觀光・攝影必去！收錄200處以上 | 東京夜景導覽`,
+      seoDescription: "東京旅遊必看的夜景景點完整指南！收錄200處以上景點，包含東京鐵塔、晴空塔觀景台、免費觀光景點、私房秘境等。提供評分、交通資訊及日落時間，輕鬆規劃東京夜景之旅。",
       hero: {
-        catchphrase: "東京旅遊必看夜景景點完整攻略",
-        subtitle: (count) => `規劃東京夜景行程，從觀景台、免費天際線、浪漫景點到攝影勝地，${count}處全部實地走訪拍攝。`,
-        searchPlaceholder: "例）觀景台、看得到東京鐵塔、免費、澀谷區",
+        catchphrase: "東京夜景完全指南：從經典到私房景點",
+        subtitle: (count) => `觀光・攝影推薦的東京夜景景點，從經典到私房全面介紹【收錄${count}處】`,
+        searchPlaceholder: "例）和田倉噴水公園、觀景台、看得到東京鐵塔、澀谷區",
         searchAriaLabel: "搜尋夜景景點",
         searchButton: "搜尋",
         imgAlt: "東京夜景",
@@ -1430,24 +1345,22 @@ const LABELS = {
         names: { observatory: "觀景台", building: "高樓大廈", park: "公園", bridge: "橋", hotel: "飯店", event: "活動", waterfront: "水岸", mountain: "山丘" },
       },
       spotRanking: {
-        heading: (year) => `東京夜景景點推薦排名【${year}最新】`,
-        intro: "東京旅遊的第一步，先從可信賴的評分排名開始。",
+        heading: (year) => `東京都內夜景景點推薦排名【${year}年最新】`,
         desc1: "從實際走訪的200處以上東京夜景景點中，以排名方式推薦最佳景點！",
         desc2: "各景點的評價由美麗度、交通便利、氛圍、性價比4項指標決定。規劃約會或攝影行程時請多加利用。",
         moreLink: "查看所有東京夜景景點",
       },
       hotelRanking: {
-        heading: (year) => `東京夜景飯店推薦排名【${year}年版】`,
+        heading: (year) => `夜景美麗的飯店推薦排名【${year}年版】`,
         desc: "嚴選可從客房及頂樓餐廳欣賞高品質東京夜景的飯店。紀念日和約會也非常推薦。",
         moreLink: "查看所有夜景飯店",
       },
       purposeSearch: {
-        heading: "依旅遊目的搜尋夜景景點",
-        intro: "依免費景點、約會、攝影、飯店或知名地標等旅遊目的篩選。",
+        heading: "依目的搜尋夜景美麗的地方",
         desc: "依約會、攝影、免費景點等目的，篩選適合的夜景景點。",
         tagNames: {
           "無料スポット": "免費景點",
-          "デート向け": "約會・浪漫",
+          "デート向け": "約會推薦",
           "ウォーターフロント": "海濱",
           "公園・広場": "公園・廣場",
           "東京スカイツリーが見える": "看得到晴空塔",
@@ -1467,8 +1380,7 @@ const LABELS = {
         },
       },
       areaSearch: {
-        heading: "依地區搜尋夜景景點",
-        intro: "選擇靠近您住宿、車站或觀光路線的地區。",
+        heading: "依地區搜尋夜景美麗的地方",
         desc: "從澀谷、新宿、台場等想前往的地區，搜尋東京夜景景點。",
         areaLabel: (name, count) => `${name}的夜景（${count}）`,
         areaNames: {
@@ -1485,14 +1397,14 @@ const LABELS = {
         },
       },
       faq: {
-        heading: "東京夜景旅遊常見問題",
+        heading: "東京夜景觀光客常見問題",
         items: [
           { question: "今天日落時間和最佳夜景觀賞時段是幾點？", answer: "__SUNSET_DYNAMIC__" },
-          { question: "東京旅遊行程中，晚上有哪些推薦的夜景活動？", answer: "東京的夜景景點從付費觀景台、免費天際線視角、濱水公園到浪漫景點，選擇豐富多元。初次來東京，建議從評分排名開始，或使用目的別篩選找到最適合的行程。" },
-          { question: "東京有哪些免費夜景景點？", answer: "東京有多處可免費欣賞美麗夜景的景點。各景點頁面都有最新的入場費用資訊，造訪前請先確認。" },
+          { question: "東京的展望台需要提前預訂門票嗎？", answer: "澀谷SKY、東京晴空塔等熱門景點在週末和假日容易售罄，強烈建議透過官方網站提前購票。東京都廳南展望台免費入場且無需預約。" },
+          { question: "東京有哪些免費夜景景點？", answer: "東京都廳南展望台、台場海濱公園、各處河濱公園等都可以免費欣賞美麗夜景。請至各景點頁面確認入場費用資訊。" },
           { question: "東京夜間外出安全嗎？", answer: "東京是全球治安最佳的城市之一。主要夜景景點周邊深夜仍燈火通明、人潮絡繹，可以放心遊覽。展望台有閉館時間，請事先確認。" },
-          { question: "東京的展望台需要提前預訂門票嗎？", answer: "澀谷SKY、東京晴空塔等熱門景點在週末和假日容易售罄，強烈建議透過官方網站提前購票。部分免費觀景台無需預約即可造訪。" },
-          { question: "可以攜帶三腳架進行夜景攝影嗎？", answer: "澀谷SKY、東京晴空塔等室內展望台原則上禁止攜帶三腳架和獨腳架。戶外公園和橋樑大多允許使用。造訪前請務必確認各景點頁面或官方網站的拍攝規定。" },
+          { question: "可以攜帶三腳架進行夜景攝影嗎？", answer: "澀谷SKY、東京晴空塔等室內展望台原則上禁止攜帶三腳架和獨腳架。戶外公園和橋樑大多允許使用。造訪前請務必確認各景點頁面的拍攝規定。" },
+          { question: "東京的展望台有中文服務嗎？", answer: "澀谷SKY、東京晴空塔、東京鐵塔等主要展望台均設有繁體中文標示，部分設施備有中文服務人員。線上購票也可使用中文，方便事先規劃行程。" },
           { question: "賞夜景的最佳季節和時間帶是什麼時候？", answer: "空氣清澈的冬季（12～2月）能見度最高，視野最為開闊。時間上，日落後20～50分鐘的「藍調時刻」是天空色彩與城市燈光最完美融合的黃金時段。" },
           { question: "什麼是魔幻時刻・藍調時刻？燈光秀從幾點開始？", answer: "__TWILIGHT_LINK__" },
         ],
@@ -1506,37 +1418,10 @@ const LABELS = {
       },
       mapSection: {
         heading: "在地圖上尋找夜景景點",
-        intro: "利用地圖規劃高效的東京夜景行程路線。",
         desc: (n) => `在地圖上顯示東京・橫濱地區的${n}個夜景景點。點擊標記可查看詳細資訊。`,
         allLabel: "全部",
         countLabel: "顯示 {n} 個景點",
         loadingLabel: "地圖載入中...",
-      },
-      travelItinerary: {
-        heading: "規劃您的東京夜景行程",
-        intro: "不確定日落後要去哪裡？選擇最適合您東京旅遊的夜景路線。",
-        cards: {
-          firstVisit: { title: "初次來東京", text: "從評分最高的夜景景點開始探索。" },
-          free: { title: "免費夜景景點", text: "找到遍布東京的免費觀景地點。" },
-          observatory: { title: "觀景台", text: "比較經典鐵塔和高樓觀景台。" },
-          romantic: { title: "浪漫夜景", text: "挑選適合情侶和特殊夜晚的難忘景點。" },
-          tokyoTower: { title: "東京鐵塔景觀", text: "探索能看到標誌性東京鐵塔的地方。" },
-          photography: { title: "夜間攝影", text: "找到適合拍攝天際線和城市燈光的景點。" },
-        },
-      },
-      howToChoose: {
-        heading: "如何選擇東京夜景景點",
-        items: [
-          { title: "依交通選擇", text: "如果是第一次來東京，建議從主要車站附近或接近飯店的景點開始。" },
-          { title: "依預算選擇", text: "東京有付費觀景台，也有免費的天際線觀賞地點。造訪前請先確認入場費。" },
-          { title: "依目的選擇", text: "約會、攝影、飯店或鐵塔景觀，請利用下方的目的別篩選功能。" },
-          { title: "依時間選擇", text: "若想拍照，日落到藍調時刻通常是最佳時機。請參考各景點頁面的魔幻時刻指南。" },
-        ],
-      },
-      trustNote: {
-        text: "本站所有景點均由東京夜景導航編輯部親自走訪拍攝。評分依據美麗度、交通便利、氛圍及性價比四項指標評定。",
-        aboutLinkText: "關於本站",
-        guidelinesLinkText: "評分標準",
       },
     },
     searchPage: {
@@ -1743,12 +1628,12 @@ const LABELS = {
       mapCount: (area, n) => `${area}共有 ${n} 个夜景景点`,
     },
     homePage: {
-      seoTitle: (year) => `东京旅游夜景景点推荐（${year}最新）— 日本自由行夜景行程完整攻略 | 东京夜景导览`,
-      seoDescription: "规划东京夜景行程的旅行者必看！收录观景台、免费夜景、浪漫景点、摄影胜地等200处以上，全部实地走访拍摄，帮助您找到最适合的东京夜晚景点。",
+      seoTitle: (year) => `日本东京夜景景点推荐（${year}最新）— 观光・摄影必去！收录200处以上 | 东京夜景导览`,
+      seoDescription: "东京旅游必看的夜景景点完整指南！收录200处以上景点，包含东京塔、晴空塔观景台、免费观光景点、小众秘境等。提供评分、交通信息及日落时间，轻松规划东京夜景之旅。",
       hero: {
-        catchphrase: "东京旅游必看夜景景点完整攻略",
-        subtitle: (count) => `规划东京夜景行程，从观景台、免费天际线、浪漫景点到摄影胜地，${count}处全部实地走访拍摄。`,
-        searchPlaceholder: "例）观景台、能看到东京塔、免费、涩谷区",
+        catchphrase: "东京夜景全攻略：完整指南",
+        subtitle: (count) => `观光・摄影推荐的东京夜景景点，从经典到小众全面介绍【收录${count}处】`,
+        searchPlaceholder: "例）和田仓喷水公园、观景台、能看到东京塔、涩谷区",
         searchAriaLabel: "搜索夜景景点",
         searchButton: "搜索",
         imgAlt: "东京夜景",
@@ -1761,24 +1646,22 @@ const LABELS = {
         names: { observatory: "观景台", building: "高楼大厦", park: "公园", bridge: "桥", hotel: "酒店", event: "活动", waterfront: "水边", mountain: "山丘" },
       },
       spotRanking: {
-        heading: (year) => `东京夜景景点推荐排名【${year}年最新】`,
-        intro: "东京旅游的第一步，先从可信赖的评分排名开始。",
+        heading: (year) => `东京都内夜景景点推荐排名【${year}年最新】`,
         desc1: "从实际走访的200处以上东京夜景景点中，以排名方式推荐最佳景点！",
         desc2: "各景点的评价由美丽度、交通便利、氛围、性价比4项指标决定。规划约会或摄影行程时请多加利用。",
         moreLink: "查看所有东京夜景景点",
       },
       hotelRanking: {
-        heading: (year) => `东京夜景酒店推荐排名【${year}年版】`,
+        heading: (year) => `夜景优美的酒店推荐排名【${year}年版】`,
         desc: "精选可从客房及顶层餐厅欣赏高品质东京夜景的酒店。纪念日和约会也非常推荐。",
         moreLink: "查看所有夜景酒店",
       },
       purposeSearch: {
-        heading: "按旅游目的搜索夜景景点",
-        intro: "按免费景点、约会、摄影、酒店或知名地标等旅游目的筛选。",
+        heading: "按目的搜索夜景优美的地方",
         desc: "按约会、摄影、免费景点等目的，筛选适合的夜景景点。",
         tagNames: {
           "無料スポット": "免费景点",
-          "デート向け": "约会・浪漫",
+          "デート向け": "约会推荐",
           "ウォーターフロント": "海滨",
           "公園・広場": "公园・广场",
           "東京スカイツリーが見える": "能看到晴空塔",
@@ -1798,8 +1681,7 @@ const LABELS = {
         },
       },
       areaSearch: {
-        heading: "按地区搜索夜景景点",
-        intro: "选择靠近您住宿、车站或观光路线的地区。",
+        heading: "按地区搜索夜景优美的地方",
         desc: "从涩谷、新宿、台场等想去的地区，搜索东京夜景景点。",
         areaLabel: (name, count) => `${name}的夜景（${count}）`,
         areaNames: {
@@ -1816,14 +1698,14 @@ const LABELS = {
         },
       },
       faq: {
-        heading: "东京夜景旅游常见问题",
+        heading: "东京夜景观光客常见问题",
         items: [
           { question: "今天日落时间和最佳夜景观赏时段是几点？", answer: "__SUNSET_DYNAMIC__" },
-          { question: "东京旅游行程中，晚上有哪些推荐的夜景活动？", answer: "东京的夜景景点从付费观景台、免费天际线视角、滨水公园到浪漫景点，选择丰富多元。初次来东京，建议从评分排名开始，或使用目的筛选找到最适合的行程。" },
-          { question: "东京有哪些免费夜景景点？", answer: "东京有多处可免费欣赏美丽夜景的景点。各景点页面都有最新的入场费用信息，造访前请先确认。" },
+          { question: "东京的观景台需要提前预订门票吗？", answer: "涩谷SKY、东京晴空塔等热门景点在周末和节假日容易售罄，强烈建议通过官方网站提前购票。东京都厅南展望台免费入场且无需预约。" },
+          { question: "东京有哪些免费夜景景点？", answer: "东京都厅南展望台、台场海滨公园、各处河滨公园都可以免费欣赏美丽夜景。请在各景点页面确认入场费用信息。" },
           { question: "东京夜间外出安全吗？", answer: "东京是全球治安最好的城市之一。主要夜景景点周边深夜仍灯火通明、人流不断，可以放心游览。观景台有闭馆时间，请提前确认。" },
-          { question: "东京的观景台需要提前预订门票吗？", answer: "涩谷SKY、东京晴空塔等热门景点在周末和节假日容易售罄，强烈建议通过官方网站提前购票。部分免费观景台无需预约即可造访。" },
-          { question: "可以携带三脚架进行夜景拍摄吗？", answer: "涩谷SKY、东京晴空塔等室内观景台原则上禁止携带三脚架和独脚架。户外公园和桥梁大多允许使用。造访前请务必确认各景点页面或官方网站的拍摄规定。" },
+          { question: "可以携带三脚架进行夜景拍摄吗？", answer: "涩谷SKY、东京晴空塔等室内观景台原则上禁止携带三脚架和独脚架。户外公园和桥梁大多允许使用。造访前请务必确认各景点页面的拍摄规定。" },
+          { question: "东京的观景台有中文服务吗？", answer: "涩谷SKY、东京晴空塔、东京塔等主要观景台均设有简体中文标示，部分设施备有中文服务人员。线上购票也可使用中文，方便提前规划行程。" },
           { question: "欣赏夜景的最佳季节和时间是什么时候？", answer: "空气清澈的冬季（12～2月）能见度最高，视野最为开阔。时间上，日落后20～50分钟的「蓝调时刻」是天空色彩与城市灯光最完美融合的黄金时段。" },
           { question: "什么是魔幻时刻・蓝调时刻？灯光秀从几点开始？", answer: "__TWILIGHT_LINK__" },
         ],
@@ -1837,37 +1719,10 @@ const LABELS = {
       },
       mapSection: {
         heading: "在地图上寻找夜景景点",
-        intro: "利用地图规划高效的东京夜景行程路线。",
         desc: (n) => `在地图上显示东京・横滨地区的${n}个夜景景点。点击标记可查看详细信息。`,
         allLabel: "全部",
         countLabel: "显示 {n} 个景点",
         loadingLabel: "地图加载中...",
-      },
-      travelItinerary: {
-        heading: "规划您的东京夜景行程",
-        intro: "不确定日落后去哪里？选择最适合您东京旅游的夜景路线。",
-        cards: {
-          firstVisit: { title: "初次来东京", text: "从评分最高的夜景景点开始探索。" },
-          free: { title: "免费夜景景点", text: "找到遍布东京的免费观景地点。" },
-          observatory: { title: "观景台", text: "比较经典铁塔和高楼观景台。" },
-          romantic: { title: "浪漫夜景", text: "挑选适合情侣和特殊夜晚的难忘景点。" },
-          tokyoTower: { title: "东京塔景观", text: "探索能看到标志性东京塔的地方。" },
-          photography: { title: "夜间摄影", text: "找到适合拍摄天际线和城市灯光的景点。" },
-        },
-      },
-      howToChoose: {
-        heading: "如何选择东京夜景景点",
-        items: [
-          { title: "按交通选择", text: "如果是第一次来东京，建议从主要车站附近或靠近酒店的景点开始。" },
-          { title: "按预算选择", text: "东京既有付费观景台，也有免费的天际线观赏地点。造访前请先确认门票价格。" },
-          { title: "按目的选择", text: "约会、摄影、酒店或铁塔景观，请利用下方的目的筛选功能。" },
-          { title: "按时间选择", text: "若想拍照，日落到蓝调时刻通常是最佳时机。请参考各景点页面的魔幻时刻指南。" },
-        ],
-      },
-      trustNote: {
-        text: "本站所有景点均由东京夜景导航编辑部亲自走访拍摄。评分依据美丽度、交通便利、氛围及性价比四项指标评定。",
-        aboutLinkText: "关于本站",
-        guidelinesLinkText: "评分标准",
       },
     },
     searchPage: {

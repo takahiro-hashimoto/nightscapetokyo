@@ -11,7 +11,6 @@ type MapSectionLabels = {
   allLabel?: string;
   countLabel?: string;
   loadingLabel?: string;
-  intro?: string;
 };
 
 const JA_LABELS: MapSectionLabels = {
@@ -59,7 +58,6 @@ export default function HomeMapSection({ spots, categories, labels = JA_LABELS, 
         <h2 className="home-section-heading" itemProp="name">
           {labels.heading}
         </h2>
-        {labels.intro && <p className="home-section-intro">{labels.intro}</p>}
         <p className="home-section-desc" itemProp="description">
           {labels.desc(spots.length)}
         </p>

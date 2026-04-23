@@ -27,7 +27,6 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
         <h2 className="home-section-heading">
           {labels?.heading(currentYear) ?? `東京都内の夜景スポット ランキング【${currentYear}年】`}
         </h2>
-        {labels?.intro && <p className="home-section-intro">{labels.intro}</p>}
         <p className="home-section-desc">
           {labels?.desc1 ?? "実際に訪問した200ヶ所以上の東京の夜景スポットの中からおすすめの場所をランキング形式でご紹介！"}
         </p>

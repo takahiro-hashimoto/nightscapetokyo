@@ -24,7 +24,6 @@ export default function AreaSearch({ areas, labels, localeSlug }: Props) {
         <h2 className="home-section-heading">
           {labels?.heading ?? "エリア別に夜景が綺麗な場所を探す"}
         </h2>
-        {labels?.intro && <p className="home-section-intro">{labels.intro}</p>}
         {labels?.desc && (
           <p className="home-section-desc">{labels.desc}</p>
         )}

@@ -32,7 +32,6 @@ export default function PurposeSearch({ tags, labels, localeSlug }: Props) {
         <h2 className="home-section-heading">
           {labels?.heading ?? "目的別に夜景が綺麗な場所を探す"}
         </h2>
-        {labels?.intro && <p className="home-section-intro">{labels.intro}</p>}
         {labels?.desc && (
           <p className="home-section-desc">{labels.desc}</p>
         )}
