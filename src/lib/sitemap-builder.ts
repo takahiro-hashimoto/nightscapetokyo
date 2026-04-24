@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
-import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_TO_SLUG } from "@/lib/types";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_CONFIG, LOCALE_TO_SLUG } from "@/lib/types";
 import { getAllPostsSummary } from "@/lib/luminar/articles-meta";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -13,12 +13,9 @@ async function getDb() {
 
 type Row = Record<string, any>;
 
-const LOCALE_HREFLANG: Record<string, string> = {
-  en: "en",
-  ko: "ko",
-  tw: "zh-Hant",
-  cn: "zh-Hans",
-};
+const LOCALE_HREFLANG: Record<string, string> = Object.fromEntries(
+  Object.entries(LOCALE_CONFIG).map(([slug, c]) => [slug, c.htmlLang])
+);
 
 export type SitemapUrl = {
   loc: string;
@@ -147,7 +144,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   const staticPages = [
     "/about", "/contact", "/guidelines", "/privacy-policy",
     "/caution", "/links", "/sitemap",
-    "/time-lapse", "/search", "/wallpaper",
+    "/time-lapse", "/wallpaper",
   ];
   for (const page of staticPages) {
     const alts = buildAlternates(page);
@@ -170,10 +167,24 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   // simulator (JA only)
   result.ja.push({ loc: `${SITE_URL}/simulator/`, changefreq: "monthly", priority: 0.5 });
 
-  // timelapse-calculator (JA only — DB外の静的ページ)
-  result.ja.push({ loc: `${SITE_URL}/article/timelapse-calculator/`, changefreq: "monthly", priority: 0.6 });
-
   if (!db) return result;
+
+  const { data: areaTranslationRows } = await db
+    .from("spot_translations")
+    .select("locale, spot:spots(category:categories(slug))")
+    .not("spot", "is", null) as { data: Row[] | null };
+
+  const areaLocaleMap = new Map<string, Set<string>>();
+  for (const row of areaTranslationRows ?? []) {
+    const spot = Array.isArray(row.spot) ? row.spot[0] : row.spot;
+    const category = Array.isArray(spot?.category) ? spot.category[0] : spot?.category;
+    const categorySlug = category?.slug as string | undefined;
+    const urlSlug = LOCALE_TO_SLUG[row.locale as string];
+    if (categorySlug && urlSlug) {
+      if (!areaLocaleMap.has(categorySlug)) areaLocaleMap.set(categorySlug, new Set());
+      areaLocaleMap.get(categorySlug)!.add(urlSlug);
+    }
+  }
 
   // ── エリア（カテゴリ）ページ ──
   // updated_at カラムが無い場合にフォールバック
@@ -194,7 +205,10 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
 
   for (const cat of categories ?? []) {
     const jaPath = `/${cat.slug}`;
-    const alts = buildAlternates(jaPath);
+    const availableLocales = areaLocaleMap.get(cat.slug as string) ?? new Set<string>();
+    const alts = availableLocales.size > 0
+      ? buildPartialAlternates(jaPath, [...availableLocales])
+      : undefined;
     const lastmod = cat.updated_at ? new Date(cat.updated_at).toISOString() : undefined;
     result.ja.push({
       loc: `${SITE_URL}${jaPath}/`,
@@ -203,7 +217,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
       priority: 0.8,
       alternates: alts,
     });
-    for (const slug of locales) {
+    for (const slug of availableLocales) {
       result[slug as keyof AllEntries].push({
         loc: `${SITE_URL}/${slug}${jaPath}/`,
         lastmod,
@@ -383,7 +397,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   }
 
   return result;
-}, ["sitemap-all-entries"], { revalidate: 3600, tags: ["spots", "areas", "articles"] });
+}, ["sitemap-all-entries"], { revalidate: 3600, tags: ["spots", "areas", "articles", "tags", "tag-pages", "translations"] });
 
 /**
  * Convert a list of SitemapUrl entries to XML string.

@@ -21,7 +21,7 @@ import {
   getPurposeTags,
   getTotalSpotCount,
   getMapSpotsByCategory,
-  getSpotsForMap,
+  getSpotsForMapTranslated,
 } from "@/lib/supabase/queries";
 import AreaMapLoader from "@/components/map/AreaMapLoader";
 import RecommendCta from "@/components/common/RecommendCta";
@@ -41,6 +41,7 @@ import type { SpotListItem } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { calculateSunData } from "@/lib/sun-calc";
 import { buildFaqJsonLd, buildItemListJsonLd, buildAreaItemListJsonLd, buildCollectionPageJsonLd, localeToLanguage } from "@/lib/json-ld";
+import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 
 type Props = {
   params: Promise<{ category: string }>;
@@ -165,8 +166,11 @@ function generateAreaFaq(
 
 const NON_AREA_SLUGS = ["article", "pickup", "event"];
 
-
 export async function generateStaticParams() {
+  if (shouldSkipStaticGenerationForPreview()) {
+    return [];
+  }
+
   const areas = await getAreas();
   const areaParams = areas
     .filter((a) => !NON_AREA_SLUGS.includes(a.slug))
@@ -282,7 +286,7 @@ export default async function AreaPage({ params }: Props) {
       getAreasTranslated(localeSlug).catch(() => []),
       getPurposeTags().catch(() => []),
       getTotalSpotCount().catch(() => 200),
-      getSpotsForMap().catch(() => []),
+      getSpotsForMapTranslated(localeSlug).catch(() => []),
     ]);
 
     const faqItems = hp.faq.items;
@@ -311,7 +315,7 @@ export default async function AreaPage({ params }: Props) {
         <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={hp.faq} />
         <HomeAuthor locale={localeSlug} />
         <SpotShare
-          url={`${SITE_URL}/${localeSlug}`}
+          url={`${SITE_URL}/${localeSlug}/`}
           title={hp.hero.subtitle(spotCount)}
           locale={localeSlug}
           labels={labels.share}
@@ -372,7 +376,7 @@ export default async function AreaPage({ params }: Props) {
     <div className="l-article-body" itemScope itemType="https://schema.org/CollectionPage">
       <meta itemProp="name" content={`${displayName}の夜景スポット一覧`} />
       <meta itemProp="description" content={areaDescription} />
-      <link itemProp="url" href={`${SITE_URL}/${categorySlug}`} />
+      <link itemProp="url" href={`${SITE_URL}/${categorySlug}/`} />
       <div className="l-article-container">
         <LanguageSwitcher
           currentLocale={null}
@@ -443,7 +447,7 @@ export default async function AreaPage({ params }: Props) {
             <ul className="related-areas-list">
               {relatedAreas.map((area) => (
                 <li key={area.slug}>
-                  <Link href={`/${area.slug}`} className="related-area-link">
+                  <Link href={`/${area.slug}/`} className="related-area-link">
                     {area.name}の夜景
                   </Link>
                 </li>
@@ -454,7 +458,7 @@ export default async function AreaPage({ params }: Props) {
 
         <RecommendCta locale={null} />
         <SpotShare
-          url={`${SITE_URL}/${categorySlug}`}
+          url={`${SITE_URL}/${categorySlug}/`}
           title={`${displayName}の夜景スポット一覧`}
           labels={getComponentLabels("ja").share}
         />
@@ -467,7 +471,7 @@ export default async function AreaPage({ params }: Props) {
               buildCollectionPageJsonLd({
                 name: `${displayName}の夜景スポット一覧`,
                 description: areaDescription,
-                url: `${SITE_URL}/${categorySlug}`,
+                url: `${SITE_URL}/${categorySlug}/`,
                 numberOfItems: spots.length,
               })
             ),

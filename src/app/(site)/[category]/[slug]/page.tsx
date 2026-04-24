@@ -7,7 +7,6 @@ import {
   getAllSpotSlugs,
   getAvailableTranslations,
   getRelatedSpots,
-  getRecommendedSpotsByTags,
   getSpotsByCategoryTranslated,
   getCategoryBySlug,
   getTranslatedAreaSlugs,
@@ -16,9 +15,10 @@ import {
   getTopSpots,
 } from "@/lib/supabase/queries";
 import { TOKYO_AREA_SLUGS } from "@/lib/constants";
-import { ALL_LOCALE_SLUGS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, SITE_URL, buildAreaHreflangAlternates, OG_LOCALE_MAP, SITE_NAMES } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { buildSpotMetadata } from "@/lib/metadata";
+import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 
 /*
  * このルートは2つのケースを処理する:
@@ -31,21 +31,14 @@ type Props = {
   params: Promise<{ category: string; slug: string }>;
 };
 
-const OG_LOCALE_MAP: Record<string, string> = {
-  en: "en_US",
-  ko: "ko_KR",
-  tw: "zh_TW",
-  cn: "zh_CN",
-};
-
-const LOCALE_SITE_NAME: Record<string, string> = {
-  en: "Tokyo Night View Guide",
-  ko: "도쿄 야경 가이드",
-  tw: "東京夜景導覽",
-  cn: "东京夜景导览",
-};
 
 export async function generateStaticParams() {
+  if (shouldSkipStaticGenerationForPreview()) {
+    return [];
+  }
+
+  // Pattern A: スポット詳細 → { category: "chiyoda", slug: "wadakura-park" }
+  // Pattern B: 翻訳エリア  → { category: "en",      slug: "chiyoda" }
   const [spotSlugs, areaSlugs] = await Promise.all([
     getAllSpotSlugs(),
     getTranslatedAreaSlugs(),
@@ -53,7 +46,7 @@ export async function generateStaticParams() {
 
   return [
     ...spotSlugs.map((s) => ({ category: s.category, slug: s.slug })),
-    ...areaSlugs.map((s) => ({ category: s.locale, slug: s.category })),
+    ...areaSlugs.map((s) => ({ category: s.locale,    slug: s.category })),
   ];
 }
 
@@ -67,12 +60,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       getSpotsByCategoryTranslated(slug, category),
       getAvailableAreaLocales(slug),
     ]);
-    if (!cat) return {};
+    if (!cat || !availableLocales.includes(category)) return {};
 
     const translatedAreaName = spots[0]?.category.name ?? cat.name;
     const labels = getComponentLabels(category);
     const areaTitle = labels.areaPage.title(translatedAreaName);
-    const siteName = LOCALE_SITE_NAME[category] ?? "Tokyo Night View Guide";
+    const siteName = SITE_NAMES[category] ?? "Tokyo Night View Guide";
     const title = `${areaTitle} | ${siteName}`;
     const description = labels.areaPage.lead(translatedAreaName, spots);
     const canonicalUrl = `${SITE_URL}/${category}/${slug}/`;
@@ -104,10 +97,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const spot = await getSpotBySlug(category, slug);
   if (!spot) return {};
 
-  // getSpotBySlug は react.cache でメモ化済みのため page component と重複しない
-  const [translations] = await Promise.all([
-    getAvailableTranslations(spot.id),
-  ]);
+  const translations = await getAvailableTranslations(spot.id);
   const labels = getComponentLabels("ja");
 
   return buildSpotMetadata(spot, labels, category, slug, "ja", translations.map((t) => t.locale));
@@ -127,7 +117,7 @@ export default async function SpotOrAreaPage({ params }: Props) {
       getAvailableAreaLocales(slug),
       getMapSpotsByCategory(slug),
     ]);
-    if (!cat) notFound();
+    if (!cat || !availableLocales.includes(category)) notFound();
 
     const translatedAreaName = spots[0]?.category.name ?? cat.name;
     const labels = getComponentLabels(category);
@@ -149,11 +139,9 @@ export default async function SpotOrAreaPage({ params }: Props) {
   const spot = await getSpotBySlug(category, slug);
   if (!spot) notFound();
 
-  const tagIds = spot.tags.map((t) => t.id);
-  const [translations, relatedSpots, recommendedSpots, topSpots] = await Promise.all([
+  const [translations, relatedSpots, topSpots] = await Promise.all([
     getAvailableTranslations(spot.id),
     getRelatedSpots(spot.category_id, spot.id, 8),
-    getRecommendedSpotsByTags(spot.id, spot.category_id, tagIds, 8),
     getTopSpots(60).catch(() => []),
   ]);
 
@@ -177,7 +165,6 @@ export default async function SpotOrAreaPage({ params }: Props) {
       availableLocales={translations.map((t) => t.locale)}
       isRecommended={isRecommended}
       relatedSpots={relatedSpots}
-      recommendedSpots={recommendedSpots}
     />
   );
 }

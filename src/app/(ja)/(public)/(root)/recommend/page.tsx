@@ -1,48 +1,26 @@
 import type { Metadata } from "next";
 import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { getTopSpots, getSpotsBySlugs, getTotalSpotCount, type MapSpotItem } from "@/lib/supabase/queries";
-import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
-import type { TagPageContent } from "@/lib/dummy-tag-data";
+import { getTopSpotsWithRelations, getTotalSpotCount } from "@/lib/supabase/queries";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
 import { TOKYO_AREA_SLUGS } from "@/lib/constants";
+import {
+  buildRecommendMetadata,
+  buildRecommendPageData,
+} from "@/lib/recommend-page";
 
 const TITLE = "東京都内のおすすめ夜景スポットランキング30";
 const DESCRIPTION =
   "東京の夜景スポットを実際に訪問した編集部が、特におすすめの30ヶ所を厳選してご紹介。展望台・ホテル・公園など、デートや撮影スポット選びにお役立てください。";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const canonicalUrl = `${SITE_URL}/recommend/`;
+export function generateMetadata(): Metadata {
   const currentYear = new Date().getFullYear();
-  const metaTitle = `${TITLE}【${currentYear}年版】`;
-  const modifiedTime = `${currentYear}-04-15T00:00:00+09:00`;
-
-  const heroImage = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/02/skytree-02.jpg";
-
-  return {
-    title: metaTitle,
+  return buildRecommendMetadata({
+    title: `${TITLE}【${currentYear}年版】`,
     description: DESCRIPTION,
-    openGraph: {
-      type: "article",
-      title: metaTitle,
-      description: DESCRIPTION,
-      url: canonicalUrl,
-      siteName: "nightscape.tokyo",
-      locale: "ja_JP",
-      alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
-      images: heroImage ? [{ url: heroImage, width: 1200, height: 630, alt: metaTitle }] : undefined,
-      modifiedTime,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: metaTitle,
-      description: DESCRIPTION,
-      images: heroImage ? [heroImage] : undefined,
-    },
-    alternates: {
-      canonical: canonicalUrl,
-      languages: buildAreaHreflangAlternates(SITE_URL, "recommend", ALL_LOCALE_SLUGS),
-    },
-  };
+    localeSlug: "ja",
+    availableLocales: ALL_LOCALE_SLUGS,
+  });
 }
 
 export const revalidate = 86400;
@@ -52,52 +30,26 @@ export default async function RecommendPage() {
   const currentYear = new Date().getFullYear();
 
   const [allTopSpots, totalCount] = await Promise.all([
-    getTopSpots(60).catch(() => []),
+    getTopSpotsWithRelations(90).catch(() => []),
     getTotalSpotCount().catch(() => 0),
   ]);
 
   // 東京都内のカテゴリーのみに絞り込み・閉鎖済み除外・上位30件を取得
-  const topSpots = allTopSpots
-    .filter((s) => TOKYO_AREA_SLUGS.has(s.category.slug) && !s.closed)
+  const sortedSpots = allTopSpots
+    .filter((s) => TOKYO_AREA_SLUGS.has(s.category?.slug ?? "") && !s.closed)
+    .sort((a, b) => {
+      const rA = (a.rating_beautiful ?? 0) + (a.rating_access ?? 0) + (a.rating_atmosphere ?? 0) + (a.rating_cost ?? 0);
+      const rB = (b.rating_beautiful ?? 0) + (b.rating_access ?? 0) + (b.rating_atmosphere ?? 0) + (b.rating_cost ?? 0);
+      return rB - rA;
+    })
     .slice(0, 30);
 
-  // スラグリストを評価順で保持
-  const slugs = topSpots.map((s) => s.slug);
-  const ratingMap = new Map(topSpots.map((s) => [s.slug, s.rating_avg]));
-
-  // フルデータを取得し、評価順に並び替え
-  const fullSpots = await getSpotsBySlugs(slugs).catch(() => []);
-  const sortedSpots = [...fullSpots].sort(
-    (a, b) => (ratingMap.get(b.slug) ?? 0) - (ratingMap.get(a.slug) ?? 0)
-  );
-
-  const sections: TagPageContent["sections"] = [
-    {
-      key: "all",
-      heading: "",
-      intro: "",
-      spotSlugs: sortedSpots.map((s) => s.slug),
-    },
-  ];
-
-  // recommend_descriptionが設定されていればそれを、なければleadを使用
-  const descriptions: Record<string, string> = Object.fromEntries(
-    sortedSpots.map((s) => [s.slug, s.recommend_description || s.lead || ""])
-  );
-
-  const heroImage = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/02/skytree-02.jpg";
-
   const leadCount = totalCount > 0 ? `当サイトに掲載中の${totalCount}スポット` : "東京の夜景スポット";
-
-  const content: TagPageContent = {
+  const { content, mapSpots } = buildRecommendPageData({
+    spots: sortedSpots,
     title: `${TITLE}【${currentYear}年版】`,
     breadcrumb: "東京都内のおすすめ夜景スポットランキング30",
-    heroImage,
-    updatedAt: `${currentYear}.04.15`,
-    prNotice: "",
-    lead: `${leadCount}の中から、実際に訪問した編集部が特におすすめの30ヶ所を厳選してご紹介します。\n展望台・ホテル・公園など多彩なジャンルから、デートや夜景撮影に役立つ情報をお届けします。気になるスポットはぜひ詳細ページもチェックしてみてください。`,
-    sections,
-    descriptions,
+    leadText: `${leadCount}の中から、実際に訪問した編集部が特におすすめの30ヶ所を厳選してご紹介します。\n展望台・ホテル・公園など多彩なジャンルから、デートや夜景撮影に役立つ情報をお届けします。気になるスポットはぜひ詳細ページもチェックしてみてください。`,
     faqs: [
       {
         question: "東京で一番おすすめの夜景スポットはどこですか？",
@@ -122,22 +74,7 @@ export default async function RecommendPage() {
           "はい、東京には無料で楽しめる夜景スポットも多数あります。公園や橋などの公共スペースから東京の夜景を楽しめる場所も本記事に含まれています。各スポットの詳細ページで料金情報をご確認ください。",
       },
     ],
-  };
-
-  // 座標があるスポットだけマップ用に変換
-  const mapSpots: MapSpotItem[] = sortedSpots
-    .filter((s) => s.latitude != null && s.longitude != null)
-    .map((s) => ({
-      id: s.id,
-      slug: s.slug,
-      name: s.name || s.title,
-      featured_image: s.featured_image || "",
-      categorySlug: s.category?.slug ?? "",
-      categoryName: s.category?.name ?? "",
-      latitude: s.latitude as number,
-      longitude: s.longitude as number,
-      rating_avg: ratingMap.get(s.slug) ?? 0,
-    }));
+  });
 
   return (
     <>
@@ -152,7 +89,7 @@ export default async function RecommendPage() {
         content={content}
         allSpots={sortedSpots}
         mapSpots={mapSpots}
-        shareUrl={`${SITE_URL}/recommend`}
+        shareUrl={`${SITE_URL}/recommend/`}
         showRank
       />
     </>

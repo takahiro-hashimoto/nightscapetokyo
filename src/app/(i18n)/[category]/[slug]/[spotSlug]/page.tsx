@@ -6,11 +6,11 @@ import {
   getAllTranslatedSlugs,
   getAvailableTranslations,
   getRelatedSpotsTranslated,
-  getRecommendedSpotsByTagsTranslated,
 } from "@/lib/supabase/queries";
 import { ALL_LOCALE_SLUGS } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { buildSpotMetadata } from "@/lib/metadata";
+import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 
 /*
  * URL: /en/shibuya/shibuya-sky, /tw/shibuya/shibuya-sky
@@ -24,6 +24,10 @@ type Props = {
 };
 
 export async function generateStaticParams() {
+  if (shouldSkipStaticGenerationForPreview()) {
+    return [];
+  }
+
   const slugs = await getAllTranslatedSlugs();
   return slugs.map((s) => ({
     category: s.locale,
@@ -49,6 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 86400;
+export const fetchCache = "force-cache";
 
 export default async function TranslatedSpotPage({ params }: Props) {
   const { category: localeSlug, slug: categorySlug, spotSlug } = await params;
@@ -57,11 +62,9 @@ export default async function TranslatedSpotPage({ params }: Props) {
   const spot = await getSpotWithTranslation(categorySlug, spotSlug, localeSlug);
   if (!spot) notFound();
 
-  const tagIds = spot.tags.map((t) => t.id);
-  const [translations, relatedSpots, recommendedSpots] = await Promise.all([
+  const [translations, relatedSpots] = await Promise.all([
     getAvailableTranslations(spot.id),
     getRelatedSpotsTranslated(spot.category_id, spot.id, localeSlug, 8),
-    getRecommendedSpotsByTagsTranslated(spot.id, spot.category_id, tagIds, localeSlug, 8),
   ]);
   const labels = getComponentLabels(localeSlug);
 
@@ -74,9 +77,7 @@ export default async function TranslatedSpotPage({ params }: Props) {
         categorySlug={categorySlug}
         spotSlug={spotSlug}
         availableLocales={translations.map((t) => t.locale)}
-
         relatedSpots={relatedSpots}
-        recommendedSpots={recommendedSpots}
       />
     </>
   );

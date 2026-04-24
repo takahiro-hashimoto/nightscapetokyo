@@ -23,12 +23,17 @@ import TimeLapseCalculatorScript from "@/components/article/TimeLapseCalculatorS
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
 import LuminarBridge from "@/components/luminar/LuminarBridge";
+import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
+  if (shouldSkipStaticGenerationForPreview()) {
+    return [];
+  }
+
   const slugs = await getAllArticleSlugs();
   return slugs.map((s) => ({ slug: s.slug }));
 }

@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { getTopSpotsTranslated, getSpotsBySlugsTranslated, getTotalSpotCount, type MapSpotItem } from "@/lib/supabase/queries";
-import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
+import { getTopSpotsTranslated, getSpotsBySlugsTranslated, getTotalSpotCount } from "@/lib/supabase/queries";
+import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { AREA_NAME } from "@/lib/constants";
-import type { TagPageContent } from "@/lib/dummy-tag-data";
+import {
+  buildRecommendMetadata,
+  buildRecommendPageData,
+} from "@/lib/recommend-page";
 
 /** 東京都内のカテゴリーslugセット（横浜など都外を除く） */
 const TOKYO_AREA_SLUGS = new Set(
@@ -133,26 +136,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: locale } = await params;
   const labels = RECOMMEND_LABELS[locale];
   if (!labels) return {};
+
   const currentYear = new Date().getFullYear();
-  const ogLocale = OG_LOCALE_MAP[locale] ?? "en_US";
-  const canonicalUrl = `${SITE_URL}/${locale}/recommend/`;
-  const metaTitle = `${labels.title}【${currentYear}】`;
-  return {
-    title: metaTitle,
+  return buildRecommendMetadata({
+    title: `${labels.title}【${currentYear}】`,
     description: labels.description,
-    openGraph: {
-      type: "article",
-      title: metaTitle,
-      description: labels.description,
-      url: canonicalUrl,
-      locale: ogLocale,
-      alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
-    },
-    alternates: {
-      canonical: canonicalUrl,
-      languages: buildAreaHreflangAlternates(SITE_URL, "recommend", ALL_LOCALE_SLUGS),
-    },
-  };
+    localeSlug: locale,
+    availableLocales: ALL_LOCALE_SLUGS,
+  });
 }
 
 export const revalidate = 86400;
@@ -181,49 +172,14 @@ export default async function RecommendPageI18n({ params }: Props) {
     (a, b) => (ratingMap.get(b.slug) ?? 0) - (ratingMap.get(a.slug) ?? 0)
   );
 
-  const sections: TagPageContent["sections"] = [
-    {
-      key: "all",
-      heading: "",
-      intro: "",
-      spotSlugs: sortedSpots.map((s) => s.slug),
-    },
-  ];
-
-  // 翻訳済み recommend_description を優先、なければ lead にフォールバック
-  const descriptions: Record<string, string> = Object.fromEntries(
-    sortedSpots.map((s) => [s.slug, s.recommend_description || s.lead || ""])
-  );
-
-  const heroImage = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/02/skytree-02.jpg";
   const leadText = totalCount > 0 ? labels.lead(totalCount) : labels.description;
-
-  const content: TagPageContent = {
+  const { content, mapSpots } = buildRecommendPageData({
+    spots: sortedSpots,
     title: `${labels.title}【${currentYear}】`,
     breadcrumb: labels.breadcrumb,
-    heroImage,
-    updatedAt: `${currentYear}.04.15`,
-    prNotice: "",
-    lead: leadText,
-    sections,
-    descriptions,
+    leadText,
     faqs: labels.faqs,
-  };
-
-  // 座標があるスポットだけマップ用に変換
-  const mapSpots: MapSpotItem[] = sortedSpots
-    .filter((s) => s.latitude != null && s.longitude != null)
-    .map((s) => ({
-      id: s.id,
-      slug: s.slug,
-      name: s.name || s.title,
-      featured_image: s.featured_image || "",
-      categorySlug: s.category?.slug ?? "",
-      categoryName: s.category?.name ?? "",
-      latitude: s.latitude as number,
-      longitude: s.longitude as number,
-      rating_avg: ratingMap.get(s.slug) ?? 0,
-    }));
+  });
 
   return (
     <>
@@ -239,7 +195,7 @@ export default async function RecommendPageI18n({ params }: Props) {
         allSpots={sortedSpots}
         mapSpots={mapSpots}
         locale={locale}
-        shareUrl={`${SITE_URL}/${locale}/recommend`}
+        shareUrl={`${SITE_URL}/${locale}/recommend/`}
         showRank
       />
     </>
