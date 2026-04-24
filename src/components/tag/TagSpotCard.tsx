@@ -8,7 +8,6 @@ import { TAG_SPOT_CARD_LABELS, TAG_SLIDER_LABELS, localizeAffiliateHtml } from "
 import TagImageSlider from "./TagImageSlider";
 import InfoTableCollapsible from "./InfoTableCollapsible";
 
-
 type Props = {
   spot: SpotWithRelations;
   description: string;
@@ -19,6 +18,112 @@ type Props = {
   compact?: boolean;
   deferRender?: boolean;
 };
+
+type InfoRowsProps = {
+  spot: SpotWithRelations;
+  avg: number;
+  ratingItems: { label: string; value: number }[];
+  isHotel: boolean;
+  l: (typeof TAG_SPOT_CARD_LABELS)["ja"];
+};
+
+function SpotInfoRows({ spot, avg, ratingItems, isHotel, l }: InfoRowsProps) {
+  return (
+    <>
+      {ratingItems.length > 0 && (
+        <tr>
+          <th scope="row">
+            <span className="th-icon">
+              <Star size={16} fill="currentColor" stroke="none" />
+            </span>
+            {l.rating}
+          </th>
+          <td>
+            <span className="article-star-wrapper">
+              <span className="article-star-rating">
+                {[1, 2, 3, 4, 5].map((i) => {
+                  const fill = Math.min(100, Math.max(0, (avg - (i - 1)) * 100));
+                  return (
+                    <span key={i} className="star-icon">
+                      <Star size={20} fill="#d1d5db" stroke="none" aria-hidden="true" />
+                      <span className="star-fill" style={{ width: `${fill}%` }}>
+                        <Star size={20} fill="#eab308" stroke="none" aria-hidden="true" />
+                      </span>
+                    </span>
+                  );
+                })}
+              </span>
+              <span className="article-star-score">{avg.toFixed(1)}</span>
+            </span>
+          </td>
+        </tr>
+      )}
+      {spot.address && (
+        <tr>
+          <th scope="row">
+            <span className="th-icon"><MapPin size={16} /></span>
+            {l.address}
+          </th>
+          <td>{spot.address}</td>
+        </tr>
+      )}
+      {!isHotel && spot.money && (
+        <tr>
+          <th scope="row">
+            <span className="th-icon"><Banknote size={16} /></span>
+            {l.fee}
+          </th>
+          <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.money) }} />
+        </tr>
+      )}
+      {!isHotel && spot.height && (
+        <tr>
+          <th scope="row">
+            <span className="th-icon"><Mountain size={16} /></span>
+            {l.height}
+          </th>
+          <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.height) }} />
+        </tr>
+      )}
+      {!isHotel && spot.hours && (
+        <tr>
+          <th scope="row">
+            <span className="th-icon"><Clock size={16} /></span>
+            {l.hours}
+          </th>
+          <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.hours) }} />
+        </tr>
+      )}
+      {spot.hotel?.checkin && (
+        <tr>
+          <th scope="row">
+            <span className="th-icon"><Clock size={16} /></span>
+            {l.checkin}
+          </th>
+          <td>{spot.hotel.checkin}</td>
+        </tr>
+      )}
+      {spot.hotel?.checkout && (
+        <tr>
+          <th scope="row">
+            <span className="th-icon"><Clock size={16} /></span>
+            {l.checkout}
+          </th>
+          <td>{spot.hotel.checkout}</td>
+        </tr>
+      )}
+      {spot.station && (
+        <tr>
+          <th scope="row">
+            <span className="th-icon"><Train size={16} /></span>
+            {l.station}
+          </th>
+          <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.station) }} />
+        </tr>
+      )}
+    </>
+  );
+}
 
 export default function TagSpotCard({
   spot,
@@ -56,6 +161,23 @@ export default function TagSpotCard({
     { label: "雰囲気", value: spot.rating_atmosphere },
     { label: "コスパ", value: spot.rating_cost },
   ].filter((r): r is { label: string; value: number } => r.value != null);
+
+  const infoTable = (
+    <div className="table-wrapper" style={{ marginTop: 24 }}>
+      <table className="info-table">
+        <caption className="visually-hidden">{l.facilityInfo(name)}</caption>
+        <tbody>
+          <SpotInfoRows
+            spot={spot}
+            avg={avg}
+            ratingItems={ratingItems}
+            isHotel={isHotel}
+            l={l}
+          />
+        </tbody>
+      </table>
+    </div>
+  );
 
   return (
     <article className={`content-card card-padding${deferRender ? " cv-auto" : ""}`}>
@@ -101,233 +223,11 @@ export default function TagSpotCard({
       {compact ? (
         <details className="itc-wrap" style={{ marginTop: 24 }}>
           <summary className="itc-btn">{l.expand}</summary>
-          <div className="table-wrapper">
-            <table className="info-table">
-              <caption className="visually-hidden">{l.facilityInfo(name)}</caption>
-              <tbody>
-                {ratingItems.length > 0 && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Star size={16} fill="currentColor" stroke="none" />
-                      </span>
-                      {l.rating}
-                    </th>
-                    <td>
-                      <span className="article-star-wrapper">
-                        <span className="article-star-rating">
-                          {[1, 2, 3, 4, 5].map((i) => {
-                            const fill = Math.min(100, Math.max(0, (avg - (i - 1)) * 100));
-                            return (
-                              <span key={i} className="star-icon">
-                                <Star size={20} fill="#d1d5db" stroke="none" aria-hidden="true" />
-                                <span className="star-fill" style={{ width: `${fill}%` }}>
-                                  <Star size={20} fill="#eab308" stroke="none" aria-hidden="true" />
-                                </span>
-                              </span>
-                            );
-                          })}
-                        </span>
-                        <span className="article-star-score">{avg.toFixed(1)}</span>
-                      </span>
-                    </td>
-                  </tr>
-                )}
-                {spot.address && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <MapPin size={16} />
-                      </span>
-                      {l.address}
-                    </th>
-                    <td>{spot.address}</td>
-                  </tr>
-                )}
-                {!isHotel && spot.money && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Banknote size={16} />
-                      </span>
-                      {l.fee}
-                    </th>
-                    <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.money) }} />
-                  </tr>
-                )}
-                {!isHotel && spot.height && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Mountain size={16} />
-                      </span>
-                      {l.height}
-                    </th>
-                    <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.height) }} />
-                  </tr>
-                )}
-                {!isHotel && spot.hours && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Clock size={16} />
-                      </span>
-                      {l.hours}
-                    </th>
-                    <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.hours) }} />
-                  </tr>
-                )}
-                {spot.hotel?.checkin && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Clock size={16} />
-                      </span>
-                      {l.checkin}
-                    </th>
-                    <td>{spot.hotel.checkin}</td>
-                  </tr>
-                )}
-                {spot.hotel?.checkout && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Clock size={16} />
-                      </span>
-                      {l.checkout}
-                    </th>
-                    <td>{spot.hotel.checkout}</td>
-                  </tr>
-                )}
-                {spot.station && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Train size={16} />
-                      </span>
-                      {l.station}
-                    </th>
-                    <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.station) }} />
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          {infoTable}
         </details>
       ) : (
         <InfoTableCollapsible expand={l.expand} collapse={l.collapse}>
-          <div className="table-wrapper" style={{ marginTop: 24 }}>
-            <table className="info-table">
-              <caption className="visually-hidden">{l.facilityInfo(name)}</caption>
-              <tbody>
-                {ratingItems.length > 0 && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Star size={16} fill="currentColor" stroke="none" />
-                      </span>
-                      {l.rating}
-                    </th>
-                    <td>
-                      <span className="article-star-wrapper">
-                        <span className="article-star-rating">
-                          {[1, 2, 3, 4, 5].map((i) => {
-                            const fill = Math.min(100, Math.max(0, (avg - (i - 1)) * 100));
-                            return (
-                              <span key={i} className="star-icon">
-                                <Star size={20} fill="#d1d5db" stroke="none" aria-hidden="true" />
-                                <span className="star-fill" style={{ width: `${fill}%` }}>
-                                  <Star size={20} fill="#eab308" stroke="none" aria-hidden="true" />
-                                </span>
-                              </span>
-                            );
-                          })}
-                        </span>
-                        <span className="article-star-score">{avg.toFixed(1)}</span>
-                      </span>
-                    </td>
-                  </tr>
-                )}
-                {spot.address && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <MapPin size={16} />
-                      </span>
-                      {l.address}
-                    </th>
-                    <td>{spot.address}</td>
-                  </tr>
-                )}
-                {!isHotel && spot.money && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Banknote size={16} />
-                      </span>
-                      {l.fee}
-                    </th>
-                    <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.money) }} />
-                  </tr>
-                )}
-                {!isHotel && spot.height && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Mountain size={16} />
-                      </span>
-                      {l.height}
-                    </th>
-                    <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.height) }} />
-                  </tr>
-                )}
-                {!isHotel && spot.hours && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Clock size={16} />
-                      </span>
-                      {l.hours}
-                    </th>
-                    <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.hours) }} />
-                  </tr>
-                )}
-                {spot.hotel?.checkin && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Clock size={16} />
-                      </span>
-                      {l.checkin}
-                    </th>
-                    <td>{spot.hotel.checkin}</td>
-                  </tr>
-                )}
-                {spot.hotel?.checkout && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Clock size={16} />
-                      </span>
-                      {l.checkout}
-                    </th>
-                    <td>{spot.hotel.checkout}</td>
-                  </tr>
-                )}
-                {spot.station && (
-                  <tr>
-                    <th scope="row">
-                      <span className="th-icon">
-                        <Train size={16} />
-                      </span>
-                      {l.station}
-                    </th>
-                    <td dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.station) }} />
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          {infoTable}
         </InfoTableCollapsible>
       )}
 

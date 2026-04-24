@@ -156,7 +156,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
                             <a href={`#section-${sec.key}`}>{sec.heading}</a>
                             <ol className="toc-sublist">
                               {sec.spots.map((s) => (
-                                <li key={s.slug}>
+                                <li key={`${sec.key}-${s.slug}`}>
                                   <a href={`#spot-${s.slug}`}>{s.name}</a>
                                 </li>
                               ))}
@@ -165,7 +165,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
                         ) : (
                           <Fragment key={sec.key}>
                             {sec.spots.map((s) => (
-                              <li key={s.slug}>
+                              <li key={`${sec.key}-${s.slug}`}>
                                 <a href={`#spot-${s.slug}`}>{s.name}</a>
                               </li>
                             ))}
