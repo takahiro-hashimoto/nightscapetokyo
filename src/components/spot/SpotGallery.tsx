@@ -134,6 +134,7 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
               alt={current.alt || ""}
               width={1200}
               height={800}
+              sizes="(max-width: 768px) 1000px, 1200px"
               className="gallery-modal-image"
             />
             {/* キャプション + カウンター */}

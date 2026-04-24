@@ -78,14 +78,6 @@ export default function SpotArticle({
     <div className="l-article-body">
       <DevEditLink spotId={spot.id} />
       <div className="l-article-container">
-        {jsonLdSchemas.map((schema, i) => (
-          <script
-            key={i}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-          />
-        ))}
-
         <Breadcrumb
           locale={currentLocale}
           items={[
@@ -111,6 +103,13 @@ export default function SpotArticle({
           itemScope
           itemType="https://schema.org/TouristAttraction"
         >
+          {jsonLdSchemas.map((schema, i) => (
+            <script
+              key={i}
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+            />
+          ))}
           <SpotHero
             seoTitle={seoTitle}
             visualTitle={spot.name}

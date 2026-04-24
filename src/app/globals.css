@@ -2208,7 +2208,7 @@ main > .home-section:nth-child(even of .home-section) {
 
 .amazon-card-button {
   display: block;
-  background: #1a1a1a;
+  background: #e8911a;
   color: #fff !important;
   text-align: center;
   font-size: 14px;
@@ -2220,14 +2220,26 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .amazon-card-button:hover {
-  background: #333;
+  background: #d17a0e;
   opacity: 1;
 }
 
 @media (max-width: 480px) {
+  .amazon-card-inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
   .amazon-card-image-wrap {
-    width: 72px;
-    height: 72px;
+    order: -1;
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+  }
+
+  .amazon-card-info {
+    width: 100%;
   }
 
   .amazon-card-title {
