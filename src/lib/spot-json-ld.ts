@@ -1,12 +1,13 @@
 import type { SpotWithRelations } from "@/lib/types";
+import { SITE_URL } from "@/lib/types";
 
-/** ロケール別 VideoObject ラベル */
+/** ロケール別 VideoObject ラベル（キーは BCP 47: LOCALE_CONFIG.htmlLang に対応） */
 const VIDEO_LABELS: Record<string, { nameSuffix: string; fallbackDesc: string }> = {
-  ja:    { nameSuffix: "の夜景動画",       fallbackDesc: "の夜景・夕景映像" },
-  en:    { nameSuffix: " Night View Video", fallbackDesc: " night view footage" },
-  ko:    { nameSuffix: " 야경 동영상",      fallbackDesc: " 야경 영상" },
-  "zh-TW": { nameSuffix: " 夜景影片",      fallbackDesc: " 夜景影片" },
-  "zh-CN": { nameSuffix: " 夜景视频",      fallbackDesc: " 夜景视频" },
+  ja:       { nameSuffix: "の夜景動画",        fallbackDesc: "の夜景・夕景映像" },
+  en:       { nameSuffix: " Night View Video", fallbackDesc: " night view footage" },
+  ko:       { nameSuffix: " 야경 동영상",       fallbackDesc: " 야경 영상" },
+  "zh-Hant": { nameSuffix: " 夜景影片",        fallbackDesc: " 夜景影片" },
+  "zh-Hans": { nameSuffix: " 夜景视频",        fallbackDesc: " 夜景视频" },
 };
 
 /** YouTube embed HTML から動画IDを抽出 */
@@ -58,9 +59,10 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
       };
     }
   } else {
+    const isHotel = spot.type === "hotel";
     mainSchema = {
       "@context": "https://schema.org",
-      "@type": "TouristAttraction",
+      "@type": isHotel ? "LodgingBusiness" : "TouristAttraction",
       name,
       url: canonicalUrl,
       inLanguage: locale,
@@ -123,20 +125,21 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
     headline: name,
     ...(spot.lead && { description: spot.lead }),
     url: canonicalUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     ...(spot.featured_image && { image: spot.featured_image }),
     datePublished: spot.published_at ?? spot.created_at,
     dateModified: spot.updated_at,
     inLanguage: locale,
     author: {
-      "@type": "Organization",
-      name: "nightscape.tokyo",
-      url: "https://nightscape.tokyo",
+      "@type": "Person",
+      name: "タカヒロ",
+      url: `${SITE_URL}/about/`,
     },
     publisher: {
       "@type": "Organization",
       name: "nightscape.tokyo",
-      url: "https://nightscape.tokyo",
-      logo: { "@type": "ImageObject", url: "https://nightscape.tokyo/logo.png" },
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
     },
   };
 

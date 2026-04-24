@@ -3,18 +3,18 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles, getSpotImagesBySlugs } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";
 import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks, convertPostLinks, convertShortcodes, wrapTables } from "@/lib/sanitize";
-import { prefetchAmazonProducts } from "@/lib/amazon";
-import { prefetchOgpData } from "@/lib/ogp";
+import { prefetchAmazonProducts, type AmazonProduct } from "@/lib/amazon";
+import { prefetchOgpData, type OgpData } from "@/lib/ogp";
 import { ARTICLE_SPOT_LINKS } from "@/lib/article-spot-links";
 
 function articleThumbnail(url: string | null | undefined): string | null {
   return url ? toR2Url(url) : null;
 }
 import { buildToc } from "@/lib/toc";
-import Footer from "@/components/layout/Footer";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import SpotShare from "@/components/spot/SpotShare";
 import TwitterEmbed from "@/components/luminar/TwitterEmbed";
@@ -80,11 +80,12 @@ export default async function ArticleDetailPage({ params }: Props) {
   if (!article) notFound();
 
   const publishedDate = article.published_at ?? article.created_at;
-  const related = await getRelatedArticles(slug, 6);
   const thumbnail = article.thumbnail ? toR2Url(article.thumbnail) : null;
+  const rawContent = article.content ?? "";
+  const hasTwitterEmbed = rawContent.includes("twitter-tweet");
   const h3SpotLinks = ARTICLE_SPOT_LINKS[slug] ?? {};
 
-  // スポットスラグを収集してfeatured_imageを一括取得
+  // スポットスラグを収集（同期）
   const allSpotSlugs = [
     ...new Set(
       Object.values(h3SpotLinks)
@@ -93,7 +94,21 @@ export default async function ArticleDetailPage({ params }: Props) {
         .filter(Boolean)
     ),
   ];
-  const spotImages = await getSpotImagesBySlugs(allSpotSlugs);
+
+  const ogpTimeout = new Promise<Map<string, OgpData>>((resolve) =>
+    setTimeout(() => resolve(new Map()), 300)
+  );
+  const amazonTimeout = new Promise<Map<string, AmazonProduct>>((resolve) =>
+    setTimeout(() => resolve(new Map()), 500)
+  );
+
+  // 関連記事・スポット画像・Amazon・OGP を並列取得
+  const [related, spotImages, amazonProducts, ogpData] = await Promise.all([
+    getRelatedArticles(slug, 6),
+    allSpotSlugs.length > 0 ? getSpotImagesBySlugs(allSpotSlugs) : Promise.resolve({} as Record<string, string>),
+    Promise.race([prefetchAmazonProducts(rawContent), amazonTimeout]),
+    Promise.race([prefetchOgpData(rawContent), ogpTimeout]),
+  ]);
 
   // h3SpotLinks に画像を付与
   const enrichedH3SpotLinks = Object.fromEntries(
@@ -105,12 +120,6 @@ export default async function ArticleDetailPage({ params }: Props) {
       })),
     ])
   );
-
-  const rawContent = article.content ?? "";
-  const [amazonProducts, ogpData] = await Promise.all([
-    prefetchAmazonProducts(rawContent),
-    prefetchOgpData(rawContent),
-  ]);
 
   const { html: processedContent, toc } = buildToc(
     injectH3SpotLinks(
@@ -137,8 +146,8 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   return (
     <>
-      <script src="https://platform.twitter.com/widgets.js" async />
-      <TwitterEmbed />
+      {hasTwitterEmbed && <Script src="https://platform.twitter.com/widgets.js" strategy="lazyOnload" />}
+      {hasTwitterEmbed && <TwitterEmbed />}
       {slug === "create-timelapse" && <TimeLapseCalculatorScript />}
       <div className="l-article-body">
         <div className="l-article-container">
@@ -160,6 +169,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                   headline: article.title,
                   ...(article.description && { description: article.description }),
                   url: `${SITE_URL}/article/${slug}/`,
+                  mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/article/${slug}/` },
                   ...(thumbnail && {
                     image: [{ "@type": "ImageObject", url: thumbnail, width: 1200, height: 630 }],
                   }),
@@ -268,7 +278,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           <AdSenseUnit {...ADS.ARTICLE_MULTI} className="my-6" />
 
           {related.length > 0 && (
-            <aside className="related-articles">
+            <aside className="related-articles" style={{ contentVisibility: "auto", containIntrinsicSize: "0 400px" }}>
               <h2 className="related-articles-heading">関連記事</h2>
               <ul className="article-list-grid">
                 {related.map((r) => (
@@ -310,7 +320,6 @@ export default async function ArticleDetailPage({ params }: Props) {
         title={article.title}
         labels={{ heading: "この記事が役に立ったらシェアしてください", x: "ポスト", line: "LINE", hatena: "はてブ", copy: "URLコピー", copied: "コピーしました" }}
       />
-      <Footer locale={null} />
     </>
   );
 }

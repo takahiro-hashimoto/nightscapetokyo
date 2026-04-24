@@ -2,16 +2,9 @@ import type { Metadata } from "next";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/HeaderWrapper";
 import RootShell from "@/components/layout/RootShell";
-import { LOCALE_HTML_LANG } from "@/lib/types";
+import { LOCALE_HTML_LANG, SITE_NAMES } from "@/lib/types";
 import { buildSiteNavigationJsonLdForLocale } from "@/lib/json-ld";
 import "../../globals.css";
-
-const LOCALE_SITE_NAME: Record<string, string> = {
-  en: "Tokyo Night View Guide",
-  ko: "도쿄 야경 가이드",
-  tw: "東京夜景導覽",
-  cn: "东京夜景导览",
-};
 
 export async function generateMetadata({
   params,
@@ -19,7 +12,7 @@ export async function generateMetadata({
   params: Promise<{ category: string }>;
 }): Promise<Metadata> {
   const { category: locale } = await params;
-  const siteName = LOCALE_SITE_NAME[locale];
+  const siteName = SITE_NAMES[locale];
   if (!siteName) return {};
   return {
     title: {
