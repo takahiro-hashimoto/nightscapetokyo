@@ -183,7 +183,7 @@ export default function TagSpotCard({
     <article className={`content-card card-padding${deferRender ? " cv-auto" : ""}`}>
       <Heading className="card-heading">{name}</Heading>
 
-      {!compact && spot.images && spot.images.length >= 2 ? (
+      {spot.images && spot.images.length >= 2 ? (
         <TagImageSlider
           images={spot.images
             .sort((a, b) => a.sort_order - b.sort_order)
@@ -220,16 +220,9 @@ export default function TagSpotCard({
         }}
       />
 
-      {compact ? (
-        <details className="itc-wrap" style={{ marginTop: 24 }}>
-          <summary className="itc-btn">{l.expand}</summary>
-          {infoTable}
-        </details>
-      ) : (
-        <InfoTableCollapsible expand={l.expand} collapse={l.collapse}>
-          {infoTable}
-        </InfoTableCollapsible>
-      )}
+      <InfoTableCollapsible expand={l.expand} collapse={l.collapse}>
+        {infoTable}
+      </InfoTableCollapsible>
 
       <div className="tag-detail-link-wrapper">
         <Link href={detailHref} className="tag-detail-link">
