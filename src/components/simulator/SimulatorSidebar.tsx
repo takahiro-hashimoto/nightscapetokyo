@@ -3,6 +3,8 @@
 import LocationSearch from "./LocationSearch";
 import DateNavigator from "./DateNavigator";
 import SunTimesDisplay from "./SunTimesDisplay";
+import AdSenseUnit from "@/components/ads/AdSenseUnit";
+import { ADS } from "@/lib/ads";
 
 interface SimulatorSidebarProps {
   sunriseTime: string | null;
@@ -97,6 +99,10 @@ export default function SimulatorSidebar({
               </a>
             </li>
           </ul>
+        </div>
+
+        <div className="sim-sidebar__section">
+          <AdSenseUnit {...ADS.SIMULATOR_SIDEBAR} />
         </div>
       </div>
     </div>

@@ -59,4 +59,15 @@ export const ADS = {
     format: "autorelaxed",
     label: "スポットMultiplex",
   },
+
+  /**
+   * シミュレーターサイドバー（SNSシェアボタン下）
+   * 形式: ディスプレイ（auto）
+   * 設置: src/components/simulator/SimulatorSidebar.tsx
+   */
+  SIMULATOR_SIDEBAR: {
+    slot: "2860460061",
+    format: "auto",
+    label: "シミュレーターサイドバー",
+  },
 } as const satisfies Record<string, AdSlotConfig>;
