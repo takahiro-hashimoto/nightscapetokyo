@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Breadcrumb from "./Breadcrumb";
 
 type BreadcrumbItem = { label: string; href?: string };
@@ -45,11 +46,13 @@ export default function ArticleLayout({
         {heroImage && (
           <div className="content-card">
             <div className="hero-image-container">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+                <Image
                 src={heroImage}
                 alt={heroAlt ?? title ?? ""}
+                fill
                 className="hero-image"
+                sizes="(max-width: 768px) 100vw, 880px"
+                priority
               />
             </div>
           </div>

@@ -5,7 +5,7 @@ import {
   isSupabaseConfigured,
   getSupabaseClient,
 } from "./shared";
-import { ARTICLE_RELATED_MAP, slugOverlapScore } from "@/lib/article-spot-links";
+import { ARTICLE_RELATED_MAP, computeArticleRelatedScore } from "@/lib/article-spot-links";
 
 export const getArticles = cache(unstable_cache(async (): Promise<Article[]> => {
   if (!isSupabaseConfigured) return [];
@@ -22,32 +22,32 @@ export const getArticles = cache(unstable_cache(async (): Promise<Article[]> => 
 export const getArticleBySlug = cache(async function getArticleBySlug(
   slug: string
 ): Promise<Article | null> {
-  if (!isSupabaseConfigured) return null;
-  const supabase = await getSupabaseClient();
-  const { data, error } = await supabase
-    .from("articles")
-    .select("*")
-    .eq("slug", slug)
-    .eq("published", true)
-    .single();
-  if (error || !data) return null;
-  return data as Article;
+  return unstable_cache(
+    async () => {
+      if (!isSupabaseConfigured) return null;
+      const supabase = await getSupabaseClient();
+      const { data, error } = await supabase
+        .from("articles")
+        .select("*")
+        .eq("slug", slug)
+        .eq("published", true)
+        .single();
+      if (error || !data) return null;
+      return data as Article;
+    },
+    [`article`, slug],
+    { revalidate: 3600, tags: ["articles", `article-${slug}`] }
+  )();
 });
 
 export async function getRelatedArticles(
   currentSlug: string,
   limit = 4
 ): Promise<Article[]> {
-  if (!isSupabaseConfigured) return [];
-  const supabase = await getSupabaseClient();
-  const { data, error } = await supabase
-    .from("articles")
-    .select("id, slug, title, description, thumbnail, published_at, created_at, updated_at, published")
-    .eq("published", true)
-    .neq("slug", currentSlug)
-    .order("published_at", { ascending: false });
-  if (error || !data) return [];
-  const candidates = data as Article[];
+  // getArticles() は unstable_cache でキャッシュ済みのため追加クエリ不要
+  const allArticles = await getArticles();
+  const current = allArticles.find((a) => a.slug === currentSlug);
+  const candidates = allArticles.filter((a) => a.slug !== currentSlug);
 
   // 1. 手動定義があればそのスラッグを優先
   const manualSlugs = ARTICLE_RELATED_MAP[currentSlug] ?? [];
@@ -56,18 +56,22 @@ export async function getRelatedArticles(
     .map((s) => candidates.find((a) => a.slug === s))
     .filter((a): a is Article => !!a);
 
-  // 2. 残り枠をスラッグキーワードの共通数でスコアリング
+  // 2. 残り枠をスラッグ・タイトル・説明文キーワードの複合スコアで選択
   const rest = candidates
     .filter((a) => !manualSet.has(a.slug))
-    .map((a) => ({ article: a, score: slugOverlapScore(currentSlug, a.slug) }))
-    .sort((a, b) => b.score - a.score || 0);
+    .map((a) => ({
+      article: a,
+      score: computeArticleRelatedScore(
+        { slug: currentSlug, title: current?.title, description: current?.description },
+        { slug: a.slug, title: a.title, description: a.description }
+      ),
+    }))
+    .sort((a, b) => b.score - a.score);
 
-  const combined = [
+  return [
     ...manualArticles,
     ...rest.map((r) => r.article),
-  ];
-
-  return combined.slice(0, limit);
+  ].slice(0, limit);
 }
 
 export async function getArticlesBySlugs(slugs: string[]): Promise<Article[]> {

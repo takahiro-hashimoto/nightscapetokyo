@@ -13,50 +13,11 @@ import SpotShare from "@/components/spot/SpotShare";
 import HomeAuthorCard from "@/components/common/HomeAuthorCard";
 import type { ReactNode } from "react";
 import type { SpotWithRelations, SiteLocale, SpotListItem } from "@/lib/types";
-import { SITE_URL, calcRatingAvg, LOCALE_SLUG_MAP } from "@/lib/types";
+import { LOCALE_SLUG_MAP } from "@/lib/types";
 import { TAG_ARTICLE_LABELS, getComponentLabels } from "@/lib/i18n-labels";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
 import type { MapSpotItem } from "@/lib/supabase/queries";
-
-
-/** ItemList JSON-LD: スポットを評価順でリスト化 */
-function buildItemListJsonLd(spots: SpotWithRelations[], bcp47Locale = "ja", name?: string, description?: string, urlSlug?: string) {
-  const prefix = urlSlug ? `/${urlSlug}` : "";
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    inLanguage: bcp47Locale,
-    ...(name && { name }),
-    ...(description && { description }),
-    itemListElement: spots
-      .map((s) => ({ spot: s, rating: calcRatingAvg(s) }))
-      .sort((a, b) => b.rating - a.rating)
-      .map(({ spot }, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        url: `${SITE_URL}${prefix}/${spot.category?.slug ?? ""}/${spot.slug}/`,
-        name: spot.name || spot.title,
-        ...(spot.featured_image && { image: spot.featured_image }),
-      })),
-  };
-}
-
-/** FAQPage JSON-LD */
-function buildFaqJsonLd(faqs: { question: string; answer: string }[], locale = "ja") {
-  return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    inLanguage: locale,
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-}
+import { buildTagItemListJsonLd, buildFaqJsonLd } from "@/lib/json-ld";
 
 type Props = {
   tagName: string;
@@ -249,7 +210,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
               .filter(({ spots }) => spots.length > 0)
               .map(({ section, spots }) => (
                 <section key={section.key} id={`section-${section.key}`} {...(section.heading ? { "aria-labelledby": `heading-${section.key}` } : {})}>
-                  {(section.heading || section.intro) && (
+                  {!!(section.heading || section.intro) && (
                     <div className="spot-section-header">
                       {section.heading && <h2 className="section-heading" id={`heading-${section.key}`}>{section.heading}</h2>}
                       {section.intro && <p className="section-intro">{section.intro}</p>}
@@ -355,7 +316,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(buildItemListJsonLd(allResolvedSpots, bcp47Locale, content.title, content.lead, locale)),
+              __html: JSON.stringify(buildTagItemListJsonLd(allResolvedSpots, { localePrefix: locale ? `/${locale}` : "", name: content.title, description: content.lead, inLanguage: bcp47Locale })),
             }}
           />
         )}
@@ -365,7 +326,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(buildFaqJsonLd(content.faqs, bcp47Locale)),
+              __html: JSON.stringify(buildFaqJsonLd(content.faqs, { inLanguage: bcp47Locale })),
             }}
           />
         )}

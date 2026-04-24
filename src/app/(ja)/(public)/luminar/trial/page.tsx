@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
+import MTabsInit from '@/components/luminar/MTabsInit'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
 
@@ -53,6 +54,8 @@ const lead = (
 
 export default async function Page() {
   return (
+    <>
+    <MTabsInit />
     <LuminarArticleLayout {...META} categoryIds={[1]} toc={TOC} lead={lead}>
 
       <section id="what-can-do" className="content-card card-padding article-body">
@@ -86,7 +89,7 @@ export default async function Page() {
 
       <section id="why-safe" className="content-card card-padding article-body">
         <h2>無料体験版が安心して使える3つの理由</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-plan-trial.jpg" alt="Luminar Neoの無料体験版が安心して使える3つの理由" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-plan-trial.jpg" alt="Luminar Neoの無料体験版が安心して使える3つの理由" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>「無料体験版」と聞くと、どこか警戒してしまう方も多いのではないでしょうか。海外のソフトウェアだと特に、解約し忘れて課金されていた…なんて話も聞きますよね。</p>
         <p>でも、Luminar Neoの体験版はそういった心配がありません。その理由を3つ説明します。</p>
         <h3>1. クレジットカード登録が不要</h3>
@@ -264,5 +267,6 @@ export default async function Page() {
       </section>
 
     </LuminarArticleLayout>
+    </>
   )
 }

@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Migration/data scripts and vanilla-JS simulator don't need strict TS rules
+    "scripts/**",
+    "simulator/**",
   ]),
   // Supabase クエリファイル: 動的クエリの戻り値が any になるのは避けられないため個別に無効化
   {

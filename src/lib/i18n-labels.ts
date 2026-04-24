@@ -207,6 +207,7 @@ export type AreaPageLabels = {
   mapHeading: (area: string) => string;
   mapCount: (area: string, n: number) => string;
   closedBadge: string;
+  emptyState: string;
 };
 
 export type SearchPageLabels = {
@@ -435,6 +436,7 @@ const LABELS = {
       mapHeading: (area) => `${area}の夜景スポットマップ`,
       closedBadge: "閉鎖済み",
       mapCount: (area, n) => `${area}エリアの夜景スポット ${n}件`,
+      emptyState: "このエリアにはまだ翻訳済みスポットがありません。",
     },
     homePage: {
       seoTitle: (year) => `【${year}年最新】東京の夜景スポットを定番から穴場まで200以上掲載 | 東京夜景ナビ`,
@@ -708,6 +710,7 @@ const LABELS = {
       mapHeading: (area) => `${area} Night View Map`,
       closedBadge: "Permanently Closed",
       mapCount: (area, n) => `${n} night view spots in ${area}`,
+      emptyState: "No translated spots available in this area yet.",
     },
     homePage: {
       seoTitle: (year) => `Best Tokyo Night View Spots in Japan (${year}) — 200+ Iconic & Hidden Gems | Tokyo Night View Guide`,
@@ -1024,6 +1027,7 @@ const LABELS = {
       mapHeading: (area) => `${area} 야경 스폿 지도`,
       closedBadge: "영구 폐쇄",
       mapCount: (area, n) => `${area} 야경 스폿 ${n}곳`,
+      emptyState: "아직 이 지역에 번역된 야경 명소가 없습니다.",
     },
     homePage: {
       seoTitle: (year) => `일본 도쿄 야경 명소 추천 ${year} — 관광・촬영에 딱! 200곳 이상 수록 | 도쿄 야경 가이드`,
@@ -1325,6 +1329,7 @@ const LABELS = {
       mapHeading: (area) => `${area}夜景景點地圖`,
       closedBadge: "永久關閉",
       mapCount: (area, n) => `${area}共有 ${n} 個夜景景點`,
+      emptyState: "此地區目前尚無已翻譯的景點。",
     },
     homePage: {
       seoTitle: (year) => `日本東京夜景景點推薦（${year}最新）— 觀光・攝影必去！收錄200處以上 | 東京夜景導覽`,
@@ -1626,6 +1631,7 @@ const LABELS = {
       mapHeading: (area) => `${area}夜景景点地图`,
       closedBadge: "永久关闭",
       mapCount: (area, n) => `${area}共有 ${n} 个夜景景点`,
+      emptyState: "此地区暂无已翻译的景点。",
     },
     homePage: {
       seoTitle: (year) => `日本东京夜景景点推荐（${year}最新）— 观光・摄影必去！收录200处以上 | 东京夜景导览`,

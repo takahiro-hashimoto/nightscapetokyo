@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Globe } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -16,11 +16,6 @@ type Props = {
   localeLabels: Record<string, string>;
 };
 
-// サーバーサイドでは false、クライアントでは true を返す（effect なし）
-const isClient = () => true;
-const isServer = () => false;
-const noSubscribe = () => () => {};
-
 export default function LanguageSwitcher({
   currentLocale,
   categorySlug,
@@ -29,7 +24,15 @@ export default function LanguageSwitcher({
   localeLabels,
 }: Props) {
   const router = useRouter();
-  const mounted = useSyncExternalStore(noSubscribe, isClient, isServer);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    // setTimeout(0) で hydration 完了後に実行し、MutationObserver(subtree) を回避
+    const id = setTimeout(() => {
+      setPortalTarget(document.getElementById("header-trailing"));
+    }, 0);
+    return () => clearTimeout(id);
+  }, []);
 
   if (availableLocales.length === 0) return null;
 
@@ -43,7 +46,8 @@ export default function LanguageSwitcher({
       : categorySlug
         ? `/${categorySlug}`
         : "";
-    router.push(`${prefix}${suffix}` || "/");
+    const path = `${prefix}${suffix}`;
+    router.push(path ? `${path}/` : "/");
   };
 
   const ariaLabel = LANG_SWITCHER_LABELS[currentValue as SiteLocale] ?? LANG_SWITCHER_LABELS.en;
@@ -70,9 +74,6 @@ export default function LanguageSwitcher({
     </div>
   );
 
-  // クライアントでのみ portal 描画（SSR では null）
-  if (!mounted) return null;
-  const portalTarget = document.getElementById("header-trailing");
   if (portalTarget) return createPortal(switcher, portalTarget);
   return null;
 }

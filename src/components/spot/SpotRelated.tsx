@@ -16,7 +16,7 @@ export default function SpotRelated({ spots, areaName, labels, localeSlug }: Pro
   if (spots.length === 0) return null;
 
   return (
-    <section className="related-section">
+    <section className="related-section cv-auto">
       <h3 className="related-heading">
         {labels.heading(areaName)}
       </h3>
@@ -24,7 +24,7 @@ export default function SpotRelated({ spots, areaName, labels, localeSlug }: Pro
         {spots.map((spot) => (
           <li key={spot.id}>
             <Link
-              href={localeSlug ? `/${localeSlug}/${spot.category.slug}/${spot.slug}` : `/${spot.category.slug}/${spot.slug}`}
+              href={localeSlug ? `/${localeSlug}/${spot.category.slug}/${spot.slug}/` : `/${spot.category.slug}/${spot.slug}/`}
               className="spot-card"
             >
               <div className="spot-card-image">

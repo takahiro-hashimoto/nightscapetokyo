@@ -56,7 +56,7 @@ export default async function Page() {
 
       <section id="about" className="content-card card-padding article-body">
         <h2>そもそもLuminar Neo（ルミナーネオ）ってどんなソフト？</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/about-luminar-neo.jpg" alt="Luminar Neo（ルミナーネオ）の編集画面" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/about-luminar-neo.jpg" alt="Luminar Neo（ルミナーネオ）の編集画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>まずは簡単にLuminar Neoについておさらいしておきましょう。</p>
         <p>Luminar Neoは、ウクライナの<strong>Skylum（スカイラム）社</strong>が開発したRAW現像・画像編集ソフトです。最大の特徴は、<strong>AI（人工知能）を活用した編集機能</strong>が満載なこと。</p>
         <p>従来の写真編集って、「露出を+0.5に」「ハイライトを-30に」みたいに、数値をいじりながら調整していくスタイルですよね。Lightroomを使っている方なら、スライダーをちまちま動かす作業に馴染みがあると思います。</p>
@@ -81,7 +81,7 @@ export default async function Page() {
         <p>それでは、ここからは実際にLuminar Neoを長期間使ってみて感じた「良い点」と「イマイチな点」を詳しく紹介していきます！</p>
 
         <h3 id="ui">UIがシンプルで分かりやすい</h3>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-edit.jpg" alt="Luminar Neoの編集画面" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-edit.jpg" alt="Luminar Neoの編集画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>写真編集ソフトって、最初の学習コストが結構高いですよね。</p>
         <p>Lightroomの「明瞭度」と「かすみの除去」の違いは？Photoshopの「レイヤーマスク」ってどう使うの？…覚えることが多くて、挫折しちゃう人も少なくありません。</p>
         <p>その点、Luminar NeoはUIがシンプルで、<strong>「こうしたい」という目的ベースで操作できる</strong>ように設計されています。</p>
@@ -106,8 +106,8 @@ export default async function Page() {
 
         <h4>RAW現像+マジックライトAI <span className="m-badge m-badge--sky m-badge--round">基本機能</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-before.jpeg" alt="ルミナーネオのRAW現像+マジックライトAIを適用する前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-after2.jpeg" alt="ルミナーネオのRAW現像+マジックライトAIを適用した後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-before.jpeg" alt="ルミナーネオのRAW現像+マジックライトAIを適用する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-after2.jpeg" alt="ルミナーネオのRAW現像+マジックライトAIを適用した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -124,8 +124,8 @@ export default async function Page() {
 
         <h4>トワイライトエンハンサー+太陽光線 <span className="m-badge m-badge--sky m-badge--round">基本機能</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sogo-before.jpeg" alt="ルミナーネオのトワイライトエンハンサー+太陽光線を適用する前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sogossfte.jpeg" alt="ルミナーネオのトワイライトエンハンサー+太陽光線を適用した後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sogo-before.jpeg" alt="ルミナーネオのトワイライトエンハンサー+太陽光線を適用する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sogossfte.jpeg" alt="ルミナーネオのトワイライトエンハンサー+太陽光線を適用した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -142,8 +142,8 @@ export default async function Page() {
 
         <h4>スカイAI <span className="m-badge m-badge--sky m-badge--round">基本機能</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sky-before.jpg" alt="スカイAIで曇り空を青空に入れ替える前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sky-after2.jpeg" alt="スカイAIで曇り空を青空に入れ替えた後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sky-before.jpg" alt="スカイAIで曇り空を青空に入れ替える前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sky-after2.jpeg" alt="スカイAIで曇り空を青空に入れ替えた後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -159,8 +159,8 @@ export default async function Page() {
 
         <h4>電線除去 <span className="m-badge m-badge--sky m-badge--round">基本機能</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/densen-before.jpg" alt="電線除去機能で風景から電線を消す前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/densen-after.jpeg" alt="電線除去機能で風景から電線を消した後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/densen-before.jpg" alt="電線除去機能で風景から電線を消す前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/densen-after.jpeg" alt="電線除去機能で風景から電線を消した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -177,8 +177,8 @@ export default async function Page() {
 
         <h4>ホコリ除去 <span className="m-badge m-badge--sky m-badge--round">基本機能</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/dust-before.jpeg" alt="ホコリ除去機能でセンサーゴミを削除する前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/dust-after.jpeg" alt="ホコリ除去機能でセンサーゴミを削除した後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/dust-before.jpeg" alt="ホコリ除去機能でセンサーゴミを削除する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/dust-after.jpeg" alt="ホコリ除去機能でセンサーゴミを削除した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -195,8 +195,8 @@ export default async function Page() {
 
         <h4>ポートレートボケAI <span className="m-badge m-badge--sky m-badge--round">基本機能</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/portrait-before-scaled.jpeg" alt="ポートレートボケAIで背景ボケを追加する前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/portrait-after.jpg" alt="ポートレートボケAIで背景ボケを追加した後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/portrait-before-scaled.jpg" alt="ポートレートボケAIで背景ボケを追加する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/portrait-after.jpg" alt="ポートレートボケAIで背景ボケを追加した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -212,8 +212,8 @@ export default async function Page() {
 
         <h4>Noiseless AI <span className="m-badge m-badge--amber m-badge--round">Proツール</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/noise-before.jpg" alt="Noiseless AIで高感度ノイズを除去する前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/DSC08329.jpg" alt="Noiseless AIで高感度ノイズを除去した後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/noise-before.jpg" alt="Noiseless AIで高感度ノイズを除去する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/DSC08329.jpg" alt="Noiseless AIで高感度ノイズを除去した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -230,8 +230,8 @@ export default async function Page() {
 
         <h4>HDR Merge <span className="m-badge m-badge--amber m-badge--round">Proツール</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-before.jpeg" alt="HDR Mergeで露出違いの写真を合成する前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-after.jpeg" alt="HDR Mergeで露出違いの写真を合成した後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-before.jpeg" alt="HDR Mergeで露出違いの写真を合成する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-after.jpeg" alt="HDR Mergeで露出違いの写真を合成した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -247,8 +247,8 @@ export default async function Page() {
 
         <h4>スーパーシャープ <span className="m-badge m-badge--amber m-badge--round">Proツール</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-before.jpg" alt="スーパーシャープで手ブレを補正する前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-after.jpeg" alt="スーパーシャープで手ブレを補正した後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-before.jpg" alt="スーパーシャープで手ブレを補正する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-after.jpeg" alt="スーパーシャープで手ブレを補正した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -265,8 +265,8 @@ export default async function Page() {
 
         <h4>ジェネ変換 <span className="m-badge m-badge--red m-badge--round">生成AI</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/gene-bofore.jpg" alt="ジェネ変換で雲をマジックアワーの空に変える前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/gene-ater.jpeg" alt="ジェネ変換で雲をマジックアワーの空に変えた後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/gene-bofore.jpg" alt="ジェネ変換で雲をマジックアワーの空に変える前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/gene-ater.jpeg" alt="ジェネ変換で雲をマジックアワーの空に変えた後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -283,8 +283,8 @@ export default async function Page() {
 
         <h4>ジェネ消去 <span className="m-badge m-badge--red m-badge--round">生成AI</span></h4>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/ai-gen-delete-before.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除する前の作例" className="image-before" width={1000} height={667} />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/ai-gen-delete-after.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除した後の作例" className="image-after" width={1000} height={667} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/ai-gen-delete-before.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/ai-gen-delete-after.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -300,14 +300,14 @@ export default async function Page() {
         <p className="l-bottom-xlarge">背景を生成AIが自然に補完してくれるので、従来の「消しゴム」系ツールとは仕上がりが全然違います。過去の失敗写真を救済できるのは嬉しいですね。</p>
 
         <h3 id="layers">レイヤー機能で合成・レタッチも1本で完結</h3>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/layer.jpg" alt="Luminer Neoのレイヤー機能で合成・レタッチも1本で完結" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/layer.jpg" alt="Luminer Neoのレイヤー機能で合成・レタッチも1本で完結" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>Adobeユーザーの方なら分かると思いますが、通常は<strong>LightroomでRAW現像→Photoshopでレタッチ</strong>という2段階のワークフローが必要ですよね。</p>
         <p>でもLuminar Neoにはレイヤー機能があるので、複数の画像を重ねて合成することができます。Photoshopほど高度ではありませんが、基本的な合成作業なら十分対応可能。</p>
         <p>例えば「前景と背景で別々に露出を調整した2枚を合成する」みたいな作業が、ソフトを切り替えずにできるのは快適です。</p>
         <p><strong>1つのソフトでRAW現像からレタッチまで完結</strong>できるのは、ワークフローのシンプル化という意味でも大きなメリットです。</p>
 
         <h3 id="catalog">写真管理（カタログ）機能もそこそこ使える</h3>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-catalog-scaled.jpg" alt="Luminar Neoのカタログ機能" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-catalog-scaled.jpg" alt="Luminar Neoのカタログ機能" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>「Luminar Neoはカタログ機能が弱い」という評判を聞いたことがある方もいるかもしれません。</p>
         <p>確かに以前は機能が限定的でしたが、<strong>アップデートで大幅に改善</strong>されました。現在は以下の項目で写真をフィルタリングできます。</p>
         <ul className="m-list-ul">
@@ -342,7 +342,7 @@ export default async function Page() {
         <p>どんなソフトにも長所と短所があります。「買ってから後悔した…」とならないように、ぜひ参考にしてください。</p>
 
         <h3>PCスペックへの要求が高い（動作の重さ）</h3>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/macboook-air-use-image.jpg" alt="MacBookでLuminar Neoを操作する様子" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/macboook-air-use-image.jpg" alt="MacBookでLuminar Neoを操作する様子" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>これが<strong>最大のデメリット</strong>と言っていいかもしれません。</p>
         <p>Luminar NeoはAI処理を多用するため、PCへの負荷がかなり高いです。特にスカイAIやポートレートAI系の機能を使うと、処理に時間がかかることがあります。</p>
         <p>僕の環境（M4 MacBook Air、メモリ16GB）では比較的サクサク動きますが、それでも複数の機能を重ねると少しもたついたり、クラッシュしたことが数回あります。</p>
@@ -356,13 +356,13 @@ export default async function Page() {
         <p>最近のアップデートで動作は改善されてきていますが、それでも<strong>Lightroomと比べると重い</strong>のは事実。購入前に無料体験版で自分のPCで動くか確認することを強くおすすめします。</p>
 
         <h3>複数の写真に同じ設定を一括適用できない</h3>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-display-scaled.jpg" alt="Lightroomの管理画面" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-display-scaled.jpg" alt="Lightroomの管理画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>Lightroomでは、1枚の写真で設定した現像パラメータを、他の写真にまとめて同期（一括適用）できますよね。僕は数百枚の連続写真に同じ設定を当てて、タイムラプス素材を効率よく処理できます。</p>
         <p>しかし、Luminar Neoには<strong>この一括同期機能がありません</strong>。1枚ずつ編集するか、プリセットとして保存して個別に適用する必要があります。</p>
         <p>風景写真を1枚ずつ丁寧に仕上げる分には問題ありませんが、大量の写真を効率よく処理したい場面では不便を感じることがあります。</p>
 
         <h3>ミリ単位の精密な修正・合成は苦手</h3>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-edit-03.jpg" alt="Luminar Neoの編集画面" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-edit-03.jpg" alt="Luminar Neoの編集画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>AI機能は素晴らしいのですが、<strong>ピクセル単位での精密な作業には向きません</strong>。</p>
         <p>例えば、複雑な形状のオブジェクトを完璧に切り抜きたい場合。Photoshopならペンツールで丁寧にパスを描いて、1ピクセル単位でマスクを調整できます。</p>
         <p>Luminar NeoのAI選択は「だいたい」は上手くやってくれますが、髪の毛の細かい部分や、複雑に入り組んだ輪郭などは<strong>完璧とは言えない</strong>ことも。</p>
@@ -481,7 +481,7 @@ export default async function Page() {
 
       <section id="ending" className="content-card card-padding article-body">
         <h2>おわりに：写真は「技術」から「表現」へ</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sony-sel40f25g-image.webp" alt="SONYのカメラを手に取る様子" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sony-sel40f25g-image.webp" alt="SONYのカメラを手に取る様子" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>Luminar Neoを使い始めてから、<strong>写真との向き合い方が少し変わった</strong>気がします。</p>
         <p>以前は「この電線、消すの面倒だな…」「空がイマイチだけど、どうしようもないな…」と諦めていた写真が、AIの力で生き返るようになりました。</p>
         <p>編集に費やす時間が減った分、<strong>撮影に出かける時間が増えた</strong>のも嬉しい変化。</p>

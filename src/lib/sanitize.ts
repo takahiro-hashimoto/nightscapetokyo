@@ -26,7 +26,9 @@ export function toR2Url(url: string): string {
 export function replaceWpImagesInHtml(html: string): string {
   return html
     .replaceAll(WP_ORIGIN, R2_ORIGIN)
-    .replace(/(https?:\/\/[^\s"']+)-\d+x\d+(\.[a-zA-Z]+)/g, "$1$2");
+    // Strip size suffix only from src="..." to avoid collapsing srcset candidates
+    .replace(/\bsrc="(https?:\/\/[^"]+)-\d+x\d+(\.[a-zA-Z]+")/g, 'src="$1$2')
+    .replace(/<img\b(?![^>]*\bloading\b)/gi, '<img loading="lazy" decoding="async"');
 }
 
 /**
@@ -366,5 +368,7 @@ export function sanitizeHtml(html: string): string {
     .replace(/\s*class="[^"]*wp-block-group[^"]*"/g, "")
     .replace(/<!--\$-->/g, "")
     .replace(/\bl-bottom-medium\b\s*/g, "")
-    .replace(/<span[^>]*data-icon="[^"]*"[^>]*>[\s\S]*?<\/span>/gi, "");
+    .replace(/<span[^>]*data-icon="[^"]*"[^>]*>[\s\S]*?<\/span>/gi, "")
+    // CMS 由来の iframe（YouTube・Google Maps 等）は常にフォールド以下のため遅延ロード
+    .replace(/<iframe\b(?![^>]*\bloading\b)/gi, '<iframe loading="lazy"');
 }

@@ -45,11 +45,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/article/timelapse-calculator/",
-        destination: "/article/create-timelapse/",
-        permanent: true,
-      },
-      {
         source: "/pickup/",
         destination: "/article/",
         permanent: true,
@@ -62,6 +57,11 @@ const nextConfig: NextConfig = {
       {
         source: "/pickup/:slug/",
         destination: "/article/:slug/",
+        permanent: true,
+      },
+      {
+        source: "/article/timelapse-calculator/",
+        destination: "/article/create-timelapse/",
         permanent: true,
       },
       {

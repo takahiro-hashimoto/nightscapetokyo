@@ -27,7 +27,6 @@ export default function RootShell({
           />
         )}
         <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />
-        <link rel="preconnect" href="https://nightscape.tokyo" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev" crossOrigin="anonymous" />
         {showAdsense && (
           <>

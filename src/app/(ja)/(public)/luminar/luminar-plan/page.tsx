@@ -85,7 +85,7 @@ export default async function Page() {
 
       <section id="two-steps" className="content-card card-padding article-body">
         <h2>購入は2ステップで考えよう</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/plan-image.jpg" alt="Luminar Neoの料金体系を表したイメージ" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/plan-image.jpg" alt="Luminar Neoの料金体系を表したイメージ" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>Luminar Neoの購入は、たった2ステップで考えればOKです。</p>
         <ol>
           <li><strong>土台となる「買い切りプラン」を選ぶ</strong>：PCだけで使うか、スマホでも使うかで選択</li>
@@ -167,7 +167,7 @@ export default async function Page() {
 
       <section id="step1" className="content-card card-padding article-body">
         <h2>ステップ1：買い切りプランを選ぶ（3種類）</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-plan2.jpg" alt="3つの買い切りプラン比較表" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-plan2.jpg" alt="3つの買い切りプラン比較表" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>まずは土台となる「買い切りプラン」を選びます。一度購入すれば<span className="m-mark-yellow">ずっと使い続けられる</span>ライセンス形式です。</p>
         <p>現在、買い切りプランは以下の3種類が用意されています。</p>
         <p>スマホで編集する予定がなければ、<strong>デスクトップライセンス（約¥18,000）</strong>で十分です。Proツールを使いたい場合は、次のステップ2でパスを追加しましょう。</p>

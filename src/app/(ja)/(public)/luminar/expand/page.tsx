@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
@@ -119,6 +120,19 @@ export default function Page() {
         <p>現在Luminar Neoで提供されているProツール全8種を紹介します。</p>
 
         <h3 id="supersharp">①スーパーシャープAI（Supersharp AI）</h3>
+        <div className="comparison-container">
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-before.jpg" alt="スーパーシャープAIで手ブレを補正する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-after.jpeg" alt="スーパーシャープAIで手ブレを補正した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <div className="slider-handle">
+            <div className="slider-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 8l4 4-4 4M6 8l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="label label-before">Before</span>
+          <span className="label label-after">After</span>
+        </div>
         <p>手ブレやピンボケの補正をAIで行う機能です。「撮り直しが効かないけど、ちょっとブレてしまった…」という写真を救済してくれます。</p>
         <p>僕が初めてこの機能を使ったのは、旅行先で撮った夕暮れの写真でした。シャッタースピードが足りなくて微妙に手ブレしていたんですが、スーパーシャープAIを適用したら、驚くほど輪郭がくっきりしました。完全にピントを外した写真の復元は難しいですが、「惜しい写真を使えるレベルまで引き上げる」には十分な効果があります。</p>
         <div className="m-point-box">
@@ -135,6 +149,19 @@ export default function Page() {
         </div>
 
         <h3 id="noiseless">②ノイズレスAI（Noiseless AI）</h3>
+        <div className="comparison-container">
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/noise-before.jpg" alt="Noiseless AIで高感度ノイズを除去する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/DSC08329.jpg" alt="Noiseless AIで高感度ノイズを除去した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <div className="slider-handle">
+            <div className="slider-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 8l4 4-4 4M6 8l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="label label-before">Before</span>
+          <span className="label label-after">After</span>
+        </div>
         <p>高感度撮影時のノイズを除去する機能です。ノイズを除去しながらも、ディテール（細部）をできるだけ残してくれます。</p>
         <p>夜の街並みを撮った写真でISO6400くらいまで上げていたんですが、ノイズレスAIを使ったら、ISO1600くらいで撮ったかのような仕上がりになりました。Low・Middle・Highの3段階から強度を選べるので、プレビューを見ながら最適な設定を探れるのも使いやすいポイントです。</p>
         <div className="m-point-box">
@@ -151,6 +178,19 @@ export default function Page() {
         </div>
 
         <h3 id="magic-light">③マジックライトAI（Magic Light AI）</h3>
+        <div className="comparison-container">
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-before.jpeg" alt="マジックライトAIで光芒を追加する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-after2.jpeg" alt="マジックライトAIで光芒を追加した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <div className="slider-handle">
+            <div className="slider-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 8l4 4-4 4M6 8l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="label label-before">Before</span>
+          <span className="label label-after">After</span>
+        </div>
         <p>写真内の光源（街灯やイルミネーションなど）に、クロスフィルターをかけたような光芒を追加する機能です。撮影時にフィルターを使わなくても、後処理で光の演出ができます。</p>
         <p>夜景やイルミネーションの写真で、光を強調したいときに使えます。光線の数や強さも細かく調整できるので、「ちょっとキラキラさせたい」から「ドラマチックに演出したい」まで幅広く対応可能。ただし使いすぎると不自然になりやすいので、控えめに使うのがコツです。</p>
         <div className="m-point-box">
@@ -167,6 +207,19 @@ export default function Page() {
         </div>
 
         <h3 id="focus-stacking">④フォーカススタッキング（Focus Stacking）</h3>
+        <div className="comparison-container">
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/paper-before.jpeg" alt="フォーカススタッキングで被写界深度を拡大する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/paper-after.jpeg" alt="フォーカススタッキングで被写界深度を拡大した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <div className="slider-handle">
+            <div className="slider-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 8l4 4-4 4M6 8l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="label label-before">Before</span>
+          <span className="label label-after">After</span>
+        </div>
         <p>ピント位置を少しずつずらして撮った複数枚の写真を合成し、被写界深度（ピントが合っている範囲）を拡大する機能です。最大100枚まで合成可能で、写真のズレも自動補正してくれます。</p>
         <p>僕がフォーカススタッキングを使い始めたのは、テーブルフォト（料理や雑貨の撮影）がきっかけでした。料理写真って、お皿の手前から奥まで全部にピントを合わせたいことが多いんですよね。この機能を使えば、ボケ味のある柔らかい描写と、全体にピントが合った鮮明さを両立できます。ただし三脚での撮影が前提になります。</p>
         <div className="m-point-box">
@@ -183,6 +236,19 @@ export default function Page() {
         </div>
 
         <h3 id="background-removal">⑤背景削除AI（Background Removal AI）</h3>
+        <div className="comparison-container">
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/delete-before.jpg" alt="背景削除AIで背景を削除する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/delete-after.jpg" alt="背景削除AIで背景を削除した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <div className="slider-handle">
+            <div className="slider-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 8l4 4-4 4M6 8l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="label label-before">Before</span>
+          <span className="label label-after">After</span>
+        </div>
         <p>人物やオブジェクトを自動で認識して、背景を削除する機能です。標準の「ポートレート背景除去」は人物限定ですが、このProツールは人物以外も認識でき、複数の被写体を選択することも可能です。</p>
         <p>僕はブログ用のアイキャッチ画像を作るときによく使っています。以前はPhotoshopの選択とマスクを使って30分くらいかけていた作業が、今では5分で終わります。髪の毛の細かい部分など微調整が必要な場合もありますが、ベースを作ってくれるだけでも作業効率は大きく上がりますね。</p>
         <div className="m-point-box">
@@ -199,6 +265,19 @@ export default function Page() {
         </div>
 
         <h3 id="hdr-merge">⑥HDRマージ（HDR Merge）</h3>
+        <div className="comparison-container">
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-before.jpeg" alt="HDRマージで露出違いの写真を合成する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-after.jpeg" alt="HDRマージで露出違いの写真を合成した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <div className="slider-handle">
+            <div className="slider-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 8l4 4-4 4M6 8l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="label label-before">Before</span>
+          <span className="label label-after">After</span>
+        </div>
         <p>明暗差のある複数枚の写真を合成して、ハイダイナミックレンジ（HDR）の写真を作成する機能です。露出を変えて撮った最大10枚の写真を合成でき、手持ち撮影でもズレを自動補正してくれます。</p>
         <p>窓から外を撮ると室内が真っ暗になったり、逆に外が白飛びしたりすることがありますよね。そういった「明暗差の大きいシーン」で威力を発揮します。ただしHDR写真は加減を間違えると不自然になりやすいので、控えめな設定から始めるのがおすすめです。</p>
         <div className="m-point-box">
@@ -215,6 +294,7 @@ export default function Page() {
         </div>
 
         <h3 id="upscale">⑦アップスケールAI（Upscale AI）</h3>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/unnamed.jpg" alt="アップスケールAIで解像度を拡大した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>写真の解像度を最大6倍まで拡大しつつ、画質を保つ機能です。トリミングで切り取った後の写真を大きくしたいときや、古いデジカメで撮った低解像度の写真を再利用したいときに便利です。</p>
         <p>僕も昔のコンデジで撮った思い出の写真を、この機能で拡大して印刷したことがあります。A4サイズくらいまでの印刷なら十分実用的ですが、大判印刷の場合はAIが「想像」で補完した部分が不自然に見えることもあるので、期待しすぎないほうがいいかもしれません。</p>
         <div className="m-point-box">
@@ -231,6 +311,7 @@ export default function Page() {
         </div>
 
         <h3 id="panorama">⑧パノラマスティッチング（Panorama Stitching）</h3>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/unit-scaled.jpg" alt="パノラマスティッチングで複数カットを合成した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>複数カットの写真をつなげて、ワイドなパノラマ写真を作成する機能です。普通のレンズでは収まりきらない広大な風景も、複数枚に分けて撮影してから合成すればダイナミックな1枚に仕上げられます。</p>
         <p>風景写真や建築写真で「もっと広い範囲を1枚に収めたい」というときに活躍します。解像度も高くなるので、大きく引き伸ばして印刷したい場合にも向いています。撮影時は露出をマニュアルで固定して、同じ条件で撮ることをおすすめします。</p>
         <div className="m-point-box">

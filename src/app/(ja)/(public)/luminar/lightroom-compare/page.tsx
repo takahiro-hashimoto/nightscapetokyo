@@ -332,7 +332,7 @@ export default async function Page() {
         <p>撮影するジャンルによって、どちらのソフトが合理的かは変わってきます。代表的なジャンルごとに整理しますね。</p>
         <h3>風景・夜景</h3>
         <div className="m-media-box">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/dust-after-1.jpeg" alt="風景写真の作例" className="m-media-img" width={880} height={495} style={{ width: '100%', height: 'auto' }} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/dust-after-1.jpeg" alt="風景写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
           <div className="m-media-body">
             <h4 style={{ fontWeight: 900, marginBottom: '0.5rem' }}>Luminar Neoに優位性あり</h4>
             <p style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>スカイAIによる空の置き換えや強調は、風景写真の印象を大きく左右します。曇り空で撮影した写真を青空やドラマチックな夕焼けに変更できるのは、撮影時の天候に左右されないという意味で強力な武器です。エンハンスAIによる風景全体の立体感強調も、ワンクリックで「おっ」という仕上がりに。</p>
@@ -341,7 +341,7 @@ export default async function Page() {
         </div>
         <h3>ポートレート</h3>
         <div className="m-media-box">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/portrait-after.jpg" alt="ポートレート写真の作例" className="m-media-img" width={880} height={495} style={{ width: '100%', height: 'auto' }} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/portrait-after.jpg" alt="ポートレート写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
           <div className="m-media-body">
             <h4 style={{ fontWeight: 900, marginBottom: '0.5rem' }}>Luminar Neoが効率的</h4>
             <p style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>フェイスAI、スキンAI、ボディAIといった人物専用ツールは、顔の各パーツを認識して個別に調整できます。目の明るさ、肌のなめらかさ、顔の輪郭など、ポートレートで求められる補正がスライダーで完結します。ただし、人物の肌を細部まで追い込むレタッチ（毛穴単位の処理、複雑なシミの除去など）が必要な場合はPhotoshopの領域です。撮って出しに近い自然なポートレートを効率よく仕上げたいならLuminar Neoが向いています。</p>
@@ -349,7 +349,7 @@ export default async function Page() {
         </div>
         <h3>商品・商用写真</h3>
         <div className="m-media-box">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/MH40.jpg" alt="商品写真の作例" className="m-media-img" width={880} height={495} style={{ width: '100%', height: 'auto' }} />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/MH40.jpg" alt="商品写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
           <div className="m-media-body">
             <h4 style={{ fontWeight: 900, marginBottom: '0.5rem' }}>Lightroomの堅実さが活きる</h4>
             <p style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>商品写真は色の正確性と再現性が求められます。同じ商品を複数回撮影したとき、仕上がりの色味が揃っていなければなりません。Lightroomのカラーマネジメント機能やプロファイル適用はこの用途に最適化されています。また、大量の商品写真を一括処理する際、Lightroomのカタログ機能と同期機能が威力を発揮します。</p>

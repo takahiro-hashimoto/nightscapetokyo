@@ -298,6 +298,12 @@ img {
   padding: 24px;
 }
 
+@media (max-width: 767px) {
+  .card-padding {
+    padding: 20px;
+  }
+}
+
 .header-card {
   padding: 0;
   margin-bottom: 0;
@@ -324,19 +330,6 @@ img {
   flex-shrink: 0;
 }
 
-@media (max-width: 767px) {
-  .gallery-modal-footer {
-    display: none;
-  }
-
-  .best-time-desc br {
-    display: none;
-  }
-
-  .heading-icon {
-    display: none;
-  }
-}
 
 /* =========================================
    Module - Hero & Title (header-card)
@@ -471,6 +464,14 @@ img {
   display: flex;
   color: #fff !important;
   font-size: 18px !important;
+}
+
+@media (max-width: 767px) {
+  .rating-card-header {
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start;
+  }
 }
 
 .rating-card-body {
@@ -2766,7 +2767,7 @@ main > .home-section:nth-child(even of .home-section) {
 .about-profile-row {
   display: flex;
   gap: 0;
-  padding: 9px 0;
+  padding: 0 0 9px;
   font-size: 14px;
   line-height: 1.6;
 }

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { getArticles } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";
 import Breadcrumb from "@/components/layout/Breadcrumb";
-import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "記事一覧",
@@ -50,7 +49,7 @@ export default async function ArticleListPage() {
             <p style={{ color: "#64748b" }}>記事はまだありません。</p>
           ) : (
             <div className="area-spot-grid">
-              {articles.map((article) => (
+{articles.map((article) => (
                 <article key={article.id} className="spot-card">
                   <Link href={`/article/${article.slug}/`} className="spot-card-link">
                     <div className="spot-card-image">
@@ -88,7 +87,6 @@ export default async function ArticleListPage() {
           )}
         </div>
       </div>
-      <Footer locale={null} />
     </>
   );
 }

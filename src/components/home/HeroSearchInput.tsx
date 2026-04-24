@@ -19,7 +19,7 @@ export default function HeroSearchInput({ placeholder, ariaLabel, buttonLabel, l
     const q = query.trim();
     if (q) {
       const prefix = localeSlug ? `/${localeSlug}` : "";
-      router.push(`${prefix}/search?q=${encodeURIComponent(q)}`);
+      router.push(`${prefix}/search/?q=${encodeURIComponent(q)}`);
     }
   };
 

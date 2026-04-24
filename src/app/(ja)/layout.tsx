@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE_URL } from "@/lib/types";
+import { SITE_URL, LOCALE_OG_ALTERNATES } from "@/lib/types";
 import { buildWebSiteJsonLd, buildOrganizationJsonLd } from "@/lib/json-ld";
 import RootShell from "@/components/layout/RootShell";
 import "../globals.css";
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: SITE_NAME,
     locale: "ja_JP",
-    alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
+    alternateLocale: LOCALE_OG_ALTERNATES as string[],
     url: SITE_URL,
     title: "東京夜景ナビ | 東京の夜景スポットガイド",
     images: [
@@ -47,7 +47,6 @@ export default function JaLayout({
 }) {
   const headContent = (
     <>
-      <link rel="preload" as="image" href="/hero.webp" fetchPriority="high" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}

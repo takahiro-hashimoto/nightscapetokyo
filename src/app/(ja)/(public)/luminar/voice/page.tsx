@@ -88,7 +88,7 @@ export default async function Page() {
 
       <section id="summary" className="content-card card-padding article-body">
         <h2>Luminar Neoの評判を先に結論からまとめる</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/about-luminar-neo.jpg" alt="Luminar Neoの管理画面" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/about-luminar-neo.jpg" alt="Luminar Neoの管理画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>まず、評判の全体像を把握しておきましょう。</p>
         <p><strong>良い評判で多いのは</strong>、AI編集の手軽さと仕上がりの速さです。「Lightroomで1時間かかっていた作業が10分で終わった」「初心者の自分でもプロっぽい写真が作れた」という声が目立ちます。特に、空の置き換え（Sky AI）やノイズ除去（Noiseless AI）の評価は高く、「これだけでも買う価値がある」という意見も少なくありません。</p>
         <p><strong>不満として挙がりやすいのは</strong>、動作の重さと料金体系のわかりにくさ。「古いノートPCだとカクカクする」「Proツール（拡張機能）が別料金だと知らなかった」という声は、購入前に知っておきたいポイントです。ただし、これらは事前に理解していれば回避できる問題でもあります。</p>
@@ -99,6 +99,19 @@ export default async function Page() {
         <h2>Luminar Neoの良い評判で多いポイント</h2>
 
         <h3 id="good-ai">AI編集が速く初心者でも結果が出やすいという評判</h3>
+        <div className="comparison-container">
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sky-before.jpg" alt="スカイAIで曇り空を青空に入れ替える前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sky-after2.jpeg" alt="スカイAIで曇り空を青空に入れ替えた後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <div className="slider-handle">
+            <div className="slider-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 8l4 4-4 4M6 8l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="label label-before">Before</span>
+          <span className="label label-after">After</span>
+        </div>
         <p>Luminar Neoの評判で最も多いのが「AIが優秀」「編集が速い」という声です。これは単なる宣伝文句ではなく、実際に使ってみると納得できるポイントでした。</p>
         <p>なぜ速いのか。それは<strong>「AIが写真の内容を分析して、最適な補正を自動で提案してくれる」</strong>仕組みだからです。従来の写真編集ソフトでは、露出、コントラスト、彩度、シャドウ、ハイライト…と一つずつスライダーを動かして調整していく必要がありました。これには知識と経験が必要で、初心者にはハードルが高いんですよね。</p>
         <p>Luminar Neoでは、AIが「この写真ならこのくらいの補正が良いだろう」と判断して、ベースを作ってくれます。ユーザーは気に入らない部分だけ微調整すればいい。この「AIにお任せ → 気になるところだけ直す」というワークフローが、時短と結果の両立を実現しています。</p>
@@ -147,6 +160,19 @@ export default async function Page() {
         </div>
 
         <h3 id="good-noise">ノイズ除去の評判が特に高い</h3>
+        <div className="comparison-container">
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/noise-before.jpg" alt="Noiseless AIで高感度ノイズを除去する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/DSC08329.jpg" alt="Noiseless AIで高感度ノイズを除去した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <div className="slider-handle">
+            <div className="slider-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 8l4 4-4 4M6 8l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="label label-before">Before</span>
+          <span className="label label-after">After</span>
+        </div>
         <p>AI機能の中でも、特に評価が高いのが<strong>ノイズ除去（Noiseless AI）</strong>です。高感度で撮影した夜景や室内写真のザラつきを、ディテールを保ちながら除去してくれます。</p>
         <p>Xでも「ノイズ除去がすごい」「解像感まで増している」という驚きの声が多く見られます。</p>
         <div className="m-tweet-wrap m-tweet-wrap--positive">
@@ -161,6 +187,19 @@ export default async function Page() {
         <p>夜景撮影や星景写真など、高感度を使わざるを得ないシーンでは、この機能だけでもProツールを買う価値があると僕は思っています。</p>
 
         <h3 id="good-erase">不要物の消去も「違和感がない」と好評</h3>
+        <div className="comparison-container">
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/ai-gen-delete-before.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/ai-gen-delete-after.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <div className="slider-handle">
+            <div className="slider-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 8l4 4-4 4M6 8l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="label label-before">Before</span>
+          <span className="label label-after">After</span>
+        </div>
         <p>写真に写り込んでしまった人や電線などを消す機能も、評判が良いポイントです。</p>
         <div className="m-tweet-wrap m-tweet-wrap--positive">
           <div className="m-tweet-wrap__label"><span className="m-tweet-wrap__icon">👍</span> 良い評判</div>
@@ -177,7 +216,7 @@ export default async function Page() {
         <p>「Lightroomを使ってたけど、Luminar Neoのほうが直感的」という評判もよく見かけます。Adobe製品から乗り換えた人の声として、これはかなり多い印象です。</p>
         <p>この違いは<strong>操作思想の差</strong>にあります。Lightroomは「プロが細かく追い込む」前提で設計されていて、パラメータの数が膨大です。基本補正パネルだけでも20項目以上あり、さらにトーンカーブ、HSL、カラーグレーディング…と続きます。自由度は高いですが、「どこをどう触ればいいかわからない」という初心者には敷居が高い。</p>
         <p>対してLuminar Neoは「まずAIに任せて、気になるところだけ調整」という思想。最初から最適な補正がかかった状態からスタートできるので、ゼロから追い込む必要がありません。</p>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-edit.jpg" alt="Luminar Neoの編集画面" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-edit.jpg" alt="Luminar Neoの編集画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>Lightroom経験者が「楽になった」と感じるポイントは主に以下です。</p>
         <div className="definition">
           <dl className="definition-body">

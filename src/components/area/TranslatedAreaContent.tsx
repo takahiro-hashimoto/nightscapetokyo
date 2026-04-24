@@ -141,9 +141,7 @@ export default function TranslatedAreaContent({
         </div>
 
         {spots.length === 0 ? (
-          <p className="area-page-empty">
-            No night view spots with translations available in this area yet.
-          </p>
+          <p className="area-page-empty">{al.emptyState}</p>
         ) : (
           <section aria-label={al.title(areaName)}>
             <AreaSpotList

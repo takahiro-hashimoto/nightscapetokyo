@@ -93,8 +93,8 @@ export function buildOrganizationJsonLd() {
 }
 
 /** SiteNavigationElement（サイト全体に1つ） */
-export function buildSiteNavigationJsonLd() {
-  const navLinks = [
+export function buildSiteNavigationJsonLd(links?: { name: string; url: string }[]) {
+  const navLinks = links ?? [
     { name: "おすすめ夜景スポット", url: `${SITE_URL}/recommend/` },
     { name: "港区の夜景スポット", url: `${SITE_URL}/minato/` },
     { name: "渋谷区の夜景スポット", url: `${SITE_URL}/shibuya/` },

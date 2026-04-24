@@ -38,9 +38,7 @@ type Props = {
   spotSlug: string;
   availableLocales: string[];
   isRecommended?: boolean;
-
   relatedSpots?: SpotListItem[];
-  recommendedSpots?: SpotListItem[];
 };
 
 export default function SpotArticle({
@@ -51,7 +49,6 @@ export default function SpotArticle({
   spotSlug,
   availableLocales,
   isRecommended = false,
-
   relatedSpots = [],
 }: Props) {
   const al = labels.anchor;
@@ -95,8 +92,8 @@ export default function SpotArticle({
             {
               label: spot.category.name,
               href: currentLocale
-                ? `/${currentLocale}/${spot.category.slug}`
-                : `/${spot.category.slug}`,
+                ? `/${currentLocale}/${spot.category.slug}/`
+                : `/${spot.category.slug}/`,
             },
             { label: spotName },
           ]}

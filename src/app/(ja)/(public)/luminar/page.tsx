@@ -14,7 +14,6 @@ import {
   LUMINAR_SITE_DESCRIPTION,
   LUMINAR_SITE_URL,
 } from '@/lib/luminar/config'
-import { getTopSpots } from '@/lib/supabase/queries'
 
 const OG_IMAGE = 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/main-after.jpg'
 
@@ -109,10 +108,7 @@ export const metadata: Metadata = {
 }
 
 export default async function LuminarTopPage() {
-  const [rawPosts, topSpots] = await Promise.all([
-    getAllPostsSummary(),
-    getTopSpots(4),
-  ])
+  const rawPosts = await getAllPostsSummary()
   const articles = rawPosts.map(normalizePostSummary)
 
   return (
@@ -358,52 +354,6 @@ export default async function LuminarTopPage() {
                 </Link>
               </div>
             </section>
-
-            {/* ⑤.5 撮影スポット実例 */}
-            {topSpots.length > 0 && (
-              <section className="content-card card-padding article-body">
-                <h2>Luminar Neoで仕上げた<br className="sp-only" />東京夜景スポットの実例</h2>
-                <p>
-                  当サイト管理人が実際に東京の夜景スポットで撮影し、Luminar Neoで現像した写真を
-                  スポットページでご紹介しています。編集前・後の比較も掲載中です。
-                </p>
-                <div className="l-grid-2" style={{ marginTop: '1.5rem' }}>
-                  {topSpots.map((spot) => (
-                    <article className="m-post-card" key={spot.slug}>
-                      <Link
-                        href={`/${spot.category.slug}/${spot.slug}/`}
-                        aria-labelledby={`spot-title-${spot.slug}`}
-                      >
-                        <div className="m-post-card__thumb">
-                          {spot.featured_image ? (
-                            <Image
-                              src={spot.featured_image}
-                              alt={spot.name}
-                              fill
-                              style={{ objectFit: 'cover' }}
-                              sizes="(max-width: 768px) 100vw, 400px"
-                            />
-                          ) : (
-                            <div style={{ width: '100%', height: '100%', background: 'var(--c-bg-sub)' }} aria-hidden="true" />
-                          )}
-                        </div>
-                        <div className="m-post-card__content">
-                          <span className="m-post-card__cat">{spot.category.name}</span>
-                          <h3 id={`spot-title-${spot.slug}`} className="m-post-card__title">
-                            {spot.name}
-                          </h3>
-                        </div>
-                      </Link>
-                    </article>
-                  ))}
-                </div>
-                <div className="u-text-center" style={{ marginTop: '2rem' }}>
-                  <Link href="/" className="m-btn m-btn--secondary">
-                    東京夜景スポットをもっと見る
-                  </Link>
-                </div>
-              </section>
-            )}
 
             {/* ⑥ Lightroomとの比較 */}
             <section id="vs-lightroom" className="content-card card-padding article-body">

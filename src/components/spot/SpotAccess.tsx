@@ -23,7 +23,7 @@ export default function SpotAccess({ station, parking, map, spotName, labels }: 
 
   return (
     <section
-      className="content-card card-padding"
+      className="content-card card-padding cv-auto"
       id="access"
       aria-labelledby="access-heading"
     >
@@ -60,7 +60,7 @@ export default function SpotAccess({ station, parking, map, spotName, labels }: 
         <div
           className="map-wrapper"
           aria-label={l.map}
-          dangerouslySetInnerHTML={{ __html: sanitizeHtml(map) }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(map).replace(/<iframe /g, '<iframe loading="lazy" ') }}
         />
       )}
     </section>

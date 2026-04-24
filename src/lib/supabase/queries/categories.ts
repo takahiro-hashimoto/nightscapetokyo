@@ -114,52 +114,65 @@ export const getAreasTranslated = cache(unstable_cache(async (urlSlug: string) =
 }, ["areas-translated"], { revalidate: 3600, tags: ["areas", "translations"] }));
 
 /** カテゴリslugに属するスポット一覧を取得 */
-export const getSpotsByCategory = cache(async function getSpotsByCategory(
-  categorySlug: string
-): Promise<SpotListItem[]> {
+const _getSpotsByCategoryUncached = async (categorySlug: string): Promise<SpotListItem[]> => {
   if (!isSupabaseConfigured) {
     const { dummyTopSpots } = await import("../../dummy-home-data");
     return dummyTopSpots.filter((s) => s.category.slug === categorySlug);
   }
 
-  const [supabase, category] = await Promise.all([
-    getSupabaseClient(),
-    getCategoryBySlug(categorySlug),
-  ]);
-  if (!category) return [];
+  const supabase = await getSupabaseClient();
+
+  const { data: cat } = (await supabase
+    .from("categories")
+    .select("id")
+    .eq("slug", categorySlug)
+    .single()) as any;
+
+  if (!cat) return [];
 
   const { data } = (await supabase
     .from("spots")
     .select(LISTING_SELECT)
     .eq("published", true)
-    .eq("category_id", category.id)
+    .eq("category_id", cat.id)
     .order("rating_beautiful", { ascending: false })) as any;
 
   if (!data) return [];
 
   return data.map(mapSpotToListing);
-});
+};
+
+export const getSpotsByCategory = cache(
+  unstable_cache(_getSpotsByCategoryUncached, ["spots-by-category"], {
+    revalidate: 86400,
+    tags: ["spots"],
+  })
+);
 
 /** カテゴリslugに属する翻訳済みスポット一覧を取得 */
-export async function getSpotsByCategoryTranslated(
+const _getSpotsByCategoryTranslatedUncached = async (
   categorySlug: string,
   urlSlug: string
-): Promise<SpotListItem[]> {
+): Promise<SpotListItem[]> => {
   const dbLocale = LOCALE_SLUG_MAP[urlSlug];
   if (!isSupabaseConfigured || !dbLocale) return [];
 
-  const [supabase, category] = await Promise.all([
-    getSupabaseClient(),
-    getCategoryBySlug(categorySlug),
-  ]);
-  if (!category) return [];
+  const supabase = await getSupabaseClient();
+
+  const { data: cat } = (await supabase
+    .from("categories")
+    .select("id")
+    .eq("slug", categorySlug)
+    .single()) as any;
+
+  if (!cat) return [];
 
   const [{ data: spots }, { data: translations }] = await Promise.all([
     supabase
       .from("spots")
       .select(LISTING_SELECT)
       .eq("published", true)
-      .eq("category_id", category.id) as any,
+      .eq("category_id", cat.id) as any,
     supabase
       .from("spot_translations")
       .select("spot_id, name, lead, category_name")
@@ -185,7 +198,14 @@ export async function getSpotsByCategoryTranslated(
       };
     })
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg);
-}
+};
+
+export const getSpotsByCategoryTranslated = cache(
+  unstable_cache(_getSpotsByCategoryTranslatedUncached, ["spots-by-category-translated"], {
+    revalidate: 86400,
+    tags: ["spots", "translations"],
+  })
+);
 
 /** 翻訳済みエリアページのSSGパラメータを取得 */
 export async function getTranslatedAreaSlugs(): Promise<
@@ -219,27 +239,44 @@ export async function getTranslatedAreaSlugs(): Promise<
 }
 
 /** 指定カテゴリで翻訳が存在するロケール一覧を取得 */
-export const getAvailableAreaLocales = cache(async function getAvailableAreaLocales(
-  categorySlug: string
-): Promise<string[]> {
-  if (!isSupabaseConfigured) return [];
+export const getAvailableAreaLocales = cache(
+  unstable_cache(
+    async (categorySlug: string): Promise<string[]> => {
+      if (!isSupabaseConfigured) return [];
 
-  const supabase = await getSupabaseClient();
+      const supabase = await getSupabaseClient();
 
-  const { data } = (await supabase
-    .from("spot_translations")
-    .select("locale, spot:spots!inner(category:categories!inner(slug))")
-  ) as any;
+      const { data: catData } = (await supabase
+        .from("categories")
+        .select("id")
+        .eq("slug", categorySlug)
+        .single()) as any;
 
-  if (!data) return [];
+      if (!catData) return [];
 
-  const locales = new Set<string>();
-  for (const d of data) {
-    if (d.spot?.category?.slug === categorySlug) {
-      const urlSlug = LOCALE_TO_SLUG[d.locale];
-      if (urlSlug) locales.add(urlSlug);
-    }
-  }
+      const { data: spots } = (await supabase
+        .from("spots")
+        .select("id")
+        .eq("published", true)
+        .eq("category_id", catData.id)) as any;
 
-  return Array.from(locales);
-});
+      const spotIds: string[] = (spots ?? []).map((s: any) => s.id);
+      if (spotIds.length === 0) return [];
+
+      const { data: translations } = (await supabase
+        .from("spot_translations")
+        .select("locale")
+        .in("spot_id", spotIds)) as any;
+
+      const locales = new Set<string>();
+      for (const d of translations ?? []) {
+        const urlSlug = LOCALE_TO_SLUG[d.locale];
+        if (urlSlug) locales.add(urlSlug);
+      }
+
+      return Array.from(locales);
+    },
+    ["available-area-locales"],
+    { revalidate: 86400, tags: ["spots", "translations"] }
+  )
+);

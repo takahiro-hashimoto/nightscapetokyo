@@ -62,7 +62,7 @@ export default async function Page() {
 
       <section id="how-to-save" className="content-card card-padding article-body">
         <h2>Luminar Neoを安く買う3つの方法</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-sale.jpg" alt="Luminar Neoを安く買う3つの方法" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-sale.jpg" alt="Luminar Neoを安く買う3つの方法" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>セールがない時期でもLuminar Neoをお得に入手する方法があります。以下の3つの鉄則を押さえておきましょう。</p>
         <h3>プロモーションコード（クーポン）を利用する</h3>
         <p>セール開催の有無にかかわらず、当サイト限定クーポンコード「nightscape10」を用意しています。これを購入画面にコードを入力するだけで、10%OFFが適用されるのでとてもお得です。</p>
@@ -142,7 +142,7 @@ export default async function Page() {
               <p className="m-step__title">プランを選択</p>
               <p className="m-step__desc">まずはLuminar Neo公式サイト（<a href="https://skylum.evyy.net/mO9BEa" target="_blank" rel="noopener nofollow">skylum.com</a>）にアクセス。</p>
               <p className="m-step__desc">「永久ライセンス デスクトップ版」「クロスデバイス永続ライセンス」「永久Maxライセンス」の3つから選択し、「今すぐ購入する」ボタンをクリック。迷ったら、コスパの良い<strong>クロスデバイス版</strong>がおすすめです。</p>
-              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-01.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ1" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-01.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ1" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
             </div>
           </div>
           <div className="m-step">
@@ -151,7 +151,7 @@ export default async function Page() {
             <div className="m-step__content">
               <p className="m-step__title">プロモーションコードを入力</p>
               <p className="m-step__desc">カート画面が表示されたら、「プロモーションコードを入力」という欄を探してクリック。入力欄が開いたら、クーポンコードを入力して「適用」ボタンを押します。半角英数字で入力されているか確認しましょう。</p>
-              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-02.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ2" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-02.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ2" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
             </div>
           </div>
           <div className="m-step">
@@ -159,7 +159,7 @@ export default async function Page() {
             <div className="m-step__content">
               <p className="m-step__title">割引を確認して決済</p>
               <p className="m-step__desc">合計金額が<strong>10%OFF</strong>になっていることを確認したら、メールアドレスと決済情報を入力して購入完了です。購入後は登録したメールアドレスにダウンロードリンクが届くので、そこからアプリをダウンロードしましょう。</p>
-              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-03.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ3" width={880} height={495} style={{ width: '100%', height: 'auto' }} /></p>
+              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-03.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ3" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
             </div>
           </div>
         </div>

@@ -193,7 +193,9 @@ export default async function LuminarArticleLayout({
           <LuminarRelatedPosts articles={relatedArticles} />
 
           {/* 運営者情報 */}
-          <HomeAuthorCard authorLabel="この記事の著者" />
+          <div className="mt-8">
+            <HomeAuthorCard authorLabel="この記事の著者" />
+          </div>
 
         </div>
       </div>

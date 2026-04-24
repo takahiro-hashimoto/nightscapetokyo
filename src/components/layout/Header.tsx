@@ -4,6 +4,7 @@ import HeaderLogo from "./HeaderLogo";
 import DevAdminLink from "./DevAdminLink";
 import HeaderShell from "./HeaderShell";
 import type { SiteLocale } from "@/lib/types";
+import { SITE_URL } from "@/lib/types";
 import { NAV_STATIC_LABELS, PROFILE_LABELS } from "@/lib/i18n-labels";
 import { AREA_NAME, TAG_NAME } from "@/lib/constants";
 
@@ -16,7 +17,26 @@ type TagData = { slug: string; name: string; spot_count: number; image_url?: str
 type SubNavItem = { label: string; href: string; count?: number };
 type NavItem = { label: string; href?: string; children?: SubNavItem[]; dropdownClass?: string; newTab?: boolean };
 
-function buildTopNavItems(locale: string | null): SubNavItem[] {
+export function flattenNavToLinks(
+  mainNavItems: NavItem[],
+  topNavItems: SubNavItem[],
+): { name: string; url: string }[] {
+  const result: { name: string; url: string }[] = [];
+  for (const item of mainNavItems) {
+    if (item.href) result.push({ name: item.label, url: `${SITE_URL}${item.href}` });
+    if (item.children) {
+      for (const child of item.children) {
+        result.push({ name: child.label, url: `${SITE_URL}${child.href}` });
+      }
+    }
+  }
+  for (const item of topNavItems) {
+    result.push({ name: item.label, url: `${SITE_URL}${item.href}` });
+  }
+  return result;
+}
+
+export function buildTopNavItems(locale: string | null): SubNavItem[] {
   const prefix = locale ? `/${locale}` : "";
   const labels = NAV_STATIC_LABELS[(locale ?? "ja") as SiteLocale] ?? NAV_STATIC_LABELS["ja"];
   return [
@@ -26,7 +46,7 @@ function buildTopNavItems(locale: string | null): SubNavItem[] {
   ];
 }
 
-function buildMainNavItems(
+export function buildMainNavItems(
   locale: string | null,
   areaData: AreaData[],
   tagData: TagData[],

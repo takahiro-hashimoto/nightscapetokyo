@@ -191,6 +191,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   let title: string;
   let description: string;
   let heroImage: string | undefined;
+  const hasTranslation = Boolean(translationResult);
 
   if (translationResult) {
     const { translation, page } = translationResult;
@@ -230,6 +231,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
+    // 翻訳が存在しないページは言語不一致コンテンツになるため noindex にする
+    ...(!hasTranslation && { robots: { index: false, follow: false } }),
     openGraph: {
       type: "article",
       title,
@@ -326,7 +329,7 @@ export default async function TranslatedTagPage({ params }: Props) {
           mapSpots={mapSpots}
           locale={localeSlug}
           spotHeadingLevel="h3"
-          shareUrl={`${SITE_URL}/${localeSlug}/tag/${tagSlug}`}
+          shareUrl={`${SITE_URL}/${localeSlug}/tag/${tagSlug}/`}
         />
       </>
     );

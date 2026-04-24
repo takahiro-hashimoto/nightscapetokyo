@@ -50,7 +50,7 @@ export default function NavigationProgress() {
         height: "3px",
         zIndex: 9999,
         background: "var(--color-primary)",
-        animation: "nav-progress 1.4s ease-in-out infinite",
+        animation: "nav-progress 1.4s ease-in-out forwards",
       }}
     />
   );

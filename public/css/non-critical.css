@@ -3,6 +3,8 @@
    ========================================= */
 .report-content p {
   margin-bottom: 12px;
+  font-size: 1.05rem;
+  line-height: 1.5;
 }
 
 .report-content a {
@@ -164,6 +166,12 @@
   user-select: none;
   animation: galleryZoomIn 0.3s ease-out;
   display: block;
+}
+
+@media (max-width: 768px) {
+  .gallery-modal-image {
+    max-height: 60vh;
+  }
 }
 
 .gallery-modal-footer {
@@ -473,7 +481,7 @@
   font-weight: 800;
 }
 .faq-a {
-  font-size: 14px;
+  font-size: 1rem;
   line-height: 1.8;
   color: #4a5568;
   margin: 0;
@@ -1023,11 +1031,11 @@
 }
 
 .best-time-value {
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 700;
   color: #fff;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1;
   font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -2061,7 +2069,11 @@
 }
 
 .spot-section-header {
-  padding: 24px 0;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 32px 0 20px;
+  display: block;
 }
 
 .section-heading {
@@ -2128,15 +2140,12 @@
   left: 0;
   right: 0;
   text-align: center;
-  padding: 6px 12px;
+  padding: 2px 12px;
   font-size: 0.8rem;
   color: #fff;
   background: rgba(0, 0, 0, 0.5);
   pointer-events: none;
   z-index: 2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .tag-slider-rank-badge {
@@ -2788,6 +2797,7 @@
 
 .article-body p {
   margin-bottom: 1em;
+  font-size: 1rem;
 }
 
 .article-body ul,
