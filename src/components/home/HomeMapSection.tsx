@@ -22,13 +22,20 @@ const JA_LABELS: MapSectionLabels = {
 };
 
 type Props = {
-  spots: MapSpotItem[];
+  spots: Pick<MapSpotItem, "id" | "slug" | "name" | "categorySlug" | "latitude" | "longitude">[];
   categories: Category[];
   labels?: MapSectionLabels;
   localePrefix?: string;
+  endpoint?: string;
 };
 
-export default function HomeMapSection({ spots, categories, labels = JA_LABELS, localePrefix }: Props) {
+export default function HomeMapSection({
+  spots,
+  categories,
+  labels = JA_LABELS,
+  localePrefix,
+  endpoint = "/api/map-spots",
+}: Props) {
   if (spots.length === 0) return null;
 
   const itemListJsonLd = {
@@ -63,7 +70,6 @@ export default function HomeMapSection({ spots, categories, labels = JA_LABELS, 
         </p>
 
         <SpotMapLoader
-          spots={spots}
           categories={categories}
           labels={labels.allLabel ? {
             allLabel: labels.allLabel,
@@ -71,13 +77,14 @@ export default function HomeMapSection({ spots, categories, labels = JA_LABELS, 
             loadingLabel: labels.loadingLabel ?? "Loading...",
           } : undefined}
           localePrefix={localePrefix}
+          endpoint={endpoint}
         />
 
         <div className="visually-hidden" aria-hidden="true">
           <ul>
-            {spots.map((spot) => (
+            {spots.slice(0, 50).map((spot) => (
               <li key={spot.id}>
-                <Link href={`/${spot.categorySlug}/${spot.slug}`}>{spot.name}</Link>
+                <Link href={`${localePrefix ?? ""}/${spot.categorySlug}/${spot.slug}`}>{spot.name}</Link>
               </li>
             ))}
           </ul>

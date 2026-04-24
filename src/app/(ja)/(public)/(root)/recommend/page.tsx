@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { getTopSpotsWithRelations, getTotalSpotCount } from "@/lib/supabase/queries";
+import { getTopSpotsForRecommend, getTotalSpotCount } from "@/lib/supabase/queries";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
 import { TOKYO_AREA_SLUGS } from "@/lib/constants";
 import {
@@ -30,7 +30,7 @@ export default async function RecommendPage() {
   const currentYear = new Date().getFullYear();
 
   const [allTopSpots, totalCount] = await Promise.all([
-    getTopSpotsWithRelations(90).catch(() => []),
+    getTopSpotsForRecommend(60).catch(() => []),
     getTotalSpotCount().catch(() => 0),
   ]);
 
@@ -91,6 +91,7 @@ export default async function RecommendPage() {
         mapSpots={mapSpots}
         shareUrl={`${SITE_URL}/recommend/`}
         showRank
+        compactCards
       />
     </>
   );

@@ -17,7 +17,7 @@ export default function SpotOverview({ spotName, report, labels }: Props) {
 
   return (
     <section
-      className="content-card card-padding"
+      className="content-card card-padding cv-auto"
       id="report"
       aria-labelledby="report-heading"
     >

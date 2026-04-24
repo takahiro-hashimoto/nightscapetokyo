@@ -188,7 +188,7 @@ export default function SpotInfo({
 
   return (
     <section
-      className="content-card card-padding"
+      className="content-card card-padding cv-auto"
       id="info"
       aria-labelledby="info-heading"
     >

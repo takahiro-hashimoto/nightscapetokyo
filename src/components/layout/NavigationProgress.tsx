@@ -11,8 +11,11 @@ export default function NavigationProgress() {
   useEffect(() => {
     if (pathname !== prevPathname.current) {
       prevPathname.current = pathname;
-      setLoading(false);
       window.scrollTo(0, 0);
+      const frame = window.requestAnimationFrame(() => {
+        setLoading(false);
+      });
+      return () => window.cancelAnimationFrame(frame);
     }
   }, [pathname]);
 

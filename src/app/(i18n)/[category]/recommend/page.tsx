@@ -197,6 +197,7 @@ export default async function RecommendPageI18n({ params }: Props) {
         locale={locale}
         shareUrl={`${SITE_URL}/${locale}/recommend/`}
         showRank
+        compactCards
       />
     </>
   );

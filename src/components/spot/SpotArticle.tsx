@@ -186,7 +186,7 @@ export default function SpotArticle({
           <SpotGallery images={spot.images} spotName={spot.name} heading={labels.gallery.heading(spot.name)} />
 
           {spot.movie && (
-            <section className="content-card card-padding" id="movie" aria-labelledby="movie-heading">
+            <section className="content-card card-padding cv-auto" id="movie" aria-labelledby="movie-heading">
               <h2 id="movie-heading">
                 <span className="heading-icon">
                   <Camera size={18} aria-hidden="true" />
@@ -254,6 +254,7 @@ export default function SpotArticle({
             title={seoTitle}
             labels={labels.share}
             locale={currentLocale ?? "ja"}
+            className="cv-auto"
           />
         </article>
 

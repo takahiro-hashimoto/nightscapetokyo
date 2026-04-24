@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { RecentSpotItem } from "@/lib/supabase/queries";
+import YouTubeFacade from "./YouTubeFacade";
 
 type Props = {
   recentSpots: RecentSpotItem[];
@@ -54,12 +55,7 @@ export default function HomeNewsAndVideos({ recentSpots }: Props) {
               {YOUTUBE_VIDEOS.map((v) => (
                 <div key={v.id} className="video-card">
                   <div className="video-embed">
-                    <iframe
-                      src={`https://www.youtube.com/embed/${v.id}`}
-                      title={v.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
+                    <YouTubeFacade videoId={v.id} title={v.title} />
                   </div>
                   <p className="video-caption">{v.desc}</p>
                 </div>

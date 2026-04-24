@@ -11,6 +11,7 @@ import ExternalLinkCallout from "@/components/common/ExternalLinkCallout";
 import SpotFaq from "@/components/spot/SpotFaq";
 import SpotShare from "@/components/spot/SpotShare";
 import HomeAuthorCard from "@/components/common/HomeAuthorCard";
+import DeferredRender from "@/components/layout/DeferredRender";
 import type { ReactNode } from "react";
 import type { SpotWithRelations, SiteLocale, SpotListItem } from "@/lib/types";
 import { LOCALE_SLUG_MAP } from "@/lib/types";
@@ -29,14 +30,19 @@ type Props = {
   spotHeadingLevel?: "h2" | "h3";
   shareUrl?: string;
   showRank?: boolean;
+  compactCards?: boolean;
   externalLinks?: ReactNode[];
 };
 
-export default function TagArticle({ tagName, content, allSpots, otherSpots, mapSpots, locale, spotHeadingLevel = "h2", shareUrl, showRank, externalLinks }: Props) {
+export default function TagArticle({ tagName, content, allSpots, otherSpots, mapSpots, locale, spotHeadingLevel = "h2", shareUrl, showRank, compactCards = false, externalLinks }: Props) {
   const l = TAG_ARTICLE_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_ARTICLE_LABELS.ja;
   const bcp47Locale = locale ? (LOCALE_SLUG_MAP[locale] ?? locale) : "ja";
   /** slug → SpotWithRelations のマップ */
   const spotMap = new Map(allSpots.map((s) => [s.slug, s]));
+  const mapNameOverrides = Object.fromEntries([
+    ...allSpots.map((spot) => [spot.slug, spot.name || spot.title] as const),
+    ...(otherSpots ?? []).map((spot) => [spot.slug, spot.name] as const),
+  ]);
 
   /** 目次用: セクション見出し + 各スポット名 */
   const tocSections = content.sections
@@ -218,9 +224,19 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
                   )}
                   {spots.map(({ spot, isFirst, rank: spotRank }) => {
                     const desc = content.descriptions[spot.slug] ?? spot.lead ?? "";
+                    const deferRender = compactCards && showRank && spotRank > 10;
                     return (
                       <div key={spot.id} id={`spot-${spot.slug}`}>
-                        <TagSpotCard spot={spot} description={desc} locale={locale} headingLevel={spotHeadingLevel} priority={isFirst} rank={showRank ? spotRank : undefined} />
+                        <TagSpotCard
+                          spot={spot}
+                          description={desc}
+                          locale={locale}
+                          headingLevel={spotHeadingLevel}
+                          priority={isFirst}
+                          rank={showRank ? spotRank : undefined}
+                          compact={compactCards}
+                          deferRender={deferRender}
+                        />
                       </div>
                     );
                   })}
@@ -261,20 +277,25 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
 
           {/* マップ */}
           {mapSpots && mapSpots.length > 0 && (
-            <TagMapSection
-              spots={mapSpots}
-              heading={content.mapEmbed?.heading ?? l.mapHeading(tagName)}
-              intro={content.mapEmbed?.intro}
-              localeSlug={locale}
-            />
+            <DeferredRender>
+              <TagMapSection
+                spots={mapSpots}
+                heading={content.mapEmbed?.heading ?? l.mapHeading(tagName)}
+                intro={content.mapEmbed?.intro}
+                localeSlug={locale}
+                nameOverrides={mapNameOverrides}
+              />
+            </DeferredRender>
           )}
 
           {/* FAQ */}
           {content.faqs && content.faqs.length > 0 && (
-            <SpotFaq
-              faqs={content.faqs}
-              heading={content.faqHeading ?? l.faqHeading(tagName)}
-            />
+            <DeferredRender>
+              <SpotFaq
+                faqs={content.faqs}
+                heading={content.faqHeading ?? l.faqHeading(tagName)}
+              />
+            </DeferredRender>
           )}
 
           {/* サービスセクション */}
@@ -299,7 +320,9 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
             <ExternalLinkCallout items={externalLinks} />
           )}
 
-          <HomeAuthorCard locale={locale ?? "ja"} />
+          <DeferredRender>
+            <HomeAuthorCard locale={locale ?? "ja"} />
+          </DeferredRender>
 
           {shareUrl && (
             <SpotShare
@@ -307,6 +330,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
               title={content.title}
               labels={getComponentLabels(locale ?? "ja").share}
               locale={locale ?? "ja"}
+              className="cv-auto"
             />
           )}
         </article>

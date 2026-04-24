@@ -1,6 +1,6 @@
 import Script from "next/script";
 import NonCriticalCss from "@/components/layout/NonCriticalCss";
-import NavigationProgress from "@/components/layout/NavigationProgress";
+import NavigationProgressSlot from "@/components/layout/NavigationProgressSlot";
 import { AdsProvider } from "@/contexts/AdsContext";
 
 const showAdsense = process.env.NODE_ENV === "production";
@@ -52,7 +52,7 @@ export default function RootShell({
             />
           </noscript>
         )}
-        <NavigationProgress />
+        <NavigationProgressSlot />
         <AdsProvider showAds={showAdsense}>{children}</AdsProvider>
         {showAdsense && (
           <Script

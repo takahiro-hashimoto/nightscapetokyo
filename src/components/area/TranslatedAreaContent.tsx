@@ -4,6 +4,7 @@ import AreaSpotList from "@/components/area/AreaSpotList";
 import AreaMapLoader from "@/components/map/AreaMapLoader";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
+import DeferredRender from "@/components/layout/DeferredRender";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import type { SpotListItem } from "@/lib/types";
 import { SITE_URL, LOCALE_LABELS, LOCALE_SLUG_MAP } from "@/lib/types";
@@ -160,7 +161,7 @@ export default function TranslatedAreaContent({
         )}
 
         {mapSpots.length > 0 && (
-          <section className="content-card card-padding" id="map" aria-labelledby="map-heading">
+          <DeferredRender as="section" className="content-card card-padding" id="map" aria-labelledby="map-heading">
             <h2 className="area-section-heading" id="map-heading">{al.mapHeading(areaName)}</h2>
             <AreaMapLoader
               spots={mapSpots}
@@ -169,11 +170,11 @@ export default function TranslatedAreaContent({
               countLabel={al.mapCount(areaName, mapSpots.length)}
               nameOverrides={Object.fromEntries(spots.map((s) => [s.slug, s.name]))}
             />
-          </section>
+          </DeferredRender>
         )}
 
         {faqs.length > 0 && (
-          <section className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
+          <DeferredRender as="section" className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
             <h2 className="area-section-heading" id="faq-heading">{al.faqHeading(areaName)}</h2>
             <dl className="area-faq-list">
               {faqs.map((faq, i) => (
@@ -183,16 +184,18 @@ export default function TranslatedAreaContent({
                 </div>
               ))}
             </dl>
-          </section>
+          </DeferredRender>
         )}
 
         <RecommendCta locale={localeSlug} />
-        <SpotShare
-          url={`${SITE_URL}/${localeSlug}/${categorySlug}`}
-          title={al.title(areaName)}
-          labels={shareLabels}
-          locale={localeSlug}
-        />
+        <DeferredRender>
+          <SpotShare
+            url={`${SITE_URL}/${localeSlug}/${categorySlug}`}
+            title={al.title(areaName)}
+            labels={shareLabels}
+            locale={localeSlug}
+          />
+        </DeferredRender>
 
         {itemListJsonLd && (
           <script

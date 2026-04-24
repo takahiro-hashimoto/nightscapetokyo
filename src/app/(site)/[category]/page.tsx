@@ -28,6 +28,7 @@ import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
 import HomeAuthor from "@/components/home/HomeAuthor";
 import HomeMapSection from "@/components/home/HomeMapSection";
+import DeferredRender from "@/components/layout/DeferredRender";
 import {
   SITE_URL,
   ALL_LOCALE_SLUGS,
@@ -292,6 +293,14 @@ export default async function AreaPage({ params }: Props) {
     const faqItems = hp.faq.items;
     const inLanguage = localeToLanguage(localeSlug);
     const currentYear = new Date().getFullYear();
+    const mapSeoSpots = mapSpots.map((spot) => ({
+      id: spot.id,
+      slug: spot.slug,
+      name: spot.name,
+      categorySlug: spot.categorySlug,
+      latitude: spot.latitude,
+      longitude: spot.longitude,
+    }));
 
     return (
       <>
@@ -307,10 +316,11 @@ export default async function AreaPage({ params }: Props) {
         <PurposeSearch tags={purposeTags} labels={hp.purposeSearch} localeSlug={localeSlug} />
         <AreaSearch areas={areas} labels={hp.areaSearch} localeSlug={localeSlug} />
         <HomeMapSection
-          spots={mapSpots}
+          spots={mapSeoSpots}
           categories={areas.map((a) => ({ slug: a.slug, name: a.name }))}
           labels={hp.mapSection}
           localePrefix={`/${localeSlug}`}
+          endpoint={`/api/map-spots?locale=${localeSlug}`}
         />
         <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={hp.faq} />
         <HomeAuthor locale={localeSlug} />
@@ -400,10 +410,10 @@ export default async function AreaPage({ params }: Props) {
 
         {/* エリア紹介文 */}
         {cat.description && (
-          <section className="content-card card-padding area-description" id="about" aria-labelledby="about-heading">
+          <DeferredRender as="section" className="content-card card-padding area-description" id="about" aria-labelledby="about-heading">
             <h2 className="area-section-heading" id="about-heading">{cat.name}の夜景について</h2>
             <p className="area-description-text">{cat.description}</p>
-          </section>
+          </DeferredRender>
         )}
 
         {spots.length === 0 ? (
@@ -419,15 +429,15 @@ export default async function AreaPage({ params }: Props) {
 
         {/* エリアマップ */}
         {mapSpots.length > 0 && (
-          <section className="content-card card-padding" id="map" aria-labelledby="map-heading">
+          <DeferredRender as="section" className="content-card card-padding" id="map" aria-labelledby="map-heading">
             <h2 className="area-section-heading" id="map-heading">{cat.name}の夜景スポットマップ</h2>
             <AreaMapLoader spots={mapSpots} areaName={cat.name} />
-          </section>
+          </DeferredRender>
         )}
 
         {/* エリアFAQ */}
         {faqs.length > 0 && (
-          <section className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
+          <DeferredRender as="section" className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
             <h2 className="area-section-heading" id="faq-heading">{cat.name}の夜景スポットに関するFAQ</h2>
             <dl className="area-faq-list">
               {faqs.map((faq, i) => (
@@ -437,12 +447,12 @@ export default async function AreaPage({ params }: Props) {
                 </div>
               ))}
             </dl>
-          </section>
+          </DeferredRender>
         )}
 
         {/* 関連エリアリンク */}
         {relatedAreas.length > 0 && (
-          <section className="content-card card-padding" id="related-areas" aria-labelledby="related-areas-heading">
+          <DeferredRender as="section" className="content-card card-padding" id="related-areas" aria-labelledby="related-areas-heading">
             <h2 className="area-section-heading" id="related-areas-heading">他のエリアの夜景スポット</h2>
             <ul className="related-areas-list">
               {relatedAreas.map((area) => (
@@ -453,15 +463,17 @@ export default async function AreaPage({ params }: Props) {
                 </li>
               ))}
             </ul>
-          </section>
+          </DeferredRender>
         )}
 
         <RecommendCta locale={null} />
-        <SpotShare
-          url={`${SITE_URL}/${categorySlug}/`}
-          title={`${displayName}の夜景スポット一覧`}
-          labels={getComponentLabels("ja").share}
-        />
+        <DeferredRender>
+          <SpotShare
+            url={`${SITE_URL}/${categorySlug}/`}
+            title={`${displayName}の夜景スポット一覧`}
+            labels={getComponentLabels("ja").share}
+          />
+        </DeferredRender>
 
         {/* CollectionPage JSON-LD */}
         <script

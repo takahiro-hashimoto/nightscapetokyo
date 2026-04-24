@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 import type { SpotWithRelations, SpotListItem } from "../../types";
 import { LOCALE_SLUG_MAP, LOCALE_TO_SLUG, parseJsonField } from "../../types";
 import { dummySpot } from "../../dummy-data";
+import { TOKYO_AREA_SLUGS } from "@/lib/constants";
 import {
   isSupabaseConfigured,
   getSupabaseClient,
@@ -137,6 +138,56 @@ export const getTopSpots = cache(async (limit = 6): Promise<SpotListItem[]> => {
   const all = await _getTopSpotsAll();
   return all.slice(0, limit);
 });
+
+/** /recommend 用: FAQ・レビュー・イベントを除いた軽量フルデータ */
+export const getTopSpotsForRecommend = cache(unstable_cache(async (limit = 60): Promise<SpotWithRelations[]> => {
+  if (!isSupabaseConfigured) return [];
+
+  const supabase = await getSupabaseClient();
+
+  const { data } = (await supabase
+    .from("spots")
+    .select("*, category:categories(*), images:spot_images(*), hotel:spot_hotels(*)")
+    .eq("type", "spot")
+    .eq("published", true)
+    .order("rating_beautiful", { ascending: false })
+    .limit(limit)) as any;
+
+  if (!data) return [];
+
+  const seen = new Set<string>();
+  return data
+    .map((spot: any) => normalizeSpotRelations({ ...spot, tags: [] }))
+    .filter((spot: SpotWithRelations) => {
+      if (seen.has(spot.id)) return false;
+      seen.add(spot.id);
+      return true;
+    });
+}, ["top-spots-recommend"], { revalidate: 3600, tags: ["spots"] }));
+
+/** おすすめバッジ判定用の軽量 slug 一覧 */
+const _getRecommendedSpotSlugs = unstable_cache(async (): Promise<string[]> => {
+  if (!isSupabaseConfigured) return [];
+
+  const supabase = await getSupabaseClient();
+
+  const { data } = (await supabase
+    .from("spots")
+    .select("slug, closed, category:categories(slug)")
+    .eq("type", "spot")
+    .eq("published", true)
+    .order("rating_beautiful", { ascending: false })
+    .limit(60)) as any;
+
+  if (!data) return [];
+
+  return data
+    .filter((spot: any) => TOKYO_AREA_SLUGS.has(spot.category?.slug ?? "") && !spot.closed)
+    .slice(0, 30)
+    .map((spot: any) => spot.slug);
+}, ["recommended-spot-slugs"], { revalidate: 3600, tags: ["spots", "areas"] });
+
+export const getRecommendedSpotSlugs = cache(_getRecommendedSpotSlugs);
 
 /** トップスポットをフルリレーション付きで取得（recommend ページ用・1クエリ版） */
 export const getTopSpotsWithRelations = cache(unstable_cache(async (limit = 60): Promise<SpotWithRelations[]> => {
@@ -675,4 +726,3 @@ export const getSpotImagesBySlugs = unstable_cache(
   ["spot-images-by-slugs"],
   { revalidate: 86400, tags: ["spots"] }
 );
-

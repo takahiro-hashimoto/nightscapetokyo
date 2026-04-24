@@ -135,7 +135,6 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
               width={1200}
               height={800}
               className="gallery-modal-image"
-              unoptimized
             />
             {/* キャプション + カウンター */}
             <div className="gallery-modal-footer">

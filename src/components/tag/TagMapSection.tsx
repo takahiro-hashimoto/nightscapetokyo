@@ -7,13 +7,14 @@ type Props = {
   heading: string;
   intro?: string;
   localeSlug?: string;
+  nameOverrides?: Record<string, string>;
 };
 
 /**
  * タグページ用のインタラクティブマップセクション。
  * 該当タグが付与された夜景スポットをピン表示する汎用モジュール。
  */
-export default function TagMapSection({ spots, heading, intro, localeSlug }: Props) {
+export default function TagMapSection({ spots, heading, intro, localeSlug, nameOverrides }: Props) {
   if (spots.length === 0) return null;
 
   const labels = getComponentLabels(localeSlug ?? "ja");
@@ -30,6 +31,7 @@ export default function TagMapSection({ spots, heading, intro, localeSlug }: Pro
         areaName=""
         localeSlug={localeSlug}
         countLabel={countLabel}
+        nameOverrides={nameOverrides}
       />
     </section>
   );

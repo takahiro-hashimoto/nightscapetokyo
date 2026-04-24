@@ -10,14 +10,19 @@ type MapLabels = {
 };
 
 type Props = {
-  spots: MapSpotItem[];
   categories: { slug: string; name: string }[];
   labels?: MapLabels;
   localePrefix?: string;
+  endpoint: string;
 };
 
-export default function SpotMapLoader({ spots, categories, labels, localePrefix }: Props) {
-  const [SpotMap, setSpotMap] = useState<ComponentType<Props> | null>(null);
+type SpotMapComponentProps = Omit<Props, "endpoint"> & {
+  spots: MapSpotItem[];
+};
+
+export default function SpotMapLoader({ categories, labels, localePrefix, endpoint }: Props) {
+  const [SpotMap, setSpotMap] = useState<ComponentType<SpotMapComponentProps> | null>(null);
+  const [spots, setSpots] = useState<MapSpotItem[] | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,7 +34,22 @@ export default function SpotMapLoader({ spots, categories, labels, localePrefix 
       (entries) => {
         if (entries[0].isIntersecting) {
           observer.disconnect();
-          import("./SpotMap").then((mod) => setSpotMap(() => mod.default));
+          void Promise.all([
+            import("./SpotMap"),
+            fetch(endpoint, { cache: "force-cache" }).then(async (response) => {
+              if (!response.ok) {
+                throw new Error("Failed to fetch map spots");
+              }
+              return response.json() as Promise<MapSpotItem[]>;
+            }),
+          ])
+            .then(([mod, data]) => {
+              setSpots(data);
+              setSpotMap(() => mod.default);
+            })
+            .catch(() => {
+              setSpots([]);
+            });
         }
       },
       { rootMargin: "300px" }
@@ -37,9 +57,9 @@ export default function SpotMapLoader({ spots, categories, labels, localePrefix 
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [endpoint]);
 
-  if (!SpotMap) {
+  if (!SpotMap || !spots) {
     return (
       <div className="spot-map-wrapper" ref={containerRef}>
         <div
@@ -47,6 +67,19 @@ export default function SpotMapLoader({ spots, categories, labels, localePrefix 
           style={{ background: "#eee", display: "flex", alignItems: "center", justifyContent: "center" }}
         >
           <p style={{ color: "#888" }}>{labels?.loadingLabel ?? "マップを読み込み中..."}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (spots.length === 0) {
+    return (
+      <div className="spot-map-wrapper" ref={containerRef}>
+        <div
+          className="spot-map-container"
+          style={{ background: "#eee", display: "flex", alignItems: "center", justifyContent: "center" }}
+        >
+          <p style={{ color: "#888" }}>マップの読み込みに失敗しました</p>
         </div>
       </div>
     );
