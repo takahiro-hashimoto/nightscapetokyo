@@ -10,7 +10,8 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
-import { getTagBySlug, getSpotsByTagSlug, getSpotsBySlugs, getSpotListByTagSlug, getTagPageBySlug, getAvailableTagPageLocales, getMapSpotsByTag } from "@/lib/supabase/queries";
+import { getTagBySlug, getSpotsByTagSlug, getSpotsBySlugs, getSpotListByTagSlug, getTagPageBySlug, getAvailableTagPageLocales, getMapSpotsByTag, getPurposeTags } from "@/lib/supabase/queries";
+import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 import { SITE_URL, calcRatingAvg, LOCALE_LABELS, OG_LOCALE_MAP, ALL_LOCALE_SLUGS, buildTagHreflangAlternates } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import type { SpotListItem, SpotWithRelations } from "@/lib/types";
@@ -239,6 +240,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export const revalidate = 86400;
 export const fetchCache = "force-cache";
 
+export async function generateStaticParams() {
+  if (shouldSkipStaticGenerationForPreview()) return [];
+  const tags = await getPurposeTags();
+  const dbSlugs = tags.map((t) => ({ slug: t.slug }));
+  const dummySlugs = Object.keys(tagPageContents).map((slug) => ({ slug }));
+  const seen = new Set<string>();
+  return [...dbSlugs, ...dummySlugs].filter(({ slug }) => {
+    if (seen.has(slug)) return false;
+    seen.add(slug);
+    return true;
+  });
+}
+
 export default async function TagPage({ params }: Props) {
   const { slug } = await params;
 
@@ -301,6 +315,7 @@ export default async function TagPage({ params }: Props) {
           spotHeadingLevel="h3"
           shareUrl={`${SITE_URL}/tag/${slug}`}
           externalLinks={getTagExternalLinks(slug)}
+          compactCards
         />
       </>
     );

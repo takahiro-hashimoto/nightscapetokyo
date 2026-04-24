@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  overflow-x: hidden;
+}
+
 /* ==========================================
    0. THEME — Design Tokens
    ========================================== */

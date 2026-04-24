@@ -196,6 +196,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
           {/* セクション（render外でランクを事前計算し、render中のmutationを回避） */}
           {(() => {
             let rank = 0;
+            let displayOrder = 0;
             return content.sections
               .map((section, sectionIndex) => {
                 const seenIds = new Set<string>();
@@ -209,6 +210,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
                   .map((spot, spotIndex) => ({
                     spot,
                     isFirst: sectionIndex === 0 && spotIndex === 0,
+                    displayOrder: ++displayOrder,
                     rank: ++rank,
                   }));
                 return { section, spots };
@@ -222,9 +224,10 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
                       {section.intro && <p className="section-intro">{section.intro}</p>}
                     </div>
                   )}
-                  {spots.map(({ spot, isFirst, rank: spotRank }) => {
+                  {spots.map(({ spot, isFirst, displayOrder: spotOrder, rank: spotRank }) => {
                     const desc = content.descriptions[spot.slug] ?? spot.lead ?? "";
-                    const deferRender = compactCards && showRank && spotRank > 10;
+                    const deferThreshold = showRank ? 10 : 6;
+                    const deferRender = compactCards && spotOrder > deferThreshold;
                     return (
                       <div key={spot.id} id={`spot-${spot.slug}`}>
                         <TagSpotCard

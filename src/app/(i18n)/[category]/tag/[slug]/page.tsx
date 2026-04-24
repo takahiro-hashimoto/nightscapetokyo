@@ -11,7 +11,9 @@ import {
   getTagPageBySlugWithTranslation,
   getAvailableTagPageLocales,
   getMapSpotsByTag,
+  getPurposeTags,
 } from "@/lib/supabase/queries";
+import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 import {
   SITE_URL,
   ALL_LOCALE_SLUGS,
@@ -260,6 +262,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export const revalidate = 86400;
 
+export async function generateStaticParams() {
+  if (shouldSkipStaticGenerationForPreview()) return [];
+  const tags = await getPurposeTags();
+  const tagSlugs = Array.from(
+    new Set([...tags.map((t) => t.slug), ...Object.keys(tagPageContents)])
+  );
+  return ALL_LOCALE_SLUGS.flatMap((locale) =>
+    tagSlugs.map((slug) => ({ category: locale, slug }))
+  );
+}
+
 export default async function TranslatedTagPage({ params }: Props) {
   const { category: localeSlug, slug: tagSlug } = await params;
   if (!ALL_LOCALE_SLUGS.includes(localeSlug)) notFound();
@@ -378,6 +391,7 @@ export default async function TranslatedTagPage({ params }: Props) {
         locale={localeSlug}
         spotHeadingLevel="h3"
         shareUrl={`${SITE_URL}/${localeSlug}/tag/${tagSlug}`}
+        compactCards
       />
     </>
   );
