@@ -7,4 +7,5 @@ export * from "./queries/tag-pages";
 export * from "./queries/articles";
 export * from "./queries/maps";
 export * from "./queries/site-chrome";
+export * from "./queries/time-lapse";
 export * from "./queries/search";

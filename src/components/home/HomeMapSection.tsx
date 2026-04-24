@@ -46,7 +46,7 @@ export default function HomeMapSection({
     hasPart: spots.slice(0, 50).map((spot) => ({
       "@type": "TouristAttraction",
       name: spot.name,
-      url: `${SITE_URL}/${spot.categorySlug}/${spot.slug}`,
+      url: `${SITE_URL}/${spot.categorySlug}/${spot.slug}/`,
       geo: {
         "@type": "GeoCoordinates",
         latitude: spot.latitude,

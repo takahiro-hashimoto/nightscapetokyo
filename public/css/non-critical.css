@@ -2,7 +2,7 @@
    Module - Report Content
    ========================================= */
 .report-content p {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   font-size: 1.05rem;
   line-height: 1.5;
 }
@@ -176,14 +176,19 @@
     max-width: 96vw;
     max-height: calc(85vh - 64px);
   }
+  .gallery-modal-footer {
+    bottom: 29%;
+  }
 }
 
 .gallery-modal-footer {
-  flex-shrink: 0;
-  margin-top: 10px;
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
   cursor: default;
-  width: 100%;
+  width: 90%;
 }
 
 .gallery-modal-caption {
@@ -2164,9 +2169,6 @@
 
 
 
-.tag-detail-link:hover {
-  text-decoration: underline;
-}
 
 /* =========================================
    HOME - News & Videos
@@ -2578,11 +2580,11 @@
 }
 
 .definition .definition-body dd {
-  margin: 0 0 16px;
-  padding-bottom: 16px;
+  margin: 0 0 12px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--color-bg-muted);
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.5;
   color: var(--c-text-main);
 }
 

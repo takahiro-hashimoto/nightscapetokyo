@@ -1,4 +1,3 @@
-import { cache } from "react";
 import type { SpotListItem } from "../../types";
 import { LOCALE_SLUG_MAP } from "../../types";
 import {
@@ -7,47 +6,6 @@ import {
   mapSpotToListing,
   LISTING_SELECT,
 } from "./shared";
-
-export type TimeLapseSpot = {
-  slug: string;
-  name: string;
-  categorySlug: string;
-  movie: string;
-};
-
-export const getTimeLapseSpots = cache(async function getTimeLapseSpots(localeSlug?: string): Promise<TimeLapseSpot[]> {
-  if (!isSupabaseConfigured) return [];
-  const supabase = await getSupabaseClient();
-  const { data } = (await supabase
-    .from("spots")
-    .select("id, slug, name, title, movie, category:categories(slug)")
-    .eq("published", true)
-    .not("movie", "is", null)
-    .order("published_at", { ascending: false })) as any;
-
-  if (!data) return [];
-
-  const dbLocale = localeSlug ? LOCALE_SLUG_MAP[localeSlug] : null;
-  const tMap = new Map<string, any>();
-  if (dbLocale) {
-    const spotIds = data.map((s: any) => s.id);
-    const { data: translations } = (await supabase
-      .from("spot_translations")
-      .select("spot_id, name")
-      .eq("locale", dbLocale)
-      .in("spot_id", spotIds)) as any;
-    if (translations?.length) {
-      for (const t of translations) tMap.set(t.spot_id, t);
-    }
-  }
-
-  return data.map((s: any) => ({
-    slug: s.slug,
-    name: tMap.get(s.id)?.name || s.name || s.title,
-    categorySlug: s.category?.slug ?? "",
-    movie: s.movie,
-  }));
-});
 
 export type SearchSpotItem = SpotListItem & {
   matchedFields: string[];

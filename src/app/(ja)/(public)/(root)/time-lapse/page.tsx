@@ -108,6 +108,7 @@ const COLLECTION_SUBSECTIONS: Subsection[] = [
 export default async function TimeLapsePage() {
   const timeLapseSpots = await getTimeLapseSpots();
 
+  const seenIds = new Set<string>();
   const materialVideos: Video[] = timeLapseSpots.flatMap((spot) => {
     const ids = extractYouTubeIds(spot.movie);
     return ids.map((id) => ({
@@ -116,6 +117,10 @@ export default async function TimeLapsePage() {
       caption: spot.name,
       captionLink: `/${spot.categorySlug}/${spot.slug}/`,
     }));
+  }).filter((v) => {
+    if (seenIds.has(v.id)) return false;
+    seenIds.add(v.id);
+    return true;
   });
 
   return (

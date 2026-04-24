@@ -313,7 +313,7 @@ export default async function TagPage({ params }: Props) {
           otherSpots={otherSpots}
           mapSpots={mapSpots}
           spotHeadingLevel="h3"
-          shareUrl={`${SITE_URL}/tag/${slug}`}
+          shareUrl={`${SITE_URL}/tag/${slug}/`}
           externalLinks={getTagExternalLinks(slug)}
           compactCards
         />
@@ -346,7 +346,7 @@ export default async function TagPage({ params }: Props) {
           .map((spot, index) => ({
             "@type": "ListItem",
             position: index + 1,
-            url: `${SITE_URL}/${spot.category.slug}/${spot.slug}`,
+            url: `${SITE_URL}/${spot.category.slug}/${spot.slug}/`,
             name: spot.name,
             ...(spot.featured_image && { image: spot.featured_image }),
           })),
@@ -379,7 +379,7 @@ export default async function TagPage({ params }: Props) {
       />
     <div className="l-article-body" itemScope itemType="https://schema.org/CollectionPage">
       <meta itemProp="name" content={`${tagName}の夜景スポット一覧`} />
-      <link itemProp="url" href={`${SITE_URL}/tag/${slug}`} />
+      <link itemProp="url" href={`${SITE_URL}/tag/${slug}/`} />
       <div className="l-article-container">
         <Breadcrumb items={[{ label: `${tagName}の夜景スポット一覧` }]} />
 
@@ -429,7 +429,7 @@ export default async function TagPage({ params }: Props) {
 
         <RecommendCta locale={null} />
         <SpotShare
-          url={`${SITE_URL}/tag/${slug}`}
+          url={`${SITE_URL}/tag/${slug}/`}
           title={`${tagName}の夜景スポット一覧`}
           labels={getComponentLabels("ja").share}
         />

@@ -50,12 +50,12 @@ function detectLocaleFromHeader(header: string): string | null {
 function buildCsp(nonce: string): string {
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' https://maps.googleapis.com https://maps.gstatic.com https://platform.twitter.com`,
+    `script-src 'self' 'nonce-${nonce}' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://www.googleadservices.com https://adservice.google.com https://maps.googleapis.com https://maps.gstatic.com https://platform.twitter.com`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' data: https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
-    "frame-src https://www.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://platform.twitter.com",
-    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://maps.googleapis.com https:",
+    "frame-src https://www.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://platform.twitter.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.googletagmanager.com",
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://maps.googleapis.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://pagead2.googlesyndication.com https:",
     "worker-src 'self' blob:",
   ].join("; ");
 }

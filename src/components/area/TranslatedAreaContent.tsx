@@ -100,7 +100,7 @@ export default function TranslatedAreaContent({
       .map((spot, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        url: `${SITE_URL}/${localeSlug}/${categorySlug}/${spot.slug}`,
+        url: `${SITE_URL}/${localeSlug}/${categorySlug}/${spot.slug}/`,
         name: spot.name,
         ...(spot.featured_image && { image: spot.featured_image }),
       })),
@@ -190,7 +190,7 @@ export default function TranslatedAreaContent({
         <RecommendCta locale={localeSlug} />
         <DeferredRender>
           <SpotShare
-            url={`${SITE_URL}/${localeSlug}/${categorySlug}`}
+            url={`${SITE_URL}/${localeSlug}/${categorySlug}/`}
             title={al.title(areaName)}
             labels={shareLabels}
             locale={localeSlug}

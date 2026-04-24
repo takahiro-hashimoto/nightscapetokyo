@@ -4,7 +4,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/server";
-import { revalidateSpotCaches } from "@/lib/cache-invalidation";
+import { revalidateSpotCaches, revalidateTranslationCaches } from "@/lib/cache-invalidation";
 import {
   LOCALES,
   translateWithRetry,
@@ -294,6 +294,7 @@ export async function translateSpot(spotId: string, targetLocales?: string[]) {
   }
 
   revalidateSpotCaches();
+  revalidateTranslationCaches();
   revalidatePath(`/admin/spots/${spotId}/edit`);
 
   if (errors.length > 0) {

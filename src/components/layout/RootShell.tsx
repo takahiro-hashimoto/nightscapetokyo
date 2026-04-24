@@ -1,11 +1,12 @@
 import Script from "next/script";
+import { headers } from "next/headers";
 import NonCriticalCss from "@/components/layout/NonCriticalCss";
 import NavigationProgressSlot from "@/components/layout/NavigationProgressSlot";
 import { AdsProvider } from "@/contexts/AdsContext";
 
 const showAdsense = process.env.NODE_ENV === "production";
 
-export default function RootShell({
+export default async function RootShell({
   lang,
   headContent,
   children,
@@ -14,6 +15,8 @@ export default function RootShell({
   headContent?: React.ReactNode;
   children: React.ReactNode;
 }) {
+  const nonce = (await headers()).get("x-nonce") ?? "";
+
   return (
     <html lang={lang}>
       {/* eslint-disable-next-line @next/next/no-head-element -- App Router root layout: <head> は正当な使用 */}
@@ -21,6 +24,7 @@ export default function RootShell({
         {process.env.NODE_ENV === "production" && (
           // eslint-disable-next-line @next/next/next-script-for-ga
           <script
+            nonce={nonce}
             dangerouslySetInnerHTML={{
               __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WB56L85');`,
             }}
@@ -59,6 +63,7 @@ export default function RootShell({
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1569785771112521"
             crossOrigin="anonymous"
             strategy="lazyOnload"
+            nonce={nonce}
           />
         )}
       </body>
