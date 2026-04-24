@@ -1,13 +1,10 @@
-import { SITE_URL } from "@/lib/types";
-import type { SpotListItem } from "@/lib/types";
+import { SITE_URL, LOCALE_CONFIG, calcRatingAvg, buildSpotUrl } from "@/lib/types";
+import type { SpotListItem, SpotWithRelations } from "@/lib/types";
 
-/** BCP 47 language codes for schema.org inLanguage */
+/** BCP 47 language codes for schema.org inLanguage（LOCALE_CONFIG から自動導出） */
 const LOCALE_LANGUAGE_MAP: Record<string, string> = {
   ja: "ja",
-  en: "en",
-  ko: "ko",
-  tw: "zh-TW",
-  cn: "zh-CN",
+  ...Object.fromEntries(Object.entries(LOCALE_CONFIG).map(([slug, c]) => [slug, c.htmlLang])),
 };
 
 export function localeToLanguage(locale: string): string {
@@ -51,7 +48,7 @@ export function buildWebSiteJsonLd() {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+        urlTemplate: `${SITE_URL}/search/?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
@@ -234,6 +231,7 @@ export function buildItemListJsonLd(
   } = {}
 ) {
   const { localePrefix = "", name, inLanguage = "ja" } = options;
+  const localeSlug = localePrefix ? localePrefix.slice(1) : "ja";
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -242,7 +240,7 @@ export function buildItemListJsonLd(
     itemListElement: spots.map((spot, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `${SITE_URL}${localePrefix}/${spot.category.slug}/${spot.slug}`,
+      url: buildSpotUrl(spot.category.slug, spot.slug, localeSlug),
       name: spot.name,
       ...(spot.featured_image ? { image: spot.featured_image } : {}),
     })),
@@ -269,10 +267,43 @@ export function buildAreaItemListJsonLd(
     itemListElement: sorted.map((spot, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `${SITE_URL}/${categorySlug}/${spot.slug}`,
+      url: `${SITE_URL}/${categorySlug}/${spot.slug}/`,
       name: spot.name,
       ...(spot.featured_image ? { image: spot.featured_image } : {}),
     })),
+  };
+}
+
+/**
+ * タグページ用 ItemList（SpotWithRelations[] を使用する場合）
+ * TagArticle.tsx から利用。SpotListItem[] 版とは型が異なるため分離。
+ */
+export function buildTagItemListJsonLd(
+  spots: SpotWithRelations[],
+  options: {
+    localePrefix?: string;
+    name?: string;
+    description?: string;
+    inLanguage?: string;
+  } = {}
+) {
+  const { localePrefix = "", name, description, inLanguage = "ja" } = options;
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    inLanguage,
+    ...(name ? { name } : {}),
+    ...(description ? { description } : {}),
+    itemListElement: spots
+      .map((s) => ({ spot: s, rating: calcRatingAvg(s) }))
+      .sort((a, b) => b.rating - a.rating)
+      .map(({ spot }, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${SITE_URL}${localePrefix}/${spot.category?.slug ?? ""}/${spot.slug}/`,
+        name: spot.name || spot.title,
+        ...(spot.featured_image ? { image: spot.featured_image } : {}),
+      })),
   };
 }
 

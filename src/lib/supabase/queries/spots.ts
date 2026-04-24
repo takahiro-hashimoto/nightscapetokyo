@@ -13,15 +13,12 @@ import {
   FULL_SELECT,
 } from "./shared";
 
-export const getSpotBySlug = cache(async function getSpotBySlug(
+const _getSpotBySlugUncached = async (
   categorySlug: string,
   spotSlug: string
-): Promise<SpotWithRelations | null> {
+): Promise<SpotWithRelations | null> => {
   if (!isSupabaseConfigured) {
-    if (
-      dummySpot.slug === spotSlug &&
-      dummySpot.category.slug === categorySlug
-    ) {
+    if (dummySpot.slug === spotSlug && dummySpot.category.slug === categorySlug) {
       return dummySpot;
     }
     return null;
@@ -39,9 +36,15 @@ export const getSpotBySlug = cache(async function getSpotBySlug(
   if (error || !spot || spot.category?.slug !== categorySlug) return null;
 
   const tags = spot.spot_tags?.map((r: any) => r.tag) ?? [];
-
   return normalizeSpotRelations({ ...spot, tags });
-});
+};
+
+export const getSpotBySlug = cache(
+  unstable_cache(_getSpotBySlugUncached, ["spot-by-slug"], {
+    revalidate: 86400,
+    tags: ["spots"],
+  })
+);
 
 export async function getAllSpotSlugs(): Promise<
   { category: string; slug: string }[]
@@ -100,10 +103,11 @@ export const getTotalSpotCount = cache(unstable_cache(async (): Promise<number> 
   return count ?? 0;
 }, ["spot-count"], { revalidate: 3600, tags: ["spots"] }));
 
-export const getTopSpots = cache(unstable_cache(async (limit = 6): Promise<SpotListItem[]> => {
+/** limit によらず共有できる上位100件のキャッシュ */
+const _getTopSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {
   if (!isSupabaseConfigured) {
     const { dummyTopSpots } = await import("../../dummy-home-data");
-    return dummyTopSpots.slice(0, limit);
+    return dummyTopSpots;
   }
 
   const supabase = await getSupabaseClient();
@@ -112,7 +116,9 @@ export const getTopSpots = cache(unstable_cache(async (limit = 6): Promise<SpotL
     .from("spots")
     .select(LISTING_SELECT)
     .eq("type", "spot")
-    .eq("published", true)) as any;
+    .eq("published", true)
+    .order("rating_beautiful", { ascending: false })
+    .limit(100)) as any;
 
   if (!data) return [];
 
@@ -124,9 +130,42 @@ export const getTopSpots = cache(unstable_cache(async (limit = 6): Promise<SpotL
       seen.add(s.id);
       return true;
     })
-    .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg)
-    .slice(0, limit);
-}, ["top-spots"], { revalidate: 3600, tags: ["spots"] }));
+    .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg);
+}, ["top-spots"], { revalidate: 3600, tags: ["spots"] });
+
+export const getTopSpots = cache(async (limit = 6): Promise<SpotListItem[]> => {
+  const all = await _getTopSpotsAll();
+  return all.slice(0, limit);
+});
+
+/** トップスポットをフルリレーション付きで取得（recommend ページ用・1クエリ版） */
+export const getTopSpotsWithRelations = cache(unstable_cache(async (limit = 60): Promise<SpotWithRelations[]> => {
+  if (!isSupabaseConfigured) return [];
+
+  const supabase = await getSupabaseClient();
+
+  const { data } = (await supabase
+    .from("spots")
+    .select(`${FULL_SELECT}, spot_tags(tag:tags(*))`)
+    .eq("type", "spot")
+    .eq("published", true)
+    .order("rating_beautiful", { ascending: false })
+    .limit(limit)) as any;
+
+  if (!data) return [];
+
+  const seen = new Set<string>();
+  return data
+    .map((spot: any) => {
+      const tags = spot.spot_tags?.map((r: any) => r.tag) ?? [];
+      return normalizeSpotRelations({ ...spot, tags });
+    })
+    .filter((s: SpotWithRelations) => {
+      if (seen.has(s.id)) return false;
+      seen.add(s.id);
+      return true;
+    });
+}, ["top-spots-full"], { revalidate: 3600, tags: ["spots"] }));
 
 export async function getSpotCount(): Promise<number> {
   if (!isSupabaseConfigured) return 0;
@@ -577,21 +616,25 @@ export const getSpotWithTranslation = cache(async function getSpotWithTranslatio
 });
 
 /** スポットの利用可能な翻訳言語を取得 */
-export const getAvailableTranslations = cache(async function getAvailableTranslations(
-  spotId: string
-): Promise<{ locale: string }[]> {
-  if (!isSupabaseConfigured) return [];
+export const getAvailableTranslations = cache(
+  unstable_cache(
+    async (spotId: string): Promise<{ locale: string }[]> => {
+      if (!isSupabaseConfigured) return [];
 
-  const supabase = await getSupabaseClient();
-  const { data } = await supabase
-    .from("spot_translations")
-    .select("locale")
-    .eq("spot_id", spotId);
+      const supabase = await getSupabaseClient();
+      const { data } = await supabase
+        .from("spot_translations")
+        .select("locale")
+        .eq("spot_id", spotId);
 
-  return (data ?? [])
-    .filter((d) => LOCALE_TO_SLUG[d.locale])
-    .map((d) => ({ locale: LOCALE_TO_SLUG[d.locale] }));
-});
+      return (data ?? [])
+        .filter((d) => LOCALE_TO_SLUG[d.locale])
+        .map((d) => ({ locale: LOCALE_TO_SLUG[d.locale] }));
+    },
+    ["available-translations"],
+    { revalidate: 86400, tags: ["translations"] }
+  )
+);
 
 /** 翻訳済みの全スポットスラッグを取得（SSG用） */
 export async function getAllTranslatedSlugs(): Promise<
@@ -618,16 +661,18 @@ export async function getAllTranslatedSlugs(): Promise<
 }
 
 /** スラッグ一覧から featured_image を軽量取得 */
-export async function getSpotImagesBySlugs(
-  slugs: string[]
-): Promise<Record<string, string>> {
-  if (!isSupabaseConfigured || slugs.length === 0) return {};
-  const supabase = await getSupabaseClient();
-  const { data } = (await supabase
-    .from("spots")
-    .select("slug, featured_image")
-    .in("slug", slugs)) as any;
-  if (!data) return {};
-  return Object.fromEntries(data.map((s: any) => [s.slug, s.featured_image ?? ""]));
-}
+export const getSpotImagesBySlugs = unstable_cache(
+  async (slugs: string[]): Promise<Record<string, string>> => {
+    if (!isSupabaseConfigured || slugs.length === 0) return {};
+    const supabase = await getSupabaseClient();
+    const { data } = (await supabase
+      .from("spots")
+      .select("slug, featured_image")
+      .in("slug", slugs)) as any;
+    if (!data) return {};
+    return Object.fromEntries(data.map((s: any) => [s.slug, s.featured_image ?? ""]));
+  },
+  ["spot-images-by-slugs"],
+  { revalidate: 86400, tags: ["spots"] }
+);
 

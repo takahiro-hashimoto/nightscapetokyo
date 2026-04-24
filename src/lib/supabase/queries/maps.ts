@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
-import { calcRatingAvg } from "../../types";
+import { calcRatingAvg, LOCALE_SLUG_MAP } from "../../types";
 import {
   isSupabaseConfigured,
   getSupabaseClient,
@@ -52,6 +52,62 @@ export const getSpotsForMap = cache(unstable_cache(async (): Promise<MapSpotItem
     return acc;
   }, []);
 }, ["map-spots"], { revalidate: 3600, tags: ["spots"] }));
+
+const SPOT_SELECT =
+  "id, slug, name, title, featured_image, latitude, longitude, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(slug, name)";
+
+const _getSpotsForMapTranslatedCached = unstable_cache(
+  async (localeSlug: string): Promise<MapSpotItem[]> => {
+    const dbLocale = LOCALE_SLUG_MAP[localeSlug];
+    if (!isSupabaseConfigured || !dbLocale) return [];
+
+    const supabase = await getSupabaseClient();
+
+    const [{ data }, { data: translations }] = await Promise.all([
+      supabase
+        .from("spots")
+        .select(SPOT_SELECT)
+        .eq("published", true)
+        .not("latitude", "is", null)
+        .not("longitude", "is", null) as any,
+      supabase
+        .from("spot_translations")
+        .select("spot_id, name, category_name")
+        .eq("locale", dbLocale) as any,
+    ]);
+
+    if (!data) return [];
+
+    const tMap = new Map<string, { name: string; category_name: string }>(
+      (translations ?? []).map((t: any) => [t.spot_id, t])
+    );
+
+    const seen = new Set<string>();
+    return data.reduce((acc: MapSpotItem[], s: any) => {
+      if (seen.has(s.id)) return acc;
+      seen.add(s.id);
+      const t = tMap.get(s.id);
+      acc.push({
+        id: s.id,
+        slug: s.slug,
+        name: t?.name || s.name || s.title,
+        featured_image: s.featured_image || "",
+        categorySlug: s.category?.slug ?? "",
+        categoryName: t?.category_name || (s.category?.name ?? ""),
+        latitude: s.latitude,
+        longitude: s.longitude,
+        rating_avg: calcRatingAvg(s),
+      });
+      return acc;
+    }, []);
+  },
+  ["map-spots-translated"],
+  { revalidate: 3600, tags: ["spots", "translations"] }
+);
+
+export async function getSpotsForMapTranslated(localeSlug: string): Promise<MapSpotItem[]> {
+  return _getSpotsForMapTranslatedCached(localeSlug);
+}
 
 export async function getMapSpotsByCategory(categorySlug: string): Promise<MapSpotItem[]> {
   const all = await getSpotsForMap();

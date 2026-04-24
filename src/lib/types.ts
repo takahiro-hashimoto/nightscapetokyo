@@ -143,58 +143,98 @@ export type LocaleSlug = (typeof LOCALE_SLUGS)[number];
 /** ja + 全ロケール — ラベル定義など ja を含む場面で使用 */
 export type SiteLocale = "ja" | LocaleSlug;
 
-/** URL slug ↔ DB locale mapping */
-export const LOCALE_SLUG_MAP = {
-  en: "en",
-  ko: "ko",
-  tw: "zh-Hant",
-  cn: "zh-Hans",
-} satisfies Record<LocaleSlug, string> as Record<string, string>;
+export const SITE_URL = "https://nightscape.tokyo";
+
+/**
+ * ロケール設定の単一の真実の情報源。
+ * 新しい言語を追加する場合はここだけを変更すれば良い。
+ * LOCALE_SLUG_MAP / LOCALE_TO_SLUG / OG_LOCALE_MAP / LOCALE_HTML_LANG /
+ * LOCALE_LABELS / SITE_NAMES はすべてここから自動導出される。
+ */
+export const LOCALE_CONFIG = {
+  en: { dbLocale: "en",       htmlLang: "en",      ogLocale: "en_US", label: "English",  siteName: "Tokyo Night View Guide" },
+  ko: { dbLocale: "ko",       htmlLang: "ko",      ogLocale: "ko_KR", label: "한국어",    siteName: "도쿄 야경 가이드"         },
+  tw: { dbLocale: "zh-Hant",  htmlLang: "zh-Hant", ogLocale: "zh_TW", label: "繁體中文",  siteName: "東京夜景導覽"              },
+  cn: { dbLocale: "zh-Hans",  htmlLang: "zh-Hans", ogLocale: "zh_CN", label: "简体中文",  siteName: "东京夜景导航"              },
+} satisfies Record<LocaleSlug, { dbLocale: string; htmlLang: string; ogLocale: string; label: string; siteName: string }>;
+
+/** URL slug ↔ DB locale mapping（LOCALE_CONFIG から自動導出） */
+export const LOCALE_SLUG_MAP: Record<string, string> = Object.fromEntries(
+  Object.entries(LOCALE_CONFIG).map(([slug, c]) => [slug, c.dbLocale])
+);
 
 /** DB locale → URL slug (reverse) */
 export const LOCALE_TO_SLUG: Record<string, string> = Object.fromEntries(
-  Object.entries(LOCALE_SLUG_MAP).map(([slug, locale]) => [locale, slug])
+  Object.entries(LOCALE_CONFIG).map(([slug, c]) => [c.dbLocale, slug])
 );
 
 export const ALL_LOCALE_SLUGS: readonly string[] = LOCALE_SLUGS;
 
 /** 言語切替ボタン用の表示名（URLスラッグ → 表示ラベル） */
-export const LOCALE_LABELS = {
-  en: "English",
-  ko: "한국어",
-  tw: "繁體中文",
-  cn: "简体中文",
-} satisfies Record<LocaleSlug, string> as Record<string, string>;
-
-export const SITE_URL = "https://nightscape.tokyo";
+export const LOCALE_LABELS: Record<string, string> = Object.fromEntries(
+  Object.entries(LOCALE_CONFIG).map(([slug, c]) => [slug, c.label])
+);
 
 /** URL slug → OG locale 形式 (og:locale / og:locale:alternate で使用) */
 export const OG_LOCALE_MAP: Record<string, string> = {
   ja: "ja_JP",
-  en: "en_US",
-  ko: "ko_KR",
-  tw: "zh_TW",
-  cn: "zh_CN",
+  ...Object.fromEntries(Object.entries(LOCALE_CONFIG).map(([slug, c]) => [slug, c.ogLocale])),
 };
 
 /** 全 OG locale 値の配列 */
 export const ALL_OG_LOCALES: readonly string[] = Object.values(OG_LOCALE_MAP);
 
+/** og:locale:alternate 用: ja を除いた非日本語 OG locale 値（LOCALE_CONFIG から自動導出） */
+export const LOCALE_OG_ALTERNATES: readonly string[] = Object.values(LOCALE_CONFIG).map((c) => c.ogLocale);
+
 /** URL slug → HTML lang 属性値 (非 ja ページの lang 属性で使用) */
-export const LOCALE_HTML_LANG: Record<string, string> = {
-  en: "en",
-  ko: "ko",
-  tw: "zh-Hant",
-  cn: "zh-Hans",
-};
+export const LOCALE_HTML_LANG: Record<string, string> = Object.fromEntries(
+  Object.entries(LOCALE_CONFIG).map(([slug, c]) => [slug, c.htmlLang])
+);
 
 /** 各言語のサイト名（ヘッダーロゴ・パンくずで使用） */
-export const SITE_NAMES = {
-  en: "Tokyo Night View Guide",
-  ko: "도쿄 야경 가이드",
-  tw: "東京夜景導覽",
-  cn: "东京夜景导航",
-} satisfies Record<LocaleSlug, string> as Record<string, string>;
+export const SITE_NAMES: Record<string, string> = Object.fromEntries(
+  Object.entries(LOCALE_CONFIG).map(([slug, c]) => [slug, c.siteName])
+);
+
+/* ------------------------------------------------------------------ */
+/* URL ビルダー — 全ページの URL 生成はここに集約する                       */
+/* 将来ロケールを追加しても、このファイルだけを見ればよい構造にする。          */
+/* ------------------------------------------------------------------ */
+
+/** スポット詳細 URL（JA: /{area}/{spot}/, 翻訳: /{locale}/{area}/{spot}/） */
+export function buildSpotUrl(categorySlug: string, spotSlug: string, localeSlug = "ja"): string {
+  const prefix = localeSlug === "ja" ? "" : `/${localeSlug}`;
+  return `${SITE_URL}${prefix}/${categorySlug}/${spotSlug}/`;
+}
+
+/** エリアトップ URL（JA: /{area}/, 翻訳: /{locale}/{area}/） */
+export function buildAreaUrl(categorySlug: string, localeSlug = "ja"): string {
+  const prefix = localeSlug === "ja" ? "" : `/${localeSlug}`;
+  return `${SITE_URL}${prefix}/${categorySlug}/`;
+}
+
+/** タグページ URL（JA: /tag/{tag}/, 翻訳: /{locale}/tag/{tag}/） */
+export function buildTagUrl(tagSlug: string, localeSlug = "ja"): string {
+  const prefix = localeSlug === "ja" ? "" : `/${localeSlug}`;
+  return `${SITE_URL}${prefix}/tag/${tagSlug}/`;
+}
+
+/** 検索 URL（trailingSlash: true に合わせ /search/?q=... 形式） */
+export function buildSearchUrl(query: string, localeSlug = "ja"): string {
+  const prefix = localeSlug === "ja" ? "" : `/${localeSlug}`;
+  return `${SITE_URL}${prefix}/search/?q=${encodeURIComponent(query)}`;
+}
+
+/** ロケールホーム URL（JA: /, 翻訳: /{locale}/） */
+export function buildLocaleHomeUrl(localeSlug = "ja"): string {
+  return localeSlug === "ja" ? `${SITE_URL}/` : `${SITE_URL}/${localeSlug}/`;
+}
+
+/** 記事 URL（JA のみ: /article/{slug}/） */
+export function buildArticleUrl(slug: string): string {
+  return `${SITE_URL}/article/${slug}/`;
+}
 
 /* ------------------------------------------------------------------ */
 /* 共通ユーティリティ                                                    */
