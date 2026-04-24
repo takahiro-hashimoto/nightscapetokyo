@@ -38,7 +38,7 @@ export default function RootShell({
             />
           </>
         )}
-        <NonCriticalCss href="/css/non-critical.min.css?v=20260421g" />
+        <NonCriticalCss href="/css/non-critical.min.css?v=20260425a" />
         {headContent}
       </head>
       <body className="antialiased min-h-screen flex flex-col">

@@ -110,75 +110,140 @@ async function callGetItems(asins: string[]): Promise<AmazonProduct[]> {
   const isLwa = version.startsWith("3.");
   const now   = new Date();
 
-  try {
-    const res = await fetch(`${BASE_URL}/catalog/v1/getItems`, {
-      method: "POST",
-      headers: {
-        "Content-Type":  "application/json",
-        "Accept":        "application/json",
-        // v3.x: "Bearer {token}"  /  v2.x: "Bearer {token}, Version {version}"
-        "Authorization": isLwa
-          ? `Bearer ${token}`
-          : `Bearer ${token}, Version ${version}`,
-        "x-marketplace": MARKETPLACE,
-      },
-      body: JSON.stringify({
-        itemIds:     asins,
-        ...(partnerTag && { partnerTag, partnerType: "Associates" }),
-        resources: [
-          "itemInfo.title",
-          "offersV2.listings.price",
-          "images.primary.medium",
-        ],
-      }),
-      next: { revalidate: 3600 },
-    });
+  // API の上限は 10 件/リクエスト
+  const chunks: string[][] = [];
+  for (let i = 0; i < asins.length; i += 10) chunks.push(asins.slice(i, i + 10));
 
-    if (!res.ok) return [];
+  const results: AmazonProduct[] = [];
+  for (const chunk of chunks) {
+    try {
+      const res = await fetch(`${BASE_URL}/catalog/v1/getItems`, {
+        method: "POST",
+        headers: {
+          "Content-Type":  "application/json",
+          "Accept":        "application/json",
+          "Authorization": isLwa
+            ? `Bearer ${token}`
+            : `Bearer ${token}, Version ${version}`,
+          "x-marketplace": MARKETPLACE,
+        },
+        body: JSON.stringify({
+          itemIds: chunk,
+          ...(partnerTag && { partnerTag, partnerType: "Associates" }),
+          resources: [
+            "itemInfo.title",
+            "offersV2.listings.price",
+            "images.primary.medium",
+          ],
+        }),
+        next: { revalidate: 3600 },
+      });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const json = await res.json() as any;
-    const items: unknown[] = json?.itemsResult?.items ?? json?.ItemsResult?.Items ?? [];
+      if (!res.ok) continue;
 
-    return items
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((item: any): AmazonProduct | null => {
-        const asin = (item?.asin ?? item?.ASIN) as string | undefined;
-        if (!asin) return null;
+      const json = await res.json() as any;
+      const items: unknown[] = json?.itemsResult?.items ?? json?.ItemsResult?.Items ?? [];
 
-        const title =
-          (item?.itemInfo?.title?.displayValue as string | undefined) ??
-          (item?.ItemInfo?.Title?.DisplayValue as string | undefined) ??
-          "";
+      const parsed = items
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .map((item: any): AmazonProduct | null => {
+          const asin = (item?.asin ?? item?.ASIN) as string | undefined;
+          if (!asin) return null;
 
-        const imageUrl =
-          (item?.images?.primary?.medium?.url as string | undefined) ??
-          (item?.Images?.Primary?.Medium?.URL as string | undefined) ??
-          "";
+          const title =
+            (item?.itemInfo?.title?.displayValue as string | undefined) ??
+            (item?.ItemInfo?.Title?.DisplayValue as string | undefined) ??
+            "";
 
-        const listing = item?.offersV2?.listings?.[0] ?? item?.Offers?.Listings?.[0];
-        const amount: number =
-          listing?.price?.money?.amount ??
-          listing?.Price?.Amount ??
-          0;
-        const currency: string =
-          listing?.price?.money?.currency ??
-          listing?.Price?.Currency ??
-          "JPY";
+          const imageUrl =
+            (item?.images?.primary?.medium?.url as string | undefined) ??
+            (item?.Images?.Primary?.Medium?.URL as string | undefined) ??
+            "";
 
-        const price = amount > 0
-          ? new Intl.NumberFormat("ja-JP", { style: "currency", currency }).format(amount)
-          : "";
+          const listing = item?.offersV2?.listings?.[0] ?? item?.Offers?.Listings?.[0];
+          const amount: number =
+            listing?.price?.money?.amount ??
+            listing?.Price?.Amount ??
+            0;
+          const currency: string =
+            listing?.price?.money?.currency ??
+            listing?.Price?.Currency ??
+            "JPY";
 
-        const detailUrl = partnerTag
-          ? `https://www.amazon.co.jp/dp/${asin}/?tag=${partnerTag}`
-          : `https://www.amazon.co.jp/dp/${asin}/`;
+          const price = amount > 0
+            ? new Intl.NumberFormat("ja-JP", { style: "currency", currency }).format(amount)
+            : "";
 
-        return { asin, title, imageUrl, price, detailUrl, fetchedAt: now };
-      })
-      .filter((p): p is AmazonProduct => p !== null);
+          const detailUrl = partnerTag
+            ? `https://www.amazon.co.jp/dp/${asin}/?tag=${partnerTag}`
+            : `https://www.amazon.co.jp/dp/${asin}/`;
+
+          return { asin, title, imageUrl, price, detailUrl, fetchedAt: now };
+        })
+        .filter((p): p is AmazonProduct => p !== null);
+
+      results.push(...parsed);
+    } catch {
+      // チャンク単位で失敗しても続行
+    }
+  }
+
+  return results;
+}
+
+// ── DB キャッシュ ─────────────────────────────────────────────
+
+const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7日
+
+async function getAdminClient() {
+  const { createAdminClient } = await import("./supabase/server");
+  return createAdminClient();
+}
+
+async function loadFromDb(asins: string[]): Promise<Map<string, AmazonProduct>> {
+  try {
+    const db = await getAdminClient();
+    const { data } = await db
+      .from("amazon_products")
+      .select("asin, title, image_url, price, detail_url, fetched_at")
+      .in("asin", asins);
+    if (!data) return new Map();
+    return new Map(
+      data.map((row) => [
+        row.asin,
+        {
+          asin:      row.asin,
+          title:     row.title,
+          imageUrl:  row.image_url,
+          price:     row.price,
+          detailUrl: row.detail_url,
+          fetchedAt: new Date(row.fetched_at),
+        } satisfies AmazonProduct,
+      ])
+    );
   } catch {
-    return [];
+    return new Map();
+  }
+}
+
+async function upsertToDb(products: AmazonProduct[]): Promise<void> {
+  if (products.length === 0) return;
+  try {
+    const db = await getAdminClient();
+    await db.from("amazon_products").upsert(
+      products.map((p) => ({
+        asin:       p.asin,
+        title:      p.title,
+        image_url:  p.imageUrl,
+        price:      p.price,
+        detail_url: p.detailUrl,
+        fetched_at: p.fetchedAt.toISOString(),
+      })),
+      { onConflict: "asin" }
+    );
+  } catch {
+    // upsert 失敗は無視してレンダリングを続ける
   }
 }
 
@@ -186,7 +251,8 @@ async function callGetItems(asins: string[]): Promise<AmazonProduct[]> {
 
 /**
  * HTML 内の [amazonLink ...] ショートコードを走査して ASIN を収集し、
- * Creators API で一括取得して Map<asin, AmazonProduct> を返す。
+ * DB キャッシュ優先で取得（7日以上経過した場合は API から再取得）して
+ * Map<asin, AmazonProduct> を返す。
  */
 export async function prefetchAmazonProducts(
   html: string
@@ -205,6 +271,21 @@ export async function prefetchAmazonProducts(
 
   if (asins.length === 0) return new Map();
 
-  const products = await callGetItems(asins);
-  return new Map(products.map((p) => [p.asin, p]));
+  // DB から既存キャッシュを取得
+  const cached = await loadFromDb(asins);
+
+  const now = Date.now();
+  const staleAsins = asins.filter((asin) => {
+    const hit = cached.get(asin);
+    return !hit || now - hit.fetchedAt.getTime() > CACHE_TTL_MS;
+  });
+
+  // 未キャッシュ・期限切れ分だけ API で取得して DB に保存
+  if (staleAsins.length > 0) {
+    const fresh = await callGetItems(staleAsins);
+    upsertToDb(fresh); // fire-and-forget
+    for (const p of fresh) cached.set(p.asin, p);
+  }
+
+  return cached;
 }

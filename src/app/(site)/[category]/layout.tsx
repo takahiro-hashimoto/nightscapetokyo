@@ -29,7 +29,7 @@ export async function generateMetadata({
   return {
     metadataBase: new URL(SITE_URL),
     icons: {
-      icon: "/favicon.ico",
+      icon: "/faviconV2.png",
       apple: "/faviconV2.png",
     },
     title: isLocale

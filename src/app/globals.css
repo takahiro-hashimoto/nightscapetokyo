@@ -3008,3 +3008,104 @@ body.modal-open [id*="aswift"] {
     padding: 0px 15px 10px !important;
   }
 }
+
+/* pr-banner: non-critical.css から移動（fold上に表示されるためクリティカルCSSへ） */
+.pr-banner {
+  background: #fdf6ec;
+  border: 1px solid #e8913a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pr-banner-heading {
+  background: #e8913a;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 16px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.pr-banner-body {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.pr-banner-image {
+  flex-shrink: 0;
+  width: 180px;
+}
+
+.pr-banner-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pr-banner-text p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.pr-banner-links {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pr-banner-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.pr-banner-cta.cta-filled {
+  background: #338df4;
+  color: #fff;
+  border: 1px solid #338df4;
+}
+
+.pr-banner-cta.cta-filled:hover {
+  background: #1a7ae0;
+}
+
+.pr-banner-cta.cta-outline {
+  background: #fff;
+  color: #338df4;
+  border: 1px solid #338df4;
+}
+
+.pr-banner-cta.cta-outline:hover {
+  background: rgba(51, 141, 244, 0.08);
+}
+
+@media (max-width: 600px) {
+  .pr-banner-heading {
+    text-align: left;
+  }
+
+  .pr-banner-body {
+    flex-direction: column;
+  }
+
+  .pr-banner-image {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .pr-banner-links {
+    flex-direction: column;
+  }
+}

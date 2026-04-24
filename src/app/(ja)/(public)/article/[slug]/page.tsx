@@ -104,7 +104,7 @@ export default async function ArticleDetailPage({ params }: Props) {
     setTimeout(() => resolve(new Map()), 300)
   );
   const amazonTimeout = new Promise<Map<string, AmazonProduct>>((resolve) =>
-    setTimeout(() => resolve(new Map()), 500)
+    setTimeout(() => resolve(new Map()), 5000)
   );
 
   // 関連記事・スポット画像・Amazon・OGP を並列取得
