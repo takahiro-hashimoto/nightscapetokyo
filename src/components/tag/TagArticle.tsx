@@ -237,7 +237,6 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
                           headingLevel={spotHeadingLevel}
                           priority={isFirst}
                           rank={showRank ? spotRank : undefined}
-                          compact={compactCards}
                           deferRender={deferRender}
                         />
                       </div>

@@ -7,7 +7,7 @@ import Script from "next/script";
 import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles, getSpotImagesBySlugs } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";
 import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks, convertPostLinks, convertShortcodes, wrapTables } from "@/lib/sanitize";
-import { prefetchAmazonProducts, type AmazonProduct } from "@/lib/amazon";
+import { prefetchAmazonProducts } from "@/lib/amazon";
 import { prefetchOgpData, type OgpData } from "@/lib/ogp";
 import { ARTICLE_SPOT_LINKS } from "@/lib/article-spot-links";
 
@@ -100,18 +100,18 @@ export default async function ArticleDetailPage({ params }: Props) {
     ),
   ];
 
+  // Amazon は DB キャッシュのみ参照して即返す（stale-while-revalidate）。
+  // 期限切れ分の API 更新は after() でレスポンス送信後にバックグラウンド実行される。
+  // OGP は外部 fetch のため短いタイムアウトを維持。
+  const OGP_TIMEOUT_MS = 300;
   const ogpTimeout = new Promise<Map<string, OgpData>>((resolve) =>
-    setTimeout(() => resolve(new Map()), 300)
-  );
-  const amazonTimeout = new Promise<Map<string, AmazonProduct>>((resolve) =>
-    setTimeout(() => resolve(new Map()), 5000)
+    setTimeout(() => resolve(new Map()), OGP_TIMEOUT_MS)
   );
 
-  // 関連記事・スポット画像・Amazon・OGP を並列取得
   const [related, spotImages, amazonProducts, ogpData] = await Promise.all([
     getRelatedArticles(slug, 6),
     allSpotSlugs.length > 0 ? getSpotImagesBySlugs(allSpotSlugs) : Promise.resolve({} as Record<string, string>),
-    Promise.race([prefetchAmazonProducts(rawContent), amazonTimeout]),
+    prefetchAmazonProducts(rawContent),
     Promise.race([prefetchOgpData(rawContent), ogpTimeout]),
   ]);
 

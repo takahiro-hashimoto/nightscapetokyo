@@ -249,10 +249,16 @@ async function upsertToDb(products: AmazonProduct[]): Promise<void> {
 
 // ── 公開 API ──────────────────────────────────────────────────
 
+import { after } from "next/server";
+
 /**
  * HTML 内の [amazonLink ...] ショートコードを走査して ASIN を収集し、
- * DB キャッシュ優先で取得（7日以上経過した場合は API から再取得）して
- * Map<asin, AmazonProduct> を返す。
+ * DB キャッシュから即座に返す（stale-while-revalidate パターン）。
+ *
+ * - DB にある場合: 期限切れでも即返し、レスポンス送信後に after() でバックグラウンド更新
+ * - DB にない場合: 空エントリで返し（ref-card フォールバック）、同じくバックグラウンドで取得・保存
+ *
+ * 呼び出し元を Amazon API の待ち時間でブロックしない。
  */
 export async function prefetchAmazonProducts(
   html: string
@@ -271,7 +277,7 @@ export async function prefetchAmazonProducts(
 
   if (asins.length === 0) return new Map();
 
-  // DB から既存キャッシュを取得
+  // DB キャッシュを取得して即返す（期限切れでも表示に使う）
   const cached = await loadFromDb(asins);
 
   const now = Date.now();
@@ -280,11 +286,12 @@ export async function prefetchAmazonProducts(
     return !hit || now - hit.fetchedAt.getTime() > CACHE_TTL_MS;
   });
 
-  // 未キャッシュ・期限切れ分だけ API で取得して DB に保存
+  // 期限切れ・未キャッシュ分はレスポンス送信後にバックグラウンドで API 取得 → DB 保存
   if (staleAsins.length > 0) {
-    const fresh = await callGetItems(staleAsins);
-    upsertToDb(fresh); // fire-and-forget
-    for (const p of fresh) cached.set(p.asin, p);
+    after(async () => {
+      const fresh = await callGetItems(staleAsins);
+      await upsertToDb(fresh);
+    });
   }
 
   return cached;

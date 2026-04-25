@@ -27,15 +27,36 @@ export type ArticleH3SpotLinks = Record<string, SpotLink[]>;
 /**
  * 記事のh3見出しに紐づける夜景スポットリンクの設定。
  *
- * 記入例:
- * "timelapse-camera-settings": {
- *   "夜景タイムラプスの撮影場所": [
+ * 追加方法:
+ *   1. 記事の実際のh3見出しテキストを完全一致でキーにする
+ *   2. 紐づけるスポットを SpotLink[] で列挙する
+ *   3. href は /{category}/{spotSlug}/ 形式（DB の category.slug / spot.slug と一致させること）
+ *
+ * 例:
+ * "article-slug": {
+ *   "夜景撮影の名所": [
  *     { name: "東京タワー", href: "/tower/tokyo-tower/" },
- *     { name: "レインボーブリッジ", href: "/port/rainbow-bridge/" },
  *   ],
  * },
+ *
+ * 注意: h3テキストが一致しない場合はスポットリンクが挿入されないだけで副作用はない。
+ *       新記事を公開したら対応するセクションを追加すること。
  */
-export const ARTICLE_SPOT_LINKS: Record<string, ArticleH3SpotLinks> = {};
+export const ARTICLE_SPOT_LINKS: Record<string, ArticleH3SpotLinks> = {
+  // タイムラプス撮影設定記事
+  "timelapse-camera-settings": {
+    "夜景タイムラプスの撮影場所": [
+      { name: "東京タワー", href: "/tower/tokyo-tower/" },
+      { name: "レインボーブリッジ", href: "/port/rainbow-bridge/" },
+    ],
+  },
+  // タイムラプス制作ハウツー
+  "create-timelapse": {
+    "タイムラプス撮影におすすめの夜景スポット": [
+      { name: "東京タワー", href: "/tower/tokyo-tower/" },
+    ],
+  },
+};
 
 /**
  * h3テキストに対応するスポットリンクを取得する。
@@ -61,9 +82,11 @@ export function getSpotLinksForH3(
  *   - 新記事を追加したらここに双方向で登録する
  */
 export const ARTICLE_RELATED_MAP: Record<string, string[]> = {
-  // タイムラプス制作ハウツー ↔ 撮影機材まとめ（両方カメラ・撮影技術系）
-  "create-timelapse": ["my-photographic-equipment"],
-  "my-photographic-equipment": ["create-timelapse"],
+  // タイムラプス制作ハウツー ↔ 撮影機材まとめ ↔ 撮影設定ガイド（カメラ・撮影技術系）
+  "create-timelapse": ["my-photographic-equipment", "timelapse-camera-settings"],
+  "my-photographic-equipment": ["create-timelapse", "timelapse-camera-settings"],
+  "timelapse-camera-settings": ["create-timelapse", "my-photographic-equipment"],
+  // 新記事を追加したらここに双方向で登録する（slug は articles.slug と完全一致）
 };
 
 // ─── スコアリング関数 ─────────────────────────────────────────────────────────
@@ -116,6 +139,22 @@ type ArticleMeta = {
  *   - タイトルキーワード一致: × 2
  *   - 説明文キーワード一致:   × 1
  */
+/**
+ * 開発環境限定: 引数の記事スラグのうち ARTICLE_SPOT_LINKS 未設定のものをコンソールに出力する。
+ * 本番環境では何もしない。
+ * page.tsx などの generateStaticParams 後に呼び出すことを想定。
+ */
+export function warnMissingSpotLinks(articleSlugs: string[]): void {
+  if (process.env.NODE_ENV !== "development") return;
+  const missing = articleSlugs.filter((s) => !(s in ARTICLE_SPOT_LINKS));
+  if (missing.length > 0) {
+    console.warn(
+      "[article-spot-links] ARTICLE_SPOT_LINKS 未設定の記事スラグ:",
+      missing.join(", ")
+    );
+  }
+}
+
 export function computeArticleRelatedScore(
   current: ArticleMeta,
   candidate: ArticleMeta

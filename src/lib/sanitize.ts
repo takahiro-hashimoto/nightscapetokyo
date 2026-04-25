@@ -81,10 +81,12 @@ export function injectH3SpotLinks(
     (match, h3Tag: string, sectionContent: string) => {
       const text = h3Tag.replace(/<[^>]+>/g, "").trim();
 
-      // このセクション内の img alt をすべて「ライトアップされた{h3テキスト}」に
+      // 既存の意味ある alt は保持し、空または未設定の画像のみ補完する
       const updatedContent = sectionContent.replace(
         /<img\b[^>]*>/gi,
         (imgTag) => {
+          const existingAlt = imgTag.match(/\balt="([^"]*)"/i);
+          if (existingAlt && existingAlt[1].trim() !== "") return imgTag;
           const withoutAlt = imgTag.replace(/\s+alt="[^"]*"/gi, "");
           return withoutAlt.replace(/\s*\/?>$/, ` alt="ライトアップされた${text}">`);
         }

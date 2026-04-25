@@ -15,7 +15,6 @@ type Props = {
   headingLevel?: "h2" | "h3";
   priority?: boolean;
   rank?: number;
-  compact?: boolean;
   deferRender?: boolean;
 };
 
@@ -132,7 +131,6 @@ export default function TagSpotCard({
   headingLevel = "h2",
   priority,
   rank,
-  compact = false,
   deferRender = false,
 }: Props) {
   const Heading = headingLevel;

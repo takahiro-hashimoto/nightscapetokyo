@@ -40,6 +40,10 @@ export const getArticleBySlug = cache(async function getArticleBySlug(
   )();
 });
 
+// 自動スコアリングで関連記事と見なす最低スコア。
+// 0点は共通キーワードがゼロ = 完全に無関係な記事なので除外する。
+const RELATED_ARTICLE_MIN_SCORE = 1;
+
 export async function getRelatedArticles(
   currentSlug: string,
   limit = 4
@@ -49,15 +53,18 @@ export async function getRelatedArticles(
   const current = allArticles.find((a) => a.slug === currentSlug);
   const candidates = allArticles.filter((a) => a.slug !== currentSlug);
 
-  // 1. 手動定義があればそのスラッグを優先
+  // 1. 手動定義があればそのスラッグを優先（定義順を保持）
   const manualSlugs = ARTICLE_RELATED_MAP[currentSlug] ?? [];
   const manualSet = new Set(manualSlugs);
   const manualArticles = manualSlugs
     .map((s) => candidates.find((a) => a.slug === s))
     .filter((a): a is Article => !!a);
 
-  // 2. 残り枠をスラッグ・タイトル・説明文キーワードの複合スコアで選択
-  const rest = candidates
+  // 2. 手動定義で枠が埋まらない場合のみ自動スコアリングで補完
+  const remaining = limit - manualArticles.length;
+  if (remaining <= 0) return manualArticles.slice(0, limit);
+
+  const autoArticles = candidates
     .filter((a) => !manualSet.has(a.slug))
     .map((a) => ({
       article: a,
@@ -66,12 +73,12 @@ export async function getRelatedArticles(
         { slug: a.slug, title: a.title, description: a.description }
       ),
     }))
-    .sort((a, b) => b.score - a.score);
+    .filter((r) => r.score >= RELATED_ARTICLE_MIN_SCORE)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, remaining)
+    .map((r) => r.article);
 
-  return [
-    ...manualArticles,
-    ...rest.map((r) => r.article),
-  ].slice(0, limit);
+  return [...manualArticles, ...autoArticles];
 }
 
 export async function getArticlesBySlugs(slugs: string[]): Promise<Article[]> {
