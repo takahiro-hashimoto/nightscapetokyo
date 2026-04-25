@@ -392,14 +392,14 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     result.ja.push({
       loc: `${SITE_URL}/tag/${tag.slug}/`,
       changefreq: "weekly",
-      priority: 0.5,
+      priority: 0.8,
     });
     // タグページがないタグもロケール別シンプル一覧として提供する
     for (const slug of locales) {
       result[slug as keyof AllEntries].push({
         loc: `${SITE_URL}/${slug}/tag/${tag.slug}/`,
         changefreq: "weekly",
-        priority: 0.4,
+        priority: 0.7,
       });
     }
   }
@@ -416,7 +416,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
         loc: `${SITE_URL}/${slug}/tag/${tagSlug}/`,
         lastmod,
         changefreq: "weekly",
-        priority: 0.4,
+        priority: 0.7,
       });
     }
   }
