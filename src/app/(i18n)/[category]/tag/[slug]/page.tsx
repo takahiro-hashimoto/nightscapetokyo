@@ -1,8 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
+import Breadcrumb from "@/components/layout/Breadcrumb";
+import AreaSpotList from "@/components/area/AreaSpotList";
+import SpotShare from "@/components/spot/SpotShare";
+import TagMapSection from "@/components/tag/TagMapSection";
 import {
   getSpotsBySlugsTranslated,
   getSpotListByTagSlugTranslated,
@@ -10,6 +15,7 @@ import {
   getAvailableTagPageLocales,
   getMapSpotsByTag,
   getPurposeTags,
+  getTagBySlug,
 } from "@/lib/supabase/queries";
 import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 import {
@@ -22,6 +28,8 @@ import {
 import type { SpotWithRelations, TagPageTranslation } from "@/lib/types";
 import { tagPageContents, dummyTagSpots } from "@/lib/dummy-tag-data";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
+import { getComponentLabels, TAG_ARTICLE_LABELS } from "@/lib/i18n-labels";
+import type { SiteLocale } from "@/lib/types";
 
 /*
  * URL: /en/tag/date, /tw/tag/date
@@ -138,9 +146,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: localeSlug, slug: tagSlug } = await params;
   if (!ALL_LOCALE_SLUGS.includes(localeSlug)) return {};
 
-  // 翻訳が存在しない locale/tag は noindex fallback を返さず、メタデータなしとする
   const translationResult = await getTagPageBySlugWithTranslation(tagSlug, localeSlug);
-  if (!translationResult) return {};
+
+  // 翻訳タグページがない場合はシンプル一覧のメタデータ
+  if (!translationResult) {
+    const [tag, spots] = await Promise.all([
+      getTagBySlug(tagSlug),
+      getSpotListByTagSlugTranslated(tagSlug, [], localeSlug),
+    ]);
+    if (!tag) return {};
+    const labels = TAG_ARTICLE_LABELS[localeSlug as SiteLocale] ?? TAG_ARTICLE_LABELS.en;
+    const displayName = tagSlug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    const title = labels.simplePageTitle(displayName);
+    const canonicalUrl = `${SITE_URL}/${localeSlug}/tag/${tagSlug}/`;
+    const topSpot = [...spots].sort((a, b) => b.rating_avg - a.rating_avg)[0];
+    return {
+      title,
+      description: labels.simplePageLead(displayName, spots.length),
+      openGraph: {
+        type: "website",
+        title,
+        url: canonicalUrl,
+        siteName: "nightscape.tokyo",
+        locale: OG_LOCALE_MAP[localeSlug] ?? "en_US",
+        images: topSpot?.featured_image ? [{ url: topSpot.featured_image, width: 1200, height: 630, alt: title }] : undefined,
+      },
+      alternates: { canonical: canonicalUrl },
+    };
+  }
 
   const { translation, page } = translationResult;
   const title = translation.title ?? tagSlug;
@@ -210,9 +243,75 @@ export default async function TranslatedTagPage({ params }: Props) {
   const { category: localeSlug, slug: tagSlug } = await params;
   if (!ALL_LOCALE_SLUGS.includes(localeSlug)) notFound();
 
-  // 翻訳が存在しない locale/tag は 404
   const translationResult = await getTagPageBySlugWithTranslation(tagSlug, localeSlug);
-  if (!translationResult) notFound();
+
+  // 翻訳タグページがない場合: シンプルなスポット一覧を表示
+  if (!translationResult) {
+    const [tag, spots, mapSpots] = await Promise.all([
+      getTagBySlug(tagSlug),
+      getSpotListByTagSlugTranslated(tagSlug, [], localeSlug),
+      getMapSpotsByTag(tagSlug),
+    ]);
+    if (!tag) notFound();
+
+    const labels = TAG_ARTICLE_LABELS[localeSlug as SiteLocale] ?? TAG_ARTICLE_LABELS.en;
+    const shareLabels = getComponentLabels(localeSlug).share;
+    const displayName = tagSlug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    const title = labels.simplePageTitle(displayName);
+    const shareUrl = `${SITE_URL}/${localeSlug}/tag/${tagSlug}/`;
+
+    return (
+      <>
+        <LanguageSwitcher
+          currentLocale={localeSlug}
+          categorySlug={`tag/${tagSlug}`}
+          availableLocales={ALL_LOCALE_SLUGS}
+          localeLabels={LOCALE_LABELS}
+        />
+        <div className="l-article-body" itemScope itemType="https://schema.org/CollectionPage">
+          <meta itemProp="name" content={title} />
+          <link itemProp="url" href={shareUrl} />
+          <div className="l-article-container">
+            <Breadcrumb items={[{ label: title }]} locale={localeSlug} />
+            <header className="content-card card-padding">
+              <h1 className="area-page-heading">{title}</h1>
+              <p className="area-page-lead" itemProp="description">
+                {labels.simplePageLead(displayName, spots.length)}
+              </p>
+              <Link href={`/${localeSlug}/`} className="content-top-link">
+                {labels.topLink}
+              </Link>
+            </header>
+            {spots.length > 0 && (
+              <section aria-labelledby="spotlist-heading">
+                <h2 className="visually-hidden" id="spotlist-heading">{title}</h2>
+                <AreaSpotList
+                  spots={spots}
+                  localeSlug={localeSlug}
+                  showAds={false}
+                  labels={{
+                    countText: labels.simpleCount(spots.length),
+                    sortLabel: labels.sortLabel,
+                    sortRating: labels.sortRating,
+                    sortUpdated: labels.sortUpdated,
+                  }}
+                />
+              </section>
+            )}
+            {mapSpots.length > 0 && (
+              <TagMapSection
+                spots={mapSpots}
+                heading={labels.mapHeading(displayName)}
+                localeSlug={localeSlug}
+                nameOverrides={Object.fromEntries(spots.map((s) => [s.slug, s.name]))}
+              />
+            )}
+            <SpotShare url={shareUrl} title={title} labels={shareLabels} />
+          </div>
+        </div>
+      </>
+    );
+  }
 
   const content = dbToTranslatedContent(translationResult.page, translationResult.translation);
   const pageId = translationResult.page.id;

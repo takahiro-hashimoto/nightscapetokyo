@@ -69,6 +69,16 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/luminar/category/:slug*/",
+        destination: "/luminar/",
+        permanent: true,
+      },
+      {
+        source: "/post/",
+        destination: "/",
+        permanent: true,
+      },
+      {
         source: "/post/:slug*/",
         destination: "/",
         permanent: true,

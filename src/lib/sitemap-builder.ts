@@ -394,6 +394,31 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
       changefreq: "weekly",
       priority: 0.5,
     });
+    // タグページがないタグもロケール別シンプル一覧として提供する
+    for (const slug of locales) {
+      result[slug as keyof AllEntries].push({
+        loc: `${SITE_URL}/${slug}/tag/${tag.slug}/`,
+        changefreq: "weekly",
+        priority: 0.4,
+      });
+    }
+  }
+
+  // ── タグページがあるが翻訳がないロケール向けシンプル一覧 ──
+  for (const tp of tagPages ?? []) {
+    const tagSlug = Array.isArray(tp.tag) ? tp.tag[0]?.slug : tp.tag?.slug;
+    if (!tagSlug) continue;
+    const availableLocales = tagLocaleMap.get(tagSlug as string) ?? new Set<string>();
+    const lastmod = tp.updated_at ? new Date(tp.updated_at).toISOString() : undefined;
+    for (const slug of locales) {
+      if (availableLocales.has(slug)) continue; // 翻訳済みは既に追加済み
+      result[slug as keyof AllEntries].push({
+        loc: `${SITE_URL}/${slug}/tag/${tagSlug}/`,
+        lastmod,
+        changefreq: "weekly",
+        priority: 0.4,
+      });
+    }
   }
 
   return result;
