@@ -38,6 +38,7 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
                   alt={hotel.name}
                   fill
                   sizes="(max-width: 768px) 50vw, 280px"
+                  loading="lazy"
                 />
                 <span
                   className={`ranking-badge ${i < 3 ? "ranking-badge-top" : ""}`}
