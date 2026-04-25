@@ -255,6 +255,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
                 <AreaSpotList
                   spots={otherSpots}
                   localeSlug={locale}
+                  showAds={false}
                   labels={{
                     countText: l.simpleCount(otherSpots.length),
                     sortLabel: l.sortLabel,

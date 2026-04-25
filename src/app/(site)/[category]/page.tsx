@@ -315,21 +315,29 @@ export default async function AreaPage({ params }: Props) {
         <HotelRanking hotels={hotels} labels={hp.hotelRanking} localeSlug={localeSlug} />
         <PurposeSearch tags={purposeTags} labels={hp.purposeSearch} localeSlug={localeSlug} />
         <AreaSearch areas={areas} labels={hp.areaSearch} localeSlug={localeSlug} />
-        <HomeMapSection
-          spots={mapSeoSpots}
-          categories={areas.map((a) => ({ slug: a.slug, name: a.name }))}
-          labels={hp.mapSection}
-          localePrefix={`/${localeSlug}`}
-          endpoint={`/api/map-spots?locale=${localeSlug}`}
-        />
-        <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={hp.faq} />
-        <HomeAuthor locale={localeSlug} />
-        <SpotShare
-          url={`${SITE_URL}/${localeSlug}/`}
-          title={hp.hero.subtitle(spotCount)}
-          locale={localeSlug}
-          labels={labels.share}
-        />
+        <DeferredRender>
+          <HomeMapSection
+            spots={mapSeoSpots}
+            categories={areas.map((a) => ({ slug: a.slug, name: a.name }))}
+            labels={hp.mapSection}
+            localePrefix={`/${localeSlug}`}
+            endpoint={`/api/map-spots?locale=${localeSlug}`}
+          />
+        </DeferredRender>
+        <DeferredRender>
+          <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={hp.faq} />
+        </DeferredRender>
+        <DeferredRender>
+          <HomeAuthor locale={localeSlug} />
+        </DeferredRender>
+        <DeferredRender>
+          <SpotShare
+            url={`${SITE_URL}/${localeSlug}/`}
+            title={hp.hero.subtitle(spotCount)}
+            locale={localeSlug}
+            labels={labels.share}
+          />
+        </DeferredRender>
         {spots.length > 0 && (
           <script
             type="application/ld+json"
@@ -423,7 +431,7 @@ export default async function AreaPage({ params }: Props) {
         ) : (
           <section aria-labelledby="spotlist-heading">
             <h2 className="visually-hidden" id="spotlist-heading">{cat.name}の夜景スポット</h2>
-            <AreaSpotList spots={spots} />
+            <AreaSpotList spots={spots} showAds={false} />
           </section>
         )}
 

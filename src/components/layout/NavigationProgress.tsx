@@ -3,12 +3,37 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+let activeProgressInstanceId: number | null = null;
+let nextProgressInstanceId = 1;
+
 export default function NavigationProgress() {
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
+  const [isPrimaryInstance, setIsPrimaryInstance] = useState(false);
   const prevPathname = useRef(pathname);
+  const instanceIdRef = useRef<number | null>(null);
 
   useEffect(() => {
+    const instanceId = nextProgressInstanceId++;
+    instanceIdRef.current = instanceId;
+
+    // Root layouts can overlap briefly during route transitions, so only the
+    // first mounted progress component should control the global loading bar.
+    if (activeProgressInstanceId == null) {
+      activeProgressInstanceId = instanceId;
+      setIsPrimaryInstance(true);
+    }
+
+    return () => {
+      if (activeProgressInstanceId === instanceId) {
+        activeProgressInstanceId = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isPrimaryInstance) return;
+
     if (pathname !== prevPathname.current) {
       prevPathname.current = pathname;
       window.scrollTo(0, 0);
@@ -17,12 +42,24 @@ export default function NavigationProgress() {
       });
       return () => window.cancelAnimationFrame(frame);
     }
-  }, [pathname]);
+  }, [isPrimaryInstance, pathname]);
 
   useEffect(() => {
+    if (!isPrimaryInstance) return;
+
     const handleClick = (e: MouseEvent) => {
       const anchor = (e.target as Element).closest("a");
       if (!anchor) return;
+      if (
+        anchor.hasAttribute("download") ||
+        anchor.target === "_blank" ||
+        e.metaKey ||
+        e.ctrlKey ||
+        e.shiftKey ||
+        e.altKey
+      ) {
+        return;
+      }
       const href = anchor.getAttribute("href");
       if (
         !href ||
@@ -38,9 +75,9 @@ export default function NavigationProgress() {
 
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
-  }, [pathname]);
+  }, [isPrimaryInstance, pathname]);
 
-  if (!loading) return null;
+  if (!isPrimaryInstance || !loading) return null;
 
   return (
     <div

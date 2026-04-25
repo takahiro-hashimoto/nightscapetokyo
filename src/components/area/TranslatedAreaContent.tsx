@@ -148,6 +148,7 @@ export default function TranslatedAreaContent({
             <AreaSpotList
               spots={spots}
               localeSlug={localeSlug}
+              showAds={false}
               labels={{
                 countText: al.count(spots.length),
                 sortLabel: al.sortLabel,

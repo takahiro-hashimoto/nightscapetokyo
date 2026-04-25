@@ -46,6 +46,7 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
                   alt={spot.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 300px"
+                  priority={i === 0}
                 />
                 <span
                   className={`ranking-badge ${i < 3 ? "ranking-badge-top" : ""}`}

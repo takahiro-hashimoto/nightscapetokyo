@@ -15,7 +15,10 @@ export default async function RootShell({
   headContent?: React.ReactNode;
   children: React.ReactNode;
 }) {
-  const nonce = (await headers()).get("x-nonce") ?? "";
+  const headerStore = await headers();
+  const nonce = headerStore.get("x-nonce") ?? "";
+  const pathname = headerStore.get("x-pathname") ?? "";
+  const shouldLoadAdsense = showAdsense && pathname !== "/article/";
 
   return (
     <html lang={lang}>
@@ -32,7 +35,7 @@ export default async function RootShell({
         )}
         <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />
         <link rel="preconnect" href="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev" crossOrigin="anonymous" />
-        {showAdsense && (
+        {shouldLoadAdsense && (
           <>
             <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
             <link
@@ -57,8 +60,8 @@ export default async function RootShell({
           </noscript>
         )}
         <NavigationProgressSlot />
-        <AdsProvider showAds={showAdsense}>{children}</AdsProvider>
-        {showAdsense && (
+        <AdsProvider showAds={shouldLoadAdsense}>{children}</AdsProvider>
+        {shouldLoadAdsense && (
           <Script
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1569785771112521"
             crossOrigin="anonymous"

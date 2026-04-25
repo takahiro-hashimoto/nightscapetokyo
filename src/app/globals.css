@@ -1114,6 +1114,23 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 /* =========================================
+   Area / Recommend - Spot Grid
+   ========================================= */
+.area-spot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .area-spot-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+
+/* =========================================
    HOME - Ranking Cards
    ========================================= */
 .ranking-grid {
