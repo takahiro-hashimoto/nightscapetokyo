@@ -286,6 +286,7 @@ export type SpotListItem = {
   rating_cost: number | null;
   lead: string;
   closed?: boolean;
+  updated_at?: string;
 };
 
 /**

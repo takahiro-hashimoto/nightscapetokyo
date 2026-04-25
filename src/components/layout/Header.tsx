@@ -42,7 +42,7 @@ export function buildTopNavItems(locale: string | null): SubNavItem[] {
   return [
     { label: "運営者", href: `${prefix}/about/` },
     { label: labels.contact, href: `${prefix}/contact/` },
-    { label: "サイトマップ", href: `/sitemap/` },
+    { label: "サイトマップ", href: `${prefix}/sitemap/` },
   ];
 }
 

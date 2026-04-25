@@ -10,7 +10,7 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";
-import { getTagBySlug, getSpotsByTagSlug, getSpotsBySlugs, getSpotListByTagSlug, getTagPageBySlug, getAvailableTagPageLocales, getMapSpotsByTag, getPurposeTags } from "@/lib/supabase/queries";
+import { getTagBySlug, getSpotsByTagSlug, getSpotsBySlugs, getSpotListByTagSlug, getTagPageBySlug, getAvailableTagPageLocales, getMapSpotsByTag, getPurposeTags, getPublishedTagPages } from "@/lib/supabase/queries";
 import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 import { SITE_URL, calcRatingAvg, LOCALE_LABELS, OG_LOCALE_MAP, ALL_LOCALE_SLUGS, buildTagHreflangAlternates } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
@@ -155,6 +155,7 @@ function toListItem(s: SpotWithRelations): SpotListItem {
     rating_cost: s.rating_cost ?? null,
     lead: s.lead || "",
     closed: s.closed ?? false,
+    updated_at: s.updated_at ?? undefined,
   };
 }
 
@@ -242,15 +243,23 @@ export const fetchCache = "force-cache";
 
 export async function generateStaticParams() {
   if (shouldSkipStaticGenerationForPreview()) return [];
-  const tags = await getPurposeTags();
-  const dbSlugs = tags.map((t) => ({ slug: t.slug }));
-  const dummySlugs = Object.keys(tagPageContents).map((slug) => ({ slug }));
+  const [purposeTags, publishedTagPages] = await Promise.all([
+    getPurposeTags(),
+    getPublishedTagPages(),
+  ]);
   const seen = new Set<string>();
-  return [...dbSlugs, ...dummySlugs].filter(({ slug }) => {
-    if (seen.has(slug)) return false;
-    seen.add(slug);
-    return true;
-  });
+  const candidates = [
+    ...purposeTags.map((t) => t.slug),
+    ...publishedTagPages.map((t) => t.slug),
+    ...Object.keys(tagPageContents),
+  ];
+  return candidates
+    .filter((slug) => {
+      if (seen.has(slug)) return false;
+      seen.add(slug);
+      return true;
+    })
+    .map((slug) => ({ slug }));
 }
 
 export default async function TagPage({ params }: Props) {
@@ -400,7 +409,7 @@ export default async function TagPage({ params }: Props) {
         ) : (
           <section aria-labelledby="spotlist-heading">
             <h2 className="visually-hidden" id="spotlist-heading">{tagName}の夜景スポット</h2>
-            <AreaSpotList spots={spots} />
+            <AreaSpotList spots={spots} showAds={false} />
           </section>
         )}
 

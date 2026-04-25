@@ -15,6 +15,7 @@ type SortKey = "rating" | "updated";
 type Props = {
   spots: SpotListItem[];
   localeSlug?: string;
+  showAds?: boolean;
   labels?: {
     countText: string;
     sortLabel: string;
@@ -26,7 +27,7 @@ type Props = {
   imageAltPattern?: string;
 };
 
-export default function AreaSpotList({ spots, localeSlug, labels, imageAltPattern }: Props) {
+export default function AreaSpotList({ spots, localeSlug, showAds = true, labels, imageAltPattern }: Props) {
   const [sortKey, setSortKey] = useState<SortKey>("rating");
 
   const countText = labels?.countText ?? `掲載数：${spots.length}件`;
@@ -41,7 +42,9 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
     const bClosed = b.closed ?? false;
     if (aClosed !== bClosed) return aClosed ? 1 : -1;
     if (sortKey === "rating") return b.rating_avg - a.rating_avg;
-    return b.id.localeCompare(a.id);
+    const aDate = a.updated_at ?? a.id;
+    const bDate = b.updated_at ?? b.id;
+    return bDate.localeCompare(aDate);
   });
 
   const buildHref = (spot: SpotListItem) =>
@@ -117,7 +120,7 @@ export default function AreaSpotList({ spots, localeSlug, labels, imageAltPatter
           );
 
           // 6枚ごと（index=5, 11, 17…）の直後に広告カードを挿入
-          if ((index + 1) % AD_INTERVAL === 0) {
+          if (showAds && (index + 1) % AD_INTERVAL === 0) {
             const adCard = (
               <li key={`ad-unit-${index}`} aria-label="広告">
                 <div className="spot-card" style={{ position: "relative", overflow: "hidden" }}>
