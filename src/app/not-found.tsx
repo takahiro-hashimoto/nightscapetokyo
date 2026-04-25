@@ -12,13 +12,15 @@ export default async function NotFound() {
   const homeHref = locale === "ja" ? "/" : `/${locale}`;
 
   return (
-    <div className="not-found-container">
-      <h1 className="not-found-code">404</h1>
-      <p className="not-found-title">{labels.title}</p>
-      <p className="not-found-desc">{labels.desc}</p>
-      <Link href={homeHref} className="not-found-btn">
-        {labels.button}
-      </Link>
-    </div>
+    <main className="flex-1 flex items-center justify-center">
+      <div className="not-found-container">
+        <h1 className="not-found-code">404</h1>
+        <p className="not-found-title">{labels.title}</p>
+        <p className="not-found-desc">{labels.desc}</p>
+        <Link href={homeHref} className="not-found-btn">
+          {labels.button}
+        </Link>
+      </div>
+    </main>
   );
 }

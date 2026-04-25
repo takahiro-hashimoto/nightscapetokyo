@@ -1,5 +1,4 @@
 import { headers } from "next/headers";
-import NonCriticalCss from "@/components/layout/NonCriticalCss";
 import NavigationProgressSlot from "@/components/layout/NavigationProgressSlot";
 import { AdsProvider } from "@/contexts/AdsContext";
 import AdSenseScrollLoader from "@/components/ads/AdSenseScrollLoader";
@@ -7,7 +6,7 @@ import AdSenseScrollLoader from "@/components/ads/AdSenseScrollLoader";
 const showAdsense = process.env.NODE_ENV === "production";
 
 export default async function RootShell({
-  lang,
+  lang: _lang,
   headContent,
   children,
 }: {
@@ -21,48 +20,11 @@ export default async function RootShell({
   const shouldLoadAdsense = showAdsense && pathname !== "/article/";
 
   return (
-    <html lang={lang}>
-      {/* eslint-disable-next-line @next/next/no-head-element -- App Router root layout: <head> は正当な使用 */}
-      <head>
-        {process.env.NODE_ENV === "production" && (
-          // eslint-disable-next-line @next/next/next-script-for-ga
-          <script
-            nonce={nonce}
-            dangerouslySetInnerHTML={{
-              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WB56L85');`,
-            }}
-          />
-        )}
-        <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />
-        <link rel="preconnect" href="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev" crossOrigin="anonymous" />
-        {shouldLoadAdsense && (
-          <>
-            <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
-            <link
-              rel="preconnect"
-              href="https://googleads.g.doubleclick.net"
-              crossOrigin="anonymous"
-            />
-          </>
-        )}
-        <NonCriticalCss href="/css/non-critical.min.css?v=20260425a" />
-        {headContent}
-      </head>
-      <body className="antialiased min-h-screen flex flex-col">
-        {process.env.NODE_ENV === "production" && (
-          <noscript>
-            <iframe
-              src="https://www.googletagmanager.com/ns.html?id=GTM-WB56L85"
-              height="0"
-              width="0"
-              style={{ display: "none", visibility: "hidden" }}
-            />
-          </noscript>
-        )}
-        <NavigationProgressSlot />
-        <AdsProvider showAds={shouldLoadAdsense}>{children}</AdsProvider>
-        {shouldLoadAdsense && <AdSenseScrollLoader nonce={nonce} />}
-      </body>
-    </html>
+    <>
+      {headContent}
+      <NavigationProgressSlot />
+      <AdsProvider showAds={shouldLoadAdsense}>{children}</AdsProvider>
+      {shouldLoadAdsense && <AdSenseScrollLoader nonce={nonce} />}
+    </>
   );
 }
