@@ -1,8 +1,8 @@
-import Script from "next/script";
 import { headers } from "next/headers";
 import NonCriticalCss from "@/components/layout/NonCriticalCss";
 import NavigationProgressSlot from "@/components/layout/NavigationProgressSlot";
 import { AdsProvider } from "@/contexts/AdsContext";
+import AdSenseScrollLoader from "@/components/ads/AdSenseScrollLoader";
 
 const showAdsense = process.env.NODE_ENV === "production";
 
@@ -61,14 +61,7 @@ export default async function RootShell({
         )}
         <NavigationProgressSlot />
         <AdsProvider showAds={shouldLoadAdsense}>{children}</AdsProvider>
-        {shouldLoadAdsense && (
-          <Script
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1569785771112521"
-            crossOrigin="anonymous"
-            strategy="lazyOnload"
-            nonce={nonce}
-          />
-        )}
+        {shouldLoadAdsense && <AdSenseScrollLoader nonce={nonce} />}
       </body>
     </html>
   );

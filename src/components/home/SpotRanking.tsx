@@ -39,6 +39,7 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
             <Link
               href={`${prefix}/${spot.category.slug}/${spot.slug}`}
               className="spot-card"
+              prefetch={false}
             >
               <div className="spot-card-image">
                 <Image

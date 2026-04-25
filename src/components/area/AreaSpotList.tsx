@@ -85,6 +85,7 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
                   href={buildHref(spot)}
                   className="spot-card-link"
                   itemProp="url"
+                  prefetch={false}
                 >
                   <div className="spot-card-image">
                     {spot.featured_image && (
