@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     unoptimized: false,
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 2592000, // 30日: 最適化済み画像をサーバー側でキャッシュ
-    deviceSizes: [640, 750, 828, 960, 1280, 1920],
+    deviceSizes: [640, 828, 960, 1280, 1920],
     remotePatterns: [
       {
         protocol: "https",
