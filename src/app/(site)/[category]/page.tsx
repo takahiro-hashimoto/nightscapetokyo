@@ -431,7 +431,7 @@ export default async function AreaPage({ params }: Props) {
         ) : (
           <section aria-labelledby="spotlist-heading">
             <h2 className="visually-hidden" id="spotlist-heading">{cat.name}の夜景スポット</h2>
-            <AreaSpotList spots={spots} showAds={true} />
+            <AreaSpotList spots={spots} showAds={false} />
           </section>
         )}
 
