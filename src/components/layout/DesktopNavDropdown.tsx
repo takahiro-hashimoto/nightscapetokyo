@@ -8,12 +8,12 @@ type SubNavItem = { label: string; href: string; count?: number };
 export default function DesktopNavDropdown({
   label,
   dropdownClass,
-  children: items,
+  items,
   extraLinks,
 }: {
   label: string;
   dropdownClass?: string;
-  children: SubNavItem[];
+  items: SubNavItem[];
   extraLinks?: { href: string; label: string }[];
 }) {
   const navItemRef = useRef<HTMLDivElement>(null);

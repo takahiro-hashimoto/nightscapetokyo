@@ -113,10 +113,9 @@ function DesktopNavItem({ item, locale }: { item: NavItem; locale: string | null
       <DesktopNavDropdown
         label={item.label}
         dropdownClass={item.dropdownClass}
+        items={item.children}
         extraLinks={extraLinks}
-      >
-        {item.children}
-      </DesktopNavDropdown>
+      />
     );
   }
 
