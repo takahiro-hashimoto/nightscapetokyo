@@ -56,6 +56,7 @@ export default function SpotsGrid({ spots, localeSlug, closedBadge = "閉鎖済�
                     >
                       <meta itemProp="ratingValue" content={spot.rating_avg.toFixed(1)} />
                       <meta itemProp="bestRating" content="5" />
+                      <meta itemProp="ratingCount" content={String([spot.rating_beautiful, spot.rating_access, spot.rating_atmosphere, spot.rating_cost].filter(v => v != null).length || 1)} />
                       <Star
                         size={14}
                         fill={spot.closed ? "#aaa" : "#eab308"}

@@ -108,6 +108,7 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
                       <div className={`spot-card-rating${spot.closed ? " spot-card-rating--closed" : ""}`} itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
                         <meta itemProp="ratingValue" content={spot.rating_avg.toFixed(1)} />
                         <meta itemProp="bestRating" content="5" />
+                        <meta itemProp="ratingCount" content={String([spot.rating_beautiful, spot.rating_access, spot.rating_atmosphere, spot.rating_cost].filter(v => v != null).length || 1)} />
                         <Star size={14} fill={spot.closed ? "#aaa" : "#eab308"} stroke="none" aria-hidden="true" />
                         <span aria-label={`評価 ${spot.rating_avg.toFixed(1)}`}>{spot.rating_avg.toFixed(1)}</span>
                       </div>
