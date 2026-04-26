@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { ALL_LOCALE_SLUGS, LOCALE_HTML_LANG, SITE_URL } from "@/lib/types";
 import NonCriticalCss from "@/components/layout/NonCriticalCss";
+import GtmLoader from "@/components/layout/GtmLoader";
 import "./globals.css";
 
 const GTM_ID = "GTM-WB56L85";
@@ -21,14 +22,7 @@ export default async function RootLayout({
     <html lang={lang}>
       {/* eslint-disable-next-line @next/next/no-head-element */}
       <head>
-        {isProd && (
-          <script
-            nonce={nonce}
-            dangerouslySetInnerHTML={{
-              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;j.setAttribute('nonce','${nonce}');f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`,
-            }}
-          />
-        )}
+        {isProd && <GtmLoader gtmId={GTM_ID} nonce={nonce} />}
         <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />
         <link
           rel="preconnect"

@@ -29,6 +29,17 @@
     "swiper": "^12.1.2",
     "tiny-segmenter": "^0.2.0"
   },
+  "browserslist": [
+    "> 0.2% in JP",
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Edge versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions",
+    "not dead",
+    "not ie 11",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1029.0",
     "@aws-sdk/s3-request-presigner": "^3.1029.0",
