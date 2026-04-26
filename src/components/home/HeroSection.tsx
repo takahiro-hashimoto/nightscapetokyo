@@ -20,8 +20,9 @@ export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
         className="hero-bg"
         fill
         priority
+        fetchPriority="high"
         sizes="(max-width: 768px) 100vw, 100vw"
-        quality={85}
+        quality={75}
       />
       <div className="hero-overlay">
         <div className="hero-content">
