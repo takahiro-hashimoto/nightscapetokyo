@@ -88,6 +88,21 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/:locale(en|ko|tw|cn)/post/",
+        destination: "/:locale/",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ko|tw|cn)/post/:slug*/",
+        destination: "/:locale/",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ko|tw|cn)/post",
+        destination: "/:locale/",
+        permanent: true,
+      },
     ];
   },
 
