@@ -1,43 +1,25 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 /**
  * Non-critical CSS loader
  *
  * media="print" でブロッキングなしにロード開始し、
- * useEffect（hydration 後に必ず実行）で media="all" に切り替える。
- *
- * onLoad だけだと「CSS が hydration より先にキャッシュから返ってきた場合に
- * イベントが発火しない」レースコンディションが起きるため useEffect で補完する。
+ * useEffect（hydration 後）で state 経由で media="all" に切り替える。
+ * 直接 DOM 操作ではなく React state を使うことで、
+ * React の再レンダリング時に media 属性が "print" に戻る FOUC を防ぐ。
  */
 export default function NonCriticalCss({ href }: { href: string }) {
-  const linkRef = useRef<HTMLLinkElement>(null);
+  const [media, setMedia] = useState<string>("print");
 
   useEffect(() => {
-    const link = linkRef.current;
-    if (!link) return;
-
-    const apply = () => { link.media = "all"; };
-
-    if (link.sheet) {
-      // hydration 時点ですでにロード済み（キャッシュヒット等）
-      apply();
-    } else {
-      link.addEventListener("load", apply, { once: true });
-    }
-
-    return () => link.removeEventListener("load", apply);
+    setMedia("all");
   }, []);
 
   return (
     <>
-      <link
-        ref={linkRef}
-        rel="stylesheet"
-        href={href}
-        media="print"
-      />
+      <link rel="stylesheet" href={href} media={media} />
       <noscript>
         <link rel="stylesheet" href={href} />
       </noscript>
