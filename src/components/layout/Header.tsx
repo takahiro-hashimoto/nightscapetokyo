@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
 import HeaderLogo from "./HeaderLogo";
 import DevAdminLink from "./DevAdminLink";
 import HeaderShell from "./HeaderShell";
+import DesktopNavDropdown from "./DesktopNavDropdown";
 import type { SiteLocale } from "@/lib/types";
 import { SITE_URL } from "@/lib/types";
 import { NAV_STATIC_LABELS, PROFILE_LABELS } from "@/lib/i18n-labels";
@@ -106,32 +106,17 @@ function DesktopNavItem({ item, locale }: { item: NavItem; locale: string | null
   const labels = NAV_STATIC_LABELS[(locale ?? "ja") as SiteLocale] ?? NAV_STATIC_LABELS["ja"];
 
   if (item.children) {
+    const extraLinks = item.dropdownClass === "site-header-dropdown--area"
+      ? [{ href: `${locale ? `/${locale}` : ""}/event/`, label: labels.eventSearch }]
+      : undefined;
     return (
-      <div className="site-header-nav-item">
-        <button className="site-header-nav-link site-header-nav-trigger" type="button">
-          {item.label}
-          <ChevronDown size={13} aria-hidden="true" />
-        </button>
-        <div className={`site-header-dropdown${item.dropdownClass ? ` ${item.dropdownClass}` : ""}`}>
-          {item.children.map((child) => (
-            <Link
-              key={child.href}
-              href={child.href}
-              className="site-header-dropdown-link"
-            >
-              {child.count != null ? `${child.label}（${child.count}）` : child.label}
-            </Link>
-          ))}
-          {item.dropdownClass === "site-header-dropdown--area" && (
-            <Link
-              href={`${locale ? `/${locale}` : ""}/event/`}
-              className="site-header-dropdown-link"
-            >
-              {labels.eventSearch}
-            </Link>
-          )}
-        </div>
-      </div>
+      <DesktopNavDropdown
+        label={item.label}
+        dropdownClass={item.dropdownClass}
+        extraLinks={extraLinks}
+      >
+        {item.children}
+      </DesktopNavDropdown>
     );
   }
 
