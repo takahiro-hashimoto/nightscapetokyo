@@ -62,7 +62,7 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
     const isHotel = spot.type === "hotel";
     mainSchema = {
       "@context": "https://schema.org",
-      "@type": isHotel ? "LodgingBusiness" : "TouristAttraction",
+      "@type": isHotel ? "LodgingBusiness" : ["TouristAttraction", "LocalBusiness"],
       name,
       url: canonicalUrl,
       inLanguage: locale,
