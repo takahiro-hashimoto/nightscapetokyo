@@ -298,8 +298,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: canonicalUrl,
       locale: ogLocale,
       alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
+      images: [
+        {
+          url: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg",
+          width: 1200,
+          height: 630,
+          alt: l.title,
+        },
+      ],
     },
-    twitter: { title: l.title, description: l.description },
+    twitter: {
+      card: "summary_large_image",
+      title: l.title,
+      description: l.description,
+      images: ["https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"],
+    },
     alternates: {
       canonical: canonicalUrl,
       languages: buildAreaHreflangAlternates(SITE_URL, "time-lapse", ALL_LOCALE_SLUGS),

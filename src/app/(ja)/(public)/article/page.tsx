@@ -16,11 +16,20 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/article/`,
     siteName: "nightscape.tokyo",
     locale: "ja_JP",
+    images: [
+      {
+        url: "https://nightscape.tokyo/hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "記事一覧 | nightscape.tokyo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "記事一覧 | nightscape.tokyo",
     description: "夜景撮影のコツや東京夜景スポットに関するコラムを掲載しています。",
+    images: ["https://nightscape.tokyo/hero.jpg"],
   },
 };
 

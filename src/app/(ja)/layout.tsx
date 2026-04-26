@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "東京夜景ナビ | 東京の夜景スポットガイド",
     images: [
       {
-        url: "/hero.jpg",
+        url: "https://nightscape.tokyo/hero.jpg",
         width: 1200,
         height: 630,
         alt: "東京夜景ナビ | 東京の夜景スポットガイド",
@@ -36,6 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    images: ["https://nightscape.tokyo/hero.jpg"],
   },
   description: DEFAULT_DESCRIPTION,
 };

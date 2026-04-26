@@ -22,8 +22,21 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     locale: "ja_JP",
     alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
+    images: [
+      {
+        url: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg",
+        width: 1200,
+        height: 630,
+        alt: PAGE_TITLE,
+      },
+    ],
   },
-  twitter: { title: PAGE_TITLE, description: PAGE_DESCRIPTION },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: ["https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"],
+  },
   alternates: {
     canonical: `${SITE_URL}/time-lapse/`,
     languages: {

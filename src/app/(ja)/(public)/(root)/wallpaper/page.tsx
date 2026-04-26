@@ -324,7 +324,7 @@ export default function WallpaperPage() {
                 <figure key={i} className="m-0">
                   <a href={w.src} target="_blank" rel="noopener noreferrer">
                     <Image
-                      src={w.thumb}
+                      src={w.src}
                       alt={w.caption}
                       width={473}
                       height={1024}
