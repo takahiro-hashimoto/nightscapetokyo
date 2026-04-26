@@ -88,13 +88,13 @@ const TOC = [
 
 export const metadata: Metadata = {
   title: {
-    absolute: `${LUMINAR_SITE_NAME} | ${LUMINAR_SITE_DESCRIPTION}`,
+    absolute: `${LUMINAR_SITE_NAME}｜ ${LUMINAR_SITE_DESCRIPTION}`,
   },
   description: LUMINAR_SITE_DESCRIPTION,
   openGraph: {
     type: 'website',
     url: `${LUMINAR_SITE_URL}/`,
-    title: `${LUMINAR_SITE_NAME} | ${LUMINAR_SITE_DESCRIPTION}`,
+    title: `${LUMINAR_SITE_NAME}｜ ${LUMINAR_SITE_DESCRIPTION}`,
     description: LUMINAR_SITE_DESCRIPTION,
     images: [{ url: OG_IMAGE, width: 880, height: 495, alt: 'Luminar Neo完全購入ガイド' }],
   },
@@ -136,7 +136,7 @@ export default async function LuminarTopPage() {
               </figure>
               <header className="firstVisual-header">
                 <h1 className="firstVisual-title">
-                  Luminar Neo 完全購入ガイド｜特徴・料金・安く買う方法【2026年版】
+                  Luminar Neo 完全購入ガイド｜ ルミナーネオの特徴・料金・安く買う方法を解説
                 </h1>
                 <div className="firstVisual-meta">
                   <time className="firstVisual-date" dateTime="2026-04-20">

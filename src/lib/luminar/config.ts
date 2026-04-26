@@ -2,10 +2,10 @@
  * LUMINAR NEO GUIDE - Site Configuration
  */
 
-export const LUMINAR_SITE_NAME = 'LUMINAR NEO GUIDE' as const
+export const LUMINAR_SITE_NAME = 'Luminar Neo 完全購入ガイド' as const
 export const LUMINAR_SITE_URL = 'https://nightscape.tokyo/luminar' as const
 export const LUMINAR_SITE_DESCRIPTION =
-  'Luminar Neoの使い方・買い切りとサブスクの違い・最新セール情報まで徹底解説' as const
+  'ルミナーネオの特徴・料金・安く買う方法を解説' as const
 
 // Affiliate URLs
 export const AFFILIATE_URL = 'https://skylum.evyy.net/552xL3' as const
