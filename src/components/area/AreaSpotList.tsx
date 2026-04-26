@@ -9,7 +9,7 @@ import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
 
 /** 何枚おきに広告を挿入するか */
-const AD_INTERVAL = 6;
+const AD_INTERVAL = 5;
 type SortKey = "rating" | "updated";
 
 type Props = {
@@ -123,7 +123,7 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
           // 6枚ごと（index=5, 11, 17…）の直後に広告カードを挿入
           if (showAds && (index + 1) % AD_INTERVAL === 0) {
             const adCard = (
-              <li key={`ad-unit-${index}`} aria-label="広告">
+              <li key={`ad-unit-${index}`} aria-label="広告" className="area-spot-ad--pc-only">
                 <div className="spot-card" style={{ position: "relative", overflow: "hidden" }}>
                   <span style={{
                     position: "absolute",

@@ -1132,6 +1132,9 @@ main > .home-section:nth-child(even of .home-section) {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
+  .area-spot-ad--pc-only {
+    display: none;
+  }
 }
 
 /* =========================================
