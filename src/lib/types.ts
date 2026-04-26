@@ -349,8 +349,8 @@ export function buildHomeHreflangAlternates(
   availableLocales: readonly string[] // URL slugs: en, ko, tw, cn
 ): Record<string, string> {
   const languages: Record<string, string> = {
-    ja: siteUrl,
-    "x-default": siteUrl,
+    ja: `${siteUrl}/`,
+    "x-default": `${siteUrl}/`,
   };
 
   for (const urlSlug of availableLocales) {

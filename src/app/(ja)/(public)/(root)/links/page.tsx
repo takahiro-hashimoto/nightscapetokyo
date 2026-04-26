@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";
 
 export const dynamic = "force-static";
 
@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: "リンク集 | 東京夜景ナビ",
   description:
     "東京夜景ナビと相互リンクしていただいているサイトや、おすすめのサイトをご紹介します。",
+  alternates: {
+    canonical: `${SITE_URL}/links/`,
+    languages: buildAreaHreflangAlternates(SITE_URL, "links", ALL_LOCALE_SLUGS),
+  },
 };
 
 const LINKS = [

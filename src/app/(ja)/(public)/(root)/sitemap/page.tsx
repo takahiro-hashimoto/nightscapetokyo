@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";
 import { supabase } from "@/lib/supabase/client";
 import { getArticles } from "@/lib/supabase/queries";
 import { getAllPostsSummary } from '@/lib/luminar/articles-meta';
@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   title: "サイトマップ | 東京夜景ナビ",
   description:
     "東京夜景ナビのサイトマップです。エリア別・目的別の夜景スポット一覧をご確認いただけます。",
+  alternates: {
+    canonical: `${SITE_URL}/sitemap/`,
+    languages: buildAreaHreflangAlternates(SITE_URL, "sitemap", ALL_LOCALE_SLUGS),
+  },
 };
 
 type CategoryWithSpots = {

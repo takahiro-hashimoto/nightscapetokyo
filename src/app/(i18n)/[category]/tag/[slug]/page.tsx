@@ -150,9 +150,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // 翻訳タグページがない場合はシンプル一覧のメタデータ
   if (!translationResult) {
-    const [tag, spots] = await Promise.all([
+    const [tag, spots, availableLocales] = await Promise.all([
       getTagBySlug(tagSlug),
       getSpotListByTagSlugTranslated(tagSlug, [], localeSlug),
+      getAvailableTagPageLocales(tagSlug),
     ]);
     if (!tag) return {};
     const labels = TAG_ARTICLE_LABELS[localeSlug as SiteLocale] ?? TAG_ARTICLE_LABELS.en;
@@ -171,7 +172,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         locale: OG_LOCALE_MAP[localeSlug] ?? "en_US",
         images: topSpot?.featured_image ? [{ url: topSpot.featured_image, width: 1200, height: 630, alt: title }] : undefined,
       },
-      alternates: { canonical: canonicalUrl },
+      alternates: {
+        canonical: canonicalUrl,
+        languages: buildTagHreflangAlternates(SITE_URL, tagSlug, availableLocales),
+      },
     };
   }
 

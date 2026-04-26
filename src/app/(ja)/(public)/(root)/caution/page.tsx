@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";
 
 export const dynamic = "force-static";
 
@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   title: "利用規約 | 東京夜景ナビ",
   description:
     "東京夜景ナビの利用規約です。著作権・免責事項・Cookie・広告・アクセス解析・リンクに関するルールを記載しています。",
+  alternates: {
+    canonical: `${SITE_URL}/caution/`,
+    languages: buildAreaHreflangAlternates(SITE_URL, "caution", ALL_LOCALE_SLUGS),
+  },
 };
 
 export default function CautionPage() {

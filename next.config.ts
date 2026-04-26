@@ -49,6 +49,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/luminar/about/",
+        destination: "/about/",
+        permanent: true,
+      },
+      {
         source: "/pickup/",
         destination: "/article/",
         permanent: true,

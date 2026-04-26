@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";
 
 export const dynamic = "force-static";
 
@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: "コンテンツ制作ポリシー | 東京夜景ナビ",
   description:
     "東京夜景ナビのコンテンツ制作ポリシーです。情報の正確性・写真の取り扱い・表現方針・法的配慮など、記事制作の基本方針をご案内します。",
+  alternates: {
+    canonical: `${SITE_URL}/guidelines/`,
+    languages: buildAreaHreflangAlternates(SITE_URL, "guidelines", ALL_LOCALE_SLUGS),
+  },
 };
 
 const REFERENCE_SITES = [
