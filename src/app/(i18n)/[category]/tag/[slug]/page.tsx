@@ -177,11 +177,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const { translation, page } = translationResult;
   const title = translation.title ?? tagSlug;
-  const description = (translation.lead ?? "").split("\n")[0];
   const heroImage = page.hero_image ?? undefined;
-
   const canonicalUrl = `${SITE_URL}/${localeSlug}/tag/${tagSlug}/`;
-  const availableLocales = await getAvailableTagPageLocales(tagSlug);
+  const displayName = tagSlug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  const labels = TAG_ARTICLE_LABELS[localeSlug as SiteLocale] ?? TAG_ARTICLE_LABELS.en;
+  const [richSpots, availableLocales] = await Promise.all([
+    getSpotListByTagSlugTranslated(tagSlug, [], localeSlug),
+    getAvailableTagPageLocales(tagSlug),
+  ]);
+  const description = labels.simplePageLead(displayName, richSpots.length);
 
   const ogLocale = OG_LOCALE_MAP[localeSlug] ?? "en_US";
   const alternateOgLocales = availableLocales

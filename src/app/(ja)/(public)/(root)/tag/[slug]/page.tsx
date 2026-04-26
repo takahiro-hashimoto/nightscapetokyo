@@ -168,10 +168,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // リッチコンテンツがある場合
   if (content) {
-    const tagDescription = content.lead.split("\n")[0];
     const canonicalUrl = `${SITE_URL}/tag/${slug}/`;
     const heroImage = content.heroImage;
-    const availableLocales = await getAvailableTagPageLocales(slug);
+    const [tag, richSpots, availableLocales] = await Promise.all([
+      getTagBySlug(slug),
+      getSpotsByTagSlug(slug),
+      getAvailableTagPageLocales(slug),
+    ]);
+    const tagDescription = tag
+      ? `これまで取材した東京都内の夜景スポットの中から「${tag.name}」のタグを含む夜景スポットを${richSpots.length}件掲載しています。気になるスポットをチェックしてみてください！`
+      : content.lead.split("\n")[0];
 
     return {
       title: content.title,
@@ -219,7 +225,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title,
-    description: `「${tag.name}」に関連する夜景スポットの一覧です。各スポットの詳細ページでは実際に訪問した感想や写真を掲載しています。`,
+    description: `これまで取材した東京都内の夜景スポットの中から「${tag.name}」のタグを含む夜景スポットを${simpleSpots.length}件掲載しています。気になるスポットをチェックしてみてください！`,
     openGraph: {
       type: "website",
       title,
@@ -397,7 +403,7 @@ export default async function TagPage({ params }: Props) {
             {tagName}の夜景スポット一覧
           </h1>
           <p className="area-page-lead" itemProp="description">
-            「{tagName}」に関連する夜景スポットを{spots.length}件掲載しています。気になるスポットをチェックしてみてください。
+            これまで取材した東京都内の夜景スポットの中から「{tagName}」のタグを含む夜景スポットを{spots.length}件掲載しています。気になるスポットをチェックしてみてください！
           </p>
           <Link href="/" className="content-top-link">東京都内の夜景情報一覧</Link>
         </header>

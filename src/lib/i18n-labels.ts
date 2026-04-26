@@ -280,8 +280,7 @@ const LABELS = {
       if (type === "hotel")
         return `${area}にある${name}の夜景情報を紹介。客室やレストランからの夜景・眺望、アクセス、宿泊料金など、夜景が楽しめるホテルをお探しの方はぜひ確認してみて下さい！`;
       if (type === "event")
-        return `${area}で開催される${name}の情報を紹介。開催期間・時間・場所・アクセス方法など、イルミネーションや夜景イベントの詳細を知りたい方はぜひ確認してみて下さい！`;
-      if (lead) return `${lead}`;
+        return `${name}のイベント情報を紹介。開催期間・開催時間・場所・アクセス方法などイベントの詳細を知りたい方はぜひ確認してみて下さい！`;
       return `${area}にある${name}の夜景・夕景情報を紹介。${name}への行き方・住所・営業時間・入場料金・最寄駅・眺望の見どころ、何時に訪れるのがおすすめかなどを知りたい方はぜひ確認してみて下さい！`;
     },
     heroImageAlt: (name) => `${name}の夜景`,
@@ -552,8 +551,7 @@ const LABELS = {
       if (type === "hotel")
         return `Discover night views from ${name} in ${area}. Find room views, restaurant panoramas, access info, and rates for this hotel with stunning nightscape.`;
       if (type === "event")
-        return `Everything about ${name} in ${area}. Event dates, hours, location, access, and highlights of this illumination and night view event.`;
-      if (lead) return `${lead} — Directions, hours & admission for ${name} in ${area}, Tokyo.`;
+        return `Event details for ${name}. Find event dates, hours, location, and access information.`;
       return `Night view guide for ${name} in ${area}. Directions, address, hours, admission, nearest station, scenic highlights, and the best time to visit.`;
     },
     heroImageAlt: (name) => `Night view from ${name}`,
@@ -870,8 +868,7 @@ const LABELS = {
       if (type === "hotel")
         return `${area}에 위치한 ${name}의 야경 정보를 소개합니다. 객실과 레스토랑에서의 야경·전망, 교통편, 숙박 요금 등 야경을 즐길 수 있는 호텔을 찾고 계신 분은 꼭 확인해 보세요!`;
       if (type === "event")
-        return `${area}에서 개최되는 ${name}의 정보를 소개합니다. 개최 기간·시간·장소·교통편 등 일루미네이션 및 야경 이벤트의 상세 정보를 알고 싶은 분은 꼭 확인해 보세요!`;
-      if (lead) return `${lead} — ${name} 가는 방법·영업시간·입장료 안내 (${area})`;
+        return `${name}의 이벤트 정보를 소개합니다. 개최 기간·개최 시간·장소·교통편 등 이벤트 상세 정보를 알고 싶은 분은 꼭 확인해 보세요!`;
       return `${area}에 위치한 ${name}의 야경·석양 정보를 소개합니다. ${name} 가는 방법·주소·영업시간·입장료·가까운 역·전망 볼거리, 언제 방문하면 좋은지 등을 알고 싶은 분은 꼭 확인해 보세요!`;
     },
     heroImageAlt: (name) => `${name}의 야경`,
@@ -1172,8 +1169,7 @@ const LABELS = {
       if (type === "hotel")
         return `介紹位於${area}的${name}夜景資訊。客房與餐廳的夜景、交通方式、住宿費用等，想找能欣賞夜景的飯店的人請務必參考！`;
       if (type === "event")
-        return `介紹在${area}舉辦的${name}相關資訊。舉辦期間、時間、地點、交通方式等，想了解燈飾及夜景活動詳情的人請務必參考！`;
-      if (lead) return `${lead} — ${area}・${name}的交通方式・營業時間・門票資訊。`;
+        return `介紹${name}的活動資訊。舉辦期間、舉辦時間、地點、交通方式等，想了解活動詳情的人請務必參考！`;
       return `介紹位於${area}的${name}夜景・夕陽資訊。前往${name}的交通方式、地址、營業時間、門票、最近車站、眺望看點及最佳造訪時間等，想了解的人請務必參考！`;
     },
     heroImageAlt: (name) => `${name}的夜景`,
@@ -1474,8 +1470,7 @@ const LABELS = {
       if (type === "hotel")
         return `介绍位于${area}的${name}夜景信息。客房与餐厅的夜景、交通方式、住宿费用等，想找能欣赏夜景的酒店的朋友请务必看看！`;
       if (type === "event")
-        return `介绍在${area}举办的${name}相关信息。举办时间、地点、交通方式等，想了解灯光秀及夜景活动详情的朋友请务必看看！`;
-      if (lead) return `${lead} — ${area}・${name}的交通方式・营业时间・门票信息。`;
+        return `介绍${name}的活动信息。举办时间、举办地点、交通方式等，想了解活动详情的朋友请务必看看！`;
       return `介绍位于${area}的${name}夜景・夕阳信息。前往${name}的交通方式、地址、营业时间、门票、最近车站、眺望看点及最佳造访时间等，想了解的朋友请务必看看！`;
     },
     heroImageAlt: (name) => `${name}的夜景`,
@@ -1869,7 +1864,7 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     topLink: "東京都内の夜景情報一覧",
     topLinkHref: "/",
     simplePageTitle: (tagName) => `${tagName}の夜景スポット一覧`,
-    simplePageLead: (tagName, count) => `「${tagName}」に関連する夜景スポットを${count}件掲載しています。気になるスポットをチェックしてみてください。`,
+    simplePageLead: (tagName, count) => `これまで取材した東京都内の夜景スポットの中から「${tagName}」のタグを含む夜景スポットを${count}件掲載しています。気になるスポットをチェックしてみてください！`,
     simpleCount: (n) => `掲載数：${n}件`,
     sortLabel: "並び替え：",
     sortRating: "評価高い順",
@@ -1886,7 +1881,7 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     topLink: "Tokyo Night View Spot List",
     topLinkHref: "/en",
     simplePageTitle: (tagName) => `${tagName} Night View Spots`,
-    simplePageLead: (tagName, count) => `${count} night view spots related to "${tagName}". Check out spots that interest you.`,
+    simplePageLead: (tagName, count) => `Explore ${count} Tokyo night view spots tagged "${tagName}", all personally visited by our team. Check out spots that interest you!`,
     simpleCount: (n) => `${n} spots`,
     sortLabel: "Sort by: ",
     sortRating: "Highest rated",
@@ -1903,7 +1898,7 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     topLink: "도쿄 야경 스폿 목록",
     topLinkHref: "/ko",
     simplePageTitle: (tagName) => `${tagName} 야경 스폿 목록`,
-    simplePageLead: (tagName, count) => `「${tagName}」관련 야경 스폿 ${count}건을 소개합니다. 마음에 드는 스폿을 확인해 보세요.`,
+    simplePageLead: (tagName, count) => `직접 취재한 도쿄 야경 스폿 중에서 「${tagName}」 태그를 포함한 야경 스폿 ${count}건을 소개합니다. 마음에 드는 스폿을 확인해 보세요！`,
     simpleCount: (n) => `${n}건`,
     sortLabel: "정렬: ",
     sortRating: "평점 높은 순",
@@ -1920,7 +1915,7 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     topLink: "東京夜景景點一覽",
     topLinkHref: "/tw",
     simplePageTitle: (tagName) => `${tagName}夜景景點一覽`,
-    simplePageLead: (tagName, count) => `共收錄 ${count} 處與「${tagName}」相關的夜景景點。快來看看感興趣的景點吧。`,
+    simplePageLead: (tagName, count) => `從實地採訪的東京夜景景點中，收錄了 ${count} 處含有「${tagName}」標籤的夜景景點。快來看看感興趣的景點吧！`,
     simpleCount: (n) => `共 ${n} 件`,
     sortLabel: "排序：",
     sortRating: "評價最高",
@@ -1937,7 +1932,7 @@ export const TAG_ARTICLE_LABELS: Record<SiteLocale, {
     topLink: "东京夜景景点一览",
     topLinkHref: "/cn",
     simplePageTitle: (tagName) => `${tagName}夜景景点一览`,
-    simplePageLead: (tagName, count) => `共收录 ${count} 处与「${tagName}」相关的夜景景点。快来看看感兴趣的景点吧。`,
+    simplePageLead: (tagName, count) => `从实地采访的东京夜景景点中，收录了 ${count} 处含有「${tagName}」标签的夜景景点。快来看看感兴趣的景点吧！`,
     simpleCount: (n) => `共 ${n} 件`,
     sortLabel: "排序：",
     sortRating: "评价最高",
