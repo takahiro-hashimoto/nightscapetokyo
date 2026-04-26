@@ -11,6 +11,8 @@ import HomeAuthorCard from '@/components/common/HomeAuthorCard'
 import { getRelatedPosts, normalizePostSummary } from '@/lib/luminar/articles-meta'
 import type { TocItem } from '@/lib/luminar/toc'
 import { LUMINAR_SITE_NAME, LUMINAR_SITE_URL } from '@/lib/luminar/config'
+import { getSaleSettings } from '@/lib/luminar/getSaleSettings'
+import { SaleSettingsProvider } from '@/contexts/SaleSettingsContext'
 
 type Props = {
   slug: string
@@ -87,14 +89,17 @@ export default async function LuminarArticleLayout({
 }: Props) {
   const articleUrl = `${LUMINAR_SITE_URL}/${slug}/`
 
-  const relatedRaw = await getRelatedPosts(categoryIds, slug, 6)
+  const [relatedRaw, saleSettings] = await Promise.all([
+    getRelatedPosts(categoryIds, slug, 6),
+    getSaleSettings(),
+  ])
   const relatedArticles = relatedRaw.map((p) => {
     const s = normalizePostSummary(p)
     return { ...s, featuredImage: s.featuredImage ?? undefined }
   })
 
   return (
-    <>
+    <SaleSettingsProvider value={saleSettings}>
       <div className="l-article-body">
         <div className="l-article-container">
 
@@ -241,6 +246,6 @@ export default async function LuminarArticleLayout({
           }),
         }}
       />
-    </>
+    </SaleSettingsProvider>
   )
 }
