@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import { LUMINAR_SITE_NAME, LUMINAR_SITE_DESCRIPTION, LUMINAR_SITE_URL } from '@/lib/luminar/config'
 import { AdsProvider } from '@/contexts/AdsContext'
-import Header from '@/components/layout/HeaderWrapper'
 import './luminar.css'
 
 const FA_CSS_URL =
@@ -37,7 +36,6 @@ export default function LuminarLayout({ children }: { children: React.ReactNode 
       {/* Font Awesome — luminar 配下全ページで使用するため layout で一括読み込み */}
       <Script id="fa-css" strategy="lazyOnload">{`(function(){var l=document.createElement('link');l.rel='stylesheet';l.crossOrigin='anonymous';l.href='${FA_CSS_URL}';document.head.appendChild(l)})();`}</Script>
       <AdsProvider showAds={false}>
-        <Header locale={null} />
         {children}
       </AdsProvider>
     </>

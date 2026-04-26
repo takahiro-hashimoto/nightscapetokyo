@@ -1,6 +1,7 @@
 import { buildSiteNavigationJsonLd } from "@/lib/json-ld";
 import { buildMainNavItems, buildTopNavItems, flattenNavToLinks } from "@/components/layout/Header";
 import { getSiteChromeData } from "@/lib/supabase/queries/site-chrome";
+import HeaderWrapper from "@/components/layout/HeaderWrapper";
 
 export const fetchCache = "force-cache";
 
@@ -18,6 +19,7 @@ export default async function PublicLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSiteNavigationJsonLd(navLinks)) }}
       />
+      <HeaderWrapper locale={null} />
       {children}
     </>
   );

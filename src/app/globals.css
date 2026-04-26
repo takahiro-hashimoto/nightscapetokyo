@@ -195,6 +195,10 @@ img {
   }
 }
 
+.breadcrumb ol {
+  margin: 0;
+}
+
 .breadcrumb a {
   color: var(--color-text-light);
 }
