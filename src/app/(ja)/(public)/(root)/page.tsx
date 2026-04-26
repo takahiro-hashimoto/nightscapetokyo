@@ -22,7 +22,7 @@ import DeferredRender from "@/components/layout/DeferredRender";
 
 export async function generateMetadata(): Promise<Metadata> {
   const hp = getComponentLabels("ja").homePage;
-  const title = hp.seoTitle(CURRENT_YEAR);
+  const title = hp.seoTitle(new Date().getFullYear());
   const description = hp.seoDescription;
   return {
     title: { absolute: title },
@@ -45,9 +45,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export const revalidate = 86400;
 export const fetchCache = "force-cache";
 
-const CURRENT_YEAR = new Date().getFullYear();
-
 export default async function Home() {
+  const CURRENT_YEAR = new Date().getFullYear();
   const sunData = calculateSunData(new Date(), 35.6895, 139.6917);
   const labels = getComponentLabels("ja");
 

@@ -12,10 +12,8 @@ type Props = {
   prBanner?: ReactNode;
 };
 
-const CURRENT_YEAR = new Date().getFullYear();
-
 export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Props) {
-  const currentYear = CURRENT_YEAR;
+  const currentYear = new Date().getFullYear();
   if (spots.length === 0) return null;
 
   const prefix = localeSlug ? `/${localeSlug}` : "";
