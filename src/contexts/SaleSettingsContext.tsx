@@ -10,7 +10,19 @@ export type SaleSettings = {
 
 const SaleSettingsContext = createContext<SaleSettings | null>(null)
 
-export const SaleSettingsProvider = SaleSettingsContext.Provider
+export function SaleSettingsProvider({
+  value,
+  children,
+}: {
+  value: SaleSettings
+  children: React.ReactNode
+}) {
+  return (
+    <SaleSettingsContext.Provider value={value}>
+      {children}
+    </SaleSettingsContext.Provider>
+  )
+}
 
 export function useSaleSettingsContext(): SaleSettings | null {
   return useContext(SaleSettingsContext)

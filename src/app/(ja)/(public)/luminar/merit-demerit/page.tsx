@@ -5,7 +5,6 @@ import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
 
-export const dynamic = 'force-static'
 
 const META = {
   slug: 'merit-demerit',

@@ -6,7 +6,6 @@ import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
 import TwitterEmbed from '@/components/luminar/TwitterEmbed'
 
-export const dynamic = 'force-static'
 
 const META = {
   slug: 'voice',
