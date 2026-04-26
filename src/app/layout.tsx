@@ -15,9 +15,7 @@ export default async function RootLayout({
   const localeSlug = headerStore.get("x-locale") ?? "";
   const locale = ALL_LOCALE_SLUGS.includes(localeSlug) ? localeSlug : "ja";
   const lang = locale === "ja" ? "ja" : (LOCALE_HTML_LANG[locale] ?? "en");
-  const pathname = headerStore.get("x-pathname") ?? "";
   const isProd = process.env.NODE_ENV === "production";
-  const shouldLoadAdsense = isProd && pathname !== "/article/";
 
   return (
     <html lang={lang}>
@@ -37,7 +35,7 @@ export default async function RootLayout({
           href="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev"
           crossOrigin="anonymous"
         />
-        {shouldLoadAdsense && (
+        {isProd && (
           <>
             <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
             <link
