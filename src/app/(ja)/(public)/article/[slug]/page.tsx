@@ -38,15 +38,32 @@ export async function generateStaticParams() {
   return slugs.map((s) => ({ slug: s.slug }));
 }
 
+function extractArticleDescription(article: { title: string; description: string | null; content: string | null }): string {
+  if (article.description) return article.description;
+  if (article.content) {
+    const plain = article.content
+      .replace(/<[^>]*>/g, "")
+      .replace(/#{1,6}\s+/g, "")
+      .replace(/\*{1,2}|_{1,2}/g, "")
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      .replace(/\s+/g, " ")
+      .trim();
+    const excerpt = plain.slice(0, 120);
+    return excerpt.length === 120 ? excerpt + "…" : excerpt;
+  }
+  return `${article.title}について解説。東京夜景ナビが実体験をもとに紹介します。`;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
   if (!article) return {};
 
+  const description = extractArticleDescription(article);
   const canonicalUrl = `${SITE_URL}/article/${slug}/`;
   return {
     title: article.title,
-    description: article.description ?? undefined,
+    description,
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -57,7 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       type: "article",
       title: article.title,
-      description: article.description ?? undefined,
+      description,
       url: canonicalUrl,
       siteName: "nightscape.tokyo",
       locale: "ja_JP",
@@ -70,7 +87,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: article.title,
-      description: article.description ?? undefined,
+      description,
       images: article.thumbnail ? [articleThumbnail(article.thumbnail)!] : undefined,
     },
   };
