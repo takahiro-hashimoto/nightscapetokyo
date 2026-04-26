@@ -15,7 +15,7 @@ export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
   return (
     <section className="hero-section">
       <Image
-        src="/hero.webp"
+        src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/images/hero.webp"
         alt={l?.imgAlt ?? "東京の夜景"}
         className="hero-bg"
         fill
