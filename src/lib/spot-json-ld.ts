@@ -10,6 +10,16 @@ const VIDEO_LABELS: Record<string, { nameSuffix: string; fallbackDesc: string }>
   "zh-Hans": { nameSuffix: " 夜景视频",        fallbackDesc: " 夜景视频" },
 };
 
+/** 日本語日付文字列 or ISO 文字列を ISO 8601 (YYYY-MM-DD) に正規化 */
+function toIsoDate(value: string): string {
+  // すでに ISO 形式なら変換不要
+  if (/^\d{4}-\d{2}-\d{2}/.test(value)) return value;
+  // "2025年3月19日" → "2025-03-19"
+  const m = value.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+  if (m) return `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`;
+  return value;
+}
+
 /** YouTube embed HTML から動画IDを抽出 */
 export function extractYoutubeId(html: string): string | null {
   const match = html.match(/(?:youtube\.com\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/);
@@ -41,8 +51,8 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
       eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
       ...(spot.lead && { description: spot.lead }),
       ...(images.length > 0 && { image: images }),
-      ...(spot.event.start_date && { startDate: spot.event.start_date }),
-      ...(spot.event.end_date && { endDate: spot.event.end_date }),
+      ...(spot.event.start_date && { startDate: toIsoDate(spot.event.start_date) }),
+      ...(spot.event.end_date && { endDate: toIsoDate(spot.event.end_date) }),
     };
 
     const locationName = spot.event.place || spot.address;
