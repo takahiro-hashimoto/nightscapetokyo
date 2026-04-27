@@ -835,6 +835,8 @@ img {
 .home-section {
   padding: 60px 0;
   background: var(--color-bg);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
 }
 
 /* Alternating section backgrounds — counts only .home-section children */

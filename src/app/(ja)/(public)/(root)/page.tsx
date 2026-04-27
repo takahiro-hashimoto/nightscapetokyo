@@ -18,7 +18,6 @@ import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildHomeHreflangAlternates 
 import { buildFaqJsonLd, buildItemListJsonLd } from "@/lib/json-ld";
 import SpotShare from "@/components/spot/SpotShare";
 import { LUMINAR_ARTICLE } from "@/lib/featured-articles";
-import DeferredRender from "@/components/layout/DeferredRender";
 
 export async function generateMetadata(): Promise<Metadata> {
   const hp = getComponentLabels("ja").homePage;
@@ -96,30 +95,18 @@ export default async function Home() {
       <HotelRanking hotels={hotels} />
       <PurposeSearch tags={purposeTags} />
       <AreaSearch areas={areas} />
-      <DeferredRender>
-        <HomeMapSection spots={mapSeoSpots} categories={areas.map((a) => ({ slug: a.slug, name: a.name }))} />
-      </DeferredRender>
-      <DeferredRender>
-        <HomeArticles articles={articles} />
-      </DeferredRender>
-      <DeferredRender>
-        <HomeNewsAndVideos recentSpots={recentSpots} />
-      </DeferredRender>
-      <DeferredRender>
-        <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={labels.homePage.faq} />
-      </DeferredRender>
-      <DeferredRender>
-        <HomeAuthor />
-      </DeferredRender>
-      <DeferredRender>
-        <SpotShare
-          url={SITE_URL}
-          title="東京夜景ナビ｜東京都内の夜景スポット情報サイト"
-          locale="ja"
-          labels={labels.share}
-          className="home-section"
-        />
-      </DeferredRender>
+      <HomeMapSection spots={mapSeoSpots} categories={areas.map((a) => ({ slug: a.slug, name: a.name }))} />
+      <HomeArticles articles={articles} />
+      <HomeNewsAndVideos recentSpots={recentSpots} />
+      <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={labels.homePage.faq} />
+      <HomeAuthor />
+      <SpotShare
+        url={SITE_URL}
+        title="東京夜景ナビ｜東京都内の夜景スポット情報サイト"
+        locale="ja"
+        labels={labels.share}
+        className="home-section"
+      />
       {spots.length > 0 && (
         <script
           type="application/ld+json"
