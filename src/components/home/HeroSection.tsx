@@ -25,7 +25,7 @@ export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
         quality={75}
       />
       <Image
-        src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/images/sp-mage-main.webp"
+        src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/images/main.webp"
         alt={l?.imgAlt ?? "東京の夜景"}
         className="hero-bg hero-bg--sp"
         fill

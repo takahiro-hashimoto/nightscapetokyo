@@ -1377,7 +1377,7 @@ main > .home-section:nth-child(even of .home-section) {
    ========================================= */
 @media (max-width: 768px) {
   .hero-section {
-    min-height: 420px;
+    min-height: 360px;
   }
 
   .hero-content {
