@@ -150,10 +150,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // 翻訳タグページがない場合はシンプル一覧のメタデータ
   if (!translationResult) {
-    const [tag, spots, availableLocales] = await Promise.all([
+    const [tag, spots] = await Promise.all([
       getTagBySlug(tagSlug),
       getSpotListByTagSlugTranslated(tagSlug, [], localeSlug),
-      getAvailableTagPageLocales(tagSlug),
     ]);
     if (!tag) return {};
     const labels = TAG_ARTICLE_LABELS[localeSlug as SiteLocale] ?? TAG_ARTICLE_LABELS.en;

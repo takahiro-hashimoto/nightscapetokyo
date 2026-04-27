@@ -14,7 +14,6 @@ export default function RootLayout({
 
   return (
     <html lang="ja">
-      {/* eslint-disable-next-line @next/next/no-head-element */}
       <head>
         {isProd && <GtmLoader gtmId={GTM_ID} />}
         <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />

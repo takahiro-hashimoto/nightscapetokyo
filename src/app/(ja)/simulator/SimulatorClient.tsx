@@ -31,12 +31,10 @@ export default function SimulatorClient() {
   // Load saved state on mount (localStorage は初回マウント時のみ読む設計)
   useEffect(() => {
     const saved = loadMapState();
-    /* eslint-disable react-hooks/set-state-in-effect */
     setMarkerPosition([saved.lat, saved.lng]);
     setMapCenter([saved.lat, saved.lng]);
     setZoom(saved.zoom);
     setInitialized(true);
-    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   // Calculate sun data
