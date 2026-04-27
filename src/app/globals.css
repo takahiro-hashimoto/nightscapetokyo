@@ -2547,6 +2547,25 @@ main > .home-section:nth-child(even of .home-section) {
   animation: tag-slider-shimmer 1.4s ease-in-out infinite;
 }
 
+.gallery-modal-image-wrap {
+  position: relative;
+  line-height: 0;
+}
+
+.gallery-modal-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    #2a2a2a 25%,
+    #3a3a3a 50%,
+    #2a2a2a 75%
+  );
+  background-size: 600px 100%;
+  animation: tag-slider-shimmer 1.4s ease-in-out infinite;
+}
+
 
 .content-top-link:hover {
   color: var(--color-primary);

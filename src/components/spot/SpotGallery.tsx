@@ -13,16 +13,24 @@ type Props = {
 
 export default function SpotGallery({ images, spotName, heading: headingProp }: Props) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const close = useCallback(() => setSelectedIndex(null), []);
 
+  const openModal = useCallback((i: number) => {
+    setIsLoading(true);
+    setSelectedIndex(i);
+  }, []);
+
   const prev = useCallback(() => {
+    setIsLoading(true);
     setSelectedIndex((i) =>
       i !== null ? (i - 1 + images.length) % images.length : null
     );
   }, [images.length]);
 
   const next = useCallback(() => {
+    setIsLoading(true);
     setSelectedIndex((i) =>
       i !== null ? (i + 1) % images.length : null
     );
@@ -75,7 +83,7 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
             <button
               type="button"
               className="gallery-item-btn"
-              onClick={() => setSelectedIndex(i)}
+              onClick={() => openModal(i)}
               aria-label={img.alt || `写真 ${i + 1}`}
             >
               <Image
@@ -129,14 +137,18 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
 
           {/* 画像 + フッター */}
           <div className="gallery-modal-body" onClick={(e) => e.stopPropagation()}>
-            <Image
-              src={current.url}
-              alt={current.alt || ""}
-              width={1200}
-              height={800}
-              sizes="(max-width: 768px) 1000px, 1200px"
-              className="gallery-modal-image"
-            />
+            <div className="gallery-modal-image-wrap">
+              {isLoading && <div className="gallery-modal-skeleton" aria-hidden="true" />}
+              <Image
+                src={current.url}
+                alt={current.alt || ""}
+                width={1200}
+                height={800}
+                sizes="(max-width: 768px) 1000px, 1200px"
+                className="gallery-modal-image"
+                onLoad={() => setIsLoading(false)}
+              />
+            </div>
             {/* キャプション + カウンター */}
             <div className="gallery-modal-footer">
               {current.alt && (
