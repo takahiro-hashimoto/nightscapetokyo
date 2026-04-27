@@ -161,10 +161,8 @@ export default function HeaderShell({
   useEffect(() => {
     const el = headerRef.current;
     if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setHeaderHeight(entry.contentRect.height);
-      }
+    const ro = new ResizeObserver(() => {
+      setHeaderHeight(el.getBoundingClientRect().bottom);
     });
     ro.observe(el);
     return () => ro.disconnect();
