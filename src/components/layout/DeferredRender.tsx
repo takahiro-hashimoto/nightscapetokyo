@@ -1,23 +1,17 @@
-import type { ElementType, ReactNode } from "react";
+import { cloneElement, isValidElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 
-type Props<T extends ElementType = "div"> = {
-  as?: T;
-  className?: string;
+type Props = {
   children: ReactNode;
-} & Omit<React.ComponentPropsWithoutRef<T>, "as" | "children" | "className">;
+};
 
-export default function DeferredRender<T extends ElementType = "div">({
-  as,
-  className,
-  children,
-  ...props
-}: Props<T>) {
-  const Component = (as ?? "div") as ElementType;
-  const classes = className ? `cv-auto ${className}` : "cv-auto";
-
-  return (
-    <Component {...props} className={classes}>
-      {children}
-    </Component>
-  );
+export default function DeferredRender({ children }: Props) {
+  if (isValidElement(children)) {
+    const child = children as ReactElement<{ className?: string }>;
+    const childClass = child.props.className
+      ? `cv-auto ${child.props.className}`
+      : "cv-auto";
+    return cloneElement(child, { className: childClass });
+  }
+  return <>{children}</>;
 }
