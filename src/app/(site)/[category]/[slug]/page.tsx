@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     const translatedAreaName = spots[0]?.category.name ?? cat.name;
     const labels = getComponentLabels(category);
-    const areaTitle = labels.areaPage.title(translatedAreaName);
+    const areaTitle = labels.areaPage.title(translatedAreaName, spots.length || undefined);
     const siteName = SITE_NAMES[category] ?? "Tokyo Night View Guide";
     const title = `${areaTitle} | ${siteName}`;
     const description = labels.areaPage.lead(translatedAreaName, spots);

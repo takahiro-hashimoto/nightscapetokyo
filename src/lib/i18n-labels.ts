@@ -190,7 +190,7 @@ export type HomePageLabels = {
 };
 
 export type AreaPageLabels = {
-  title: (area: string) => string;
+  title: (area: string, count?: number) => string;
   lead: (area: string, spots: { name: string; rating_avg: number }[]) => string;
   count: (n: number) => string;
   sortLabel: string;
@@ -392,7 +392,7 @@ const LABELS = {
       updated: "最終更新日",
     },
     areaPage: {
-      title: (area) => `${area}の夜景スポット一覧`,
+      title: (area, count) => count ? `${area}の夜景スポット一覧【${count}件掲載】` : `${area}の夜景スポット一覧`,
       lead: (area, spots) => {
         const count = spots.length;
         if (count === 0) return `東京都${area}のおすすめ夜景スポット情報を紹介。実際に訪問した感想や写真を掲載。`;
@@ -665,7 +665,7 @@ const LABELS = {
       updated: "Last Updated",
     },
     areaPage: {
-      title: (area) => `Best Night Views in ${area}, Tokyo, Japan — Top Spots & Hidden Gems`,
+      title: (area, count) => count ? `Best Night Views in ${area}, Tokyo — ${count} Spots Listed` : `Best Night Views in ${area}, Tokyo, Japan — Top Spots & Hidden Gems`,
       lead: (area, spots) => {
         const count = spots.length;
         if (count === 0) return `Explore night view spots in ${area}, Tokyo — personally visited with photos, ratings, and access info.`;
@@ -981,7 +981,7 @@ const LABELS = {
       updated: "최종 수정일",
     },
     areaPage: {
-      title: (area) => `일본 도쿄 ${area} 야경 명소 추천 — 인기 스폿 & 숨겨진 장소`,
+      title: (area, count) => count ? `일본 도쿄 ${area} 야경 명소 추천【${count}곳 게재】` : `일본 도쿄 ${area} 야경 명소 추천 — 인기 스폿 & 숨겨진 장소`,
       lead: (area, spots) => {
         const count = spots.length;
         if (count === 0) return `도쿄 ${area}의 야경 명소를 직접 방문하여 소개합니다. 사진, 평점, 교통편 정보를 제공합니다.`;
@@ -1282,7 +1282,7 @@ const LABELS = {
       updated: "最終更新日",
     },
     areaPage: {
-      title: (area) => `日本東京${area}夜景推薦 — 人氣景點＆隱藏版秘境`,
+      title: (area, count) => count ? `日本東京${area}夜景景點推薦【${count}個景點】` : `日本東京${area}夜景推薦 — 人氣景點＆隱藏版秘境`,
       lead: (area, spots) => {
         const count = spots.length;
         if (count === 0) return `精選東京${area}最美夜景景點，全部實地走訪！附照片、評分、交通方式。`;
@@ -1583,7 +1583,7 @@ const LABELS = {
       updated: "最終更新日",
     },
     areaPage: {
-      title: (area) => `日本东京${area}夜景推荐 — 热门景点＆隐藏宝藏`,
+      title: (area, count) => count ? `日本东京${area}夜景景点推荐【${count}个景点】` : `日本东京${area}夜景推荐 — 热门景点＆隐藏宝藏`,
       lead: (area, spots) => {
         const count = spots.length;
         if (count === 0) return `精选东京${area}最美夜景景点，全部实地走访！附照片、评分、交通方式。`;
