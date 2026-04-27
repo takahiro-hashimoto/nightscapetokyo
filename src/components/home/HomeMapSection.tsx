@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import SpotMapLoader from "@/components/map/SpotMapLoader";
 import type { MapSpotItem } from "@/lib/supabase/queries";
