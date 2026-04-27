@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
 import type { SpotListItem } from "@/lib/types";
+import { extractTownAddress } from "@/lib/types";
+import { Train } from "lucide-react";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
 
@@ -78,6 +80,7 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
 
       <ul className="area-spot-grid">
         {sorted.flatMap((spot, index) => {
+          const stationText = spot.station_names;
           const spotCard = (
             <li key={spot.id}>
               <article className={`spot-card${spot.closed ? " spot-card--closed" : ""}`} itemScope itemType="https://schema.org/TouristAttraction">
@@ -104,7 +107,7 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
                   </div>
                   <div className="spot-card-body">
                     <div className="spot-card-meta">
-                      <span className="badge spot-card-category">{spot.category.name}</span>
+                      <span className="badge spot-card-category">{localeSlug ? spot.category.name : extractTownAddress(spot.address, spot.category.name)}</span>
                       <div className={`spot-card-rating${spot.closed ? " spot-card-rating--closed" : ""}`} itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
                         <meta itemProp="ratingValue" content={spot.rating_avg.toFixed(1)} />
                         <meta itemProp="bestRating" content="5" />
@@ -115,6 +118,13 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
                     </div>
                     <h3 className="spot-card-title" itemProp="name">{spot.name}</h3>
                     <p className="spot-card-lead" itemProp="description">{spot.lead}</p>
+                    {stationText && (
+                      <p className="spot-card-station">
+                        <Train size={11} aria-hidden="true" />
+                        <span className="sr-only">最寄駅：</span>
+                        <span className="spot-card-station-text">{stationText}</span>
+                      </p>
+                    )}
                   </div>
                 </Link>
               </article>

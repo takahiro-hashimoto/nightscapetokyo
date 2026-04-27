@@ -4,6 +4,8 @@ export type SpotCardData = {
   name: string;
   featured_image: string;
   category: { slug: string; name: string };
+  address: string | null;
+  station_names: string | null;
   rating_avg: number;
   rating_beautiful: number | null;
   rating_access: number | null;
@@ -34,7 +36,7 @@ export const dummyTopSpots: SpotCardData[] = [
       "https://picsum.photos/seed/shibuya/600/400",
     category: { slug: "shibuya", name: "渋谷区" },
     rating_avg: 4.3,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "地上229mから都内を360度見渡せる展望施設。開放的な屋上空間が人気。",
     closed: false,
   },
@@ -46,7 +48,7 @@ export const dummyTopSpots: SpotCardData[] = [
       "https://picsum.photos/seed/tower/600/400",
     category: { slug: "minato", name: "港区" },
     rating_avg: 4.5,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "東京のシンボルから眺める都心の夜景。季節ごとのライトアップも見どころ。",
     closed: false,
   },
@@ -58,7 +60,7 @@ export const dummyTopSpots: SpotCardData[] = [
       "https://picsum.photos/seed/roppongi/600/400",
     category: { slug: "minato", name: "港区" },
     rating_avg: 4.0,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "海抜250mの屋上スカイデッキから東京タワーやスカイツリーを一望。",
     closed: false,
   },
@@ -70,7 +72,7 @@ export const dummyTopSpots: SpotCardData[] = [
       "https://picsum.photos/seed/odaiba/600/400",
     category: { slug: "minato", name: "港区" },
     rating_avg: 3.8,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "レインボーブリッジと都心のビル群が織りなす美しいウォーターフロント夜景。",
     closed: false,
   },
@@ -82,7 +84,7 @@ export const dummyTopSpots: SpotCardData[] = [
       "https://picsum.photos/seed/skytree/600/400",
     category: { slug: "sumida", name: "墨田区" },
     rating_avg: 4.5,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "地上450mの天望回廊から関東平野を一望。日本一高いタワーからの大パノラマ。",
     closed: false,
   },
@@ -94,7 +96,7 @@ export const dummyTopSpots: SpotCardData[] = [
       "https://picsum.photos/seed/rainbow/600/400",
     category: { slug: "minato", name: "港区" },
     rating_avg: 4.0,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "遊歩道から東京湾の夜景を間近に楽しめる。お台場側・芝浦側の両方に見どころ。",
     closed: false,
   },
@@ -109,7 +111,7 @@ export const dummyHotelSpots: SpotCardData[] = [
       "https://picsum.photos/seed/prince/600/400",
     category: { slug: "minato", name: "港区" },
     rating_avg: 4.5,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "東京タワーの目の前に佇む高層ホテル。客室から間近に東京タワーを望む。",
     closed: false,
   },
@@ -121,7 +123,7 @@ export const dummyHotelSpots: SpotCardData[] = [
       "https://picsum.photos/seed/conrad/600/400",
     category: { slug: "minato", name: "港区" },
     rating_avg: 4.3,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "浜離宮恩賜庭園を見下ろすラグジュアリーホテル。東京湾のパノラマ夜景。",
     closed: false,
   },
@@ -133,7 +135,7 @@ export const dummyHotelSpots: SpotCardData[] = [
       "https://picsum.photos/seed/mesm/600/400",
     category: { slug: "minato", name: "港区" },
     rating_avg: 4.2,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "竹芝に誕生したウォーターフロントホテル。全室バルコニー付きで夜景を独占。",
     closed: false,
   },
@@ -145,7 +147,7 @@ export const dummyHotelSpots: SpotCardData[] = [
       "https://picsum.photos/seed/mitsui/600/400",
     category: { slug: "koto", name: "江東区" },
     rating_avg: 3.9,
-    rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
+    address: null, station_names: null, rating_beautiful: null, rating_access: null, rating_atmosphere: null, rating_cost: null,
     lead: "豊洲市場の目の前。レインボーブリッジと都心の夜景を客室から楽しめる。",
     closed: false,
   },

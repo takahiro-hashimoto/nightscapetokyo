@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Star, Train } from "lucide-react";
 import type { SpotListItem } from "@/lib/types";
+import { extractTownAddress } from "@/lib/types";
 
 type Props = {
   spots: SpotListItem[];
@@ -21,6 +22,7 @@ export default function SpotsGrid({ spots, localeSlug, closedBadge = "閉鎖済�
         const href = localeSlug
           ? `/${localeSlug}/${spot.category.slug}/${spot.slug}`
           : `/${spot.category.slug}/${spot.slug}`;
+        const stationText = spot.station_names;
         return (
           <li key={spot.id}>
             <article
@@ -47,7 +49,7 @@ export default function SpotsGrid({ spots, localeSlug, closedBadge = "閉鎖済�
                 </div>
                 <div className="spot-card-body">
                   <div className="spot-card-meta">
-                    <span className="badge spot-card-category">{spot.category.name}</span>
+                    <span className="badge spot-card-category">{localeSlug ? spot.category.name : extractTownAddress(spot.address, spot.category.name)}</span>
                     <div
                       className={`spot-card-rating${spot.closed ? " spot-card-rating--closed" : ""}`}
                       itemProp="aggregateRating"
@@ -74,6 +76,13 @@ export default function SpotsGrid({ spots, localeSlug, closedBadge = "閉鎖済�
                   <p className="spot-card-lead" itemProp="description">
                     {spot.lead}
                   </p>
+                  {stationText && (
+                    <p className="spot-card-station">
+                      <Train size={11} aria-hidden="true" />
+                      <span className="sr-only">最寄駅：</span>
+                      <span className="spot-card-station-text">{stationText}</span>
+                    </p>
+                  )}
                 </div>
               </Link>
             </article>

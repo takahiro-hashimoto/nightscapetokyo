@@ -84,6 +84,7 @@ export type Spot = {
   holiday: string | null;
   money: string | null;
   station: string | null;
+  station_names?: string | null;
   parking: string | null;
   map: string | null;
   height: string | null;
@@ -279,6 +280,8 @@ export type SpotListItem = {
   name: string;
   featured_image: string;
   category: { slug: string; name: string };
+  address: string | null;
+  station_names: string | null;
   rating_avg: number;
   rating_beautiful: number | null;
   rating_access: number | null;
@@ -288,6 +291,63 @@ export type SpotListItem = {
   closed?: boolean;
   updated_at?: string;
 };
+
+/**
+ * 住所文字列から「区/市名 + 町名」を抽出する
+ * 例: "東京都中央区豊海町2-1" → "中央区豊海町"
+ *     "東京都葛飾区東四つ木3丁目" → "葛飾区東四つ木"
+ */
+/**
+ * 駅情報 HTML から駅名を抽出して「・」区切りで返す
+ * 例: "東京メトロ日比谷線「勝どき駅」より徒歩10分<br>JR「竹芝駅」…" → "勝どき駅・竹芝駅・築地市場駅"
+ */
+export function extractStationNames(station: string | null): string | null {
+  if (!station) return null;
+
+  const names: string[] = [];
+
+  // 「駅名駅」: 駅がカッコ内
+  for (const m of station.matchAll(/「([^」]*駅)」/g)) names.push(m[1]);
+  // 「駅名」駅: 駅がカッコ外
+  for (const m of station.matchAll(/「([^」]+)」駅/g)) names.push(m[1] + "駅");
+  // 「駅名」: 駅なしでもカッコ内を駅名として扱う（国際展示場 等）
+  if (names.length === 0) {
+    for (const m of station.matchAll(/「([^」]+)」/g)) names.push(m[1]);
+  }
+
+  if (names.length > 0) return [...new Set(names)].join("・");
+
+  // HTML を除去してプレーンテキスト化
+  const plain = station
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>/gi, "\n")
+    .replace(/<\/li>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ");
+
+  // プレーンテキストから XX駅 を抽出（駅を除外クラスに含め誤爆防止）
+  for (const m of plain.matchAll(/([^\s\u3000、。・「」【】（）()\d０-９駅]+駅)/g)) {
+    names.push(m[1]);
+  }
+
+  if (names.length > 0) return [...new Set(names)].join("・");
+
+  // 最終フォールバック: 最初の非空行
+  const firstLine =
+    plain.trim().split("\n").map((s) => s.trim()).filter(Boolean)[0] ?? "";
+  return firstLine || null;
+}
+
+export function extractTownAddress(address: string | null, fallback: string): string {
+  if (!address) return fallback;
+  // 都道府県プレフィックスを除去してから区/市/郡+町名を抽出
+  const stripped = address.replace(/^.+?[都道府県]/, "");
+  const m = stripped.match(
+    /([\u4e00-\u9fa5\u3040-\u30ff\uff65-\uff9f\u30a0-\u30ffー]+(?:区|市|郡))([\u4e00-\u9fa5\u3040-\u30ff\uff65-\uff9f\u30a0-\u30ffー]*)/
+  );
+  if (m) return m[1] + m[2];
+  return stripped || fallback;
+}
 
 /**
  * hreflang alternate links を生成するヘルパー

@@ -336,7 +336,6 @@ img {
 
 .content-card h3 {
   color: #1a202c;
-  border-bottom: 2px solid #f0f2f5;
   align-items: center;
   gap: 12px;
   margin: 24px 0 12px;
@@ -1178,6 +1177,10 @@ main > .home-section:nth-child(even of .home-section) {
   margin-top: 30px;
 }
 
+.ranking-grid > li {
+  display: grid;
+}
+
 .ranking-grid-3 {
   grid-template-columns: repeat(3, 1fr);
 }
@@ -1333,6 +1336,25 @@ main > .home-section:nth-child(even of .home-section) {
   line-height: 1.5;
   display: -webkit-box;
   overflow: hidden;
+}
+
+.spot-card-station {
+  color: #64748b;
+  align-items: center;
+  gap: 4px;
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  display: flex;
+  overflow: hidden;
+}
+
+.spot-card-station-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
 }
 
 /* =========================================
@@ -2575,7 +2597,10 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .gallery-modal-overlay {
-  background: rgba(0, 0, 0, 0.88);
+  background: rgba(0, 0, 0, .92);
+  cursor: pointer;
+  animation: galleryFadeIn .25s ease-out;
+  text-align: center;
 }
 
 .gallery-modal-close {
@@ -2640,9 +2665,11 @@ main > .home-section:nth-child(even of .home-section) {
 
 .gallery-modal-footer {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 4px;
   padding: 8px 0 0;
+  text-align: center;
 }
 
 .gallery-modal-caption {

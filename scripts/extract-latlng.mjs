@@ -27,25 +27,35 @@ const dryRun = !process.argv.includes("--execute");
 
 /**
  * Google Maps embed の pb パラメータから緯度・経度を抽出
- * !2d = longitude, !3d = latitude
+ *
+ * 優先順位:
+ * 1. !8m2!3d<lat>!4d<lng> — 場所詳細セクションの正確なマーカー座標
+ * 2. !2d<lng> / !3d<lat>  — カメラ中心座標（マーカーから微妙にずれる場合あり）
  */
 function extractLatLng(iframeHtml) {
   if (!iframeHtml) return null;
 
-  const lngMatch = iframeHtml.match(/!2d([\d.]+)/);
-  const latMatch = iframeHtml.match(/!3d([\d.]+)/);
+  // パターン1: 場所の正確な座標 (!8m2!3d<lat>!4d<lng>)
+  const placeMatch = iframeHtml.match(/!8m2!3d(-?[\d.]+)!4d(-?[\d.]+)/);
+  if (placeMatch) {
+    return validate(parseFloat(placeMatch[1]), parseFloat(placeMatch[2]));
+  }
+
+  // パターン2: カメラ中心座標にフォールバック
+  const lngMatch = iframeHtml.match(/!2d(-?[\d.]+)/);
+  const latMatch = iframeHtml.match(/!3d(-?[\d.]+)/);
 
   if (!lngMatch || !latMatch) return null;
 
-  const latitude = parseFloat(latMatch[1]);
-  const longitude = parseFloat(lngMatch[1]);
+  return validate(parseFloat(latMatch[1]), parseFloat(lngMatch[1]));
+}
 
+function validate(latitude, longitude) {
   // 日本の範囲チェック (大まかに)
   if (latitude < 20 || latitude > 50 || longitude < 120 || longitude > 155) {
     console.warn(`  ⚠ 範囲外の座標: lat=${latitude}, lng=${longitude}`);
     return null;
   }
-
   return { latitude, longitude };
 }
 

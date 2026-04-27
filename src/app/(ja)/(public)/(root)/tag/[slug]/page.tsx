@@ -148,6 +148,8 @@ function toListItem(s: SpotWithRelations): SpotListItem {
     name: s.name || s.title,
     featured_image: s.featured_image || "",
     category: s.category ? { slug: s.category.slug, name: s.category.name } : { slug: "", name: "" },
+    address: s.address ?? null,
+    station_names: s.station_names ?? null,
     rating_avg: calcRatingAvg(s),
     rating_beautiful: s.rating_beautiful ?? null,
     rating_access: s.rating_access ?? null,

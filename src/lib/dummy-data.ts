@@ -24,6 +24,7 @@ export const dummySpot: SpotWithRelations = {
   money:
     "大人（18歳以上）2,700円〜3,400円 / 小人 1,200円",
   station: "<ul><li>渋谷駅から直結</li></ul>",
+  station_names: "渋谷駅",
   parking:
     "<ul><li>渋谷ヒカリエ（提携駐車場）</li><li>平日300円(税込)／30分</li><li>土・日・祝 400円(税込)／30分</li><li>最大料金：2,400円（税込）</li></ul>",
   map: '<iframe title="渋谷スカイのマップ・地図" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.748821054973!2d139.70163874999997!3d35.65855965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b583ab6d93b%3A0x3c41198edb975744!2z44CSMTUwLTAwMDIg5p2x5Lqs6YO95riL6LC35Yy65riL6LC377yS5LiB55uu77yS77yU!5e0!3m2!1sja!2sjp!4v1673370087777!5m2!1sja!2sjp" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',

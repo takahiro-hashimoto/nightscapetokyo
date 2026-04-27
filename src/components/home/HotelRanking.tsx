@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Star, ChevronRight } from "lucide-react";
 import type { SpotListItem } from "@/lib/types";
+import { extractTownAddress } from "@/lib/types";
+import { Star, ChevronRight, Train } from "lucide-react";
 import type { HomePageLabels } from "@/lib/i18n-labels";
 
 type Props = {
@@ -26,7 +27,9 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
           {labels?.desc ?? "客室や最上階レストランから上質な東京の夜景が楽しめるホテルを厳選。記念日やデートにもおすすめです。実際に宿泊して撮影した写真やレポートが整っているのでぜひチェックしてみてください。"}
         </p>
         <ol className="ranking-grid ranking-grid-4">
-          {hotels.map((hotel, i) => (
+          {hotels.map((hotel, i) => {
+            const stationText = hotel.station_names;
+            return (
             <li key={hotel.id}>
             <Link
               href={`${prefix}/${hotel.category.slug}/${hotel.slug}`}
@@ -49,7 +52,7 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
               <div className="spot-card-body">
                 <div className="spot-card-meta">
                   <span className="badge spot-card-category">
-                    {hotel.category.name}
+                    {localeSlug ? hotel.category.name : extractTownAddress(hotel.address, hotel.category.name)}
                   </span>
                   <div className="spot-card-rating">
                     <Star size={14} fill="#eab308" stroke="none" />
@@ -58,10 +61,18 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
                 </div>
                 <h3 className="spot-card-title">{hotel.name}</h3>
                 <p className="spot-card-lead">{hotel.lead}</p>
+                {stationText && (
+                  <p className="spot-card-station">
+                    <Train size={11} aria-hidden="true" />
+                    <span className="sr-only">最寄駅：</span>
+                    <span className="spot-card-station-text">{stationText}</span>
+                  </p>
+                )}
               </div>
             </Link>
             </li>
-          ))}
+            );
+          })}
         </ol>
         <div className="home-section-more">
           <Link href={`${prefix}/tag/hotel`} className="home-more-link">

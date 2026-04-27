@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Star, ChevronRight } from "lucide-react";
 import type { SpotListItem } from "@/lib/types";
+import { extractTownAddress } from "@/lib/types";
+import { Star, ChevronRight, Train } from "lucide-react";
 import type { HomePageLabels } from "@/lib/i18n-labels";
 import type { ReactNode } from "react";
 
@@ -32,7 +33,9 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
           {labels?.desc2 ?? <>各スポットの評価は<strong>美しさ</strong>、<strong>アクセスの良さ</strong>、<strong>雰囲気の良さ</strong>、<strong>コスパ</strong>の4項目から決定しています。デートや撮影の目的先を決めるのにご活用ください。</>}
         </p>
         <ol className="ranking-grid">
-          {spots.map((spot, i) => (
+          {spots.map((spot, i) => {
+            const stationText = spot.station_names;
+            return (
             <li key={spot.id}>
             <Link
               href={`${prefix}/${spot.category.slug}/${spot.slug}`}
@@ -57,7 +60,7 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
               <div className="spot-card-body">
                 <div className="spot-card-meta">
                   <span className="badge spot-card-category">
-                    {spot.category.name}
+                    {localeSlug ? spot.category.name : extractTownAddress(spot.address, spot.category.name)}
                   </span>
                   <div className="spot-card-rating">
                     <Star size={14} fill="#eab308" stroke="none" />
@@ -66,10 +69,18 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
                 </div>
                 <h3 className="spot-card-title">{spot.name}</h3>
                 <p className="spot-card-lead">{spot.lead}</p>
+                {stationText && (
+                  <p className="spot-card-station">
+                    <Train size={11} aria-hidden="true" />
+                    <span className="sr-only">最寄駅：</span>
+                    <span className="spot-card-station-text">{stationText}</span>
+                  </p>
+                )}
               </div>
             </Link>
             </li>
-          ))}
+            );
+          })}
         </ol>
         <div className="home-section-more">
           <Link href={`${prefix}/recommend`} className="home-more-link">

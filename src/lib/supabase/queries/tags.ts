@@ -161,6 +161,8 @@ export async function getSpotListByTagSlug(
       rating_beautiful: s.rating_beautiful ?? null,
       rating_access: s.rating_access ?? null,
       rating_atmosphere: s.rating_atmosphere ?? null,
+      address: s.address ?? null,
+      station_names: s.station_names ?? null,
       rating_cost: s.rating_cost ?? null,
       lead: s.lead ?? "",
       closed: s.closed ?? false,
