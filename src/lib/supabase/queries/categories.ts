@@ -47,30 +47,20 @@ export const getAreas = cache(unstable_cache(async () => {
 
   const supabase = await getSupabaseClient();
 
-  const [catsResult, spotsResult] = await Promise.all([
-    supabase.from("categories").select("id, slug, name") as any,
-    supabase.from("spots").select("category_id").eq("published", true) as any,
-  ]);
+  const { data } = (await supabase
+    .from("categories")
+    .select("slug, name, spots!inner(count)")
+    .eq("spots.published", true)) as any;
 
-  const categories: { id: string; slug: string; name: string }[] = catsResult.data ?? [];
-  const spots: { category_id: string }[] = spotsResult.data ?? [];
+  if (!data?.length) return [];
 
-  if (!categories.length) return [];
-
-  const catMap = new Map<string, { slug: string; name: string; count: number }>();
-  for (const cat of categories) {
-    if (!NON_AREA_SLUGS.includes(cat.slug)) {
-      catMap.set(cat.id, { slug: cat.slug, name: cat.name, count: 0 });
-    }
-  }
-  for (const s of spots) {
-    const entry = catMap.get(s.category_id);
-    if (entry) entry.count++;
-  }
-
-  const areas = [...catMap.values()]
-    .filter((v) => v.count > 0)
-    .map(({ slug, name, count }) => ({ slug, name, spot_count: count }));
+  const areas = (data as any[])
+    .filter((cat) => !NON_AREA_SLUGS.includes(cat.slug))
+    .map((cat) => ({
+      slug: cat.slug,
+      name: cat.name,
+      spot_count: (cat.spots as any[])[0]?.count ?? 0,
+    }));
 
   const TAIL_ORDER = ["横浜", "その他エリア"];
   return areas.sort((a, b) => {

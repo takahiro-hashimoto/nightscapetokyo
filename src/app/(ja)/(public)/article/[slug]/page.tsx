@@ -177,7 +177,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             locale={null}
             items={[
               { label: "記事一覧", href: "/article/" },
-              { label: article.title, href: `/article/${slug}/` },
+              { label: article.title },
             ]}
           />
 

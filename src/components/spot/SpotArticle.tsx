@@ -184,6 +184,8 @@ export default function SpotArticle({
 
           <SpotGallery images={spot.images} spotName={spot.name} heading={labels.gallery.heading(spot.name)} />
 
+          <AdSenseUnit {...ADS.SPOT_IN} className="my-4" />
+
           {spot.movie && (
             <section className="content-card card-padding cv-auto" id="movie" aria-labelledby="movie-heading">
               <h2 id="movie-heading">

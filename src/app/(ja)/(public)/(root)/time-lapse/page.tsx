@@ -6,7 +6,7 @@ import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
 import { YouTubeEmbed, extractYouTubeIds, type Video } from "@/components/time-lapse/YouTubeEmbed";
-import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import { getTimeLapseSpots } from "@/lib/supabase/queries";
 import { getComponentLabels } from "@/lib/i18n-labels";
 
@@ -39,10 +39,7 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: `${SITE_URL}/time-lapse/`,
-    languages: {
-      ja: `${SITE_URL}/time-lapse/`,
-      "x-default": `${SITE_URL}/time-lapse/`,
-    },
+    languages: buildAreaHreflangAlternates(SITE_URL, "time-lapse", ALL_LOCALE_SLUGS),
   },
 };
 

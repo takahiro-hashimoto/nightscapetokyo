@@ -5,7 +5,7 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS } from "@/lib/types";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 
 const PAGE_TITLE = "東京夜景の無料スマホ壁紙（大人向けおしゃれな壁紙）";
 const PAGE_DESCRIPTION =
@@ -18,10 +18,7 @@ export const metadata: Metadata = {
   twitter: { title: PAGE_TITLE, description: PAGE_DESCRIPTION },
   alternates: {
     canonical: `${SITE_URL}/wallpaper/`,
-    languages: {
-      ja: `${SITE_URL}/wallpaper/`,
-      "x-default": `${SITE_URL}/wallpaper/`,
-    },
+    languages: buildAreaHreflangAlternates(SITE_URL, "wallpaper", ALL_LOCALE_SLUGS),
   },
 };
 

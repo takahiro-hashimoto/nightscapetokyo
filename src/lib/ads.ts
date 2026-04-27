@@ -50,6 +50,18 @@ export const ADS = {
   },
 
   /**
+   * スポット詳細ページ（ギャラリー直後）
+   * 形式: 記事内広告（fluid / in-article）
+   * 設置: src/components/spot/SpotArticle.tsx
+   */
+  SPOT_IN: {
+    slot: "1806789307",
+    format: "fluid",
+    layout: "in-article",
+    label: "スポット記事内",
+  },
+
+  /**
    * スポット詳細ページ（関連スポットの直前）
    * 形式: Multiplex（autorelaxed）
    * 設置: src/components/spot/SpotArticle.tsx

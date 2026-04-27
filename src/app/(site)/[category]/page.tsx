@@ -402,7 +402,7 @@ export default async function AreaPage({ params }: Props) {
           availableLocales={availableLocales}
           localeLabels={LOCALE_LABELS}
         />
-        <Breadcrumb items={[{ label: `${cat.name}の夜景スポット一覧`, href: `/${categorySlug}/` }]} />
+        <Breadcrumb items={[{ label: `${cat.name}の夜景スポット一覧` }]} />
 
         <div className="firstVisual">
           <header className="firstVisual-header">

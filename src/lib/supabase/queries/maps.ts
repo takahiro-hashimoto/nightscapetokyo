@@ -109,10 +109,48 @@ export async function getSpotsForMapTranslated(localeSlug: string): Promise<MapS
   return _getSpotsForMapTranslatedCached(localeSlug);
 }
 
-export async function getMapSpotsByCategory(categorySlug: string): Promise<MapSpotItem[]> {
-  const all = await getSpotsForMap();
-  return all.filter((s) => s.categorySlug === categorySlug);
-}
+const _getMapSpotsByCategoryUncached = async (categorySlug: string): Promise<MapSpotItem[]> => {
+  if (!isSupabaseConfigured) return [];
+
+  const supabase = await getSupabaseClient();
+
+  const { data: cat } = (await supabase
+    .from("categories")
+    .select("id")
+    .eq("slug", categorySlug)
+    .single()) as any;
+
+  if (!cat) return [];
+
+  const { data } = (await supabase
+    .from("spots")
+    .select(SPOT_SELECT)
+    .eq("published", true)
+    .eq("category_id", cat.id)
+    .not("latitude", "is", null)
+    .not("longitude", "is", null)) as any;
+
+  if (!data) return [];
+
+  return data.map((s: any) => ({
+    id: s.id,
+    slug: s.slug,
+    name: s.name || s.title,
+    featured_image: s.featured_image || "",
+    categorySlug: s.category?.slug ?? "",
+    categoryName: s.category?.name ?? "",
+    latitude: s.latitude,
+    longitude: s.longitude,
+    rating_avg: calcRatingAvg(s),
+  }));
+};
+
+export const getMapSpotsByCategory = cache(
+  unstable_cache(_getMapSpotsByCategoryUncached, ["map-spots-by-category"], {
+    revalidate: 3600,
+    tags: ["spots"],
+  })
+);
 
 export async function getMapSpotsByTag(tagSlug: string): Promise<MapSpotItem[]> {
   if (!isSupabaseConfigured) return [];
