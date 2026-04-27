@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Breadcrumb from "@/components/layout/Breadcrumb";
+import AdSenseUnit from "@/components/ads/AdSenseUnit";
+import { ADS } from "@/lib/ads";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import AreaMapLoader from "@/components/map/AreaMapLoader";
 import RecommendCta from "@/components/common/RecommendCta";
@@ -173,6 +175,8 @@ export default function TranslatedAreaContent({
             />
           </DeferredRender>
         )}
+
+        {mapSpots.length > 0 && <AdSenseUnit {...ADS.AREA_PAGE} className="my-4" />}
 
         {faqs.length > 0 && (
           <DeferredRender as="section" className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
