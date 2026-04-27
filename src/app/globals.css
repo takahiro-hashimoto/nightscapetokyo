@@ -336,12 +336,15 @@ img {
 
 .content-card h3 {
   color: #1a202c;
-  font-size: 1.05rem;
+  border-bottom: 2px solid #f0f2f5;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 12px;
+  padding-bottom: 15px;
+  font-size: 1.1rem;
   font-weight: 700;
   line-height: 1.5;
-  margin: 24px 0 12px;
-  padding-left: 10px;
-  border-left: 3px solid #4a9eff;
+  display: flex;
 }
 
 .content-card h4 {
