@@ -30,6 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title,
       description,
+      url: `${SITE_URL}/`,
       locale: "ja_JP",
       alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
       images: [{ url: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/cta-mv.jpg", width: 1200, height: 630, alt: title }],

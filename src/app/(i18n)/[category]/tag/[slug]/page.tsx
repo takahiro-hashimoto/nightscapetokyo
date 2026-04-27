@@ -174,7 +174,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
       alternates: {
         canonical: canonicalUrl,
-        languages: buildTagHreflangAlternates(SITE_URL, tagSlug, availableLocales),
+        languages: buildTagHreflangAlternates(SITE_URL, tagSlug, ALL_LOCALE_SLUGS),
       },
     };
   }

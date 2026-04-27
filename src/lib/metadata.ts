@@ -34,7 +34,7 @@ export function buildListPageMetadata(options: {
     title,
     description,
     openGraph: {
-      type: "article",
+      type: "website",
       title,
       description,
       url: canonicalUrl,

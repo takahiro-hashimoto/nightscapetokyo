@@ -715,7 +715,7 @@ const LABELS = {
       seoDescription: "The ultimate guide to 200+ Tokyo night view spots for sightseeing and photography. Discover Tokyo Tower, Skytree, free observatories, hidden gems, and rooftop bars. Plan your Tokyo night tour with ratings, access info, and sunset times.",
       hero: {
         catchphrase: "The Ultimate Guide to Tokyo Nightscapes.",
-        subtitle: (count) => `Explore ${count} Tokyo night view spots for sightseeing & photography — from iconic landmarks to hidden gems`,
+        subtitle: (count) => `Plan your Tokyo night itinerary with ${count} hand-picked spots — from must-see landmarks to local hidden gems`,
         searchPlaceholder: "e.g.) Wadakura Park, observatory, Tokyo Tower view, Shibuya",
         searchAriaLabel: "Search night view spots",
         searchButton: "Search",
@@ -731,7 +731,7 @@ const LABELS = {
       spotRanking: {
         heading: (year) => `Best Tokyo Night View Spots Ranking [${year}]`,
         desc1: "Our top picks from over 200 night view spots in Tokyo, all personally visited and reviewed!",
-        desc2: "Each spot is rated on beauty, accessibility, atmosphere, and value. Use this guide to plan your perfect date or photography outing.",
+        desc2: "Each spot is rated on beauty, accessibility, atmosphere, and value — perfect for first-time visitors planning a Tokyo night tour.",
         moreLink: "View all Tokyo night spots",
       },
       hotelRanking: {
@@ -741,7 +741,7 @@ const LABELS = {
       },
       purposeSearch: {
         heading: "Search by Purpose",
-        desc: "Filter night view spots by scene or purpose — dates, photography, free admission, and more.",
+        desc: "Find the perfect spots for your Tokyo trip — filter by free admission, photography, iconic landmarks, and more.",
         tagNames: {
           "無料スポット": "Free Spots",
           "デート向け": "For Dates",
@@ -765,7 +765,7 @@ const LABELS = {
       },
       areaSearch: {
         heading: "Search by Area",
-        desc: "Explore Tokyo night view spots by neighborhood — Shibuya, Shinjuku, Odaiba, and more.",
+        desc: "Find night view spots near your hotel or next sightseeing stop — browse by neighborhood across Tokyo.",
         areaLabel: (name, count) => `${name} (${count})`,
         areaNames: {
           minato: "Minato",
@@ -1031,7 +1031,7 @@ const LABELS = {
       seoDescription: "도쿄 여행에서 꼭 봐야 할 야경 명소 200곳 이상을 소개합니다. 도쿄타워, 스카이트리 전망대, 무료 관광 스폿, 숨겨진 명소까지 완벽 가이드. 평점, 교통편, 일몰 시간 정보로 도쿄 야경 여행을 계획하세요.",
       hero: {
         catchphrase: "도쿄 야경 완전 가이드 : 모든 스팟을 한눈에",
-        subtitle: (count) => `관광・촬영에 추천하는 도쿄 야경 스폿을 인기 명소부터 숨겨진 장소까지 소개【${count}곳 수록】`,
+        subtitle: (count) => `도쿄 여행 야경 일정을 계획하세요 — 인기 명소부터 숨겨진 장소까지 ${count}곳을 엄선 소개`,
         searchPlaceholder: "예) 와다쿠라 분수공원, 전망대, 도쿄타워가 보이는, 시부야구",
         searchAriaLabel: "야경 스폿 검색",
         searchButton: "검색",
@@ -1047,7 +1047,7 @@ const LABELS = {
       spotRanking: {
         heading: (year) => `도쿄 도내 야경 스폿 추천 랭킹【${year}년 최신】`,
         desc1: "실제로 방문한 200곳 이상의 도쿄 야경 스폿 중에서 추천 장소를 랭킹 형식으로 소개합니다!",
-        desc2: "각 스폿의 평가는 아름다움, 접근성, 분위기, 가성비의 4개 항목으로 결정됩니다. 데이트나 촬영 장소를 정할 때 활용해 주세요.",
+        desc2: "각 스폿의 평가는 아름다움, 접근성, 분위기, 가성비의 4개 항목으로 결정됩니다. 처음 도쿄를 여행하는 분의 야경 일정 계획에 딱 맞는 가이드입니다.",
         moreLink: "도쿄 야경 스폿 전체 보기",
       },
       hotelRanking: {
@@ -1057,7 +1057,7 @@ const LABELS = {
       },
       purposeSearch: {
         heading: "목적별로 야경이 아름다운 장소 찾기",
-        desc: "데이트, 촬영, 무료 입장 등 목적에 맞는 야경 스폿을 검색할 수 있습니다.",
+        desc: "도쿄 여행 일정에 딱 맞는 야경 스폿을 찾아보세요 — 무료 입장, 촬영 명소, 랜드마크 등으로 필터링.",
         tagNames: {
           "無料スポット": "무료 스폿",
           "デート向け": "데이트 추천",
@@ -1081,7 +1081,7 @@ const LABELS = {
       },
       areaSearch: {
         heading: "지역별로 야경이 아름다운 장소 찾기",
-        desc: "시부야, 신주쿠, 오다이바 등 가고 싶은 지역에서 도쿄 야경 스폿을 찾아보세요.",
+        desc: "숙소나 다음 관광지 근처의 야경 스폿을 찾아보세요 — 도쿄 전 지역을 지역별로 탐색.",
         areaLabel: (name, count) => `${name} 야경 (${count})`,
         areaNames: {
           minato: "미나토구",
@@ -1332,7 +1332,7 @@ const LABELS = {
       seoDescription: "東京旅遊必看的夜景景點完整指南！收錄200處以上景點，包含東京鐵塔、晴空塔觀景台、免費觀光景點、私房秘境等。提供評分、交通資訊及日落時間，輕鬆規劃東京夜景之旅。",
       hero: {
         catchphrase: "東京夜景完全指南：從經典到私房景點",
-        subtitle: (count) => `觀光・攝影推薦的東京夜景景點，從經典到私房全面介紹【收錄${count}處】`,
+        subtitle: (count) => `規劃東京夜景旅遊行程，嚴選${count}處景點 — 從必訪地標到私房秘境全面介紹`,
         searchPlaceholder: "例）和田倉噴水公園、觀景台、看得到東京鐵塔、澀谷區",
         searchAriaLabel: "搜尋夜景景點",
         searchButton: "搜尋",
@@ -1348,7 +1348,7 @@ const LABELS = {
       spotRanking: {
         heading: (year) => `東京都內夜景景點推薦排名【${year}年最新】`,
         desc1: "從實際走訪的200處以上東京夜景景點中，以排名方式推薦最佳景點！",
-        desc2: "各景點的評價由美麗度、交通便利、氛圍、性價比4項指標決定。規劃約會或攝影行程時請多加利用。",
+        desc2: "各景點的評價由美麗度、交通便利、氛圍、性價比4項指標決定，非常適合初次造訪東京的旅客規劃夜景行程。",
         moreLink: "查看所有東京夜景景點",
       },
       hotelRanking: {
@@ -1358,7 +1358,7 @@ const LABELS = {
       },
       purposeSearch: {
         heading: "依目的搜尋夜景美麗的地方",
-        desc: "依約會、攝影、免費景點等目的，篩選適合的夜景景點。",
+        desc: "找到最適合東京旅遊行程的夜景景點 — 依免費入場、攝影、地標等條件篩選。",
         tagNames: {
           "無料スポット": "免費景點",
           "デート向け": "約會推薦",
@@ -1382,7 +1382,7 @@ const LABELS = {
       },
       areaSearch: {
         heading: "依地區搜尋夜景美麗的地方",
-        desc: "從澀谷、新宿、台場等想前往的地區，搜尋東京夜景景點。",
+        desc: "找到飯店或下一個觀光景點附近的夜景景點 — 依地區瀏覽東京各區。",
         areaLabel: (name, count) => `${name}的夜景（${count}）`,
         areaNames: {
           minato: "港區",
@@ -1633,7 +1633,7 @@ const LABELS = {
       seoDescription: "东京旅游必看的夜景景点完整指南！收录200处以上景点，包含东京塔、晴空塔观景台、免费观光景点、小众秘境等。提供评分、交通信息及日落时间，轻松规划东京夜景之旅。",
       hero: {
         catchphrase: "东京夜景全攻略：完整指南",
-        subtitle: (count) => `观光・摄影推荐的东京夜景景点，从经典到小众全面介绍【收录${count}处】`,
+        subtitle: (count) => `规划东京夜景旅游行程，精选${count}处景点 — 从必去地标到小众秘境全面介绍`,
         searchPlaceholder: "例）和田仓喷水公园、观景台、能看到东京塔、涩谷区",
         searchAriaLabel: "搜索夜景景点",
         searchButton: "搜索",
@@ -1649,7 +1649,7 @@ const LABELS = {
       spotRanking: {
         heading: (year) => `东京都内夜景景点推荐排名【${year}年最新】`,
         desc1: "从实际走访的200处以上东京夜景景点中，以排名方式推荐最佳景点！",
-        desc2: "各景点的评价由美丽度、交通便利、氛围、性价比4项指标决定。规划约会或摄影行程时请多加利用。",
+        desc2: "各景点的评价由美丽度、交通便利、氛围、性价比4项指标决定，非常适合初次前往东京的旅客规划夜景行程。",
         moreLink: "查看所有东京夜景景点",
       },
       hotelRanking: {
@@ -1659,7 +1659,7 @@ const LABELS = {
       },
       purposeSearch: {
         heading: "按目的搜索夜景优美的地方",
-        desc: "按约会、摄影、免费景点等目的，筛选适合的夜景景点。",
+        desc: "找到最适合东京旅游行程的夜景景点 — 按免费入场、摄影、地标等条件筛选。",
         tagNames: {
           "無料スポット": "免费景点",
           "デート向け": "约会推荐",
@@ -1683,7 +1683,7 @@ const LABELS = {
       },
       areaSearch: {
         heading: "按地区搜索夜景优美的地方",
-        desc: "从涩谷、新宿、台场等想去的地区，搜索东京夜景景点。",
+        desc: "找到酒店或下一个观光景点附近的夜景景点 — 按地区浏览东京各区。",
         areaLabel: (name, count) => `${name}的夜景（${count}）`,
         areaNames: {
           minato: "港区",

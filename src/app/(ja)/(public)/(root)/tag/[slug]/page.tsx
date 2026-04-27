@@ -240,7 +240,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       images: heroImage ? [heroImage] : undefined,
     },
-    alternates: { canonical: canonicalUrl },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: buildTagHreflangAlternates(SITE_URL, slug, ALL_LOCALE_SLUGS),
+    },
   };
 }
 

@@ -28,6 +28,11 @@ export type SitemapUrl = {
 /** All supported locale keys for sitemaps */
 export const SITEMAP_LOCALES = ["ja", ...ALL_LOCALE_SLUGS] as const;
 
+// Vercel が自動でセットするコミットタイムスタンプ（秒単位）。ない場合はプロセス起動時刻にフォールback。
+const DEPLOY_TIME = process.env.VERCEL_GIT_COMMIT_TIMESTAMP
+  ? new Date(Number(process.env.VERCEL_GIT_COMMIT_TIMESTAMP) * 1000).toISOString()
+  : new Date().toISOString();
+
 /**
  * Build hreflang alternates for a given JA path.
  * Always includes ja + x-default + all locale versions.
@@ -105,18 +110,17 @@ type AllEntries = {
  */
 export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   const db = await getDb();
-  const now = new Date().toISOString();
 
   const result: AllEntries = { ja: [], en: [], ko: [], tw: [], cn: [] };
   const locales = ALL_LOCALE_SLUGS as readonly string[];
 
   // ── トップページ ──
   const topAlts = buildTopAlternates();
-  result.ja.push({ loc: `${SITE_URL}/`, lastmod: now, changefreq: "daily", priority: 1.0, alternates: topAlts });
+  result.ja.push({ loc: `${SITE_URL}/`, lastmod: DEPLOY_TIME, changefreq: "daily", priority: 1.0, alternates: topAlts });
   for (const slug of locales) {
     result[slug as keyof AllEntries].push({
       loc: `${SITE_URL}/${slug}/`,
-      lastmod: now,
+      lastmod: DEPLOY_TIME,
       changefreq: "daily",
       priority: 0.9,
       alternates: topAlts,
@@ -314,9 +318,8 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     const jaPath = `/tag/${tagSlug}`;
     const lastmod = tp.updated_at ? new Date(tp.updated_at).toISOString() : undefined;
     const availableLocales = tagLocaleMap.get(tagSlug as string) ?? new Set<string>();
-    const alts = availableLocales.size > 0
-      ? buildPartialAlternates(jaPath, [...availableLocales])
-      : undefined;
+    // シンプル一覧は全ロケールに実在するので、翻訳の有無にかかわらず全ロケールを hreflang クラスターに含める
+    const alts = buildAlternates(jaPath);
 
     result.ja.push({
       loc: `${SITE_URL}${jaPath}/`,
@@ -389,10 +392,12 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   const { data: tags } = await db.from("tags").select("slug") as { data: Row[] | null };
   for (const tag of tags ?? []) {
     if (tagPageSlugs.has(tag.slug)) continue;
+    const simpleAlts = buildAlternates(`/tag/${tag.slug}`);
     result.ja.push({
       loc: `${SITE_URL}/tag/${tag.slug}/`,
       changefreq: "weekly",
       priority: 0.8,
+      alternates: simpleAlts,
     });
     // タグページがないタグもロケール別シンプル一覧として提供する
     for (const slug of locales) {
@@ -400,6 +405,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
         loc: `${SITE_URL}/${slug}/tag/${tag.slug}/`,
         changefreq: "weekly",
         priority: 0.7,
+        alternates: simpleAlts,
       });
     }
   }
@@ -410,6 +416,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     if (!tagSlug) continue;
     const availableLocales = tagLocaleMap.get(tagSlug as string) ?? new Set<string>();
     const lastmod = tp.updated_at ? new Date(tp.updated_at).toISOString() : undefined;
+    const nonTranslatedAlts = buildAlternates(`/tag/${tagSlug}`);
     for (const slug of locales) {
       if (availableLocales.has(slug)) continue; // 翻訳済みは既に追加済み
       result[slug as keyof AllEntries].push({
@@ -417,6 +424,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
         lastmod,
         changefreq: "weekly",
         priority: 0.7,
+        alternates: nonTranslatedAlts,
       });
     }
   }
@@ -454,10 +462,9 @@ export function toSitemapXml(entries: SitemapUrl[]): string {
  * Generate sitemap index XML pointing to per-language sitemaps.
  */
 export function toSitemapIndexXml(): string {
-  const now = new Date().toISOString();
   const sitemaps = SITEMAP_LOCALES.map(
     (locale) =>
-      `  <sitemap>\n    <loc>${SITE_URL}/sitemap-${locale}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>`
+      `  <sitemap>\n    <loc>${SITE_URL}/sitemap-${locale}.xml</loc>\n    <lastmod>${DEPLOY_TIME}</lastmod>\n  </sitemap>`
   );
 
   return [
