@@ -1,12 +1,12 @@
 import Link from "next/link";
 import HeaderLogo from "./HeaderLogo";
 import DevAdminLink from "./DevAdminLink";
-import HeaderShell from "./HeaderShell";
 import DesktopNavDropdown from "./DesktopNavDropdown";
 import type { SiteLocale } from "@/lib/types";
 import { SITE_URL } from "@/lib/types";
 import { NAV_STATIC_LABELS, PROFILE_LABELS } from "@/lib/i18n-labels";
 import { AREA_NAME, TAG_NAME } from "@/lib/constants";
+import MobileMenu from "./MobileMenuLoader";
 
 /* -------------------------------------------------- */
 /*  Navigation data types                             */
@@ -99,7 +99,7 @@ export function buildMainNavItems(
 }
 
 /* -------------------------------------------------- */
-/*  Desktop nav item renderer (static — no JS needed) */
+/*  Desktop nav item renderer                         */
 /* -------------------------------------------------- */
 
 function DesktopNavItem({ item, locale }: { item: NavItem; locale: string | null }) {
@@ -146,8 +146,21 @@ export default function Header({ areaData = [], tagData = [], spotCount = 0, loc
   const topNavItems = buildTopNavItems(locale);
   const profileLabels = PROFILE_LABELS[(locale ?? "ja") as SiteLocale];
   const navLabels = NAV_STATIC_LABELS[(locale ?? "ja") as SiteLocale] ?? NAV_STATIC_LABELS["ja"];
+  const headerHeight = locale !== null ? 72 : 93;
 
-  const logo = <HeaderLogo locale={locale} />;
+  const hamburger = (
+    <button
+      id="hamburger-btn"
+      className="hamburger"
+      aria-label={navLabels.openMenu}
+      aria-expanded="false"
+      aria-controls="mobile-drawer"
+    >
+      <span className="hamburger-line" />
+      <span className="hamburger-line" />
+      <span className="hamburger-line" />
+    </button>
+  );
 
   const desktopNav = (
     <nav className="site-header-nav">
@@ -157,37 +170,68 @@ export default function Header({ areaData = [], tagData = [], spotCount = 0, loc
     </nav>
   );
 
-  const topNav = locale === null ? (
-    <nav className="site-header-top-nav">
-      {topNavItems.map((item) => (
-        <Link key={item.href} href={item.href} className="site-header-top-nav-link">
-          {item.label}
-        </Link>
-      ))}
-    </nav>
-  ) : null;
-
-  const devLink = <DevAdminLink />;
-
-  const tagline = locale === null && spotCount > 0 ? (
-    <div className="site-header-tagline">
-      <span className="site-header-tagline-count">掲載スポット数{spotCount}件</span>
-      <span className="site-header-tagline-desc">東京夜景の専門サイト</span>
-    </div>
-  ) : null;
-
   return (
-    <HeaderShell
-      locale={locale}
-      mainNavItems={mainNavItems}
-      topNavItems={topNavItems}
-      profileLabels={profileLabels}
-      navLabels={navLabels}
-      logo={logo}
-      desktopNav={desktopNav}
-      topNav={topNav}
-      tagline={tagline}
-      devLink={devLink}
-    />
+    <>
+      <header className="site-header">
+        {locale ? (
+          /* ---- 単段ヘッダー: 非 ja ロケール ---- */
+          <div className="site-header-inner">
+            <HeaderLogo locale={locale} />
+            <div className="site-header-right">
+              {desktopNav}
+              <div className="site-header-trailing">
+                <div id="header-trailing" />
+                <DevAdminLink />
+                {hamburger}
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* ---- 2段ヘッダー: ja ---- */
+          <>
+            <div className="site-header-top">
+              <div className="site-header-top-inner">
+                <div className="site-header-top-left">
+                  <HeaderLogo locale={locale} />
+                  {spotCount > 0 && (
+                    <div className="site-header-tagline">
+                      <span className="site-header-tagline-count">掲載スポット数{spotCount}件</span>
+                      <span className="site-header-tagline-desc">東京夜景の専門サイト</span>
+                    </div>
+                  )}
+                </div>
+                <div className="site-header-top-right">
+                  <nav className="site-header-top-nav">
+                    {topNavItems.map((item) => (
+                      <Link key={item.href} href={item.href} className="site-header-top-nav-link">
+                        {item.label}
+                      </Link>
+                    ))}
+                  </nav>
+                  <div className="site-header-trailing">
+                    <div id="header-trailing" />
+                    {hamburger}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="site-header-bottom">
+              <div className="site-header-bottom-inner">
+                {desktopNav}
+              </div>
+            </div>
+          </>
+        )}
+      </header>
+
+      <MobileMenu
+        locale={locale}
+        mainNavItems={mainNavItems}
+        topNavItems={topNavItems}
+        profileLabels={profileLabels}
+        navLabels={navLabels}
+        headerHeight={headerHeight}
+      />
+    </>
   );
 }

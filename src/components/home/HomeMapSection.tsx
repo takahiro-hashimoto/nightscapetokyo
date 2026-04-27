@@ -27,6 +27,7 @@ type Props = {
   labels?: MapSectionLabels;
   localePrefix?: string;
   endpoint?: string;
+  initialSpots?: MapSpotItem[];
 };
 
 export default function HomeMapSection({
@@ -35,6 +36,7 @@ export default function HomeMapSection({
   labels = JA_LABELS,
   localePrefix,
   endpoint = "/api/map-spots",
+  initialSpots,
 }: Props) {
   if (spots.length === 0) return null;
 
@@ -78,6 +80,7 @@ export default function HomeMapSection({
           } : undefined}
           localePrefix={localePrefix}
           endpoint={endpoint}
+          initialSpots={initialSpots}
         />
 
         <div className="visually-hidden" aria-hidden="true">

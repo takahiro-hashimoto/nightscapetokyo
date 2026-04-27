@@ -191,7 +191,7 @@ export default async function AboutPageI18n({ params }: Props) {
                 {base.link.thumbnail && (
                   <div className="ref-thumb">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={base.link.thumbnail} alt="" />
+                    <img src={base.link.thumbnail} alt="" loading="lazy" decoding="async" />
                   </div>
                 )}
                 <div className="ref-body">

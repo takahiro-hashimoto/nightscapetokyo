@@ -14,15 +14,16 @@ type Props = {
   labels?: MapLabels;
   localePrefix?: string;
   endpoint: string;
+  initialSpots?: MapSpotItem[];
 };
 
 type SpotMapComponentProps = Omit<Props, "endpoint"> & {
   spots: MapSpotItem[];
 };
 
-export default function SpotMapLoader({ categories, labels, localePrefix, endpoint }: Props) {
+export default function SpotMapLoader({ categories, labels, localePrefix, endpoint, initialSpots }: Props) {
   const [SpotMap, setSpotMap] = useState<ComponentType<SpotMapComponentProps> | null>(null);
-  const [spots, setSpots] = useState<MapSpotItem[] | null>(null);
+  const [spots, setSpots] = useState<MapSpotItem[] | null>(initialSpots ?? null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,15 +35,14 @@ export default function SpotMapLoader({ categories, labels, localePrefix, endpoi
       (entries) => {
         if (entries[0].isIntersecting) {
           observer.disconnect();
-          void Promise.all([
-            import("./SpotMap"),
-            fetch(endpoint, { cache: "force-cache" }).then(async (response) => {
-              if (!response.ok) {
-                throw new Error("Failed to fetch map spots");
-              }
-              return response.json() as Promise<MapSpotItem[]>;
-            }),
-          ])
+          const mapImport = import("./SpotMap");
+          const dataPromise = initialSpots
+            ? Promise.resolve(initialSpots)
+            : fetch(endpoint, { cache: "force-cache" }).then(async (response) => {
+                if (!response.ok) throw new Error("Failed to fetch map spots");
+                return response.json() as Promise<MapSpotItem[]>;
+              });
+          void Promise.all([mapImport, dataPromise])
             .then(([mod, data]) => {
               setSpots(data);
               setSpotMap(() => mod.default);
@@ -57,7 +57,7 @@ export default function SpotMapLoader({ categories, labels, localePrefix, endpoi
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [endpoint]);
+  }, [endpoint, initialSpots]);
 
   if (!SpotMap || !spots) {
     return (

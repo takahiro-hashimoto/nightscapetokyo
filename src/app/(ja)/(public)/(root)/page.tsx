@@ -95,7 +95,7 @@ export default async function Home() {
       <HotelRanking hotels={hotels} />
       <PurposeSearch tags={purposeTags} />
       <AreaSearch areas={areas} />
-      <HomeMapSection spots={mapSeoSpots} categories={areas.map((a) => ({ slug: a.slug, name: a.name }))} />
+      <HomeMapSection spots={mapSeoSpots} categories={areas.map((a) => ({ slug: a.slug, name: a.name }))} initialSpots={mapSpots} />
       <HomeArticles articles={articles} />
       <HomeNewsAndVideos recentSpots={recentSpots} />
       <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={labels.homePage.faq} />
