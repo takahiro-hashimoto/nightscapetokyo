@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-export default function GtmLoader({ gtmId, nonce }: { gtmId: string; nonce?: string }) {
+export default function GtmLoader({ gtmId }: { gtmId: string }) {
   useEffect(() => {
     let loaded = false;
     let fallbackTimer: ReturnType<typeof setTimeout> | null = null;
@@ -18,14 +18,12 @@ export default function GtmLoader({ gtmId, nonce }: { gtmId: string; nonce?: str
       loaded = true;
       if (fallbackTimer !== null) clearTimeout(fallbackTimer);
 
-      // dataLayer 初期化（まだ未実施の場合）
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
 
       const s = document.createElement("script");
       s.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
       s.async = true;
-      if (nonce) s.nonce = nonce;
       document.head.appendChild(s);
     };
 
@@ -45,7 +43,7 @@ export default function GtmLoader({ gtmId, nonce }: { gtmId: string; nonce?: str
       window.removeEventListener("touchstart", load);
       window.removeEventListener("load", scheduleLoad);
     };
-  }, [gtmId, nonce]);
+  }, [gtmId]);
 
   return null;
 }

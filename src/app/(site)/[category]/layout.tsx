@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/HeaderWrapper";
 import RootShell from "@/components/layout/RootShell";
+import HtmlLang from "@/components/layout/HtmlLang";
 import {
   LOCALE_HTML_LANG,
   LOCALE_SLUGS,
@@ -85,6 +86,7 @@ export default async function CategoryLayout({
 
   return (
     <RootShell lang={lang} headContent={headContent}>
+      {lang !== "ja" && <HtmlLang lang={lang} />}
       <Header locale={locale} />
       <main className="flex-1">{children}</main>
       <Footer locale={locale} />

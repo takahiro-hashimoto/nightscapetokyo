@@ -1,28 +1,22 @@
-import { headers } from "next/headers";
-import { ALL_LOCALE_SLUGS, LOCALE_HTML_LANG, SITE_URL } from "@/lib/types";
+import { SITE_URL } from "@/lib/types";
 import NonCriticalCss from "@/components/layout/NonCriticalCss";
 import GtmLoader from "@/components/layout/GtmLoader";
 import "./globals.css";
 
 const GTM_ID = "GTM-WB56L85";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const headerStore = await headers();
-  const nonce = headerStore.get("x-nonce") ?? "";
-  const localeSlug = headerStore.get("x-locale") ?? "";
-  const locale = ALL_LOCALE_SLUGS.includes(localeSlug) ? localeSlug : "ja";
-  const lang = locale === "ja" ? "ja" : (LOCALE_HTML_LANG[locale] ?? "en");
   const isProd = process.env.NODE_ENV === "production";
 
   return (
-    <html lang={lang}>
+    <html lang="ja">
       {/* eslint-disable-next-line @next/next/no-head-element */}
       <head>
-        {isProd && <GtmLoader gtmId={GTM_ID} nonce={nonce} />}
+        {isProd && <GtmLoader gtmId={GTM_ID} />}
         <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />
         <link
           rel="preconnect"
