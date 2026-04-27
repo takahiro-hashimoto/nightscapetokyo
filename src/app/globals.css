@@ -2406,6 +2406,7 @@ main > .home-section:nth-child(even of .home-section) {
 .tag-spot-image img,
 .tag-slider-viewport img {
   object-fit: cover;
+  transition: opacity 0.2s ease;
 }
 
 .tag-slider {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { SiteLocale } from "@/lib/types";
@@ -21,18 +21,19 @@ export default function TagImageSlider({ images, name, locale, priority, rank }:
   const loadedUrls = useRef<Set<string>>(new Set());
   const total = images.length;
 
+  // isLoading と current を同一レンダーで更新することで、スライド切替直後から skeleton を表示する
+  const goTo = useCallback((idx: number) => {
+    setIsLoading(!loadedUrls.current.has(images[idx].url));
+    setCurrent(idx);
+  }, [images]);
+
   const prev = useCallback(() => {
-    setCurrent((c) => (c - 1 + total) % total);
-  }, [total]);
+    goTo((current - 1 + total) % total);
+  }, [current, total, goTo]);
 
   const next = useCallback(() => {
-    setCurrent((c) => (c + 1) % total);
-  }, [total]);
-
-  // 未ロードの画像のみスケルトンを表示
-  useEffect(() => {
-    setIsLoading(!loadedUrls.current.has(images[current].url));
-  }, [current, images]);
+    goTo((current + 1) % total);
+  }, [current, total, goTo]);
 
   if (total === 0) return null;
 
@@ -77,7 +78,7 @@ export default function TagImageSlider({ images, name, locale, priority, rank }:
               <button
                 key={i}
                 className={`tag-slider-thumb${i === current ? " active" : ""}`}
-                onClick={() => setCurrent(i)}
+                onClick={() => goTo(i)}
                 aria-label={img.alt ?? l.imageN(i + 1)}
               >
                 <Image
