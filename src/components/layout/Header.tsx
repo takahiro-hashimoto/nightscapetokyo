@@ -146,8 +146,6 @@ export default function Header({ areaData = [], tagData = [], spotCount = 0, loc
   const topNavItems = buildTopNavItems(locale);
   const profileLabels = PROFILE_LABELS[(locale ?? "ja") as SiteLocale];
   const navLabels = NAV_STATIC_LABELS[(locale ?? "ja") as SiteLocale] ?? NAV_STATIC_LABELS["ja"];
-  const headerHeight = locale !== null ? 72 : 93;
-
   const hamburger = (
     <button
       id="hamburger-btn"
@@ -230,7 +228,6 @@ export default function Header({ areaData = [], tagData = [], spotCount = 0, loc
         topNavItems={topNavItems}
         profileLabels={profileLabels}
         navLabels={navLabels}
-        headerHeight={headerHeight}
       />
     </>
   );

@@ -68,7 +68,6 @@ type Props = {
   topNavItems: SubNavItem[];
   profileLabels: ProfileLabels;
   navLabels: NavLabels;
-  headerHeight: number;
 };
 
 export default function MobileMenu({
@@ -77,7 +76,6 @@ export default function MobileMenu({
   topNavItems,
   profileLabels,
   navLabels,
-  headerHeight,
 }: Props) {
   const pathname = usePathname();
   const router = useRouter();
@@ -148,8 +146,7 @@ export default function MobileMenu({
       />
       <nav
         id="mobile-drawer"
-        className={`drawer${menuOpen ? " is-open" : ""}`}
-        style={{ top: headerHeight }}
+        className={`drawer${!locale ? " drawer--ja" : ""}${menuOpen ? " is-open" : ""}`}
         aria-label={navLabels.mobileMenu}
       >
         {mainNavItems.map((item) =>

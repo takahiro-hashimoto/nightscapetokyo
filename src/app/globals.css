@@ -1831,9 +1831,13 @@ main > .home-section:nth-child(even of .home-section) {
   pointer-events: auto;
 }
 
+.drawer--ja {
+  top: 93px;
+}
+
 .drawer {
   position: fixed;
-  top: 93px; /* fallback for ja 2-row; JS overrides via style.top */
+  top: 72px;
   right: 0;
   bottom: 0;
   z-index: 999;
