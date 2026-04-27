@@ -2639,20 +2639,18 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .gallery-modal-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   padding: 8px 0 0;
-  text-align: center;
 }
 
 .gallery-modal-caption {
   color: rgba(255, 255, 255, 0.85);
   font-size: 14px;
-  max-width: 90vw;
 }
 
 .gallery-modal-counter {
-  position: absolute;
-  bottom: 20px;
-  right: 24px;
   color: rgba(255, 255, 255, 0.6);
   font-size: 13px;
   white-space: nowrap;
