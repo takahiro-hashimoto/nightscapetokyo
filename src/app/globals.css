@@ -855,6 +855,16 @@ main > .home-section:nth-child(even of .home-section) {
   margin-top: 0;
 }
 
+/* YouTube 埋め込みコンテナ（fill Image の基準になるため position と高さ必須） */
+.video-embed {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+}
+
 /* --- Section Headings --- */
 .spot-section-header {
   display: flex;
