@@ -27,7 +27,7 @@ export default function HomeArticles({ articles }: Props) {
                       src={article.thumbnail}
                       alt={article.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, 320px"
+                      sizes="(max-width: 768px) calc(50vw - 28px), 320px"
                     />
                   )}
                 </div>

@@ -5,6 +5,8 @@ import { LOCALE_LABELS, ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALE
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { GUIDELINES_LABELS } from "@/lib/i18n-static-pages";
 
+export const dynamic = "force-static";
+
 export async function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((c) => ({ category: c }));
 }

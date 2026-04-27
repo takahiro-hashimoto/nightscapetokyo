@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import type { RecentSpotItem } from "@/lib/supabase/queries";
 import YouTubeFacade from "./YouTubeFacade";

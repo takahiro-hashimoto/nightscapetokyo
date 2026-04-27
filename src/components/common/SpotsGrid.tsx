@@ -37,7 +37,7 @@ export default function SpotsGrid({ spots, localeSlug, closedBadge = "閉鎖済�
                       src={spot.featured_image}
                       alt={`${spot.name}の夜景`}
                       fill
-                      sizes="(max-width: 768px) 100vw, 450px"
+                      sizes="(max-width: 768px) calc(50vw - 28px), 320px"
                       itemProp="image"
                     />
                   )}

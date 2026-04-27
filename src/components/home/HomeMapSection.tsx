@@ -1,6 +1,8 @@
 import Link from "next/link";
-import SpotMapLoader from "@/components/map/SpotMapLoader";
+import dynamic from "next/dynamic";
 import type { MapSpotItem } from "@/lib/supabase/queries";
+
+const SpotMapLoader = dynamic(() => import("@/components/map/SpotMapLoader"));
 import { SITE_URL } from "@/lib/types";
 
 type Category = { slug: string; name: string };

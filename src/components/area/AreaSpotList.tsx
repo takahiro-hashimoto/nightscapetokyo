@@ -96,7 +96,7 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
                         src={spot.featured_image}
                         alt={buildAlt(spot.name)}
                         fill
-                        sizes="(max-width: 768px) 100vw, 450px"
+                        sizes="(max-width: 768px) calc(50vw - 28px), 320px"
                         itemProp="image"
                         priority={index === 0}
                       />

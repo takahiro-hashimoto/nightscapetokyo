@@ -17,11 +17,21 @@ export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
       <Image
         src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/images/hero.webp"
         alt={l?.imgAlt ?? "東京の夜景"}
-        className="hero-bg"
+        className="hero-bg hero-bg--pc"
         fill
         priority
         fetchPriority="high"
-        sizes="(max-width: 768px) 100vw, 100vw"
+        sizes="100vw"
+        quality={75}
+      />
+      <Image
+        src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/images/sp-mage-main.webp"
+        alt={l?.imgAlt ?? "東京の夜景"}
+        className="hero-bg hero-bg--sp"
+        fill
+        priority
+        fetchPriority="high"
+        sizes="100vw"
         quality={75}
       />
       <div className="hero-overlay">
