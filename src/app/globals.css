@@ -2550,13 +2550,13 @@ main > .home-section:nth-child(even of .home-section) {
 .gallery-modal-image-wrap {
   position: relative;
   line-height: 0;
-  width: 100%;
 }
 
 .gallery-modal-image {
   display: block;
-  width: 100%;
+  max-width: 90vw;
   max-height: 82vh;
+  width: auto;
   height: auto;
 }
 
@@ -2636,8 +2636,6 @@ main > .home-section:nth-child(even of .home-section) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90vw;
-  max-width: 1200px;
 }
 
 .gallery-modal-footer {
