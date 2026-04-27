@@ -4,8 +4,10 @@ import Header from "@/components/layout/HeaderWrapper";
 import RootShell from "@/components/layout/RootShell";
 import HtmlLang from "@/components/layout/HtmlLang";
 import { LOCALE_HTML_LANG, SITE_NAMES } from "@/lib/types";
-import { buildSiteNavigationJsonLdForLocale } from "@/lib/json-ld";
+import { buildSiteNavigationJsonLdForLocale, buildWebSiteJsonLd } from "@/lib/json-ld";
 import "../../globals.css";
+
+export const fetchCache = "force-cache";
 
 export async function generateMetadata({
   params,
@@ -34,12 +36,18 @@ export default async function CategoryLayout({
   const lang = LOCALE_HTML_LANG[locale] ?? "en";
 
   const headContent = (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(buildSiteNavigationJsonLdForLocale(locale)),
-      }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildSiteNavigationJsonLdForLocale(locale)),
+        }}
+      />
+    </>
   );
 
   return (

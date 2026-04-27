@@ -13,6 +13,7 @@ import {
   getSpotListByTagSlugTranslated,
   getTagPageBySlugWithTranslation,
   getAvailableTagPageLocales,
+  getAllTagPageLocales,
   getMapSpotsByTag,
   getPurposeTags,
   getTagBySlug,
@@ -229,21 +230,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 86400;
+export const fetchCache = "force-cache";
 
 export async function generateStaticParams() {
   if (shouldSkipStaticGenerationForPreview()) return [];
-  const tags = await getPurposeTags();
-  const tagSlugs = Array.from(
-    new Set([...tags.map((t) => t.slug), ...Object.keys(tagPageContents)])
-  );
-  // 翻訳が実在する locale/slug 組み合わせのみ生成する
-  const results = await Promise.all(
-    tagSlugs.map(async (slug) => {
-      const locales = await getAvailableTagPageLocales(slug);
-      return locales.map((locale) => ({ category: locale, slug }));
-    })
-  );
-  return results.flat();
+  const [tags, allTagLocales] = await Promise.all([
+    getPurposeTags(),
+    getAllTagPageLocales(),
+  ]);
+  const validSlugs = new Set([
+    ...tags.map((t) => t.slug),
+    ...Object.keys(tagPageContents),
+  ]);
+  return allTagLocales
+    .filter(({ slug }) => validSlugs.has(slug))
+    .map(({ slug, locale }) => ({ category: locale, slug }));
 }
 
 export default async function TranslatedTagPage({ params }: Props) {

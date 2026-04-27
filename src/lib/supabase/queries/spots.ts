@@ -251,15 +251,16 @@ export const getHotelSpots = cache(unstable_cache(async (limit = 4): Promise<Spo
 }, ["hotel-spots"], { revalidate: 3600, tags: ["spots"] }));
 
 /** 翻訳付きトップスポット取得（ホームページ翻訳版用） */
-export async function getTopSpotsTranslated(
+const _getTopSpotsTranslatedUncached = async (
   urlSlug: string,
-  limit = 8,
-  allowedCategorySlugs?: Set<string>
-): Promise<SpotListItem[]> {
+  limit: number,
+  allowedCategorySlugsSorted: string[] | null
+): Promise<SpotListItem[]> => {
   const dbLocale = LOCALE_SLUG_MAP[urlSlug];
   if (!isSupabaseConfigured || !dbLocale) return [];
 
   const supabase = await getSupabaseClient();
+  const allowedSet = allowedCategorySlugsSorted ? new Set(allowedCategorySlugsSorted) : null;
 
   const [{ data: spots }, { data: translations }] = await Promise.all([
     supabase
@@ -282,7 +283,7 @@ export async function getTopSpotsTranslated(
   return spots
     .filter((s: any) => tMap.has(s.id))
     .map(mapSpotToListing)
-    .filter((s: SpotListItem) => (!allowedCategorySlugs || allowedCategorySlugs.has(s.category.slug)) && !s.closed)
+    .filter((s: SpotListItem) => (!allowedSet || allowedSet.has(s.category.slug)) && !s.closed)
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg)
     .slice(0, limit)
     .map((base: SpotListItem) => {
@@ -296,52 +297,68 @@ export async function getTopSpotsTranslated(
         lead: t.lead || base.lead,
       };
     });
-}
+};
+
+const _getTopSpotsTranslatedCached = unstable_cache(
+  _getTopSpotsTranslatedUncached,
+  ["top-spots-translated"],
+  { revalidate: 86400, tags: ["spots", "translations"] }
+);
+
+export const getTopSpotsTranslated = cache(
+  async (urlSlug: string, limit = 8, allowedCategorySlugs?: Set<string>) => {
+    const sortedSlugs = allowedCategorySlugs ? [...allowedCategorySlugs].sort() : null;
+    return _getTopSpotsTranslatedCached(urlSlug, limit, sortedSlugs);
+  }
+);
 
 /** 翻訳付きホテルスポット取得（ホームページ翻訳版用） */
-export async function getHotelSpotsTranslated(
-  urlSlug: string,
-  limit = 4
-): Promise<SpotListItem[]> {
-  const dbLocale = LOCALE_SLUG_MAP[urlSlug];
-  if (!isSupabaseConfigured || !dbLocale) return [];
+export const getHotelSpotsTranslated = cache(
+  unstable_cache(
+    async (urlSlug: string, limit = 4): Promise<SpotListItem[]> => {
+      const dbLocale = LOCALE_SLUG_MAP[urlSlug];
+      if (!isSupabaseConfigured || !dbLocale) return [];
 
-  const supabase = await getSupabaseClient();
+      const supabase = await getSupabaseClient();
 
-  const [{ data: spots }, { data: translations }] = await Promise.all([
-    supabase
-      .from("spots")
-      .select(LISTING_SELECT)
-      .eq("type", "hotel")
-      .eq("published", true)
-      .order("rating_beautiful", { ascending: false })
-      .limit(limit * 5) as any,
-    supabase
-      .from("spot_translations")
-      .select("spot_id, name, lead, category_name")
-      .eq("locale", dbLocale) as any,
-  ]);
+      const [{ data: spots }, { data: translations }] = await Promise.all([
+        supabase
+          .from("spots")
+          .select(LISTING_SELECT)
+          .eq("type", "hotel")
+          .eq("published", true)
+          .order("rating_beautiful", { ascending: false })
+          .limit(limit * 5) as any,
+        supabase
+          .from("spot_translations")
+          .select("spot_id, name, lead, category_name")
+          .eq("locale", dbLocale) as any,
+      ]);
 
-  if (!spots?.length || !translations?.length) return [];
+      if (!spots?.length || !translations?.length) return [];
 
-  const tMap = buildTranslationMap(translations);
+      const tMap = buildTranslationMap(translations);
 
-  return spots
-    .filter((s: any) => tMap.has(s.id))
-    .slice(0, limit)
-    .map((s: any) => {
-      const t = tMap.get(s.id);
-      const base = mapSpotToListing(s);
-      return {
-        ...base,
-        name: t.name || base.name,
-        category: t.category_name
-          ? { slug: s.category?.slug ?? "", name: t.category_name }
-          : base.category,
-        lead: t.lead || base.lead,
-      };
-    });
-}
+      return spots
+        .filter((s: any) => tMap.has(s.id))
+        .slice(0, limit)
+        .map((s: any) => {
+          const t = tMap.get(s.id);
+          const base = mapSpotToListing(s);
+          return {
+            ...base,
+            name: t.name || base.name,
+            category: t.category_name
+              ? { slug: s.category?.slug ?? "", name: t.category_name }
+              : base.category,
+            lead: t.lead || base.lead,
+          };
+        });
+    },
+    ["hotel-spots-translated"],
+    { revalidate: 86400, tags: ["spots", "translations"] }
+  )
+);
 
 export async function getRelatedSpots(
   categoryId: string,
@@ -524,7 +541,22 @@ export async function getSpotsBySlugs(
 }
 
 /** スラッグ一覧からフル情報のスポットを取得し翻訳をマージ (urlSlug = "en", "ko", "tw", "cn") */
-export async function getSpotsBySlugsTranslated(
+const _getSpotsBySlugsTranslatedCached = unstable_cache(
+  async (slugsSorted: string[], urlSlug: string): Promise<SpotWithRelations[]> => {
+    return _getSpotsBySlugsTranslatedCore(slugsSorted, urlSlug);
+  },
+  ["spots-by-slugs-translated"],
+  { revalidate: 86400, tags: ["spots", "translations"] }
+);
+
+export const getSpotsBySlugsTranslated = cache(
+  async (slugs: string[], urlSlug: string): Promise<SpotWithRelations[]> => {
+    if (slugs.length === 0) return [];
+    return _getSpotsBySlugsTranslatedCached([...slugs].sort(), urlSlug);
+  }
+);
+
+async function _getSpotsBySlugsTranslatedCore(
   slugs: string[],
   urlSlug: string
 ): Promise<SpotWithRelations[]> {

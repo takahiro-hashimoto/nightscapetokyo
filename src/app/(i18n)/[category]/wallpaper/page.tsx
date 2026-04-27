@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 86400;
+export const fetchCache = "force-cache";
 
 /* ─── Page ─── */
 export default async function WallpaperPageI18n({ params }: Props) {
@@ -81,7 +82,7 @@ export default async function WallpaperPageI18n({ params }: Props) {
                   <figure key={i} className="m-0">
                     <a href={w.src} target="_blank" rel="noopener noreferrer">
                       <Image
-                        src={w.thumb}
+                        src={w.src}
                         alt={caption}
                         width={473}
                         height={1024}

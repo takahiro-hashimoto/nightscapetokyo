@@ -6,6 +6,29 @@ import {
   getSupabaseClient,
 } from "./shared";
 
+/** ビルド時一括取得：全タグページの (slug, locale) 対応表 */
+export async function getAllTagPageLocales(): Promise<
+  { slug: string; locale: string }[]
+> {
+  if (!isSupabaseConfigured) return [];
+
+  const supabase = await getSupabaseClient();
+
+  const { data } = (await supabase
+    .from("tag_page_translations")
+    .select("locale, tag_page:tag_pages!inner(tag:tags!inner(slug))")
+  ) as any;
+
+  if (!data) return [];
+
+  return (data as any[])
+    .map((d) => ({
+      slug: d.tag_page?.tag?.slug as string | undefined,
+      locale: LOCALE_TO_SLUG[d.locale as string] as string | undefined,
+    }))
+    .filter((r): r is { slug: string; locale: string } => !!r.slug && !!r.locale);
+}
+
 /** タグページの翻訳済みロケールを取得 */
 export async function getAvailableTagPageLocales(
   tagSlug: string

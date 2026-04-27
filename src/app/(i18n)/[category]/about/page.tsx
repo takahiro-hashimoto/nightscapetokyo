@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = 86400;
+export const dynamic = "force-static";
 
 /* ─── Page ─── */
 export default async function AboutPageI18n({ params }: Props) {

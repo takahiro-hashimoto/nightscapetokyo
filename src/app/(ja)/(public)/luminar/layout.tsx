@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { LUMINAR_SITE_NAME, LUMINAR_SITE_DESCRIPTION, LUMINAR_SITE_URL } from '@/lib/luminar/config'
 import { AdsProvider } from '@/contexts/AdsContext'
 import './luminar.css'
@@ -31,10 +30,9 @@ export const metadata: Metadata = {
 export default function LuminarLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {/* Font Awesome CDN への事前接続 */}
       <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
-      {/* Font Awesome — luminar 配下全ページで使用するため layout で一括読み込み */}
-      <Script id="fa-css" strategy="lazyOnload">{`(function(){var l=document.createElement('link');l.rel='stylesheet';l.crossOrigin='anonymous';l.href='${FA_CSS_URL}';document.head.appendChild(l)})();`}</Script>
+      <link rel="preload" href={FA_CSS_URL} as="style" crossOrigin="anonymous" />
+      <link rel="stylesheet" href={FA_CSS_URL} crossOrigin="anonymous" />
       <AdsProvider showAds={false}>
         {children}
       </AdsProvider>
