@@ -16,6 +16,17 @@ export type AdSlotConfig = {
 
 export const ADS = {
   /**
+   * エリアページ（マップ直後）
+   * 形式: ディスプレイ（auto）
+   * 設置: src/app/(site)/[category]/page.tsx
+   */
+  AREA_PAGE: {
+    slot: "4868066916",
+    format: "auto",
+    label: "エリアページマップ下",
+  },
+
+  /**
    * エリア一覧ページ（6スポットごとに挿入）
    * 形式: ディスプレイ（auto）
    * 設置: src/components/area/AreaSpotList.tsx

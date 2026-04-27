@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import AdSenseUnit from "@/components/ads/AdSenseUnit";
+import { ADS } from "@/lib/ads";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import AreaSpotList from "@/components/area/AreaSpotList";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
@@ -442,6 +444,8 @@ export default async function AreaPage({ params }: Props) {
             <AreaMapLoader spots={mapSpots} areaName={cat.name} />
           </DeferredRender>
         )}
+
+        {mapSpots.length > 0 && <AdSenseUnit {...ADS.AREA_PAGE} className="my-4" />}
 
         {/* エリアFAQ */}
         {faqs.length > 0 && (
