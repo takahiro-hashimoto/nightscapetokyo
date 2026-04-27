@@ -36,26 +36,38 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
     );
   }, [images.length]);
 
-  /* キーボード操作 + body scroll lock */
-  useEffect(() => {
-    if (selectedIndex === null) return;
+  const isOpen = selectedIndex !== null;
 
+  /* キーボード操作 */
+  useEffect(() => {
+    if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
       else if (e.key === "ArrowLeft") prev();
       else if (e.key === "ArrowRight") next();
     };
-
     document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
-    document.body.classList.add("modal-open");
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, close, prev, next]);
 
+  /* スクロールロック — 開閉時のみ発火（ナビゲーション時は再実行しない） */
+  useEffect(() => {
+    if (!isOpen) return;
+    const scrollY = window.scrollY;
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    document.body.classList.add("modal-open");
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
       document.body.classList.remove("modal-open");
+      window.scrollTo(0, scrollY);
     };
-  }, [selectedIndex, close, prev, next]);
+  }, [isOpen]);
 
   if (images.length === 0) return null;
 
