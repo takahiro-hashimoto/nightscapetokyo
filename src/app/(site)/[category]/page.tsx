@@ -407,7 +407,7 @@ export default async function AreaPage({ params }: Props) {
         <div className="firstVisual">
           <header className="firstVisual-header">
             <h1 className="firstVisual-title">
-              {displayName}の夜景スポット一覧
+              {displayName}のおすすめ夜景スポット一覧{spots.length > 0 && `【${spots.length}件掲載】`}
             </h1>
           </header>
           <div className="firstVisual-body">

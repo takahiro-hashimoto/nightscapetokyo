@@ -133,7 +133,7 @@ export default function TranslatedAreaContent({
 
         <div className="firstVisual">
           <header className="firstVisual-header">
-            <h1 className="firstVisual-title">{al.title(areaName)}</h1>
+            <h1 className="firstVisual-title">{al.title(areaName, spots.length || undefined)}</h1>
           </header>
           <div className="firstVisual-body">
             <p>{al.lead(areaName, spots)}</p>
