@@ -33,7 +33,17 @@ try{if(localStorage.getItem("_sd")==="1"){
   window.addEventListener("load",function(){_sdLog("load",{scrollY:window.scrollY,scrollRestoration:history.scrollRestoration});setTimeout(function(){_sdLog("load+500ms",{scrollY:window.scrollY});},500);});
   window._sdRead=function(){return JSON.parse(sessionStorage.getItem("_sdlog")||"[]");};
   window._sdClear=function(){sessionStorage.removeItem("_sdlog");console.log("[SD] cleared");};
-  console.log("[SD] scroll debug ON — window._sdRead() でログ確認, window._sdClear() でリセット");
+  window._sdShare=function(){
+    var logs=JSON.parse(sessionStorage.getItem("_sdlog")||"[]");
+    var text="```json\n"+JSON.stringify(logs,null,2)+"\n```";
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(function(){console.log("[SD] ✅ クリップボードにコピーしました。チャットに貼り付けてください。");}).catch(function(){console.log("[SD] ログ:\n"+text);});
+    }else{
+      console.log("[SD] ログ:\n"+text);
+    }
+    return logs;
+  };
+  console.log("[SD] scroll debug ON\n  _sdShare()  → クリップボードにコピー（チャットに貼るだけ）\n  _sdRead()   → ログをオブジェクトで確認\n  _sdClear()  → ログをリセット");
 }}catch(_ex){}
 `.trim() }} />
         {isProd && <GtmLoader gtmId={GTM_ID} />}
