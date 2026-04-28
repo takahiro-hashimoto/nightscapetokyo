@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 2592000, // 30日: 最適化済み画像をサーバー側でキャッシュ
     deviceSizes: [640, 828, 960, 1280, 1920],
+    imageSizes: [180, 256, 384],
     remotePatterns: [
       {
         protocol: "https",
@@ -168,6 +169,15 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Language",
             value: "zh-Hans",
+          },
+        ],
+      },
+      {
+        source: "/logo.png",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=2592000, stale-while-revalidate=86400",
           },
         ],
       },

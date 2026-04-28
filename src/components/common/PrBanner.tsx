@@ -31,6 +31,7 @@ export default function PrBanner({ heading, image, paragraphs, links }: Props) {
             width={image.width ?? 280}
             height={image.height ?? 187}
             src={image.src}
+            sizes="(max-width: 768px) 80vw, 180px"
             style={{ color: "transparent", objectFit: "cover", borderRadius: 4 }}
           />
         </div>
