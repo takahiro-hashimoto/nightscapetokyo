@@ -26,19 +26,22 @@ export function calculateSunData(
   let sunriseAzimuth: number | null = null;
   let sunsetAzimuth: number | null = null;
 
-  if (times.sunrise) {
+  const sunriseValid = times.sunrise && !isNaN(times.sunrise.getTime());
+  const sunsetValid = times.sunset && !isNaN(times.sunset.getTime());
+
+  if (sunriseValid) {
     const pos = SunCalc.getPosition(times.sunrise, lat, lng);
     sunriseAzimuth = pos.azimuth * RAD_TO_DEG + 180;
   }
 
-  if (times.sunset) {
+  if (sunsetValid) {
     const pos = SunCalc.getPosition(times.sunset, lat, lng);
     sunsetAzimuth = pos.azimuth * RAD_TO_DEG + 180;
   }
 
   return {
-    sunriseTime: times.sunrise ? formatTime(times.sunrise) : null,
-    sunsetTime: times.sunset ? formatTime(times.sunset) : null,
+    sunriseTime: sunriseValid ? formatTime(times.sunrise) : null,
+    sunsetTime: sunsetValid ? formatTime(times.sunset) : null,
     sunriseAzimuth,
     sunsetAzimuth,
   };

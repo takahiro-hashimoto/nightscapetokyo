@@ -41,6 +41,8 @@ export default function LocationSearch({
         case "not_found":
           alert("施設名・住所・郵便番号を入力してください");
           break;
+        default:
+          alert("検索中にエラーが発生しました。時間をおいて再度お試しください。");
       }
     }
   };

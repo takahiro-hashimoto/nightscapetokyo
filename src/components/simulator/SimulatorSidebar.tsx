@@ -27,11 +27,7 @@ export default function SimulatorSidebar({
         <p className="sim-sidebar__title">日の出・日の入り方角ナビ</p>
       </div>
       <div className="sim-sidebar__body">
-        <p className="sim-sidebar__lead">
-          日の出・日の入りの方角や時刻をマップ上で確認できるwebアプリ
-        </p>
-
-        <div className="sim-sidebar__section">
+<div className="sim-sidebar__section">
           <LocationSearch onLocationFound={onLocationFound} />
         </div>
 

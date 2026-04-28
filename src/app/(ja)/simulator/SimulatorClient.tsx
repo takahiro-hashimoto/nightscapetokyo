@@ -1,36 +1,35 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { calculateSunData } from "@/lib/sun-calc";
-import { loadMapState, saveMapState } from "@/lib/map-persistence";
+import { loadMapState, saveMapState, DEFAULT_MAP_STATE } from "@/lib/map-persistence";
 import SimulatorMap from "@/components/simulator/SimulatorMap";
 import SimulatorSidebar from "@/components/simulator/SimulatorSidebar";
 import SimulatorHeader from "@/components/simulator/SimulatorHeader";
 import SimulatorFooter from "@/components/simulator/SimulatorFooter";
 import SimulatorModal from "@/components/simulator/SimulatorModal";
-import PcContentModal from "@/components/simulator/PcContentModal";
 import "./simulator.css";
 
 export default function SimulatorClient() {
   const [initialized, setInitialized] = useState(false);
   const [markerPosition, setMarkerPosition] = useState<[number, number]>([
-    35.6895, 139.6917,
+    DEFAULT_MAP_STATE.lat, DEFAULT_MAP_STATE.lng,
   ]);
   const [mapCenter, setMapCenter] = useState<[number, number]>([
-    35.6895, 139.6917,
+    DEFAULT_MAP_STATE.lat, DEFAULT_MAP_STATE.lng,
   ]);
-  const [zoom, setZoom] = useState(16);
+  const [zoom, setZoom] = useState(DEFAULT_MAP_STATE.zoom);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [modalOpen, setModalOpen] = useState(false);
-  const [pcModalOpen, setPcModalOpen] = useState(false);
-  const [pcModalContent, setPcModalContent] = useState<
-    "howto" | "trivia" | "links" | null
-  >(null);
+
+  // Ref to always hold latest map state for race-free persistence
+  const mapStateRef = useRef(DEFAULT_MAP_STATE);
 
   // Load saved state on mount (localStorage は初回マウント時のみ読む設計)
   useEffect(() => {
     const saved = loadMapState();
+    mapStateRef.current = saved;
     setMarkerPosition([saved.lat, saved.lng]);
     setMapCenter([saved.lat, saved.lng]);
     setZoom(saved.zoom);
@@ -43,30 +42,24 @@ export default function SimulatorClient() {
   }, [selectedDate, markerPosition]);
 
   // Handlers
-  const handleMarkerMove = useCallback(
-    (lat: number, lng: number) => {
-      setMarkerPosition([lat, lng]);
-      saveMapState({ lat, lng, zoom });
-    },
-    [zoom]
-  );
+  const handleMarkerMove = useCallback((lat: number, lng: number) => {
+    mapStateRef.current = { ...mapStateRef.current, lat, lng };
+    setMarkerPosition([lat, lng]);
+    saveMapState(mapStateRef.current);
+  }, []);
 
-  const handleViewChange = useCallback(
-    (lat: number, lng: number, newZoom: number) => {
-      setZoom(newZoom);
-      saveMapState({ lat: markerPosition[0], lng: markerPosition[1], zoom: newZoom });
-    },
-    [markerPosition]
-  );
+  const handleViewChange = useCallback((_lat: number, _lng: number, newZoom: number) => {
+    mapStateRef.current = { ...mapStateRef.current, zoom: newZoom };
+    setZoom(newZoom);
+    saveMapState(mapStateRef.current);
+  }, []);
 
-  const handleLocationFound = useCallback(
-    (lat: number, lng: number) => {
-      setMarkerPosition([lat, lng]);
-      setMapCenter([lat, lng]);
-      saveMapState({ lat, lng, zoom });
-    },
-    [zoom]
-  );
+  const handleLocationFound = useCallback((lat: number, lng: number) => {
+    mapStateRef.current = { ...mapStateRef.current, lat, lng };
+    setMarkerPosition([lat, lng]);
+    setMapCenter([lat, lng]);
+    saveMapState(mapStateRef.current);
+  }, []);
 
   const handleDateChange = useCallback((date: Date) => {
     setSelectedDate(date);
@@ -74,18 +67,6 @@ export default function SimulatorClient() {
 
   const openModal = useCallback(() => setModalOpen(true), []);
   const closeModal = useCallback(() => setModalOpen(false), []);
-
-  const openPcModal = useCallback(
-    (content: "howto" | "trivia" | "links") => {
-      setPcModalContent(content);
-      setPcModalOpen(true);
-    },
-    []
-  );
-  const closePcModal = useCallback(() => {
-    setPcModalOpen(false);
-    setPcModalContent(null);
-  }, []);
 
   if (!initialized) {
     return (
@@ -120,7 +101,6 @@ export default function SimulatorClient() {
       <SimulatorHeader
         sunriseTime={sunData.sunriseTime}
         sunsetTime={sunData.sunsetTime}
-        onSearchClick={openModal}
       />
 
       {/* Map */}
@@ -147,13 +127,9 @@ export default function SimulatorClient() {
           <Link href="/">サイトTOP</Link>
         </li>
         <li>
-          <button onClick={() => openPcModal("howto")}>使い方</button>
-        </li>
-        <li>
-          <button onClick={() => openPcModal("trivia")}>豆知識</button>
-        </li>
-        <li>
-          <button onClick={() => openPcModal("links")}>お役立ちリンク</button>
+          <button onClick={() => window.dispatchEvent(new Event("sim:open-info"))}>
+            お役立ち情報
+          </button>
         </li>
       </ul>
 
@@ -163,11 +139,6 @@ export default function SimulatorClient() {
         onClose={closeModal}
         onLocationFound={handleLocationFound}
       />
-
-      {/* PC: Content modals */}
-      {pcModalOpen && pcModalContent && (
-        <PcContentModal content={pcModalContent} onClose={closePcModal} />
-      )}
     </div>
   );
 }

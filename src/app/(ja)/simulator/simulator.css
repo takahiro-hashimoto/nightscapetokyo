@@ -380,9 +380,6 @@
   padding: 48px 16px 24px;
 }
 
-.sim-modal__section {
-  margin-bottom: 32px;
-}
 
 .sim-modal__title {
   text-align: center;
@@ -442,6 +439,7 @@
 .sim-definition__body dt {
   font-weight: bold;
   margin-bottom: 8px;
+  font-size: 1rem;
 }
 
 .sim-definition__body dt a {
@@ -512,6 +510,221 @@
   line-height: 1.6;
   margin: 0;
 }
+
+/* --- FAQ (shared: info modal SP/PC) --- */
+.faq-item {
+  padding: 16px 0;
+  border-bottom: 1px dashed #eee;
+}
+.faq-item:last-child {
+  border-bottom: none;
+}
+.faq-item:first-child {
+  padding-top: 0;
+}
+.faq-q {
+  font-weight: 700;
+  font-size: 15px;
+  color: #333;
+  margin: 0 0 6px;
+}
+.faq-q::before {
+  content: "Q. ";
+  color: #1a7fc5;
+  font-weight: 800;
+}
+.faq-a {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #555;
+  margin: 0;
+  padding-left: 25px;
+}
+.faq-a::before {
+  content: "A. ";
+  color: #e53e3e;
+  font-weight: 700;
+}
+
+/* --- Info Modal (SEO welcome overlay) --- */
+@keyframes sim-info-in {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+.sim-info-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  padding: 12px;
+}
+
+.sim-info-modal__container {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  animation: sim-info-in 0.28s ease;
+}
+
+/* Header */
+.sim-info-modal__header {
+  background: linear-gradient(150deg, #1e1f21 0%, #2d3748 100%);
+  padding: 12px 48px 12px 20px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sim-info-modal__title {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+  line-height: 1.4;
+}
+
+.sim-info-modal__subtitle {
+  display: block;
+  color: #9ca3af;
+  font-size: 0.78rem;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.sim-info-modal__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d1d5db;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sim-info-modal__close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+/* Body */
+.sim-info-modal__body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 20px 20px 28px;
+}
+
+.sim-info-modal__top-link {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.sim-info-modal__top-link a {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.sim-info-modal__top-link a:hover {
+  color: #374151;
+}
+
+.sim-info-modal__lead {
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  margin: 0 0 24px;
+}
+
+/* Section */
+.sim-info-modal__section {
+  margin-bottom: 24px;
+}
+
+.sim-info-modal__section-title {
+  color: #333;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+/* Howto numbered list */
+.sim-info-modal__howto {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: howto;
+}
+
+.sim-info-modal__howto li {
+  counter-increment: howto;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  font-size: .9rem;
+  line-height: 1.65;
+  display: flex;
+}
+
+.sim-info-modal__howto li:last-child {
+  border-bottom: none;
+}
+
+.sim-info-modal__howto li::before {
+  content: counter(howto);
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: #1a7fc5;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+/* CTA button */
+.sim-info-modal__btn {
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: .02em;
+  background: linear-gradient(135deg, #1a7fc5, #0e6aad);
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  margin-bottom: 42px;
+  padding: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: opacity .2s, transform .1s;
+  display: block;
+}
+
+.sim-info-modal__btn:hover  { opacity: 0.9; }
+.sim-info-modal__btn:active { transform: scale(0.98); }
 
 /* --- Leaflet overrides --- */
 .sim-map .leaflet-control-attribution {
