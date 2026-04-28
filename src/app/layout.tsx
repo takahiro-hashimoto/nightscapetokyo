@@ -35,7 +35,7 @@ try{if(localStorage.getItem("_sd")==="1"){
   window._sdClear=function(){sessionStorage.removeItem("_sdlog");console.log("[SD] cleared");};
   window._sdShare=function(){
     var logs=JSON.parse(sessionStorage.getItem("_sdlog")||"[]");
-    var text="```json\n"+JSON.stringify(logs,null,2)+"\n```";
+    var text="\u0060\u0060\u0060json\\n"+JSON.stringify(logs,null,2)+"\\n\u0060\u0060\u0060";
     if(navigator.clipboard){
       navigator.clipboard.writeText(text).then(function(){console.log("[SD] ✅ クリップボードにコピーしました。チャットに貼り付けてください。");}).catch(function(){console.log("[SD] ログ:\n"+text);});
     }else{
