@@ -33,14 +33,6 @@ export default function NavigationProgress() {
 
   useEffect(() => {
     if (!isPrimaryInstance) return;
-    // ブラウザの scroll restoration を無効化（AdSense vignette 広告閉じ後の中段表示を防ぐ）
-    if ("scrollRestoration" in history) {
-      history.scrollRestoration = "manual";
-    }
-  }, [isPrimaryInstance]);
-
-  useEffect(() => {
-    if (!isPrimaryInstance) return;
 
     if (pathname !== prevPathname.current) {
       prevPathname.current = pathname;

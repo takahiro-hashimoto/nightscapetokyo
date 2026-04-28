@@ -47,7 +47,7 @@ export default function PrBanner({ heading, image, paragraphs, links }: Props) {
                   href={link.href}
                   className={`pr-banner-cta cta-${link.variant}`}
                   target="_blank"
-                  rel="noopener noreferrer sponsored"
+                  rel="noopener noreferrer nofollow sponsored"
                 >
                   {link.label}
                 </a>
@@ -56,6 +56,7 @@ export default function PrBanner({ heading, image, paragraphs, links }: Props) {
                   key={link.href}
                   href={link.href}
                   className={`pr-banner-cta cta-${link.variant}`}
+                  rel="nofollow sponsored"
                 >
                   {link.label}
                 </Link>
