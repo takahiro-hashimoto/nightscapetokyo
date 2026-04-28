@@ -21,7 +21,7 @@ export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
         fill
         priority
         fetchPriority="high"
-        sizes="100vw"
+        sizes="(max-width: 768px) 1px, 100vw"
         quality={75}
       />
       <Image
@@ -31,7 +31,7 @@ export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
         fill
         priority
         fetchPriority="high"
-        sizes="100vw"
+        sizes="(max-width: 768px) 100vw, 1px"
         quality={75}
       />
       <div className="hero-overlay">

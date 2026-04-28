@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import HeroSection from "@/components/home/HeroSection";
 import SpotRanking from "@/components/home/SpotRanking";
 import HotelRanking from "@/components/home/HotelRanking";
@@ -96,9 +97,15 @@ export default async function Home() {
       <PurposeSearch tags={purposeTags} />
       <AreaSearch areas={areas} />
       <HomeMapSection spots={mapSeoSpots} categories={areas.map((a) => ({ slug: a.slug, name: a.name }))} initialSpots={mapSpots} />
-      <HomeArticles articles={articles} />
-      <HomeNewsAndVideos recentSpots={recentSpots} />
-      <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={labels.homePage.faq} />
+      <Suspense fallback={null}>
+        <HomeArticles articles={articles} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <HomeNewsAndVideos recentSpots={recentSpots} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={labels.homePage.faq} />
+      </Suspense>
       <HomeAuthor />
       <SpotShare
         url={SITE_URL}
