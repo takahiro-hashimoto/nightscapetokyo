@@ -12,6 +12,7 @@ export default function NavigationProgress() {
   const [isPrimaryInstance, setIsPrimaryInstance] = useState(false);
   const prevPathname = useRef(pathname);
   const instanceIdRef = useRef<number | null>(null);
+  const isPopStateRef = useRef(false);
 
   useEffect(() => {
     const instanceId = nextProgressInstanceId++;
@@ -33,10 +34,21 @@ export default function NavigationProgress() {
 
   useEffect(() => {
     if (!isPrimaryInstance) return;
+    const handler = () => { isPopStateRef.current = true; };
+    window.addEventListener("popstate", handler);
+    return () => window.removeEventListener("popstate", handler);
+  }, [isPrimaryInstance]);
+
+  useEffect(() => {
+    if (!isPrimaryInstance) return;
 
     if (pathname !== prevPathname.current) {
       prevPathname.current = pathname;
-      window.scrollTo(0, 0);
+      // 戻る/進む（popstate）はスクロールを維持、前向き遷移のみトップへ
+      if (!isPopStateRef.current) {
+        window.scrollTo(0, 0);
+      }
+      isPopStateRef.current = false;
       const frame = window.requestAnimationFrame(() => {
         setLoading(false);
       });

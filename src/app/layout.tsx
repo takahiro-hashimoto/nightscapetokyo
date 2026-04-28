@@ -15,8 +15,8 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        {/* 広告クローズ後のスクロール位置復元を防ぐ（React マウント前に同期実行が必要） */}
-        <script dangerouslySetInnerHTML={{ __html: 'if("scrollRestoration"in history)history.scrollRestoration="manual";' }} />
+        {/* AdSense vignette 広告後の mid-scroll を防ぐ。back/forward(type=2)には適用しない */}
+        <script dangerouslySetInnerHTML={{ __html: 'try{if(performance.navigation.type===0&&"scrollRestoration"in history)history.scrollRestoration="manual";}catch(e){}' }} />
         {isProd && <GtmLoader gtmId={GTM_ID} />}
         <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />
         <link
