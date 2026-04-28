@@ -309,7 +309,7 @@ img {
 
 @media (max-width: 767px) {
   .card-padding {
-    padding: 20px;
+    padding: 16px;
   }
 }
 
@@ -3397,4 +3397,10 @@ body.modal-open [id*="aswift"] {
 
 .l-bottom-large {
   margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .gallery-modal-footer {
+    bottom: 20% !important;
+  }
 }

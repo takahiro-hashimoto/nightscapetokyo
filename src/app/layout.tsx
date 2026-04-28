@@ -15,8 +15,8 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        {/* AdSense vignette 広告後の mid-scroll を防ぐ。back/forward(type=2)には適用しない */}
-        <script dangerouslySetInnerHTML={{ __html: 'try{if(performance.navigation.type===0&&"scrollRestoration"in history)history.scrollRestoration="manual";}catch(e){}' }} />
+        {/* AdSense vignette/interstitial 後の mid-scroll を防ぐ。back/forward には適用しない */}
+        <script dangerouslySetInnerHTML={{ __html: 'try{if("scrollRestoration"in history){var _b=false;try{var _n=performance.getEntriesByType("navigation")[0];_b=_n?_n.type==="back_forward":performance.navigation.type===2;}catch(_e2){}if(!_b){history.scrollRestoration="manual";window.scrollTo(0,0);}}}catch(_e){}' }} />
         {isProd && <GtmLoader gtmId={GTM_ID} />}
         <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />
         <link
