@@ -15,8 +15,8 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        {/* AdSense vignette/interstitial 後の mid-scroll を防ぐ。back/forward には適用しない */}
-        <script dangerouslySetInnerHTML={{ __html: 'try{if("scrollRestoration"in history){var _b=false;try{var _n=performance.getEntriesByType("navigation")[0];_b=_n?_n.type==="back_forward":performance.navigation.type===2;}catch(_e2){}if(!_b){history.scrollRestoration="manual";window.scrollTo(0,0);}}}catch(_e){}' }} />
+        {/* AdSense vignette/interstitial 後の mid-scroll を防ぐ。back/forward の SPA 遷移は NavigationProgress で制御 */}
+        <script dangerouslySetInnerHTML={{ __html: 'try{if("scrollRestoration"in history){history.scrollRestoration="manual";var _bf=false;try{var _ne=performance.getEntriesByType("navigation")[0];_bf=_ne?_ne.type==="back_forward":performance.navigation.type===2;}catch(_e2){}if(!_bf){var _s=function(){window.scrollTo(0,0);};document.addEventListener("DOMContentLoaded",_s,{once:true});window.addEventListener("load",_s,{once:true});}}}catch(_e){}' }} />
         {isProd && <GtmLoader gtmId={GTM_ID} />}
         <link rel="preconnect" href="https://idnhefzhidetbiqiveci.supabase.co" />
         <link
