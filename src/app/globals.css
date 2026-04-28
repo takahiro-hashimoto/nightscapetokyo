@@ -2728,7 +2728,10 @@ main > .home-section:nth-child(even of .home-section) {
 
 @media (max-width: 768px) {
   .gallery-modal-footer {
-    bottom: 20% !important;
+    position: absolute;
+    bottom: 20%;
+    left: 0;
+    right: 0;
   }
 }
 
@@ -3399,8 +3402,3 @@ body.modal-open [id*="aswift"] {
   margin-bottom: 40px;
 }
 
-@media (max-width: 768px) {
-  .gallery-modal-footer {
-    bottom: 20% !important;
-  }
-}
