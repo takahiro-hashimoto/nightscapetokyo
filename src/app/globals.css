@@ -1268,6 +1268,8 @@ main > .home-section:nth-child(even of .home-section) {
 .spot-card-body {
   padding: 10px 14px 14px;
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .spot-card-meta {
@@ -1365,11 +1367,10 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .spot-card-station-text {
-  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  min-width: 0;
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 /* =========================================
@@ -1832,7 +1833,7 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .drawer--ja {
-  top: 57px;
+  top: 57px !important;
 }
 
 .drawer {
@@ -1938,6 +1939,7 @@ main > .home-section:nth-child(even of .home-section) {
     justify-content: center;
     position: relative;
     padding: 10px;
+    height: 56px;
   }
 
   .site-header-tagline,

@@ -1455,7 +1455,7 @@
   margin-bottom: 40px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .area-page-heading {
     font-size: 20px;
   }
