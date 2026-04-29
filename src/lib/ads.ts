@@ -94,8 +94,8 @@ export const ADS = {
   SIMULATOR_SIDEBAR: {
     slot: "1997282024",
     format: "fixed",
-    width: 240,
-    height: 240,
+    width: 277,
+    height: 277,
     label: "シミュレーターサイドバー",
   },
 
@@ -107,8 +107,8 @@ export const ADS = {
   MOON_SIDEBAR: {
     slot: "1997282024",
     format: "fixed",
-    width: 240,
-    height: 240,
+    width: 277,
+    height: 277,
     label: "月ナビサイドバー",
   },
 } as const satisfies Record<string, AdSlotConfig>;
