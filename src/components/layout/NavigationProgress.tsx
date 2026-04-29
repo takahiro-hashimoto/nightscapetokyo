@@ -46,6 +46,14 @@ export default function NavigationProgress() {
       prevPathname.current = pathname;
       // 戻る/進む（popstate）はスクロールを維持、前向き遷移のみトップへ
       if (!isPopStateRef.current) {
+        // AdSense や各モーダルが body に残したスクロールロックを強制解除してから scrollTo する。
+        // position:fixed 中は window.scrollY=0 のため scrollTo(0,0) が no-op になり、
+        // fixed 解除後にブラウザが元のスクロール位置を復元して中段から描画が始まる問題を防ぐ。
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
         window.scrollTo(0, 0);
       }
       isPopStateRef.current = false;

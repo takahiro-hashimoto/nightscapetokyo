@@ -19,6 +19,7 @@ const FORMAT_MIN_HEIGHT: Record<AdSlotConfig["format"], number> = {
   auto: 100,        // レスポンシブ矩形: バナー相当
   fluid: 200,       // インアーティクル: 段落高相当
   autorelaxed: 280, // Multiplex: カードグリッド相当
+  fixed: 0,         // 固定サイズ: width/height で制御
 };
 
 /**
@@ -29,10 +30,11 @@ const FORMAT_MIN_HEIGHT: Record<AdSlotConfig["format"], number> = {
  *   → 画面外の広告リクエストを抑制しメインスレッドの負荷を分散
  * - フォーマット別 minHeight を指定して CLS を防止
  */
-export default function AdSenseUnit({ slot, format = "auto", layout, label, className }: Props) {
+export default function AdSenseUnit({ slot, format = "auto", layout, label, className, width, height }: Props) {
   const showAds = useShowAds();
   const containerRef = useRef<HTMLDivElement>(null);
-  const minHeight = FORMAT_MIN_HEIGHT[format];
+  const isFixed = format === "fixed";
+  const minHeight = isFixed ? (height ?? 0) : FORMAT_MIN_HEIGHT[format];
 
   useEffect(() => {
     if (!showAds || !containerRef.current) return;
@@ -43,15 +45,10 @@ export default function AdSenseUnit({ slot, format = "auto", layout, label, clas
       (entries) => {
         if (entries[0].isIntersecting) {
           const ins = el.querySelector<HTMLElement>("ins.adsbygoogle");
-          console.log(`[AdSense] IntersectionObserver fired | slot: ${slot} | status: ${ins?.dataset.adsbygoogleStatus ?? "none"} | t: ${Date.now()}`);
           if (!ins?.dataset.adsbygoogleStatus) {
             try {
-              console.log(`[AdSense] push() start | slot: ${slot} | t: ${Date.now()}`);
               (window.adsbygoogle = window.adsbygoogle || []).push({});
-              console.log(`[AdSense] push() done  | slot: ${slot} | t: ${Date.now()}`);
-            } catch (e) {
-              console.warn(`[AdSense] push() error | slot: ${slot}`, e);
-            }
+            } catch {}
           }
           observer.disconnect();
         }
@@ -95,15 +92,16 @@ export default function AdSenseUnit({ slot, format = "auto", layout, label, clas
     <div className={className} ref={containerRef}>
       <ins
         className="adsbygoogle"
-        style={{
-          display: "block",
-          minHeight, // CLS 防止: フォーマット別に広告ロード前のスペースを確保
-        }}
+        style={
+          isFixed
+            ? { display: "inline-block", width: width ?? 300, height: height ?? 300 }
+            : { display: "block", minHeight }
+        }
         data-ad-client="ca-pub-1569785771112521"
         data-ad-slot={slot}
-        data-ad-format={format}
-        {...(layout ? { "data-ad-layout": layout } : {})}
-        data-full-width-responsive="true"
+        {...(!isFixed ? { "data-ad-format": format } : {})}
+        {...(!isFixed && layout ? { "data-ad-layout": layout } : {})}
+        {...(!isFixed ? { "data-full-width-responsive": "true" } : {})}
       />
     </div>
   );

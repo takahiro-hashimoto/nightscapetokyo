@@ -9,9 +9,12 @@
 
 export type AdSlotConfig = {
   slot: string;
-  format: "auto" | "fluid" | "autorelaxed";
+  format: "auto" | "fluid" | "autorelaxed" | "fixed";
   layout?: "in-article";
   label?: string;
+  /** format="fixed" 時に指定する固定サイズ（px） */
+  width?: number;
+  height?: number;
 };
 
 export const ADS = {
@@ -85,23 +88,27 @@ export const ADS = {
 
   /**
    * シミュレーターサイドバー（SNSシェアボタン下）
-   * 形式: ディスプレイ（auto）
+   * 形式: 固定 300×300
    * 設置: src/components/simulator/SimulatorSidebar.tsx
    */
   SIMULATOR_SIDEBAR: {
-    slot: "2860460061",
-    format: "auto",
+    slot: "1642058803",
+    format: "fixed",
+    width: 300,
+    height: 300,
     label: "シミュレーターサイドバー",
   },
 
   /**
    * 月の出・月の入りサイドバー（SNSシェアボタン下）
-   * 形式: ディスプレイ（auto）
+   * 形式: 固定 300×300
    * 設置: src/components/moon/MoonSidebar.tsx
    */
   MOON_SIDEBAR: {
-    slot: "2860460061",
-    format: "auto",
+    slot: "1642058803",
+    format: "fixed",
+    width: 300,
+    height: 300,
     label: "月ナビサイドバー",
   },
 } as const satisfies Record<string, AdSlotConfig>;

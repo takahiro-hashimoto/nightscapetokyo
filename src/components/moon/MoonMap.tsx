@@ -42,19 +42,12 @@ function MapSizeInvalidator() {
     let prevW = 0, prevH = 0, rafId = 0;
     const ro = new ResizeObserver((entries) => {
       const { width, height } = entries[0].contentRect;
-      console.log(`[MoonMap] ResizeObserver fired | ${width.toFixed(0)}×${height.toFixed(0)} | t: ${Date.now()}`);
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        if (width < 50 || height < 50) {
-          const self = container.getBoundingClientRect();
-          const parent = container.parentElement?.getBoundingClientRect();
-          console.log(`[MoonMap] skipped (too small) | self=${self.width.toFixed(0)}×${self.height.toFixed(0)} | parent=${parent ? parent.width.toFixed(0)+"×"+parent.height.toFixed(0) : "n/a"} | innerH=${window.innerHeight}`);
-          return;
-        }
+        if (width < 50 || height < 50) return;
         if (width !== prevW || height !== prevH) {
           prevW = width; prevH = height;
           map.invalidateSize();
-          console.log(`[MoonMap] invalidateSize() called | t: ${Date.now()}`);
         }
       });
     });
