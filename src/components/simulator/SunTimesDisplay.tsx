@@ -28,24 +28,16 @@ export default function SunTimesDisplay({
 
   return (
     <div className="sim-hour">
-      <table className="sim-hour__table">
-        <thead>
-          <tr>
-            <th>
-              <span className="sim-hour__header">日の出時刻</span>
-            </th>
-            <th>
-              <span className="sim-hour__header">日の入り時刻</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="sim-hour__body">
-          <tr>
-            <td>{sunriseTime ?? "－"}</td>
-            <td>{sunsetTime ?? "－"}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="sim-hour__cols">
+        <div className="sim-hour__col">
+          <span className="sim-hour__label">日の出時刻</span>
+          <span className="sim-hour__time">{sunriseTime ?? "－"}</span>
+        </div>
+        <div className="sim-hour__col">
+          <span className="sim-hour__label">日の入り時刻</span>
+          <span className="sim-hour__time">{sunsetTime ?? "－"}</span>
+        </div>
+      </div>
     </div>
   );
 }

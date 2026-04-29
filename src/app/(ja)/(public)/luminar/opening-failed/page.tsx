@@ -59,6 +59,45 @@ const lead = (
       ネットで「再起動してください」「アップデートしてください」という対処法を見かけますが、正直それで解決するケースは少ないです。なぜなら、
       <strong>重い・落ちる原因は複数あり、原因によって対処法が全く異なる</strong>からです。
     </p>
+    <p>まず自分の症状を選んで、該当セクションに直接飛んでください。</p>
+    <div className="m-table-wrap" style={{ margin: '1rem 0 1.5rem' }}>
+      <table className="m-table">
+        <thead>
+          <tr>
+            <th>症状</th>
+            <th>主な原因</th>
+            <th>対処法へ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>起動しない・突然落ちる</td>
+            <td>カタログの不具合</td>
+            <td><a href="#catalog">カタログ初期化</a></td>
+          </tr>
+          <tr>
+            <td>「Database opening failed」エラー</td>
+            <td>カタログ破損</td>
+            <td><a href="#catalog">カタログ初期化</a></td>
+          </tr>
+          <tr>
+            <td>RAWを開くと重くなる</td>
+            <td>PCスペック・GPU不足</td>
+            <td><a href="#spec">スペック対策</a></td>
+          </tr>
+          <tr>
+            <td>AI処理中に固まる・落ちる</td>
+            <td>メモリ・GPU不足</td>
+            <td><a href="#spec">スペック対策</a></td>
+          </tr>
+          <tr>
+            <td>特定の操作だけ不安定（M1/M2 Macを含む）</td>
+            <td>Neo側の仕様・不具合</td>
+            <td><a href="#neo">Neo側の対処法</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
       この記事では、まず「自分がどの原因に該当するか」を切り分け、
       <strong>その原因に対して今すぐできる対処法</strong>を解説します。闇雲に全部試す必要はありません。

@@ -47,6 +47,46 @@ const lead = (
         <li><strong>コスト差</strong>：5年使うとLightroomは約9〜14万円、Luminar Neoは約1.6〜2.3万円</li>
       </ul>
     </div>
+    <div className="m-table-wrap" style={{ margin: '1.5rem 0' }}>
+      <table className="m-table">
+        <thead>
+          <tr>
+            <th>やりたいこと・重視すること</th>
+            <th>おすすめ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>大量の写真をカタログで一元管理したい</td>
+            <td><strong>Lightroom</strong></td>
+          </tr>
+          <tr>
+            <td>Photoshopと連携したワークフローが前提</td>
+            <td><strong>Lightroom</strong></td>
+          </tr>
+          <tr>
+            <td>商品撮影など色の正確性・再現性が必要</td>
+            <td><strong>Lightroom</strong></td>
+          </tr>
+          <tr>
+            <td>夜景・風景のノイズ除去を手軽に仕上げたい</td>
+            <td><strong>Luminar Neo</strong></td>
+          </tr>
+          <tr>
+            <td>空の置き換え・光の演出など創作的な編集をしたい</td>
+            <td><strong>Luminar Neo</strong></td>
+          </tr>
+          <tr>
+            <td>ポートレート補正を短時間で仕上げたい</td>
+            <td><strong>Luminar Neo</strong></td>
+          </tr>
+          <tr>
+            <td>買い切りでサブスク費用を抑えたい</td>
+            <td><strong>Luminar Neo</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <LuminarCtaMini />
   </>
 )

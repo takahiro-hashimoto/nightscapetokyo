@@ -9,16 +9,22 @@ interface Props {
   faq: { q: string; a: string }[];
 }
 
+const SEEN_KEY = "moon_seen_info";
+
 export default function MoonInfoModal({ faq }: Props) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    if (!localStorage.getItem(SEEN_KEY)) setOpen(true);
     const handler = () => setOpen(true);
     window.addEventListener("moon:open-info", handler);
     return () => window.removeEventListener("moon:open-info", handler);
   }, []);
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    localStorage.setItem(SEEN_KEY, "1");
+    setOpen(false);
+  };
 
   if (!open) return null;
 
@@ -26,11 +32,14 @@ export default function MoonInfoModal({ faq }: Props) {
     <div className="moon-info-modal" onClick={handleClose}>
       <div
         className="moon-info-modal__container"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="moon-info-modal-title"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ダークヘッダー */}
         <div className="moon-info-modal__header">
-          <h1 className="moon-info-modal__title">
+          <h1 id="moon-info-modal-title" className="moon-info-modal__title">
             月の出・月の入り時刻方角ナビ
             <span className="moon-info-modal__subtitle">月出・月入の方角と時刻シミュレーター</span>
           </h1>

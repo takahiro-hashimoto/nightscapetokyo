@@ -6,10 +6,13 @@
 .moon-container {
   display: flex;
   height: 100vh;
+  height: 100dvh;
+  min-height: 100svh;
   width: 100vw;
   position: relative;
   min-height: 0;
   overflow: hidden;
+  overscroll-behavior: none;
   font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic",
     YuGothic, "Noto Sans CJK JP", -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
@@ -122,11 +125,11 @@
 
 /* --- Moon times (sidebar table) --- */
 .moon-hour {
-  background-color: #32343a;
-  padding: 10px 16px 4px;
-  border-radius: 8px;
   color: #e0e0e0;
+  background-color: #32343a;
   border: 1px solid #3e4046;
+  border-radius: 8px;
+  padding: 6px 8px 6px;
 }
 
 .moon-hour__cols {
@@ -149,16 +152,22 @@
 }
 
 .moon-hour__time {
-  font-size: 1.3rem;
-  font-weight: bold;
   color: #e0e0e0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1.2;
 }
 
 .moon-hour__phase {
+  color: #e0e0e0;
   font-size: 0.85rem;
   font-weight: bold;
-  color: #e0e0e0;
-  line-height: 1.4;
+  line-height: 1.7;
+}
+
+.moon-illumination {
+  font-size: 0.75em;
+  font-weight: normal;
 }
 
 .moon-hour__table {
@@ -627,7 +636,7 @@
   flex-direction: column;
   width: 100%;
   max-width: 560px;
-  max-height: 92vh;
+  max-height: 80vh;
   animation: .28s moon-info-in;
   display: flex;
   overflow: hidden;
@@ -799,7 +808,9 @@
 
 /* Mobile layout (default) */
 .moon-container {
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .moon-sp-header,
@@ -807,10 +818,27 @@
   display: block;
 }
 
+.moon-sp-header,
+.moon-sp-footer,
+.moon-map {
+  min-height: 0;
+}
+
+.moon-sp-footer {
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+}
+
+.moon-map {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* Desktop layout */
 @media (min-width: 768px) {
   .moon-container {
+    display: flex;
     flex-direction: row;
+    min-height: 0;
   }
 
   .moon-sidebar {

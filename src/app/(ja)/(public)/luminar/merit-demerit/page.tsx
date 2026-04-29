@@ -8,7 +8,7 @@ import type { TocItem } from '@/lib/luminar/toc'
 
 const META = {
   slug: 'merit-demerit',
-  title: '【長期使用レビュー】Luminar Neoのメリット・デメリットを現役フォトグラファーが解説',
+  title: 'Luminar Neoのメリット・デメリット｜1年以上使ったリアルな評価【2026年】',
   description: '「Luminar Neo（ルミナーネオ）」って実際どうなの？Adobeから乗り換える価値はある？LightroomとPhotoshopのサブスクは年間3万円近く。1年以上使い込んで感じたリアルな良い点・イマイチな点を包み隠さずお伝えします。',
   publishedAt: '2026-01-18T10:37:52',
   updatedAt: '2026-01-25T20:26:56',

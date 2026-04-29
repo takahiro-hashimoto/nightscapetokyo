@@ -9,16 +9,22 @@ interface Props {
   faq: { q: string; a: string }[];
 }
 
+const SEEN_KEY = "sim_seen_info";
+
 export default function SimulatorInfoModal({ faq }: Props) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    if (!localStorage.getItem(SEEN_KEY)) setOpen(true);
     const handler = () => setOpen(true);
     window.addEventListener("sim:open-info", handler);
     return () => window.removeEventListener("sim:open-info", handler);
   }, []);
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    localStorage.setItem(SEEN_KEY, "1");
+    setOpen(false);
+  };
 
   if (!open) return null;
 
@@ -26,11 +32,14 @@ export default function SimulatorInfoModal({ faq }: Props) {
     <div className="sim-info-modal" onClick={handleClose}>
       <div
         className="sim-info-modal__container"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="sim-info-modal-title"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ダークヘッダー */}
         <div className="sim-info-modal__header">
-          <h1 className="sim-info-modal__title">
+          <h1 id="sim-info-modal-title" className="sim-info-modal__title">
             日の出・日の入り方角ナビ
             <span className="sim-info-modal__subtitle">朝日と夕日の方角・時刻シミュレーター</span>
           </h1>

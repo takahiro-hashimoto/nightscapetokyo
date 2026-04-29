@@ -20,7 +20,6 @@ export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
         className="hero-bg hero-bg--pc"
         fill
         priority
-        fetchPriority="high"
         sizes="(max-width: 768px) 1px, 100vw"
         quality={75}
       />

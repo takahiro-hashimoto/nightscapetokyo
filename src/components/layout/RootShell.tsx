@@ -5,7 +5,6 @@ export default function RootShell({
   headContent,
   children,
 }: {
-  lang: string;
   headContent?: React.ReactNode;
   children: React.ReactNode;
 }) {

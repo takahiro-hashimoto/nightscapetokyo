@@ -176,9 +176,7 @@
     max-width: 96vw;
     max-height: calc(85vh - 64px);
   }
-  .gallery-modal-footer {
-    bottom: 28% !important;
-  }
+
 }
 
 .gallery-modal-footer {

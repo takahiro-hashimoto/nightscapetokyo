@@ -62,6 +62,10 @@ const lead = (
         <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>コスパ最強は「買い切り＋パス1年だけ」</strong>（約¥25,200で永続）</li>
       </ul>
     </div>
+    <p style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginTop: '0.5rem' }}>
+      <i className="fa-solid fa-calendar-check" style={{ marginRight: '0.3rem' }}></i>
+      料金・プラン情報確認日: {new Date(META.updatedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+    </p>
     <LuminarCtaMini />
   </>
 )

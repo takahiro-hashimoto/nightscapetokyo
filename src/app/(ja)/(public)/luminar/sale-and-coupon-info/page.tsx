@@ -4,11 +4,12 @@ import Link from 'next/link'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
+import { SALE_NAME, SALE_START, SALE_END } from '@/lib/luminar/config'
 
 
 const META = {
   slug: 'sale-and-coupon-info',
-  title: '【割引情報まとめ】Luminar Neoのクーポンコード・セール情報を解説！安く買う方法がわかる',
+  title: 'Luminar Neoを安く買う方法｜セール時期・クーポンコードまとめ【2026年】',
   description: '「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」Luminar Neoは定価だと5万円以上する写真編集ソフトですが、実は購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能です。',
   publishedAt: '2026-01-18T10:36:49',
   updatedAt: '2026-04-08T11:42:25',
@@ -33,30 +34,59 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildArticleMetadata(META)
 }
 
-const lead = (
-  <>
-    <p>「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」</p>
-    <p>Luminar Neoは定価だと5万円以上する写真編集ソフトですが、実は<strong>購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能</strong>です。</p>
-    <p>ただし、セールの開催時期はバラバラで、「いつ買えばいいの？」と迷っている方も多いのではないでしょうか。</p>
-    <p>そこで本記事では、現在使えるクーポンコード、過去のセール傾向から読み解く次回セールの予想、そしてお得に購入するための具体的な方法を詳しく解説します。「今買うべきか、セールを待つべきか」の判断材料にしてください。</p>
-    <div className="m-point-box">
-      <div className="m-point-box__bg">!</div>
-      <div className="m-point-box__header">
-        <span className="m-point-box__label">まとめ</span><br />
-        <span className="m-point-box__title">最安で購入するための3つのポイント</span>
+function buildLead(isSaleActive: boolean, saleName: string) {
+  return (
+    <>
+      <div className="m-notice m-notice--warn">
+        <div className="m-notice__head">
+          <span className="m-notice__badge">現在のセール状況</span>
+          <span className="m-notice__title">
+            {isSaleActive ? `${saleName} 開催中！` : 'セールは開催されていません'}
+          </span>
+        </div>
+        <p>
+          {isSaleActive
+            ? `クーポンコード「nightscape10」との併用でさらにお得に購入できます。`
+            : `現在セールは開催されていません。クーポンコード「nightscape10」で10%OFFは常時ご利用いただけます。次の大型セールはブラックフライデー（11月）やサマーセール（6〜8月）が狙い目です。`}
+        </p>
       </div>
-      <ul className="m-point-box__list">
-        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>セール期間中</strong>にクーポンコードを併用する</li>
-        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 急ぎでなければ<strong>ブラックフライデー（11月）</strong>や<strong>サマーセール（6〜8月）</strong>を狙う</li>
-        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>30日間の返金保証</strong>があるため、セールを逃すリスクを避けて先に購入するのもあり</li>
-      </ul>
-    </div>
-    <LuminarCtaMini />
-  </>
-)
+      <p>「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」</p>
+      <p>Luminar Neoは定価だと5万円以上する写真編集ソフトですが、実は<strong>購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能</strong>です。</p>
+      <p>ただし、セールの開催時期はバラバラで、「いつ買えばいいの？」と迷っている方も多いのではないでしょうか。</p>
+      <p>そこで本記事では、現在使えるクーポンコード、過去のセール傾向から読み解く次回セールの予想、そしてお得に購入するための具体的な方法を詳しく解説します。「今買うべきか、セールを待つべきか」の判断材料にしてください。</p>
+      <div className="m-point-box">
+        <div className="m-point-box__bg">!</div>
+        <div className="m-point-box__header">
+          <span className="m-point-box__label">まとめ</span><br />
+          <span className="m-point-box__title">最安で購入するための3つのポイント</span>
+        </div>
+        <ul className="m-point-box__list">
+          <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>セール期間中</strong>にクーポンコードを併用する</li>
+          <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 急ぎでなければ<strong>ブラックフライデー（11月）</strong>や<strong>サマーセール（6〜8月）</strong>を狙う</li>
+          <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>30日間の返金保証</strong>があるため、セールを逃すリスクを避けて先に購入するのもあり</li>
+        </ul>
+      </div>
+      <LuminarCtaMini />
+    </>
+  )
+}
+
+const FAQ_JSON_LD = [
+  { '@type': 'Question', name: '購入後に気に入らなかった場合は？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoには購入後30日間の返金保証があります。実際に使ってみて自分に合わないと感じた場合でも、リスクなく試すことができます。返金手続きはサポートに連絡するだけで簡単に行えます。' } },
+  { '@type': 'Question', name: '無料体験版はある？', acceptedAnswer: { '@type': 'Answer', text: 'はい、7日間の無料体験版があります。ただし、セール期間中は体験版を試している間にセールが終わってしまうリスクがあります。返金保証が30日間あるため、セール中であれば先に購入してしまうのがおすすめです。' } },
+  { '@type': 'Question', name: 'クーポンはセール価格と併用できる？', acceptedAnswer: { '@type': 'Answer', text: 'はい、「セール割引」と「プロモーションコード」は併用可能です。セール価格からさらに10%OFFが適用されます。ただし、クーポン同士（複数のプロモーションコード）の併用はできません。' } },
+  { '@type': 'Question', name: '何台のPCで使える？', acceptedAnswer: { '@type': 'Answer', text: '買い切りの永久ライセンス デスクトップ版は2台のパソコンでアクティベートできます。クロスデバイス版はさらに3台のモバイルデバイスでも利用可能です。' } },
+  { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'いいえ、使えません。Proツール（Noiseless AI、HDR Mergeなど8種）は買い切りプランには含まれていません。Upgrade PassまたはEcosystem Passの購入が必要です。ただし、一度パスを購入すればProツールは永続的に使えます。' } },
+  { '@type': 'Question', name: '1年で使えなくなる機能があるの？', acceptedAnswer: { '@type': 'Answer', text: '基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのはGenErase・GenSwap・GenExpandという3つの生成AI機能のみです。Proツールは一度パスを購入すれば永続的に使えます。' } },
+]
 
 export default async function Page() {
+  const now = new Date()
+  const isSaleActive = now >= new Date(SALE_START) && now <= new Date(SALE_END)
+  const lead = buildLead(isSaleActive, SALE_NAME)
+
   return (
+    <>
     <LuminarArticleLayout {...META} categoryIds={[1]} toc={TOC} lead={lead}>
 
       <section id="how-to-save" className="content-card card-padding article-body">
@@ -311,5 +341,16 @@ export default async function Page() {
       </section>
 
     </LuminarArticleLayout>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: FAQ_JSON_LD,
+        }),
+      }}
+    />
+    </>
   )
 }

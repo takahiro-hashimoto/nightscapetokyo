@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useCallback } from "react";
+import dynamic from "next/dynamic";
+import { Camera } from "lucide-react";
 import Image from "next/image";
 import type { SpotImage } from "@/lib/types";
+
+const SpotGalleryModal = dynamic(() => import("./SpotGalleryModal"), { ssr: false });
 
 type Props = {
   images: SpotImage[];
@@ -36,45 +39,9 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
     );
   }, [images.length]);
 
-  const isOpen = selectedIndex !== null;
-
-  /* キーボード操作 */
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-      else if (e.key === "ArrowLeft") prev();
-      else if (e.key === "ArrowRight") next();
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, close, prev, next]);
-
-  /* スクロールロック — 開閉時のみ発火（ナビゲーション時は再実行しない） */
-  useEffect(() => {
-    if (!isOpen) return;
-    const scrollY = window.scrollY;
-    document.body.style.overflow = "hidden";
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = "100%";
-    document.body.classList.add("modal-open");
-    return () => {
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      document.body.classList.remove("modal-open");
-      window.scrollTo(0, scrollY);
-    };
-  }, [isOpen]);
-
   if (images.length === 0) return null;
 
-  const heading = headingProp
-    ?? (spotName ? `${spotName}の景色・写真` : "景色・写真");
-
-  const current = selectedIndex !== null ? images[selectedIndex] : null;
+  const heading = headingProp ?? (spotName ? `${spotName}の景色・写真` : "景色・写真");
 
   return (
     <section
@@ -91,102 +58,38 @@ export default function SpotGallery({ images, spotName, heading: headingProp }: 
       <ul className="gallery-grid">
         {images.map((img, i) => (
           <li key={img.id} className="gallery-item">
-          <figure>
-            <button
-              type="button"
-              className="gallery-item-btn"
-              onClick={() => openModal(i)}
-              aria-label={img.alt || `写真 ${i + 1}`}
-            >
-              <Image
-                src={img.url}
-                alt={img.alt || ""}
-                width={300}
-                height={200}
-                sizes="(max-width: 768px) 50vw, 220px"
-                loading="lazy"
-              />
-            </button>
-            {img.alt && <figcaption>{img.alt}</figcaption>}
-          </figure>
+            <figure>
+              <button
+                type="button"
+                className="gallery-item-btn"
+                onClick={() => openModal(i)}
+                aria-label={img.alt || `写真 ${i + 1}`}
+              >
+                <Image
+                  src={img.url}
+                  alt={img.alt || ""}
+                  width={300}
+                  height={200}
+                  sizes="(max-width: 768px) 50vw, 220px"
+                  loading="lazy"
+                />
+              </button>
+              {img.alt && <figcaption>{img.alt}</figcaption>}
+            </figure>
           </li>
         ))}
       </ul>
 
-      {/* ライトボックス モーダル */}
-      {current && (
-        <div
-          className="modal-overlay gallery-modal-overlay"
-          onClick={close}
-          role="dialog"
-          aria-modal="true"
-          aria-label="画像プレビュー"
-        >
-          {/* 閉じる */}
-          <button
-            type="button"
-            className="gallery-modal-close"
-            onClick={close}
-            aria-label="閉じる"
-          >
-            <X size={28} />
-          </button>
-
-          {/* 前へ */}
-          {images.length > 1 && (
-            <button
-              type="button"
-              className="gallery-modal-prev"
-              onClick={(e) => {
-                e.stopPropagation();
-                prev();
-              }}
-              aria-label="前の画像"
-            >
-              <ChevronLeft size={36} />
-            </button>
-          )}
-
-          {/* 画像 + フッター */}
-          <div className="gallery-modal-body" onClick={(e) => e.stopPropagation()}>
-            <div className="gallery-modal-image-wrap">
-              {isLoading && <div className="gallery-modal-skeleton" aria-hidden="true" />}
-              <Image
-                src={current.url}
-                alt={current.alt || ""}
-                width={1200}
-                height={800}
-                sizes="(max-width: 768px) 1000px, 1200px"
-                className="gallery-modal-image"
-                onLoad={() => setIsLoading(false)}
-              />
-            </div>
-            {/* キャプション + カウンター */}
-            <div className="gallery-modal-footer">
-              {current.alt && (
-                <p className="gallery-modal-caption">{current.alt}</p>
-              )}
-              <p className="gallery-modal-counter">
-                {selectedIndex! + 1} / {images.length}
-              </p>
-            </div>
-          </div>
-
-          {/* 次へ */}
-          {images.length > 1 && (
-            <button
-              type="button"
-              className="gallery-modal-next"
-              onClick={(e) => {
-                e.stopPropagation();
-                next();
-              }}
-              aria-label="次の画像"
-            >
-              <ChevronRight size={36} />
-            </button>
-          )}
-        </div>
+      {selectedIndex !== null && (
+        <SpotGalleryModal
+          images={images}
+          selectedIndex={selectedIndex}
+          isLoading={isLoading}
+          onClose={close}
+          onPrev={prev}
+          onNext={next}
+          onLoad={() => setIsLoading(false)}
+        />
       )}
     </section>
   );

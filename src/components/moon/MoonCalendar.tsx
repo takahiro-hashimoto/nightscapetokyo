@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SunCalc from "suncalc";
 import MoonPhaseIcon from "./MoonPhaseIcon";
+import { useCalendarState } from "@/hooks/useCalendarState";
 
 interface MoonCalendarProps {
   selectedDate: Date;
@@ -11,13 +12,7 @@ interface MoonCalendarProps {
 }
 
 export default function MoonCalendar({ selectedDate, onDateChange }: MoonCalendarProps) {
-  const [viewYear, setViewYear] = useState(() => selectedDate.getFullYear());
-  const [viewMonth, setViewMonth] = useState(() => selectedDate.getMonth());
-
-  useEffect(() => {
-    setViewYear(selectedDate.getFullYear());
-    setViewMonth(selectedDate.getMonth());
-  }, [selectedDate.getFullYear(), selectedDate.getMonth()]);
+  const { viewYear, viewMonth, prevMonth, nextMonth } = useCalendarState(selectedDate);
 
   const calendarData = useMemo(() => {
     const firstDay = new Date(viewYear, viewMonth, 1).getDay();
@@ -30,15 +25,6 @@ export default function MoonCalendar({ selectedDate, onDateChange }: MoonCalenda
     }
     return { firstDay, days };
   }, [viewYear, viewMonth]);
-
-  const prevMonth = () => {
-    if (viewMonth === 0) { setViewMonth(11); setViewYear(y => y - 1); }
-    else setViewMonth(m => m - 1);
-  };
-  const nextMonth = () => {
-    if (viewMonth === 11) { setViewMonth(0); setViewYear(y => y + 1); }
-    else setViewMonth(m => m + 1);
-  };
 
   const today = new Date();
 

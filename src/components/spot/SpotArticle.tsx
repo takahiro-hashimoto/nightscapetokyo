@@ -29,6 +29,7 @@ import type { ComponentLabels } from "@/lib/i18n-labels";
 import { buildSpotJsonLd } from "@/lib/spot-json-ld";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
+import YouTubeFacade from "@/components/home/YouTubeFacade";
 
 type Props = {
   spot: SpotWithRelations;
@@ -194,10 +195,19 @@ export default function SpotArticle({
                 </span>
                 {labels.movie.heading(spotName)}
               </h2>
-              <div
-                className="video-container"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.movie) }}
-              />
+              {(() => {
+                const ytMatch = spot.movie.match(/youtube(?:-nocookie)?\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+                return ytMatch ? (
+                  <div className="video-container">
+                    <YouTubeFacade videoId={ytMatch[1]} title={spotName} />
+                  </div>
+                ) : (
+                  <div
+                    className="video-container"
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(spot.movie) }}
+                  />
+                );
+              })()}
               <div className="movie-timelapse-link">
                 <Link href={currentLocale ? `/${currentLocale}/time-lapse/` : "/time-lapse/"}>
                   {labels.movie.timeLapseLink}

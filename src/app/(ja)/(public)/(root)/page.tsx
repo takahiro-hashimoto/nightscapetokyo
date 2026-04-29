@@ -9,7 +9,7 @@ import HomeFaq from "@/components/home/HomeFaq";
 import HomeAuthor from "@/components/home/HomeAuthor";
 import HomePrBanner from "@/components/home/HomePrBanner";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { getTopSpots, getHotelSpots, getAreas, getPurposeTags, getTotalSpotCount, getRecentSpots, getSpotsForMap, getArticlesBySlugs } from "@/lib/supabase/queries";
+import { getTopSpots, getHotelSpots, getAreas, getPurposeTags, getTotalSpotCount, getSpotsForMap } from "@/lib/supabase/queries";
 import HomeNewsAndVideos from "@/components/home/HomeNewsAndVideos";
 import HomeMapSection from "@/components/home/HomeMapSection";
 import HomeArticles from "@/components/home/HomeArticles";
@@ -18,7 +18,6 @@ import { getComponentLabels } from "@/lib/i18n-labels";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildHomeHreflangAlternates } from "@/lib/types";
 import { buildFaqJsonLd, buildItemListJsonLd } from "@/lib/json-ld";
 import SpotShare from "@/components/spot/SpotShare";
-import { LUMINAR_ARTICLE } from "@/lib/featured-articles";
 
 export async function generateMetadata(): Promise<Metadata> {
   const hp = getComponentLabels("ja").homePage;
@@ -51,27 +50,16 @@ export default async function Home() {
   const sunData = calculateSunData(new Date(), 35.6895, 139.6917);
   const labels = getComponentLabels("ja");
 
-  const ARTICLE_SLUGS = [
-    "how-to-camera-setting",
-    "airos-skyview",
-    "my-photographic-equipment",
-    "camera-beginner-item",
-    "how-to-night-photo",
-  ];
-
-  const [spots, hotels, areas, purposeTags, spotCount, recentSpots, mapSpots, fetchedArticles] = await Promise.all([
+  const [spots, hotels, areas, purposeTags, spotCount, mapSpots] = await Promise.all([
     getTopSpots(12).catch(() => []),
     getHotelSpots(4).catch(() => []),
     getAreas().catch(() => []),
     getPurposeTags().catch(() => []),
     getTotalSpotCount().catch(() => 200),
-    getRecentSpots(10).catch(() => []),
     getSpotsForMap().catch(() => []),
-    getArticlesBySlugs(ARTICLE_SLUGS).catch(() => []),
   ]);
 
-  const articles = [LUMINAR_ARTICLE, ...fetchedArticles];
-  const mapSeoSpots = mapSpots.map((spot) => ({
+  const mapSeoSpots = mapSpots.slice(0, 50).map((spot) => ({
     id: spot.id,
     slug: spot.slug,
     name: spot.name,
@@ -96,12 +84,12 @@ export default async function Home() {
       <HotelRanking hotels={hotels} />
       <PurposeSearch tags={purposeTags} />
       <AreaSearch areas={areas} />
-      <HomeMapSection spots={mapSeoSpots} categories={areas.map((a) => ({ slug: a.slug, name: a.name }))} initialSpots={mapSpots} />
+      <HomeMapSection spots={mapSeoSpots} categories={areas.map((a) => ({ slug: a.slug, name: a.name }))} />
       <Suspense fallback={null}>
-        <HomeArticles articles={articles} />
+        <HomeArticles />
       </Suspense>
       <Suspense fallback={null}>
-        <HomeNewsAndVideos recentSpots={recentSpots} />
+        <HomeNewsAndVideos />
       </Suspense>
       <Suspense fallback={null}>
         <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={labels.homePage.faq} />

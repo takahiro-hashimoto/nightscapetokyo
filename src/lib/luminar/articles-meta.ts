@@ -49,9 +49,9 @@ const ARTICLES: NormalizedPostSummary[] = [
   {
     id: 1,
     slug: 'sale-and-coupon-info',
-    title: '【割引情報まとめ】Luminar Neoのクーポンコード・セール情報を解説！安く買う方法がわかる',
+    title: 'Luminar Neoを安く買う方法｜セール時期・クーポンコードまとめ【2026年】',
     description:
-      '「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」Luminar Neoは定価だと5万円以上する写真編集ソフトですが、実は購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能です。',
+      'Luminar Neoを最安値で手に入れる方法を解説。ブラックフライデーなどのセール時期、当サイト限定クーポンコードの使い方、返金保証の活用まで、購入タイミングと手順をまとめています。',
     publishedAt: '2026-01-18T10:36:49',
     updatedAt: '2026-04-21T00:00:00',
     featuredImage: {
@@ -100,9 +100,9 @@ const ARTICLES: NormalizedPostSummary[] = [
   {
     id: 4,
     slug: 'merit-demerit',
-    title: '【長期使用レビュー】Luminar Neoのメリット・デメリットを現役フォトグラファーが解説',
+    title: 'Luminar Neoのメリット・デメリット｜1年以上使ったリアルな評価【2026年】',
     description:
-      '「Luminar Neo（ルミナーネオ）」って実際どうなの？Adobeから乗り換える価値はある？LightroomとPhotoshopのサブスクは年間3万円近く。1年以上使い込んで感じたリアルな良い点・イマイチな点を包み隠さずお伝えします。',
+      'Luminar Neoを1年以上使い続けた現役フォトグラファーによるリアルなレビュー。AIで現像が速くなる反面、動作の重さや写真管理の弱さも正直に解説。Adobeからの乗り換えを検討中の方向け。',
     publishedAt: '2026-01-18T10:37:52',
     updatedAt: '2026-04-21T00:00:00',
     featuredImage: {
@@ -134,9 +134,9 @@ const ARTICLES: NormalizedPostSummary[] = [
   {
     id: 6,
     slug: 'expand',
-    title: 'Luminar Neoの拡張機能まとめ。できること・メリットと価格プランの選び方',
+    title: 'Luminar Neo Proツールは必要？拡張機能の内容と買い切りとの違い【2026年】',
     description:
-      'Luminar Neoを使い始めて、ふと気になったことはありませんか？「Proツール（拡張機能）って、結局のところ必要なの？」と。 僕自身、最初はLuminar…',
+      'Luminar NeoのProツール8種（Noiseless AI・超解像・HDR合成など）が本当に必要かを解説。買い切りプランに含まれる機能との違い、コスパの良い追加方法まで具体的にまとめています。',
     publishedAt: '2026-01-19T09:32:32',
     updatedAt: '2026-04-21T00:00:00',
     featuredImage: {
@@ -151,9 +151,9 @@ const ARTICLES: NormalizedPostSummary[] = [
   {
     id: 7,
     slug: 'faq',
-    title: 'Luminar Neoの購入前によくある質問まとめ｜動作環境・対応カメラ・ライセンスの疑問を解決【FAQ】',
+    title: 'Luminar Neo購入前FAQ｜動作環境・対応カメラ・ライセンスの疑問を解決【2026年】',
     description:
-      '「Luminar Neoって自分に合うのかな？」「買ってから後悔しない？」——そんな不安を抱えている方、多いと思います。このページでは、購入前によく寄せられる疑問をSkylum公式のカスタマーサポートにも問い合わせた上でQ&A形式でまとめました。',
+      'Luminar Neo購入前によく寄せられる疑問をQ&A形式で解説。動作環境の目安、対応カメラ・RAW形式、ライセンスの仕組みなど、Skylum公式サポートにも確認した情報をまとめています。',
     publishedAt: '2026-01-19T10:28:58',
     updatedAt: '2026-04-21T00:00:00',
     featuredImage: {
@@ -170,7 +170,7 @@ const ARTICLES: NormalizedPostSummary[] = [
     slug: 'voice',
     title: 'Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態',
     description:
-      '「Luminar Neoって実際どうなの？」「買って後悔しない？」という疑問を持っている方も多いはず。 ネットで評判を調べると、「AIがすごい！」という絶賛から…',
+      'SNSや購入者レビューからLuminar Neoの評判を良い・悪いに分けて整理しました。AIの手軽さを評価する声と、動作の重さへの不満が多い実態、初心者と上級者で評価がどう分かれるかも解説します。',
     publishedAt: '2026-01-22T23:14:58',
     updatedAt: '2026-04-21T00:00:00',
     featuredImage: {

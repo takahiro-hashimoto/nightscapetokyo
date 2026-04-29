@@ -17,6 +17,9 @@ import {
 
 const OG_IMAGE = 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/main-after.jpg'
 
+const META_DESCRIPTION =
+  'Luminar Neoとは何か、料金プランの違い、Lightroomとの比較、最安の買い方まで現役フォトグラファーがわかりやすく解説。7日間無料体験版・30日返金保証あり。'
+
 const FAQ_JSON_LD = [
   {
     '@type': 'Question',
@@ -90,12 +93,12 @@ export const metadata: Metadata = {
   title: {
     absolute: `${LUMINAR_SITE_NAME}｜ ${LUMINAR_SITE_DESCRIPTION}`,
   },
-  description: LUMINAR_SITE_DESCRIPTION,
+  description: META_DESCRIPTION,
   openGraph: {
     type: 'website',
     url: `${LUMINAR_SITE_URL}/`,
     title: `${LUMINAR_SITE_NAME}｜ ${LUMINAR_SITE_DESCRIPTION}`,
-    description: LUMINAR_SITE_DESCRIPTION,
+    description: META_DESCRIPTION,
     images: [{ url: OG_IMAGE, width: 880, height: 495, alt: 'Luminar Neo完全購入ガイド' }],
   },
   twitter: {
@@ -418,53 +421,20 @@ export default async function LuminarTopPage() {
             <section id="discount" className="content-card card-padding article-body">
               <h2>ルミナーネオを<br className="sp-only" />安く買う方法はある？</h2>
 
-              <figure style={{ margin: '0 0 1.5rem' }}>
-                <Image
-                  src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-sale.jpg"
-                  alt="ルミナーネオを安く買う方法"
-                  width={880}
-                  height={495}
-                  style={{ width: '100%', height: 'auto' }}
-                />
-                <figcaption style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-text-light)', marginTop: '0.5rem' }}>
-                  ルミナーネオをお手頃に買うために知っておきたいこと
-                </figcaption>
-              </figure>
-
               <p>
                 Luminar Neoは定期的にセールを実施しており、タイミングが合えば
                 <strong>最大40〜50%オフ</strong>で購入できることもあります。
+                ブラックフライデー（11月）やサマーセール（7〜8月）が特に狙い目です。
               </p>
               <p>
-                特にブラックフライデーやサマーセールは狙い目。急ぎでなければセール時期まで待つのが
-                賢い選択です。また、まずは7日間の無料体験版で試してから購入を検討するのが確実ですよ。
+                当サイト限定のクーポンコードもあり、セールと併用できる場合もあります。
+                購入から30日間は返金保証があるので、体験版で試してから購入しても安心です。
+                セール時期の詳細・クーポンの使い方は下記で解説しています。
               </p>
-
-              <h3>セール・クーポン・返金保証について</h3>
-
-              <div className="definition l-bottom-large">
-                <dl className="definition-body">
-                  <dt>主なセール時期</dt>
-                  <dd>
-                    ブラックフライデー（11月）、サマーセール（7〜8月）、アニバーサリーセール、年末年始など。
-                    割引率は30〜50%程度になることが多いです。
-                  </dd>
-                  <dt>クーポンコード</dt>
-                  <dd>
-                    当サイト限定の割引コードを用意しています。セールと併用できる場合もあるので、
-                    詳細は下記記事をチェックしてみてください。
-                  </dd>
-                  <dt>返金保証</dt>
-                  <dd>
-                    購入から30日間は返金保証があります。体験版で基本を試し、購入後にProツールを
-                    使ってみて合わなければ返金、という流れも可能です。
-                  </dd>
-                </dl>
-              </div>
 
               <div className="u-text-center" style={{ marginTop: '2rem' }}>
                 <Link href="/luminar/sale-and-coupon-info/" className="m-btn m-btn--primary">
-                  Luminar Neoのセール・クーポン情報
+                  セール時期・クーポンの詳細を確認する
                 </Link>
               </div>
             </section>
@@ -543,6 +513,7 @@ export default async function LuminarTopPage() {
             {/* ⑨ 記事一覧 */}
             <section id="articles" style={{ padding: '0 0 2rem' }}>
               <h2 style={{ padding: '0 16px 1rem', fontSize: '1.1rem', fontWeight: 700 }}>目的別に詳しく知りたい人はこちら</h2>
+
               <div className="l-grid-3">
                 {articles.map((article) => (
                   <article className="m-post-card" key={article.slug}>
@@ -569,6 +540,20 @@ export default async function LuminarTopPage() {
                           className="m-post-card__title"
                           dangerouslySetInnerHTML={{ __html: article.title }}
                         />
+                        {article.description && (
+                          <p style={{
+                            fontSize: '0.78rem',
+                            color: 'var(--color-text-light)',
+                            margin: '0.4rem 0 0',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            lineHeight: 1.6,
+                          }}>
+                            {article.description}
+                          </p>
+                        )}
                       </div>
                     </Link>
                   </article>
@@ -612,7 +597,7 @@ export default async function LuminarTopPage() {
                 '@id': `${LUMINAR_SITE_URL}/`,
                 url: `${LUMINAR_SITE_URL}/`,
                 name: `${LUMINAR_SITE_NAME} | ${LUMINAR_SITE_DESCRIPTION}`,
-                description: LUMINAR_SITE_DESCRIPTION,
+                description: META_DESCRIPTION,
                 inLanguage: 'ja-JP',
                 publisher: {
                   '@type': 'Organization',

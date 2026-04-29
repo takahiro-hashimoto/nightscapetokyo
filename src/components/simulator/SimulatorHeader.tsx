@@ -17,9 +17,9 @@ export default function SimulatorHeader({
   };
 
   return (
-    <div className="sim-sp-header">
+    <header className="sim-sp-header">
       <div className="sim-sp-header__top">
-        <p className="sim-sp-header__title">日の出・日の入り方角ナビ</p>
+        <h1 className="sim-sp-header__title">日の出・日の入り方角ナビ</h1>
         <button className="sim-sp-header__btn" onClick={handleMenuClick} aria-label="メニューを開く">
           <HelpCircle size={20} />
         </button>
@@ -29,6 +29,6 @@ export default function SimulatorHeader({
         sunsetTime={sunsetTime}
         variant="header"
       />
-    </div>
+    </header>
   );
 }

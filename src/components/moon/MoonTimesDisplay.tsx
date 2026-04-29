@@ -35,7 +35,7 @@ export default function MoonTimesDisplay({
         <div className="moon-hour-header__phase">
           <span className="moon-hour-header__label">月の満ち欠け</span>
           <span className="moon-hour-header__phase-name">
-            {phaseName}（{illuminationPercent}%）
+            {phaseName}<span className="moon-illumination">（{illuminationPercent}%）</span>
           </span>
         </div>
       </div>
@@ -55,7 +55,7 @@ export default function MoonTimesDisplay({
         </div>
         <div className="moon-hour__col">
           <span className="moon-hour__label">月の満ち欠け</span>
-          <span className="moon-hour__phase">{phaseName}（{illuminationPercent}%）</span>
+          <span className="moon-hour__phase">{phaseName}<span className="moon-illumination">（{illuminationPercent}%）</span></span>
         </div>
       </div>
     </div>

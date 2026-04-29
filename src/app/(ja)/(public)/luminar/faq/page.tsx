@@ -7,7 +7,7 @@ import type { TocItem } from '@/lib/luminar/toc'
 
 const META = {
   slug: 'faq',
-  title: 'Luminar Neoの購入前によくある質問まとめ｜動作環境・対応カメラ・ライセンスの疑問を解決【FAQ】',
+  title: 'Luminar Neo購入前FAQ｜動作環境・対応カメラ・ライセンスの疑問を解決【2026年】',
   description: '「Luminar Neoって自分に合うのかな？」「買ってから後悔しない？」——そんな不安を抱えている方、多いと思います。このページでは、購入前によく寄せられる疑問をSkylum公式のカスタマーサポートにも問い合わせた上でQ&A形式でまとめました。',
   publishedAt: '2026-01-19T10:28:58',
   updatedAt: '2026-01-23T13:49:18',
@@ -43,8 +43,31 @@ const lead = (
   </>
 )
 
+const FAQ_JSON_LD = [
+  { '@type': 'Question', name: 'Luminar Neoの価格はいくら？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoは「永久ライセンス デスクトップ版」「クロスデバイス 永続ライセンス」「永久 Maxライセンス」の3種類が用意されています。買い切りプランには基本機能のみが含まれ、Proツール（Noiseless AI、HDR Mergeなど8種）を使いたい場合は別途Upgrade PassまたはEcosystem Passの購入が必要です。' } },
+  { '@type': 'Question', name: 'Luminar Neoを安く買う方法はある？', acceptedAnswer: { '@type': 'Answer', text: '公式サイトでは定期的にクーポンコードが発行されています。また年に数回開催されるセール時にはさらに割引率が高くなることもあります。' } },
+  { '@type': 'Question', name: '買い切りとパスの違いは？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoは買い切り（永久ライセンス）プランのみの販売です。一度購入すれば基本機能はずっと使い続けられます。Proツール（8種）を使うにはUpgrade PassまたはEcosystem Passが必要ですが、一度購入すれば永続利用できます。' } },
+  { '@type': 'Question', name: '合わなかった場合、返金できる？', acceptedAnswer: { '@type': 'Answer', text: 'はい、購入から30日以内であれば返金を申請できます。いわゆる「30日間返金保証」がついています。' } },
+  { '@type': 'Question', name: '無料体験版はある？', acceptedAnswer: { '@type': 'Answer', text: 'あります。公式サイトから7日間の無料トライアルをダウンロードできます。クレジットカードの登録も不要で、メールアドレスだけでOKです。' } },
+  { '@type': 'Question', name: '初心者でも使える？', acceptedAnswer: { '@type': 'Answer', text: '使えます。Luminar NeoはAIが自動で良い感じに仕上げてくれるアプローチなので、初心者でも直感的に操作できます。' } },
+  { '@type': 'Question', name: 'Lightroomと何が違う？', acceptedAnswer: { '@type': 'Answer', text: 'Lightroomは「写真を管理しながら現像するソフト」、Luminar Neoは「編集に特化したソフト」です。日常的に大量の写真を扱うならLightroom、1枚1枚をしっかり仕上げたいならLuminar Neoという棲み分けになります。' } },
+  { '@type': 'Question', name: 'LightroomやPhotoshopと併用できる？', acceptedAnswer: { '@type': 'Answer', text: 'できます。Luminar NeoはLightroom ClassicおよびPhotoshopのプラグインとして動作します。既存のワークフローを変えずに導入することが可能です。' } },
+  { '@type': 'Question', name: 'Proツール（拡張機能）は必要？', acceptedAnswer: { '@type': 'Answer', text: '用途によります。Proツールは買い切りプランには含まれていません。使うにはUpgrade Pass（年額約7,400円）またはEcosystem Pass（年額約10,400円）が必要ですが、一度購入すればProツールは永続的に使えます。' } },
+  { '@type': 'Question', name: '対応しているカメラは？', acceptedAnswer: { '@type': 'Answer', text: 'Canon、Nikon、Sony、Fujifilmなど主要カメラメーカーに幅広く対応しています。対応カメラのライブラリは定期的に更新されます。' } },
+  { '@type': 'Question', name: 'RAW現像もできる？', acceptedAnswer: { '@type': 'Answer', text: 'はい、できます。Luminar Neoは独自の強力なRAWエンジンを搭載していて、RAW現像ソフトとしても十分に使えます。' } },
+  { '@type': 'Question', name: '編集は非破壊？', acceptedAnswer: { '@type': 'Answer', text: 'はい、非破壊編集に対応しています。元の写真ファイルを直接書き換えるのではなく、編集内容を別で保持する仕組みなので、いつでも元の状態に戻せます。' } },
+  { '@type': 'Question', name: '対応OS・推奨スペックは？', acceptedAnswer: { '@type': 'Answer', text: 'WindowsとMacの両方に対応しています。Macの場合はmacOS 12以降、Windowsの場合はWindows 10（バージョン1909以降、64bitのみ）が必要です。メモリはAI処理を快適に使うなら16GB以上を推奨します。' } },
+  { '@type': 'Question', name: '動作が重いことはある？', acceptedAnswer: { '@type': 'Answer', text: '正直に言うと、あります。特にAI機能を使った処理は負荷が高いので、PCのスペックによっては待ち時間が発生します。' } },
+  { '@type': 'Question', name: '何台のPCにインストールできる？', acceptedAnswer: { '@type': 'Answer', text: '永久ライセンス デスクトップ版の場合、2台のPCにインストールできます。クロスデバイス版を選ぶと、さらに3台のモバイルデバイスでも使用できます。' } },
+  { '@type': 'Question', name: 'オフライン環境でも使える？', acceptedAnswer: { '@type': 'Answer', text: '基本的には使えます。ただし、ライセンス認証や一部のAI機能、アップデートの確認にはインターネット接続が必要です。' } },
+  { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'いいえ、使えません。Proツールは買い切りプランには含まれていません。Proツールを使うにはUpgrade Pass（年額約7,400円）またはEcosystem Pass（年額約10,400円）の購入が必要です。' } },
+  { '@type': 'Question', name: '一度パスを買ったらProツールはずっと使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、永続的に使えます。パスを購入するとProツールは永続的にアンロックされます。翌年パスを更新しなくても、Proツールは消えません。ただし生成AI機能と最新アップデートはパスを継続しないと使えなくなります。' } },
+  { '@type': 'Question', name: 'コスパの良い買い方は？', acceptedAnswer: { '@type': 'Answer', text: '「Proツールだけ使えればいい」という方は、買い切りプラン＋Upgrade Pass 1年だけが最もコスパの良い選択です。初期費用は約25,200円ですが、一度パスを購入すればProツールは永続的に使えます。' } },
+]
+
 export default async function Page() {
   return (
+    <>
     <LuminarArticleLayout {...META} categoryIds={[1]} toc={TOC} lead={lead}>
 
       <section id="faq-purchase" className="content-card card-padding article-body">
@@ -294,5 +317,16 @@ export default async function Page() {
       </section>
 
     </LuminarArticleLayout>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: FAQ_JSON_LD,
+        }),
+      }}
+    />
+    </>
   )
 }

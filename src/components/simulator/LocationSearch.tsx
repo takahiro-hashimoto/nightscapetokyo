@@ -3,6 +3,14 @@
 import { useState } from "react";
 import { geocodeAddress } from "@/lib/geocoder";
 
+const SEARCH_ERRORS = {
+  empty: "施設名・住所・郵便番号を入力してください",
+  rate_limit: "次のリクエストを行うのに10秒待ってください。マーカーをドラッグ&ドロップで移動させることも可能です",
+  session_limit: "同じセッションでのリクエストは15回までです。",
+  not_found: "施設名・住所・郵便番号を入力してください",
+  default: "検索中にエラーが発生しました。時間をおいて再度お試しください。",
+} as const;
+
 interface LocationSearchProps {
   onLocationFound: (lat: number, lng: number) => void;
   onSearchComplete?: () => void;
@@ -16,8 +24,9 @@ export default function LocationSearch({
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
+    if (loading) return;
     if (!query.trim()) {
-      alert("施設名・住所・郵便番号を入力してください");
+      alert(SEARCH_ERRORS.empty);
       return;
     }
 
@@ -29,28 +38,13 @@ export default function LocationSearch({
       onLocationFound(result.result.lat, result.result.lng);
       onSearchComplete?.();
     } else {
-      switch (result.error) {
-        case "rate_limit":
-          alert(
-            "次のリクエストを行うのに10秒待ってください。マーカーをドラッグ&ドロップで移動させることも可能です"
-          );
-          break;
-        case "session_limit":
-          alert("同じセッションでのリクエストは15回までです。");
-          break;
-        case "not_found":
-          alert("施設名・住所・郵便番号を入力してください");
-          break;
-        default:
-          alert("検索中にエラーが発生しました。時間をおいて再度お試しください。");
-      }
+      const msg = SEARCH_ERRORS[result.error as keyof typeof SEARCH_ERRORS] ?? SEARCH_ERRORS.default;
+      alert(msg);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
+    if (e.key === "Enter") handleSearch();
   };
 
   return (

@@ -319,8 +319,8 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     const jaPath = `/tag/${tagSlug}`;
     const lastmod = tp.updated_at ? new Date(tp.updated_at).toISOString() : undefined;
     const availableLocales = tagLocaleMap.get(tagSlug as string) ?? new Set<string>();
-    // シンプル一覧は全ロケールに実在するので、翻訳の有無にかかわらず全ロケールを hreflang クラスターに含める
-    const alts = buildAlternates(jaPath);
+    // 翻訳済みロケールのみをクラスターに含める（ページHTMLの alternates と一致させる）
+    const alts = buildPartialAlternates(jaPath, Array.from(availableLocales));
 
     result.ja.push({
       loc: `${SITE_URL}${jaPath}/`,
@@ -417,15 +417,16 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     if (!tagSlug) continue;
     const availableLocales = tagLocaleMap.get(tagSlug as string) ?? new Set<string>();
     const lastmod = tp.updated_at ? new Date(tp.updated_at).toISOString() : undefined;
-    const nonTranslatedAlts = buildAlternates(`/tag/${tagSlug}`);
     for (const slug of locales) {
       if (availableLocales.has(slug)) continue; // 翻訳済みは既に追加済み
+      // 未翻訳ロケールのシンプル一覧は ja + 自ロケールのみのクラスター（ページHTMLと一致）
+      const simpleAlts = buildPartialAlternates(`/tag/${tagSlug}`, [slug]);
       result[slug as keyof AllEntries].push({
         loc: `${SITE_URL}/${slug}/tag/${tagSlug}/`,
         lastmod,
         changefreq: "weekly",
         priority: 0.7,
-        alternates: nonTranslatedAlts,
+        alternates: simpleAlts,
       });
     }
   }

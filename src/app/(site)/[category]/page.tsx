@@ -295,7 +295,7 @@ export default async function AreaPage({ params }: Props) {
     const faqItems = hp.faq.items;
     const inLanguage = localeToLanguage(localeSlug);
     const currentYear = new Date().getFullYear();
-    const mapSeoSpots = mapSpots.map((spot) => ({
+    const mapSeoSpots = mapSpots.slice(0, 50).map((spot) => ({
       id: spot.id,
       slug: spot.slug,
       name: spot.name,

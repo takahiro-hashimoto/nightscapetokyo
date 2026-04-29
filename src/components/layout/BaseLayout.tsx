@@ -1,19 +1,25 @@
-import { SITE_URL } from "@/lib/types";
 import NonCriticalCss from "@/components/layout/NonCriticalCss";
 import GtmLoader from "@/components/layout/GtmLoader";
-import "./globals.css";
+import WebVitalsReporter from "@/components/layout/WebVitalsReporter";
+import { SITE_URL } from "@/lib/types";
 
 const GTM_ID = "GTM-WB56L85";
 
-export default function RootLayout({
+export const metadata = {
+  metadataBase: new URL(SITE_URL),
+};
+
+export default function BaseLayout({
+  lang,
   children,
 }: {
+  lang: string;
   children: React.ReactNode;
 }) {
   const isProd = process.env.NODE_ENV === "production";
 
   return (
-    <html lang="ja">
+    <html lang={lang}>
       <head>
         {/* AdSense vignette/interstitial 後の mid-scroll を防ぐ。back/forward の SPA 遷移は NavigationProgress で制御 */}
         <script dangerouslySetInnerHTML={{ __html: `
@@ -35,7 +41,7 @@ try{if(localStorage.getItem("_sd")==="1"){
   window._sdClear=function(){sessionStorage.removeItem("_sdlog");console.log("[SD] cleared");};
   window._sdShare=function(){
     var logs=JSON.parse(sessionStorage.getItem("_sdlog")||"[]");
-    var text="\u0060\u0060\u0060json\\n"+JSON.stringify(logs,null,2)+"\\n\u0060\u0060\u0060";
+    var text="\`\`\`json\\n"+JSON.stringify(logs,null,2)+"\\n\`\`\`";
     if(navigator.clipboard){
       navigator.clipboard.writeText(text).then(function(){console.log("[SD] ✅ クリップボードにコピーしました。チャットに貼り付けてください。");}).catch(function(){console.log("[SD] ログ:\\n"+text);});
     }else{
@@ -76,12 +82,9 @@ try{if(localStorage.getItem("_sd")==="1"){
             />
           </noscript>
         )}
+        {isProd && <WebVitalsReporter />}
         {children}
       </body>
     </html>
   );
 }
-
-export const metadata = {
-  metadataBase: new URL(SITE_URL),
-};

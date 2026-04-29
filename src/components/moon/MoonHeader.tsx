@@ -21,9 +21,9 @@ export default function MoonHeader({
   };
 
   return (
-    <div className="moon-sp-header">
+    <header className="moon-sp-header">
       <div className="moon-sp-header__top">
-        <p className="moon-sp-header__title">月の出・月の入り時刻方角ナビ</p>
+        <h1 className="moon-sp-header__title">月の出・月の入り時刻方角ナビ</h1>
         <button
           className="moon-sp-header__btn"
           onClick={handleMenuClick}
@@ -39,6 +39,6 @@ export default function MoonHeader({
         illumination={illumination}
         variant="header"
       />
-    </div>
+    </header>
   );
 }

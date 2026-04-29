@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_URL, LOCALE_OG_ALTERNATES } from "@/lib/types";
 import { buildWebSiteJsonLd, buildOrganizationJsonLd } from "@/lib/json-ld";
+import BaseLayout from "@/components/layout/BaseLayout";
 import RootShell from "@/components/layout/RootShell";
 import "../globals.css";
 
@@ -61,8 +62,10 @@ export default function JaLayout({
     </>
   );
   return (
-    <RootShell lang="ja" headContent={headContent}>
-      {children}
-    </RootShell>
+    <BaseLayout lang="ja">
+      <RootShell headContent={headContent}>
+        {children}
+      </RootShell>
+    </BaseLayout>
   );
 }

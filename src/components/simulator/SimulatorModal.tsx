@@ -1,9 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
-import Link from "next/link";
-import { X } from "lucide-react";
-import LocationSearch from "./LocationSearch";
+import MapModal from "@/components/shared/MapModal";
 
 interface SimulatorModalProps {
   isOpen: boolean;
@@ -11,49 +8,6 @@ interface SimulatorModalProps {
   onLocationFound: (lat: number, lng: number) => void;
 }
 
-export default function SimulatorModal({
-  isOpen,
-  onClose,
-  onLocationFound,
-}: SimulatorModalProps) {
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    },
-    [onClose]
-  );
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, handleKeyDown]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="sp-overlay sim-modal__overlay" onClick={onClose}>
-      <div
-        className="sim-modal__container"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button className="sim-modal__close" onClick={onClose}>
-          <X size={24} />
-        </button>
-
-        <div className="sim-modal__body">
-          <h2 className="sim-modal__title">気になるスポットを検索</h2>
-          <LocationSearch
-            onLocationFound={onLocationFound}
-            onSearchComplete={onClose}
-          />
-        </div>
-      </div>
-    </div>
-  );
+export default function SimulatorModal(props: SimulatorModalProps) {
+  return <MapModal variant="sim" {...props} />;
 }

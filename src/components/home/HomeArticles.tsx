@@ -1,13 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import type { Article } from "@/lib/types";
+import { getArticlesBySlugs } from "@/lib/supabase/queries";
+import { LUMINAR_ARTICLE } from "@/lib/featured-articles";
 
-type Props = {
-  articles: Article[];
-};
+const ARTICLE_SLUGS = [
+  "how-to-camera-setting",
+  "airos-skyview",
+  "my-photographic-equipment",
+  "camera-beginner-item",
+  "how-to-night-photo",
+];
 
-export default function HomeArticles({ articles }: Props) {
+export default async function HomeArticles() {
+  const fetched = await getArticlesBySlugs(ARTICLE_SLUGS).catch(() => []);
+  const articles = [LUMINAR_ARTICLE, ...fetched];
+
   if (articles.length === 0) return null;
 
   return (

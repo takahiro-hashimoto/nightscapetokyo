@@ -1,10 +1,6 @@
 import Link from "next/link";
-import type { RecentSpotItem } from "@/lib/supabase/queries";
+import { getRecentSpots } from "@/lib/supabase/queries";
 import YouTubeFacade from "./YouTubeFacade";
-
-type Props = {
-  recentSpots: RecentSpotItem[];
-};
 
 const YOUTUBE_VIDEOS = [
   {
@@ -19,7 +15,9 @@ const YOUTUBE_VIDEOS = [
   },
 ];
 
-export default function HomeNewsAndVideos({ recentSpots }: Props) {
+export default async function HomeNewsAndVideos() {
+  const recentSpots = await getRecentSpots(10).catch(() => []);
+
   return (
     <section className="home-section" id="news-videos">
       <div className="home-container">

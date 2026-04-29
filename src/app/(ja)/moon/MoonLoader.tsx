@@ -11,6 +11,8 @@ const MoonClient = dynamic(() => import("./MoonClient"), {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
+        minHeight: "100svh",
+        maxHeight: "100dvh",
         backgroundColor: "#eee",
         fontFamily: "sans-serif",
         color: "#666",
