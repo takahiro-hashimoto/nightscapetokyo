@@ -129,30 +129,36 @@
   border: 1px solid #3e4046;
 }
 
-.moon-hour__phase-row {
+.moon-hour__cols {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 4px 10px;
-  border-bottom: 1px solid #3e4046;
-  margin-bottom: 6px;
+  justify-content: space-between;
+  text-align: center;
+  gap: 4px;
 }
 
-.moon-hour__phase-info {
+.moon-hour__col {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
+  flex: 1;
 }
 
-.moon-hour__phase-name {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #f5c842;
-}
-
-.moon-hour__phase-illumination {
-  font-size: 0.8rem;
+.moon-hour__label {
+  font-size: 0.72rem;
   color: #aaa;
+}
+
+.moon-hour__time {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #e0e0e0;
+}
+
+.moon-hour__phase {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #e0e0e0;
+  line-height: 1.4;
 }
 
 .moon-hour__table {

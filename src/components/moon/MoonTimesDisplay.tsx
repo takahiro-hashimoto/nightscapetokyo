@@ -44,31 +44,20 @@ export default function MoonTimesDisplay({
 
   return (
     <div className="moon-hour">
-      <div className="moon-hour__phase-row">
-        <MoonPhaseIcon phase={phase} size={48} />
-        <div className="moon-hour__phase-info">
-          <span className="moon-hour__phase-name">{phaseName}</span>
-          <span className="moon-hour__phase-illumination">{illuminationPercent}%</span>
+      <div className="moon-hour__cols">
+        <div className="moon-hour__col">
+          <span className="moon-hour__label">月出時刻</span>
+          <span className="moon-hour__time">{moonriseTime ?? "－"}</span>
+        </div>
+        <div className="moon-hour__col">
+          <span className="moon-hour__label">月入時刻</span>
+          <span className="moon-hour__time">{moonsetTime ?? "－"}</span>
+        </div>
+        <div className="moon-hour__col">
+          <span className="moon-hour__label">月の満ち欠け</span>
+          <span className="moon-hour__phase">{phaseName}（{illuminationPercent}%）</span>
         </div>
       </div>
-      <table className="moon-hour__table">
-        <thead>
-          <tr>
-            <th>
-              <span className="moon-hour__header">月出時刻</span>
-            </th>
-            <th>
-              <span className="moon-hour__header">月入時刻</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="moon-hour__body">
-          <tr>
-            <td>{moonriseTime ?? "－"}</td>
-            <td>{moonsetTime ?? "－"}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   );
 }

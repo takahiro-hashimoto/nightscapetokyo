@@ -17,25 +17,11 @@ export default function MoonPhaseIcon({ phase, size = 28 }: MoonPhaseIconProps) 
     );
   }
 
-  // 満月：月のうさぎ
+  // 満月
   if (phase >= 0.48 && phase <= 0.52) {
     return (
-      <svg width={size} height={size} viewBox="0 0 100 100">
-        {/* 月面 */}
-        <circle cx={50} cy={50} r={49} fill="#f5c842" />
-        {/* うさぎシルエット */}
-        <g fill="#c49020">
-          {/* 左耳 */}
-          <path d="M 36,46 Q 27,22 33,7 Q 38,0 43,7 Q 46,22 42,46 Z" />
-          {/* 右耳 */}
-          <path d="M 64,46 Q 73,22 67,7 Q 62,0 57,7 Q 54,22 58,46 Z" />
-          {/* 頭 */}
-          <circle cx={50} cy={55} r={15} />
-          {/* 胴体 */}
-          <ellipse cx={50} cy={78} rx={19} ry={14} />
-          {/* しっぽ */}
-          <circle cx={67} cy={75} r={5} />
-        </g>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <circle cx={cx} cy={cy} r={r} fill="#f5c842" />
       </svg>
     );
   }
