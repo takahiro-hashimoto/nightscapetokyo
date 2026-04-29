@@ -43,12 +43,12 @@ export default function AdSenseUnit({ slot, format = "auto", layout, label, clas
       (entries) => {
         if (entries[0].isIntersecting) {
           const ins = el.querySelector<HTMLElement>("ins.adsbygoogle");
-          console.debug(`[AdSense] IntersectionObserver fired | slot: ${slot} | status: ${ins?.dataset.adsbygoogleStatus ?? "none"} | t: ${Date.now()}`);
+          console.log(`[AdSense] IntersectionObserver fired | slot: ${slot} | status: ${ins?.dataset.adsbygoogleStatus ?? "none"} | t: ${Date.now()}`);
           if (!ins?.dataset.adsbygoogleStatus) {
             try {
-              console.debug(`[AdSense] push() start | slot: ${slot} | t: ${Date.now()}`);
+              console.log(`[AdSense] push() start | slot: ${slot} | t: ${Date.now()}`);
               (window.adsbygoogle = window.adsbygoogle || []).push({});
-              console.debug(`[AdSense] push() done  | slot: ${slot} | t: ${Date.now()}`);
+              console.log(`[AdSense] push() done  | slot: ${slot} | t: ${Date.now()}`);
             } catch (e) {
               console.warn(`[AdSense] push() error | slot: ${slot}`, e);
             }

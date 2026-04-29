@@ -42,13 +42,13 @@ function MapSizeInvalidator() {
     let prevW = 0, prevH = 0, rafId = 0;
     const ro = new ResizeObserver((entries) => {
       const { width, height } = entries[0].contentRect;
-      console.debug(`[SimMap] ResizeObserver fired | ${width.toFixed(0)}×${height.toFixed(0)} | t: ${Date.now()}`);
+      console.log(`[SimMap] ResizeObserver fired | ${width.toFixed(0)}×${height.toFixed(0)} | t: ${Date.now()}`);
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
         if (width !== prevW || height !== prevH) {
           prevW = width; prevH = height;
           map.invalidateSize();
-          console.debug(`[SimMap] invalidateSize() called | t: ${Date.now()}`);
+          console.log(`[SimMap] invalidateSize() called | t: ${Date.now()}`);
         }
       });
     });
