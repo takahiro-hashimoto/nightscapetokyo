@@ -92,23 +92,23 @@ export const ADS = {
    * 設置: src/components/simulator/SimulatorSidebar.tsx
    */
   SIMULATOR_SIDEBAR: {
-    slot: "1642058803",
+    slot: "1997282024",
     format: "fixed",
-    width: 300,
-    height: 300,
+    width: 240,
+    height: 240,
     label: "シミュレーターサイドバー",
   },
 
   /**
    * 月の出・月の入りサイドバー（SNSシェアボタン下）
-   * 形式: 固定 300×300
+   * 形式: 固定 240×240
    * 設置: src/components/moon/MoonSidebar.tsx
    */
   MOON_SIDEBAR: {
-    slot: "1642058803",
+    slot: "1997282024",
     format: "fixed",
-    width: 300,
-    height: 300,
+    width: 240,
+    height: 240,
     label: "月ナビサイドバー",
   },
 } as const satisfies Record<string, AdSlotConfig>;
