@@ -2,16 +2,21 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
-import { calculateSunData } from "@/lib/sun-calc";
-import { loadMapState, saveMapState, DEFAULT_MAP_STATE } from "@/lib/map-persistence";
-import SimulatorMap from "@/components/simulator/SimulatorMap";
-import SimulatorSidebar from "@/components/simulator/SimulatorSidebar";
-import SimulatorHeader from "@/components/simulator/SimulatorHeader";
-import SimulatorFooter from "@/components/simulator/SimulatorFooter";
-import SimulatorModal from "@/components/simulator/SimulatorModal";
-import "./simulator.css";
+import { calculateMoonData } from "@/lib/moon-calc";
+import {
+  loadMapState,
+  saveMapState,
+  DEFAULT_MAP_STATE,
+  MOON_STORAGE_KEY,
+} from "@/lib/map-persistence";
+import MoonMap from "@/components/moon/MoonMap";
+import MoonSidebar from "@/components/moon/MoonSidebar";
+import MoonHeader from "@/components/moon/MoonHeader";
+import MoonFooter from "@/components/moon/MoonFooter";
+import MoonModal from "@/components/moon/MoonModal";
+import "./moon.css";
 
-export default function SimulatorClient() {
+export default function MoonClient() {
   const [initialized, setInitialized] = useState(false);
   const [markerPosition, setMarkerPosition] = useState<[number, number]>([
     DEFAULT_MAP_STATE.lat, DEFAULT_MAP_STATE.lng,
@@ -28,7 +33,7 @@ export default function SimulatorClient() {
 
   // Load saved state on mount (localStorage は初回マウント時のみ読む設計)
   useEffect(() => {
-    const saved = loadMapState();
+    const saved = loadMapState(MOON_STORAGE_KEY);
     mapStateRef.current = saved;
     setMarkerPosition([saved.lat, saved.lng]);
     setMapCenter([saved.lat, saved.lng]);
@@ -36,9 +41,9 @@ export default function SimulatorClient() {
     setInitialized(true);
   }, []);
 
-  // Calculate sun data
-  const sunData = useMemo(() => {
-    return calculateSunData(selectedDate, markerPosition[0], markerPosition[1]);
+  // Calculate moon data
+  const moonData = useMemo(() => {
+    return calculateMoonData(selectedDate, markerPosition[0], markerPosition[1]);
   }, [selectedDate, markerPosition]);
 
   // Handlers
@@ -51,32 +56,40 @@ export default function SimulatorClient() {
   const handleMarkerMove = useCallback((lat: number, lng: number) => {
     mapStateRef.current = { ...mapStateRef.current, lat, lng };
     setMarkerPosition([lat, lng]);
-    saveMapState(mapStateRef.current);
+    saveMapState(mapStateRef.current, MOON_STORAGE_KEY);
   }, []);
 
   const handleViewChange = useCallback((_lat: number, _lng: number, newZoom: number) => {
     mapStateRef.current = { ...mapStateRef.current, zoom: newZoom };
     setZoom(newZoom);
-    saveMapState(mapStateRef.current);
+    saveMapState(mapStateRef.current, MOON_STORAGE_KEY);
   }, []);
 
   const handleLocationFound = useCallback((lat: number, lng: number) => {
     mapStateRef.current = { ...mapStateRef.current, lat, lng };
     setMarkerPosition([lat, lng]);
     setMapCenter([lat, lng]);
-    saveMapState(mapStateRef.current);
+    saveMapState(mapStateRef.current, MOON_STORAGE_KEY);
   }, []);
 
   const handleDateChange = useCallback((date: Date) => {
     setSelectedDate(date);
   }, []);
 
+  useEffect(() => {
+    const handler = (e: Event) => {
+      handleDateChange((e as CustomEvent<Date>).detail);
+    };
+    window.addEventListener("moon:date-selected", handler);
+    return () => window.removeEventListener("moon:date-selected", handler);
+  }, [handleDateChange]);
+
   const openModal = useCallback(() => setModalOpen(true), []);
   const closeModal = useCallback(() => setModalOpen(false), []);
 
   if (!initialized) {
     return (
-      <div className="sim-container">
+      <div className="moon-container">
         <div
           style={{
             flex: 1,
@@ -93,58 +106,62 @@ export default function SimulatorClient() {
   }
 
   return (
-    <div className="sim-container">
+    <div className="moon-container">
       {/* PC: Sidebar */}
-      <SimulatorSidebar
-        sunriseTime={sunData.sunriseTime}
-        sunsetTime={sunData.sunsetTime}
+      <MoonSidebar
+        moonriseTime={moonData.moonriseTime}
+        moonsetTime={moonData.moonsetTime}
+        phaseName={moonData.phaseName}
+        illumination={moonData.illumination}
         selectedDate={selectedDate}
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}
       />
 
       {/* SP: Header */}
-      <SimulatorHeader
-        sunriseTime={sunData.sunriseTime}
-        sunsetTime={sunData.sunsetTime}
+      <MoonHeader
+        moonriseTime={moonData.moonriseTime}
+        moonsetTime={moonData.moonsetTime}
+        phaseName={moonData.phaseName}
+        illumination={moonData.illumination}
       />
 
       {/* Map */}
-      <SimulatorMap
+      <MoonMap
         center={mapCenter}
         zoom={zoom}
         markerPosition={markerPosition}
-        sunriseAzimuth={sunData.sunriseAzimuth}
-        sunsetAzimuth={sunData.sunsetAzimuth}
+        moonriseAzimuth={moonData.moonriseAzimuth}
+        moonsetAzimuth={moonData.moonsetAzimuth}
         onMarkerDrag={handleMarkerDrag}
         onMarkerMove={handleMarkerMove}
         onViewChange={handleViewChange}
       />
 
       {/* SP: Footer */}
-      <SimulatorFooter
+      <MoonFooter
         selectedDate={selectedDate}
         onDateChange={handleDateChange}
         onSearchClick={openModal}
       />
 
       {/* PC: Menu buttons */}
-      <ul className="sim-menu">
+      <ul className="moon-menu">
         <li>
           <Link href="/">サイトTOP</Link>
         </li>
         <li>
-          <Link href="/moon/">月の出・月の入りの方角</Link>
+          <Link href="/simulator/">日の出・日の入りの方角</Link>
         </li>
         <li>
-          <button onClick={() => window.dispatchEvent(new Event("sim:open-info"))}>
+          <button onClick={() => window.dispatchEvent(new Event("moon:open-info"))}>
             お役立ち情報
           </button>
         </li>
       </ul>
 
       {/* SP: Full modal */}
-      <SimulatorModal
+      <MoonModal
         isOpen={modalOpen}
         onClose={closeModal}
         onLocationFound={handleLocationFound}

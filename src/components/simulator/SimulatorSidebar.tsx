@@ -1,8 +1,8 @@
 "use client";
 
 import LocationSearch from "./LocationSearch";
-import DateNavigator from "./DateNavigator";
 import SunTimesDisplay from "./SunTimesDisplay";
+import SimpleCalendar from "./SimpleCalendar";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
 
@@ -24,19 +24,16 @@ export default function SimulatorSidebar({
   return (
     <div className="sim-sidebar">
       <div className="sim-sidebar__header">
-        <p className="sim-sidebar__title">日の出・日の入り方角ナビ</p>
+        <h1 className="sim-sidebar__title">日の出・日の入り方角ナビ</h1>
+        <p className="sim-sidebar__lead">日付・場所を指定して日の出・日の入りの方角と時刻を地図上で確認できる無料ツール。ダイヤモンド富士・夕日撮影や旅行の計画に。</p>
       </div>
       <div className="sim-sidebar__body">
-<div className="sim-sidebar__section">
+        <div className="sim-sidebar__section">
           <LocationSearch onLocationFound={onLocationFound} />
         </div>
 
         <div className="sim-sidebar__section">
-          <DateNavigator
-            selectedDate={selectedDate}
-            onDateChange={onDateChange}
-            variant="sidebar"
-          />
+          <SimpleCalendar selectedDate={selectedDate} onDateChange={onDateChange} />
         </div>
 
         <div className="sim-sidebar__section">
@@ -45,6 +42,10 @@ export default function SimulatorSidebar({
             sunsetTime={sunsetTime}
             variant="sidebar"
           />
+        </div>
+
+        <div className="sim-sidebar__section">
+          <AdSenseUnit {...ADS.SIMULATOR_SIDEBAR} />
         </div>
 
         <div className="sim-sidebar__section">
@@ -95,10 +96,6 @@ export default function SimulatorSidebar({
               </a>
             </li>
           </ul>
-        </div>
-
-        <div className="sim-sidebar__section">
-          <AdSenseUnit {...ADS.SIMULATOR_SIDEBAR} />
         </div>
       </div>
     </div>

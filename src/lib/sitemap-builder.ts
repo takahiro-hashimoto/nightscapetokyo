@@ -168,8 +168,9 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     }
   }
 
-  // simulator (JA only)
+  // simulator / moon (JA only)
   result.ja.push({ loc: `${SITE_URL}/simulator/`, changefreq: "monthly", priority: 0.5 });
+  result.ja.push({ loc: `${SITE_URL}/moon/`, changefreq: "monthly", priority: 0.5 });
 
   if (!db) return result;
 

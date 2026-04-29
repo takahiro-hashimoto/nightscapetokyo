@@ -2726,15 +2726,6 @@ main > .home-section:nth-child(even of .home-section) {
   text-align: center;
 }
 
-@media (max-width: 768px) {
-  .gallery-modal-footer {
-    position: absolute;
-    bottom: 20%;
-    left: 0;
-    right: 0;
-  }
-}
-
 .gallery-modal-caption {
   color: rgba(255, 255, 255, 0.85);
   font-size: 14px;
@@ -3167,6 +3158,18 @@ body.modal-open [id*="aswift"] {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.sp-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 12px;
 }
 
 /* =========================================

@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     locale: "ja_JP",
     images: [
       {
-        url: `${SITE_URL}/hero.jpg`,
+        url: `${SITE_URL}/og-simulator-tool.png`,
         width: 1200,
         height: 630,
         alt: OG_TITLE,
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: OG_TITLE,
     description: OG_DESC,
-    images: [`${SITE_URL}/hero.jpg`],
+    images: [`${SITE_URL}/og-simulator-tool.png`],
   },
 };
 

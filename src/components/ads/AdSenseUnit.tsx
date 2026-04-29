@@ -42,10 +42,16 @@ export default function AdSenseUnit({ slot, format = "auto", layout, label, clas
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          try {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-          } catch {
-            // AdSense スクリプト未読込み時は無視
+          const ins = el.querySelector<HTMLElement>("ins.adsbygoogle");
+          console.debug(`[AdSense] IntersectionObserver fired | slot: ${slot} | status: ${ins?.dataset.adsbygoogleStatus ?? "none"} | t: ${Date.now()}`);
+          if (!ins?.dataset.adsbygoogleStatus) {
+            try {
+              console.debug(`[AdSense] push() start | slot: ${slot} | t: ${Date.now()}`);
+              (window.adsbygoogle = window.adsbygoogle || []).push({});
+              console.debug(`[AdSense] push() done  | slot: ${slot} | t: ${Date.now()}`);
+            } catch (e) {
+              console.warn(`[AdSense] push() error | slot: ${slot}`, e);
+            }
           }
           observer.disconnect();
         }

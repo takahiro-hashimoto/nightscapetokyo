@@ -1,9 +1,9 @@
 /* ==============================
-   Simulator - BEM with sim- prefix
+   Moon - BEM with moon- prefix
    ============================== */
 
 /* --- Layout --- */
-.sim-container {
+.moon-container {
   display: flex;
   height: 100vh;
   width: 100vw;
@@ -14,7 +14,7 @@
   color: #333;
 }
 
-.sim-map {
+.moon-map {
   flex: 1;
   height: 100% !important;
   width: 100% !important;
@@ -22,7 +22,7 @@
 }
 
 /* --- Sidebar (PC) --- */
-.sim-sidebar {
+.moon-sidebar {
   display: none;
   flex-direction: column;
   flex: 0 0 320px;
@@ -32,13 +32,13 @@
   color: #fff;
 }
 
-.sim-sidebar__header {
+.moon-sidebar__header {
   text-align: center;
   background-color: #1e1f21;
   padding: 12px;
 }
 
-.sim-sidebar__title {
+.moon-sidebar__title {
   color: #fff;
   margin: 0 0 12px;
   font-size: 1.2rem;
@@ -46,11 +46,11 @@
   line-height: 1.3;
 }
 
-.sim-sidebar__body {
+.moon-sidebar__body {
   padding: 20px 14px;
 }
 
-.sim-sidebar__lead {
+.moon-sidebar__lead {
   color: #aaa;
   text-align: left;
   font-size: 0.8rem;
@@ -58,28 +58,28 @@
   line-height: 1.5;
 }
 
-.sim-sidebar__section {
+.moon-sidebar__section {
   margin-bottom: 20px;
 }
 
 /* --- SP Header --- */
-.sim-sp-header {
+.moon-sp-header {
   background-color: #28292b;
 }
 
-.sim-sp-header__top {
+.moon-sp-header__top {
   position: relative;
   padding: 12px 0;
   text-align: center;
 }
 
-.sim-sp-header__title {
+.moon-sp-header__title {
   color: #fff;
   font-size: 1.2rem;
   line-height: 1;
 }
 
-.sim-sp-header__btn {
+.moon-sp-header__btn {
   position: absolute;
   right: 15px;
   top: 50%;
@@ -92,12 +92,12 @@
 }
 
 /* --- SP Footer --- */
-.sim-sp-footer {
+.moon-sp-footer {
   background-color: #28292b;
   padding: 14px 10px;
 }
 
-.sim-sp-footer__search {
+.moon-sp-footer__search {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,8 +114,8 @@
   font-size: 0.9rem;
 }
 
-/* --- Sun times (sidebar table) --- */
-.sim-hour {
+/* --- Moon times (sidebar table) --- */
+.moon-hour {
   background-color: #32343a;
   padding: 10px 16px 4px;
   border-radius: 8px;
@@ -123,121 +123,723 @@
   border: 1px solid #3e4046;
 }
 
-.sim-hour__table {
+.moon-hour__table {
   font-size: 0.8rem;
   text-align: center;
   width: 100%;
   border-collapse: collapse;
 }
 
-.sim-hour__table th {
+.moon-hour__table th {
   width: 50%;
-  padding: 4px 0;
+  padding: 0px 0;
 }
 
-.sim-hour__header {
-  background-color: #3e4046;
+.moon-hour__header {
   color: #ccc;
-  padding: 6px 8px;
-  font-size: 0.8rem;
+  background-color: #3e4046;
   border-radius: 18px;
+  padding: 4px 16px;
+  font-size: 0.8rem;
   display: inline-block;
 }
 
-.sim-hour__body {
+.moon-hour__body {
   font-size: 1.3rem;
   font-weight: bold;
 }
 
-.sim-hour__body td {
-  padding: 8px 0 4px;
-}
 
-/* --- Sun times (SP header) --- */
-.sim-hour-header {
-  background-color: #fff;
-  display: flex;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 10px;
-  line-height: 1.4;
-}
 
-.sim-hour-header__item {
-  flex: 1;
-  text-align: center;
-}
-
-.sim-hour-header__label {
-  font-size: 1rem;
+.moon-hour__phase-row td {
+  font-size: 0.85rem;
   font-weight: normal;
-  display: block;
+  color: #555;
+  padding: 4px 0 8px;
+  border-top: 1px dashed #e2e8f0;
 }
 
-.sim-hour-header__time {
+.moon-hour__phase-label {
+  font-size: 0.75rem;
+  color: #888;
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* --- Moon times (SP header) --- */
+.moon-hour-header {
+  display: flex;
+  align-items: stretch;
+  background-color: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.moon-hour-header__item,
+.moon-hour-header__phase {
+  text-align: center;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  display: flex;
+  line-height: 1.3;
+}
+
+.moon-hour-header__label {
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: #666;
+}
+
+.moon-hour-header__time {
   font-size: 1.3rem;
   font-weight: bold;
-  display: block;
+}
+
+.moon-hour-header__phase-name {
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 /* --- Search --- */
+.moon-search {
+  display: flex;
+  align-items: center;
+}
+
+.moon-search__input {
+  border: 1px solid #3e4046;
+  background-color: #32343a;
+  color: #e0e0e0;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.moon-search__input::placeholder {
+  color: #888;
+}
+
+.moon-search__button {
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  background: #4a7ec8;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.moon-search__button:hover {
+  opacity: 0.85;
+}
+
+.moon-search__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --- Date picker (sidebar) --- */
+.moon-datepicker-sidebar__input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* --- Date picker (footer) --- */
+.moon-datepicker {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.moon-datepicker__btn {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 8px;
+  color: #333;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+.moon-datepicker__input {
+  flex: 1;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+  padding: 5px 0;
+  color: #666;
+}
+
+/* --- Menu (PC overlay) --- */
+.moon-menu {
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: 8px;
+  z-index: 999;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.moon-menu li {
+  -webkit-backdrop-filter: blur(8px);
+  background-color: #050f23ad;
+  border: 1px solid #ffffff80;
+  border-radius: 10px;
+  margin-right: 6px;
+  font-size: 0.9rem;
+  transition: background 0.2s, border 0.2s;
+  display: inline-block;
+}
+
+.moon-menu li:hover {
+  background-color: rgba(5, 15, 35, 0.75);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.moon-menu li a,
+.moon-menu li button {
+  padding: 9px 14px;
+  text-decoration: none;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  display: block;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.moon-menu li a:hover,
+.moon-menu li button:hover {
+  opacity: 1;
+}
+
+/* --- Share --- */
+.moon-share__title {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #aaa;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.moon-share__links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+}
+
+.moon-share__links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #555;
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.moon-share__link--x {
+  background-color: #1a1a1a !important;
+}
+
+.moon-share__link--fb {
+  background-color: #1877f2 !important;
+}
+
+.moon-share__link--hatena {
+  background-color: #00a4de !important;
+}
+
+.moon-share__link--line {
+  background-color: #06c755 !important;
+  font-size: 11px !important;
+}
+
+.moon-share__links a:hover {
+  opacity: 0.8;
+}
+
+/* --- Modal --- */
+.moon-modal__overlay {
+  z-index: 9000;
+}
+
+.moon-modal__container {
+  background-color: #28292b;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 3px 4px #0000000a;
+}
+
+.moon-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ccc;
+  z-index: 1;
+  transition: background 0.2s;
+}
+
+.moon-modal__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.moon-modal__body {
+  padding: 48px 20px 28px;
+}
+
+.moon-modal__container .sim-search__input {
+  color: #e0e0e0;
+  background-color: #ffffff;
+  border: 1px solid #3e4046;
+}
+
+.moon-modal__container .sim-search__input::placeholder {
+  color: #888;
+}
+
+.moon-modal__title {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.moon-modal__list {
+  padding: 12px 12px 12px 28px;
+  background-color: #32343a;
+  border: 1px solid #3e4046;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.moon-modal__list li {
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+  color: #bbb;
+  line-height: 1.6;
+}
+
+.moon-modal__list li:last-child {
+  margin-bottom: 0;
+}
+
+.moon-modal__footer {
+  padding: 14px;
+  background-color: #1e1f21;
+  text-align: center;
+  border-radius: 0 0 16px 16px;
+  border-top: 1px solid #3e4046;
+}
+
+.moon-modal__footer-link {
+  text-decoration: none;
+  color: #888;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.moon-modal__footer-link:hover {
+  color: #ccc;
+}
+
+/* --- Definition list --- */
+.moon-definition {
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.moon-definition__body {
+  padding: 16px;
+  margin: 0;
+}
+
+.moon-definition__body dt {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.moon-definition__body dt a {
+  color: #4a7ec8;
+  text-decoration: none;
+}
+
+.moon-definition__body dt a:hover {
+  text-decoration: underline;
+}
+
+.moon-definition__body dd {
+  border-bottom: 1px dashed #e2e8f0;
+  color: #333;
+  font-size: 0.9rem;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  margin-left: 0;
+}
+
+.moon-definition__body dd:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* --- FAQ (moon page) --- */
+.moon-faq-item {
+  padding: 16px 0;
+  border-bottom: 1px dashed #eee;
+}
+.moon-faq-item:last-child {
+  border-bottom: none;
+}
+.moon-faq-item:first-child {
+  padding-top: 0;
+}
+.moon-faq-q {
+  font-weight: 700;
+  font-size: 15px;
+  color: #333;
+  margin: 0 0 6px;
+}
+.moon-faq-q::before {
+  content: "Q. ";
+  color: #4a7ec8;
+  font-weight: 800;
+}
+.moon-faq-a {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #555;
+  margin: 0;
+  padding-left: 25px;
+}
+.moon-faq-a::before {
+  content: "A. ";
+  color: #e53e3e;
+  font-weight: 700;
+}
+
+/* --- Info Modal (SEO welcome overlay) --- */
+@keyframes moon-info-in {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+.moon-info-modal {
+  z-index: 10000;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  background: #000000a6;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  display: flex;
+  position: fixed;
+  inset: 0;
+}
+
+.moon-info-modal__container {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  animation: moon-info-in 0.28s ease;
+}
+
+/* Header */
+.moon-info-modal__header {
+  background: linear-gradient(150deg, #0f172a 0%, #1e2d4a 100%);
+  padding: 12px 48px 12px 20px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.moon-info-modal__title {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+  line-height: 1.4;
+}
+
+.moon-info-modal__subtitle {
+  display: block;
+  color: #9ca3af;
+  font-size: 0.78rem;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.moon-info-modal__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d1d5db;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.moon-info-modal__close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+/* Body */
+.moon-info-modal__body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 20px 20px 28px;
+}
+
+.moon-info-modal__top-link {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.moon-info-modal__top-link a {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.moon-info-modal__top-link a:hover {
+  color: #374151;
+}
+
+.moon-info-modal__lead {
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  margin: 0 0 24px;
+}
+
+/* Section */
+.moon-info-modal__section {
+  margin-bottom: 24px;
+}
+
+.moon-info-modal__section-title {
+  color: #4a7ec8;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+/* Howto numbered list */
+.moon-info-modal__howto {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: howto;
+}
+
+.moon-info-modal__howto li {
+  counter-increment: howto;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  font-size: .9rem;
+  line-height: 1.65;
+  display: flex;
+}
+
+.moon-info-modal__howto li:last-child {
+  border-bottom: none;
+}
+
+.moon-info-modal__howto li::before {
+  content: counter(howto);
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: #4a7ec8;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+/* CTA button */
+.moon-info-modal__btn {
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: .02em;
+  background: linear-gradient(135deg, #4a7ec8, #3a6ab8);
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  margin-bottom: 42px;
+  padding: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: opacity .2s, transform .1s;
+  display: block;
+}
+
+.moon-info-modal__btn:hover  { opacity: 0.9; }
+.moon-info-modal__btn:active { transform: scale(0.98); }
+
+/* --- Leaflet overrides --- */
+.moon-map .leaflet-control-attribution {
+  display: none;
+}
+
+.moon-map .leaflet-top,
+.moon-map .leaflet-bottom {
+  z-index: 998;
+}
+
+/* ==============================
+   Responsive
+   ============================== */
+
+/* Mobile layout (default) */
+.moon-container {
+  flex-direction: column;
+}
+
+.moon-sp-header,
+.moon-sp-footer {
+  display: block;
+}
+
+/* Desktop layout */
+@media (min-width: 768px) {
+  .moon-container {
+    flex-direction: row;
+  }
+
+  .moon-sidebar {
+    display: flex;
+  }
+
+  .moon-sp-header,
+  .moon-sp-footer {
+    display: none;
+  }
+
+  .moon-menu {
+    display: block;
+  }
+
+  .moon-modal__container {
+    max-width: 640px;
+  }
+}
+
+/* --- Search (shared with simulator) --- */
 .sim-search {
   display: flex;
   align-items: center;
 }
 
 .sim-search__input {
-  color: #e0e0e0;
-  background-color: #32343a;
   border: 1px solid #3e4046;
+  background-color: #32343a;
+  color: #e0e0e0;
+  padding: 8px;
   border-radius: 8px;
+  font-size: 0.85rem;
   flex: 1;
   margin-right: 8px;
-  padding: 4px 8px;
-  font-size: 0.85rem;
 }
 
 .sim-search__input::placeholder {
   color: #888;
 }
 
-.sim-search__button {
+.moon-sidebar .sim-search__button,
+.moon-modal__container .sim-search__button {
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  background: #4a7ec8;
+  font-weight: bold;
   color: #fff;
   cursor: pointer;
   white-space: nowrap;
-  background: #d4820e;
-  border: none;
-  border-radius: 8px;
-  padding: 4px 12px;
-  font-size: 0.85rem;
-  font-weight: bold;
   transition: all 0.2s;
 }
 
-.sim-search__button:hover {
+.moon-sidebar .sim-search__button:hover,
+.moon-modal__container .sim-search__button:hover {
   opacity: 0.85;
 }
 
-.sim-search__button:disabled {
+.moon-sidebar .sim-search__button:disabled,
+.moon-modal__container .sim-search__button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* --- Date picker (sidebar) --- */
-.sim-datepicker-sidebar__input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #3e4046;
-  background-color: #32343a;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  color: #e0e0e0;
-}
-
-.sim-datepicker-sidebar__input::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-}
-
-/* --- Date picker (footer) --- */
+/* --- Date picker footer (shared with simulator) --- */
 .sim-datepicker {
   display: flex;
   align-items: center;
@@ -260,8 +862,8 @@
 }
 
 .sim-datepicker__btn:hover {
-  background-color: #d4820e;
-  border-color: #d4820e;
+  background-color: #4a7ec8;
+  border-color: #4a7ec8;
   color: #fff;
 }
 
@@ -280,6 +882,18 @@
   filter: invert(1);
 }
 
+/* --- Date picker sidebar (shared with simulator) --- */
+.sim-datepicker-sidebar__input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* --- Footer date button --- */
 .sim-datepicker__date-btn {
   flex: 1;
   border: 1px solid #3e4046;
@@ -297,11 +911,11 @@
 }
 
 /* --- Footer calendar overlay --- */
-.sim-footer-calendar__overlay {
+.moon-footer-calendar__overlay {
   z-index: 9500;
 }
 
-.sim-footer-calendar__container {
+.moon-footer-calendar__container {
   background: #28292b;
   border-radius: 16px;
   width: 100%;
@@ -310,530 +924,19 @@
   box-shadow: 0 3px 4px #0000000a;
 }
 
-/* --- Menu (PC overlay) --- */
-.sim-menu {
-  display: none;
-  position: absolute;
-  right: 20px;
-  top: 8px;
-  z-index: 999;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sim-menu li {
-  -webkit-backdrop-filter: blur(8px);
-  background-color: #050f23ad;
-  border: 1px solid #ffffff80;
-  border-radius: 10px;
-  margin-right: 6px;
-  font-size: 0.9rem;
-  transition: background 0.2s, border 0.2s;
-  display: inline-block;
-}
-
-.sim-menu li:hover {
-  background-color: rgba(30, 20, 5, 0.75);
-  border-color: rgba(255, 255, 255, 0.7);
-}
-
-.sim-menu li a,
-.sim-menu li button {
-  padding: 9px 14px;
-  text-decoration: none;
-  color: #fff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  display: block;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.sim-menu li a:hover,
-.sim-menu li button:hover {
-  opacity: 1;
-}
-
-/* --- Share --- */
-.sim-share__title {
-  text-align: center;
-  font-size: 0.9rem;
-  color: #aaa;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.sim-share__links {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  gap: 10px;
-}
-
-.sim-share__links a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #555;
-  color: #fff;
-  text-decoration: none;
-  transition: opacity 0.2s;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.sim-share__link--x {
-  background-color: #1a1a1a !important;
-}
-
-.sim-share__link--fb {
-  background-color: #1877f2 !important;
-}
-
-.sim-share__link--hatena {
-  background-color: #00a4de !important;
-}
-
-.sim-share__link--line {
-  background-color: #06c755 !important;
-  font-size: 11px !important;
-}
-
-.sim-share__links a:hover {
-  opacity: 0.8;
-}
-
-/* --- Modal --- */
-.sim-modal__overlay {
-  z-index: 9000;
-}
-
-.sim-modal__container {
-  background-color: #28292b;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 480px;
-  position: relative;
-  box-shadow: 0 3px 4px #0000000a;
-}
-
-.sim-modal__close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #ccc;
-  z-index: 1;
-  transition: background 0.2s;
-}
-
-.sim-modal__close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
-
-.sim-modal__body {
-  padding: 48px 20px 28px;
-}
-
-.sim-modal__title {
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
+/* --- Info modal calendar (SP only) --- */
+.moon-info-modal__calendar {
   margin-bottom: 16px;
-  color: #fff;
 }
 
-.sim-modal__container .sim-search__input {
-  border: 1px solid #3e4046;
-  background-color: #32343a;
-  color: #e0e0e0;
-}
-
-.sim-modal__container .sim-search__input::placeholder {
-  color: #888;
-}
-
-.sim-modal__container .sim-search__button {
-  background: #d4820e;
-}
-
-.sim-modal__container .sim-search__button:hover {
-  opacity: 0.85;
-}
-
-/* --- Definition list --- */
-.sim-definition {
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-}
-
-.sim-definition__body {
-  padding: 16px;
-  margin: 0;
-}
-
-.sim-definition__body dt {
-  font-weight: bold;
-  margin-bottom: 8px;
-  font-size: 1rem;
-}
-
-.sim-definition__body dt a {
-  color: #d4820e;
-  text-decoration: none;
-}
-
-.sim-definition__body dt a:hover {
-  text-decoration: underline;
-}
-
-.sim-definition__body dd {
-  border-bottom: 1px dashed #e2e8f0;
-  color: #333;
-  font-size: 0.9rem;
-  padding-bottom: 12px;
-  margin-bottom: 12px;
-  margin-left: 0;
-}
-
-.sim-definition__body dd:last-child {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-/* --- FAQ --- */
-.sim-faq__item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 1em;
-}
-
-.sim-faq__label {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  font-weight: bold;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  margin-right: 0.75em;
-  margin-top: 0.2em;
-}
-
-.sim-faq__label--q {
-  background-color: #d4820e;
-}
-
-.sim-faq__label--a {
-  background-color: #28292b;
-}
-
-.sim-faq__question {
-  font-weight: 700;
-  color: #1f2937;
-  font-size: 1rem;
-  margin: 0;
-}
-
-.sim-faq__answer {
-  font-weight: 400;
-  color: #4a5568;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* --- FAQ (shared: info modal SP/PC) --- */
-.faq-item {
-  padding: 16px 0;
-  border-bottom: 1px dashed #eee;
-}
-.faq-item:last-child {
-  border-bottom: none;
-}
-.faq-item:first-child {
-  padding-top: 0;
-}
-.faq-q {
-  font-weight: 700;
-  font-size: 15px;
-  color: #333;
-  margin: 0 0 6px;
-}
-.faq-q::before {
-  content: "Q. ";
-  color: #d4820e;
-  font-weight: 800;
-}
-.faq-a {
-  font-size: 1rem;
-  line-height: 1.8;
-  color: #555;
-  margin: 0;
-  padding-left: 25px;
-}
-.faq-a::before {
-  content: "A. ";
-  color: #e53e3e;
-  font-weight: 700;
-}
-
-/* --- Info Modal (SEO welcome overlay) --- */
-@keyframes sim-info-in {
-  from { opacity: 0; transform: scale(0.96) translateY(10px); }
-  to   { opacity: 1; transform: scale(1)    translateY(0);    }
-}
-
-.sim-info-modal {
-  z-index: 10000;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-  background: #000000a6;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-  display: flex;
-  position: fixed;
-  inset: 0;
-}
-
-.sim-info-modal__container {
-  background: #fff;
-  border-radius: 20px;
-  width: 100%;
-  max-width: 600px;
-  max-height: 92vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-  animation: sim-info-in 0.28s ease;
-}
-
-/* Header */
-.sim-info-modal__header {
-  background: linear-gradient(150deg, #1e1f21 0%, #2d3748 100%);
-  padding: 12px 48px 12px 20px;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.sim-info-modal__title {
-  color: #fff;
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0 0 2px;
-  line-height: 1.4;
-}
-
-.sim-info-modal__subtitle {
-  display: block;
-  color: #9ca3af;
-  font-size: 0.78rem;
-  font-weight: 400;
-  margin-top: 2px;
-}
-
-.sim-info-modal__close {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  background: rgba(255, 255, 255, 0.12);
-  border: none;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #d1d5db;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.sim-info-modal__close:hover {
-  background: rgba(255, 255, 255, 0.22);
-  color: #fff;
-}
-
-/* Body */
-.sim-info-modal__body {
-  overflow-y: auto;
-  flex: 1;
-  padding: 20px 20px 28px;
-}
-
-.sim-info-modal__top-link {
-  margin-top: 8px;
-  text-align: center;
-  font-size: 0.875rem;
-}
-
-.sim-info-modal__top-link a {
-  color: #6b7280;
-  text-decoration: none;
-}
-
-.sim-info-modal__top-link a:hover {
-  color: #374151;
-}
-
-.sim-info-modal__lead {
-  color: #6b7280;
-  font-size: 0.9rem;
-  line-height: 1.75;
-  margin: 0 0 24px;
-}
-
-/* Section */
-.sim-info-modal__section {
-  margin-bottom: 24px;
-}
-
-.sim-info-modal__section-title {
-  color: #333;
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0 0 12px;
-}
-
-/* Howto numbered list */
-.sim-info-modal__howto {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  counter-reset: howto;
-}
-
-.sim-info-modal__howto li {
-  counter-increment: howto;
-  color: #374151;
-  border-bottom: 1px solid #f3f4f6;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 9px 0;
-  font-size: .9rem;
-  line-height: 1.65;
-  display: flex;
-}
-
-.sim-info-modal__howto li:last-child {
-  border-bottom: none;
-}
-
-.sim-info-modal__howto li::before {
-  content: counter(howto);
-  flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  background: #d4820e;
-  color: #fff;
-  border-radius: 50%;
-  font-size: 0.7rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2px;
-}
-
-/* CTA button */
-.sim-info-modal__btn {
-  color: #fff;
-  cursor: pointer;
-  letter-spacing: .02em;
-  background: linear-gradient(135deg, #d4820e, #b86808);
-  border: none;
-  border-radius: 12px;
-  width: 100%;
-  margin-bottom: 42px;
-  padding: 8px;
-  font-size: 1rem;
-  font-weight: 700;
-  transition: opacity .2s, transform .1s;
-  display: block;
-}
-
-.sim-info-modal__btn:hover  { opacity: 0.9; }
-.sim-info-modal__btn:active { transform: scale(0.98); }
-
-/* --- Leaflet overrides --- */
-.sim-map .leaflet-control-attribution {
-  display: none;
-}
-
-.sim-map .leaflet-top,
-.sim-map .leaflet-bottom {
-  z-index: 998;
-}
-
-/* ==============================
-   Responsive
-   ============================== */
-
-/* Mobile layout (default) */
-.sim-container {
-  flex-direction: column;
-}
-
-.sim-sp-header,
-.sim-sp-footer {
-  display: block;
-}
-
-/* Desktop layout */
 @media (min-width: 768px) {
-  .sim-container {
-    flex-direction: row;
-  }
-
-  .sim-sidebar {
-    display: flex;
-  }
-
-  .sim-sp-header,
-  .sim-sp-footer {
+  .moon-info-modal__calendar {
     display: none;
   }
-
-  .sim-menu {
-    display: block;
-  }
-
-  .sim-search__button {
-    background: #d4820e;
-  }
-
-  .sim-modal__container {
-    max-width: 640px;
-  }
 }
 
-/* --- Simple Calendar (simulator sidebar) --- */
-.sim-calendar {
+/* --- Moon Calendar --- */
+.moon-calendar {
   background: #32343a;
   border-radius: 8px;
   padding: 10px 8px 8px;
@@ -841,20 +944,20 @@
   border: 1px solid #3e4046;
 }
 
-.sim-calendar__header {
+.moon-calendar__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
 }
 
-.sim-calendar__month {
+.moon-calendar__month {
   font-size: 0.9rem;
   font-weight: bold;
   color: #e0e0e0;
 }
 
-.sim-calendar__nav {
+.moon-calendar__nav {
   background: none;
   border: none;
   color: #aaa;
@@ -865,67 +968,71 @@
   line-height: 1;
 }
 
-.sim-calendar__nav:hover {
+.moon-calendar__nav:hover {
   color: #fff;
 }
 
-.sim-calendar__weekdays {
+.moon-calendar__weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-bottom: 4px;
 }
 
-.sim-calendar__weekday {
+.moon-calendar__weekday {
   text-align: center;
   font-size: 0.7rem;
   color: #888;
   padding: 2px 0;
 }
 
-.sim-calendar__weekday--sun { color: #c07070; }
-.sim-calendar__weekday--sat { color: #7090cc; }
+.moon-calendar__weekday--sun { color: #c07070; }
+.moon-calendar__weekday--sat { color: #7090cc; }
 
-.sim-calendar__grid {
+.moon-calendar__grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
 }
 
-.sim-calendar__cell {
+.moon-calendar__cell {
   cursor: pointer;
   color: #e0e0e0;
   background: none;
   border: none;
   border-radius: 4px;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 1px;
   padding: 2px 2px;
-  font-size: 0.8rem;
   transition: background 0.15s;
   display: flex;
 }
 
-.sim-calendar__cell--empty {
+.moon-calendar__cell--empty {
   cursor: default;
 }
 
-.sim-calendar__cell:not(.sim-calendar__cell--empty):hover {
+.moon-calendar__cell:not(.moon-calendar__cell--empty):hover {
   background: #3e4046;
 }
 
-.sim-calendar__cell--today {
+.moon-calendar__cell--today {
   background: #2b3a52;
 }
 
-.sim-calendar__cell--selected {
-  background: #d4820e;
+.moon-calendar__cell--selected {
+  background: #4a7ec8;
   color: #fff;
-  font-weight: bold;
+}
+
+.moon-calendar__day {
+  font-size: 0.65rem;
+  line-height: 1;
 }
 
 /* --- Zoom control: PC only --- */
 @media (max-width: 767px) {
-  .sim-map .leaflet-control-zoom {
+  .moon-map .leaflet-control-zoom {
     display: none !important;
   }
 }

@@ -2,9 +2,9 @@
 
 import { useState, useCallback } from "react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-import SimpleCalendar from "./SimpleCalendar";
+import MoonCalendar from "./MoonCalendar";
 
-interface SimulatorFooterProps {
+interface MoonFooterProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   onSearchClick: () => void;
@@ -17,11 +17,11 @@ function formatDateLabel(date: Date): string {
   return `${y}/${m}/${d}`;
 }
 
-export default function SimulatorFooter({
+export default function MoonFooter({
   selectedDate,
   onDateChange,
   onSearchClick,
-}: SimulatorFooterProps) {
+}: MoonFooterProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   const goToPrevDay = useCallback(() => {
@@ -43,8 +43,8 @@ export default function SimulatorFooter({
 
   return (
     <>
-      <div className="sim-sp-footer">
-        <button className="sim-sp-footer__search" onClick={onSearchClick}>
+      <div className="moon-sp-footer">
+        <button className="moon-sp-footer__search" onClick={onSearchClick}>
           スポット検索（マーカーの位置変更）
           <Search size={14} />
         </button>
@@ -64,13 +64,14 @@ export default function SimulatorFooter({
         </div>
       </div>
 
+      {/* カレンダーオーバーレイ */}
       {calendarOpen && (
-        <div className="sp-overlay sim-footer-calendar__overlay" onClick={() => setCalendarOpen(false)}>
+        <div className="sp-overlay moon-footer-calendar__overlay" onClick={() => setCalendarOpen(false)}>
           <div
-            className="sim-footer-calendar__container"
+            className="moon-footer-calendar__container"
             onClick={(e) => e.stopPropagation()}
           >
-            <SimpleCalendar selectedDate={selectedDate} onDateChange={handleDateSelect} />
+            <MoonCalendar selectedDate={selectedDate} onDateChange={handleDateSelect} />
           </div>
         </div>
       )}

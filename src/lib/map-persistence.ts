@@ -1,4 +1,5 @@
 const STORAGE_KEY = "simulator-map-state";
+export const MOON_STORAGE_KEY = "moon-map-state";
 
 export interface MapState {
   lat: number;
@@ -12,17 +13,17 @@ export const DEFAULT_MAP_STATE: MapState = {
   zoom: 16,
 };
 
-export function saveMapState(state: MapState): void {
+export function saveMapState(state: MapState, key: string = STORAGE_KEY): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    localStorage.setItem(key, JSON.stringify(state));
   } catch {
     // localStorage unavailable
   }
 }
 
-export function loadMapState(): MapState {
+export function loadMapState(key: string = STORAGE_KEY): MapState {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(key);
     if (!raw) return DEFAULT_MAP_STATE;
     const parsed = JSON.parse(raw);
     if (

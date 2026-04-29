@@ -16,11 +16,11 @@ export default function SunTimesDisplay({
       <div className="sim-hour-header">
         <div className="sim-hour-header__item">
           <span className="sim-hour-header__label">日の出時刻</span>
-          <span className="sim-hour-header__time">{sunriseTime ?? "N/A"}</span>
+          <span className="sim-hour-header__time">{sunriseTime ?? "－"}</span>
         </div>
         <div className="sim-hour-header__item">
           <span className="sim-hour-header__label">日の入り時刻</span>
-          <span className="sim-hour-header__time">{sunsetTime ?? "N/A"}</span>
+          <span className="sim-hour-header__time">{sunsetTime ?? "－"}</span>
         </div>
       </div>
     );
@@ -41,8 +41,8 @@ export default function SunTimesDisplay({
         </thead>
         <tbody className="sim-hour__body">
           <tr>
-            <td>{sunriseTime ?? "N/A"}</td>
-            <td>{sunsetTime ?? "N/A"}</td>
+            <td>{sunriseTime ?? "－"}</td>
+            <td>{sunsetTime ?? "－"}</td>
           </tr>
         </tbody>
       </table>

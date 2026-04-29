@@ -171,6 +171,8 @@ export type HomePageLabels = {
     sunsetUnavailable: string;
     simulatorLinkText: string;
     simulatorSuffix: string;
+    moonLinkText: string;
+    moonSuffix: string;
     twilightPrefix: string;
     twilightLinkText: string;
     twilightSuffix: string;

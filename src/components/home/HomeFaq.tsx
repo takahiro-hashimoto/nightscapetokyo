@@ -46,6 +46,17 @@ function renderAnswer(
     );
   }
 
+  if (answer === "__MOON_LINK__") {
+    return (
+      <>
+        <Link href="/moon/">
+          {faqLabels?.moonLinkText ?? "月の出・月の入り時刻方角ナビ"}
+        </Link>
+        {faqLabels?.moonSuffix ?? "を使うと、日付・場所を指定して月の出・月の入りの時刻と方角を地図上で確認できます。"}
+      </>
+    );
+  }
+
   if (answer === "__TWILIGHT_LINK__") {
     return (
       <>

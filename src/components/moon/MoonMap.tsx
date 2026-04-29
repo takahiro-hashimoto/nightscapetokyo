@@ -24,12 +24,12 @@ const defaultIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-interface SimulatorMapProps {
+interface MoonMapProps {
   center: [number, number];
   zoom: number;
   markerPosition: [number, number];
-  sunriseAzimuth: number | null;
-  sunsetAzimuth: number | null;
+  moonriseAzimuth: number | null;
+  moonsetAzimuth: number | null;
   onMarkerDrag: (lat: number, lng: number) => void;  // drag中: 位置更新のみ
   onMarkerMove: (lat: number, lng: number) => void;  // dragend: 保存まで行う
   onViewChange: (lat: number, lng: number, zoom: number) => void;
@@ -42,13 +42,13 @@ function MapSizeInvalidator() {
     let prevW = 0, prevH = 0, rafId = 0;
     const ro = new ResizeObserver((entries) => {
       const { width, height } = entries[0].contentRect;
-      console.debug(`[SimMap] ResizeObserver fired | ${width.toFixed(0)}×${height.toFixed(0)} | t: ${Date.now()}`);
+      console.debug(`[MoonMap] ResizeObserver fired | ${width.toFixed(0)}×${height.toFixed(0)} | t: ${Date.now()}`);
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
         if (width !== prevW || height !== prevH) {
           prevW = width; prevH = height;
           map.invalidateSize();
-          console.debug(`[SimMap] invalidateSize() called | t: ${Date.now()}`);
+          console.debug(`[MoonMap] invalidateSize() called | t: ${Date.now()}`);
         }
       });
     });
@@ -93,7 +93,7 @@ function MapEvents({
   return null;
 }
 
-function calcSunPathEnd(
+function calcMoonPathEnd(
   lat: number,
   lng: number,
   azimuth: number
@@ -104,31 +104,31 @@ function calcSunPathEnd(
   return [endLat, endLng];
 }
 
-export default function SimulatorMap({
+export default function MoonMap({
   center,
   zoom,
   markerPosition,
-  sunriseAzimuth,
-  sunsetAzimuth,
+  moonriseAzimuth,
+  moonsetAzimuth,
   onMarkerDrag,
   onMarkerMove,
   onViewChange,
-}: SimulatorMapProps) {
-  const sunrisePath = useMemo(() => {
-    if (sunriseAzimuth === null) return null;
+}: MoonMapProps) {
+  const moonrisePath = useMemo(() => {
+    if (moonriseAzimuth === null) return null;
     return [
       markerPosition,
-      calcSunPathEnd(markerPosition[0], markerPosition[1], sunriseAzimuth),
+      calcMoonPathEnd(markerPosition[0], markerPosition[1], moonriseAzimuth),
     ] as [[number, number], [number, number]];
-  }, [markerPosition, sunriseAzimuth]);
+  }, [markerPosition, moonriseAzimuth]);
 
-  const sunsetPath = useMemo(() => {
-    if (sunsetAzimuth === null) return null;
+  const moonsetPath = useMemo(() => {
+    if (moonsetAzimuth === null) return null;
     return [
       markerPosition,
-      calcSunPathEnd(markerPosition[0], markerPosition[1], sunsetAzimuth),
+      calcMoonPathEnd(markerPosition[0], markerPosition[1], moonsetAzimuth),
     ] as [[number, number], [number, number]];
-  }, [markerPosition, sunsetAzimuth]);
+  }, [markerPosition, moonsetAzimuth]);
 
   const eventHandlers = useMemo(
     () => ({
@@ -150,7 +150,7 @@ export default function SimulatorMap({
     <MapContainer
       center={center}
       zoom={zoom}
-      className="sim-map"
+      className="moon-map"
       zoomControl={false}
     >
       <TileLayer
@@ -163,11 +163,11 @@ export default function SimulatorMap({
         icon={defaultIcon}
         eventHandlers={eventHandlers}
       />
-      {sunrisePath && (
-        <Polyline positions={sunrisePath} pathOptions={{ color: "#f0c040", weight: 3 }} />
+      {moonrisePath && (
+        <Polyline positions={moonrisePath} pathOptions={{ color: "#f0a830", weight: 3 }} />
       )}
-      {sunsetPath && (
-        <Polyline positions={sunsetPath} pathOptions={{ color: "#e05530", weight: 3 }} />
+      {moonsetPath && (
+        <Polyline positions={moonsetPath} pathOptions={{ color: "#4a7ec8", weight: 3 }} />
       )}
       <ZoomControl position="bottomright" />
       <MapSizeInvalidator />

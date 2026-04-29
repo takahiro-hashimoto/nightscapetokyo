@@ -93,4 +93,15 @@ export const ADS = {
     format: "auto",
     label: "シミュレーターサイドバー",
   },
+
+  /**
+   * 月の出・月の入りサイドバー（SNSシェアボタン下）
+   * 形式: ディスプレイ（auto）
+   * 設置: src/components/moon/MoonSidebar.tsx
+   */
+  MOON_SIDEBAR: {
+    slot: "2860460061",
+    format: "auto",
+    label: "月ナビサイドバー",
+  },
 } as const satisfies Record<string, AdSlotConfig>;

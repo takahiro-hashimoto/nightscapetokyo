@@ -3,19 +3,19 @@
 import { useEffect, useCallback } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
-import LocationSearch from "./LocationSearch";
+import LocationSearch from "@/components/simulator/LocationSearch";
 
-interface SimulatorModalProps {
+interface MoonModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLocationFound: (lat: number, lng: number) => void;
 }
 
-export default function SimulatorModal({
+export default function MoonModal({
   isOpen,
   onClose,
   onLocationFound,
-}: SimulatorModalProps) {
+}: MoonModalProps) {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -37,17 +37,17 @@ export default function SimulatorModal({
   if (!isOpen) return null;
 
   return (
-    <div className="sp-overlay sim-modal__overlay" onClick={onClose}>
+    <div className="sp-overlay moon-modal__overlay" onClick={onClose}>
       <div
-        className="sim-modal__container"
+        className="moon-modal__container"
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="sim-modal__close" onClick={onClose}>
+        <button className="moon-modal__close" onClick={onClose}>
           <X size={24} />
         </button>
 
-        <div className="sim-modal__body">
-          <h2 className="sim-modal__title">気になるスポットを検索</h2>
+        <div className="moon-modal__body">
+          <h2 className="moon-modal__title">気になるスポットを検索</h2>
           <LocationSearch
             onLocationFound={onLocationFound}
             onSearchComplete={onClose}
