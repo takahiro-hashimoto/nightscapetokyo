@@ -7,7 +7,7 @@ interface MoonTimesDisplayProps {
   moonsetTime: string | null;
   phaseName: string;
   illumination: number;
-  phase: number;
+  phase?: number;
   variant: "sidebar" | "header";
 }
 
