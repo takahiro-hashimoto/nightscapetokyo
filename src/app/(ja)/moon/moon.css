@@ -129,6 +129,32 @@
   border: 1px solid #3e4046;
 }
 
+.moon-hour__phase-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px 10px;
+  border-bottom: 1px solid #3e4046;
+  margin-bottom: 6px;
+}
+
+.moon-hour__phase-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.moon-hour__phase-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #f5c842;
+}
+
+.moon-hour__phase-illumination {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
 .moon-hour__table {
   font-size: 0.8rem;
   text-align: center;
@@ -1029,6 +1055,23 @@
 .moon-calendar__cell--selected {
   background: #4a7ec8;
   color: #fff;
+}
+
+.moon-calendar__cell--full-moon {
+  position: relative;
+}
+
+.moon-calendar__cell--full-moon::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 4px;
+  background: radial-gradient(ellipse at 40% 35%, #fff8c0 0%, #f5c84220 60%, transparent 100%);
+  pointer-events: none;
+}
+
+.moon-calendar__cell--full-moon .moon-calendar__full-moon-icon {
+  filter: drop-shadow(0 0 5px #f5c842cc) drop-shadow(0 0 10px #f5c84266);
 }
 
 .moon-calendar__day {

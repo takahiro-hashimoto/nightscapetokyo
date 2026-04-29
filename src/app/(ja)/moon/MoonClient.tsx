@@ -113,6 +113,7 @@ export default function MoonClient() {
         moonsetTime={moonData.moonsetTime}
         phaseName={moonData.phaseName}
         illumination={moonData.illumination}
+        phase={moonData.phase}
         selectedDate={selectedDate}
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}

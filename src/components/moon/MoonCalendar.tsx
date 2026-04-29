@@ -3,52 +3,11 @@
 import { useState, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SunCalc from "suncalc";
+import MoonPhaseIcon from "./MoonPhaseIcon";
 
 interface MoonCalendarProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
-}
-
-function MoonPhaseIcon({ phase, size = 28 }: { phase: number; size?: number }) {
-  const r = Math.floor(size / 2) - 1;
-  const cx = size / 2;
-  const cy = size / 2;
-
-  if (phase <= 0.02 || phase >= 0.98) {
-    return (
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        <circle cx={cx} cy={cy} r={r} fill="#1a1a2e" stroke="#555" strokeWidth="0.5" />
-      </svg>
-    );
-  }
-  if (phase >= 0.48 && phase <= 0.52) {
-    return (
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        <circle cx={cx} cy={cy} r={r} fill="#f5c842" />
-      </svg>
-    );
-  }
-
-  const c = Math.cos(phase * 2 * Math.PI);
-  const waxing = phase < 0.5;
-  const terminatorX = Math.round(r * Math.abs(c) * 10000) / 10000;
-  const isGibbous = c < 0;
-  const outerSweep = waxing ? 1 : 0;
-  const termSweep = isGibbous ? outerSweep : (1 - outerSweep);
-
-  const path = [
-    `M ${cx} ${cy - r}`,
-    `A ${r} ${r} 0 0 ${outerSweep} ${cx} ${cy + r}`,
-    `A ${terminatorX} ${r} 0 0 ${termSweep} ${cx} ${cy - r}`,
-    "Z",
-  ].join(" ");
-
-  return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      <circle cx={cx} cy={cy} r={r} fill="#1a1a2e" stroke="#333" strokeWidth="0.5" />
-      <path d={path} fill="#f5c842" suppressHydrationWarning />
-    </svg>
-  );
 }
 
 export default function MoonCalendar({ selectedDate, onDateChange }: MoonCalendarProps) {
@@ -110,6 +69,7 @@ export default function MoonCalendar({ selectedDate, onDateChange }: MoonCalenda
         {calendarData.days.map(({ day, date, phase }) => {
           const isToday = date.toDateString() === today.toDateString();
           const isSelected = date.toDateString() === selectedDate.toDateString();
+          const isFullMoon = phase >= 0.48 && phase <= 0.52;
           return (
             <button
               key={day}
@@ -117,11 +77,14 @@ export default function MoonCalendar({ selectedDate, onDateChange }: MoonCalenda
                 "moon-calendar__cell",
                 isToday ? "moon-calendar__cell--today" : "",
                 isSelected ? "moon-calendar__cell--selected" : "",
+                isFullMoon ? "moon-calendar__cell--full-moon" : "",
               ].filter(Boolean).join(" ")}
               onClick={() => onDateChange(date)}
-              aria-label={`${viewMonth + 1}月${day}日`}
+              aria-label={`${viewMonth + 1}月${day}日${isFullMoon ? "（満月）" : ""}`}
             >
-              <MoonPhaseIcon phase={phase} size={20} />
+              <span className={isFullMoon ? "moon-calendar__full-moon-icon" : undefined}>
+                <MoonPhaseIcon phase={phase} size={20} />
+              </span>
               <span className="moon-calendar__day">{day}</span>
             </button>
           );

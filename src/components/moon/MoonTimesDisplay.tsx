@@ -1,10 +1,13 @@
 "use client";
 
+import MoonPhaseIcon from "./MoonPhaseIcon";
+
 interface MoonTimesDisplayProps {
   moonriseTime: string | null;
   moonsetTime: string | null;
   phaseName: string;
   illumination: number;
+  phase: number;
   variant: "sidebar" | "header";
 }
 
@@ -13,6 +16,7 @@ export default function MoonTimesDisplay({
   moonsetTime,
   phaseName,
   illumination,
+  phase,
   variant,
 }: MoonTimesDisplayProps) {
   const illuminationPercent = Math.round(illumination * 100);
@@ -40,6 +44,13 @@ export default function MoonTimesDisplay({
 
   return (
     <div className="moon-hour">
+      <div className="moon-hour__phase-row">
+        <MoonPhaseIcon phase={phase} size={48} />
+        <div className="moon-hour__phase-info">
+          <span className="moon-hour__phase-name">{phaseName}</span>
+          <span className="moon-hour__phase-illumination">{illuminationPercent}%</span>
+        </div>
+      </div>
       <table className="moon-hour__table">
         <thead>
           <tr>

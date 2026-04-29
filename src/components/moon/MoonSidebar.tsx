@@ -11,6 +11,7 @@ interface MoonSidebarProps {
   moonsetTime: string | null;
   phaseName: string;
   illumination: number;
+  phase: number;
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   onLocationFound: (lat: number, lng: number) => void;
@@ -21,6 +22,7 @@ export default function MoonSidebar({
   moonsetTime,
   phaseName,
   illumination,
+  phase,
   selectedDate,
   onDateChange,
   onLocationFound,
@@ -46,6 +48,7 @@ export default function MoonSidebar({
             moonsetTime={moonsetTime}
             phaseName={phaseName}
             illumination={illumination}
+            phase={phase}
             variant="sidebar"
           />
         </div>
