@@ -18,11 +18,10 @@
 
 .sim-map {
   flex: 1 1 auto;
-  min-height: 0;
   min-width: 0;
+  min-height: 0;
   height: auto !important;
   width: auto !important;
-  align-self: stretch;
   z-index: 0;
 }
 
@@ -31,10 +30,11 @@
   display: none;
   flex-direction: column;
   flex: 0 0 320px;
-  height: auto;
+  height: 100%;
   min-height: 0;
-  background-color: #28292b;
   overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #28292b;
   color: #fff;
 }
 

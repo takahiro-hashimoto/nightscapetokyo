@@ -18,11 +18,10 @@
 
 .moon-map {
   flex: 1 1 auto;
-  min-height: 0;
   min-width: 0;
+  min-height: 0;
   height: auto !important;
   width: auto !important;
-  align-self: stretch;
   z-index: 0;
 }
 
@@ -31,10 +30,11 @@
   display: none;
   flex-direction: column;
   flex: 0 0 320px;
-  height: auto;
+  height: 100%;
   min-height: 0;
-  background-color: #28292b;
   overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #28292b;
   color: #fff;
 }
 
@@ -592,14 +592,14 @@
 .moon-info-modal__container {
   background: #fff;
   border-radius: 20px;
-  width: 100%;
-  max-width: 600px;
-  max-height: 92vh;
-  overflow: hidden;
-  display: flex;
   flex-direction: column;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-  animation: moon-info-in 0.28s ease;
+  width: 100%;
+  max-width: 560px;
+  max-height: 92vh;
+  animation: .28s moon-info-in;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 24px 60px #00000059;
 }
 
 /* Header */
