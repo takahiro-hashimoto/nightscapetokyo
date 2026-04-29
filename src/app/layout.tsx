@@ -37,13 +37,13 @@ try{if(localStorage.getItem("_sd")==="1"){
     var logs=JSON.parse(sessionStorage.getItem("_sdlog")||"[]");
     var text="\u0060\u0060\u0060json\\n"+JSON.stringify(logs,null,2)+"\\n\u0060\u0060\u0060";
     if(navigator.clipboard){
-      navigator.clipboard.writeText(text).then(function(){console.log("[SD] ✅ クリップボードにコピーしました。チャットに貼り付けてください。");}).catch(function(){console.log("[SD] ログ:\n"+text);});
+      navigator.clipboard.writeText(text).then(function(){console.log("[SD] ✅ クリップボードにコピーしました。チャットに貼り付けてください。");}).catch(function(){console.log("[SD] ログ:\\n"+text);});
     }else{
-      console.log("[SD] ログ:\n"+text);
+      console.log("[SD] ログ:\\n"+text);
     }
     return logs;
   };
-  console.log("[SD] scroll debug ON\n  _sdShare()  → クリップボードにコピー（チャットに貼るだけ）\n  _sdRead()   → ログをオブジェクトで確認\n  _sdClear()  → ログをリセット");
+  console.log("[SD] scroll debug ON\\n  _sdShare()  → クリップボードにコピー（チャットに貼るだけ）\\n  _sdRead()   → ログをオブジェクトで確認\\n  _sdClear()  → ログをリセット");
 }}catch(_ex){}
 `.trim() }} />
         {isProd && <GtmLoader gtmId={GTM_ID} />}

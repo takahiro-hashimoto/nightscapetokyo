@@ -133,6 +133,15 @@ img {
   height: auto;
 }
 
+/* Leaflet タイル・マーカー画像が globals の max-width: 100% で壊れるのを防ぐ */
+.moon-map .leaflet-pane img,
+.moon-map .leaflet-tile,
+.sim-map .leaflet-pane img,
+.sim-map .leaflet-tile {
+  max-width: none !important;
+  height: auto !important;
+}
+
 /* =========================================
    Layout - Page structure (l-)
    ========================================= */

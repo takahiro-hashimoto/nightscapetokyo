@@ -45,6 +45,7 @@ function MapSizeInvalidator() {
       console.log(`[MoonMap] ResizeObserver fired | ${width.toFixed(0)}×${height.toFixed(0)} | t: ${Date.now()}`);
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
+        if (width < 50 || height < 50) return; // 極小サイズ時はスキップ
         if (width !== prevW || height !== prevH) {
           prevW = width; prevH = height;
           map.invalidateSize();
