@@ -35,6 +35,7 @@ const FOOTER_LABELS = {
       { label: "無料壁紙", href: "/wallpaper" },
       { label: "タイムラプス動画", href: "/time-lapse" },
       { label: "日の出・日の入りシミュレーター", href: "/simulator" },
+      { label: "月の出・月の入りシミュレーター", href: "/moon" },
       { label: "Luminar Neo ガイド", href: "/luminar" },
       { label: "ブログ", href: "/article" },
     ],
