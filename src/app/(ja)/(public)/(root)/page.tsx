@@ -9,9 +9,9 @@ import HomeFaq from "@/components/home/HomeFaq";
 import HomeAuthor from "@/components/home/HomeAuthor";
 import HomePrBanner from "@/components/home/HomePrBanner";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { getTopSpots, getHotelSpots, getAreas, getPurposeTags, getTotalSpotCount, getSpotsForMap } from "@/lib/supabase/queries";
+import { getTopSpots, getHotelSpots, getAreas, getPurposeTags, getTotalSpotCount } from "@/lib/supabase/queries";
 import HomeNewsAndVideos from "@/components/home/HomeNewsAndVideos";
-import HomeMapSection from "@/components/home/HomeMapSection";
+import { HomeMapSectionServer } from "@/components/home/HomeMapSection";
 import HomeArticles from "@/components/home/HomeArticles";
 import { calculateSunData } from "@/lib/sun-calc";
 import { getComponentLabels } from "@/lib/i18n-labels";
@@ -50,23 +50,13 @@ export default async function Home() {
   const sunData = calculateSunData(new Date(), 35.6895, 139.6917);
   const labels = getComponentLabels("ja");
 
-  const [spots, hotels, areas, purposeTags, spotCount, mapSpots] = await Promise.all([
+  const [spots, hotels, areas, purposeTags, spotCount] = await Promise.all([
     getTopSpots(12).catch(() => []),
     getHotelSpots(4).catch(() => []),
     getAreas().catch(() => []),
     getPurposeTags().catch(() => []),
     getTotalSpotCount().catch(() => 200),
-    getSpotsForMap().catch(() => []),
   ]);
-
-  const mapSeoSpots = mapSpots.slice(0, 50).map((spot) => ({
-    id: spot.id,
-    slug: spot.slug,
-    name: spot.name,
-    categorySlug: spot.categorySlug,
-    latitude: spot.latitude,
-    longitude: spot.longitude,
-  }));
 
   const faqItems = labels.homePage.faq.items;
   const currentYear = CURRENT_YEAR;
@@ -84,7 +74,9 @@ export default async function Home() {
       <HotelRanking hotels={hotels} />
       <PurposeSearch tags={purposeTags} />
       <AreaSearch areas={areas} />
-      <HomeMapSection spots={mapSeoSpots} categories={areas.map((a) => ({ slug: a.slug, name: a.name }))} />
+      <Suspense fallback={null}>
+        <HomeMapSectionServer categories={areas.map((a) => ({ slug: a.slug, name: a.name }))} />
+      </Suspense>
       <Suspense fallback={null}>
         <HomeArticles />
       </Suspense>

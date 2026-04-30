@@ -1,6 +1,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { MapSpotItem } from "@/lib/supabase/queries";
+import { getSpotsForMap } from "@/lib/supabase/queries";
 
 const SpotMapLoader = dynamic(() => import("@/components/map/SpotMapLoader"));
 import { SITE_URL } from "@/lib/types";
@@ -96,5 +97,39 @@ export default function HomeMapSection({
         </div>
       </div>
     </section>
+  );
+}
+
+type ServerProps = {
+  categories: Category[];
+  labels?: MapSectionLabels;
+  localePrefix?: string;
+  endpoint?: string;
+};
+
+export async function HomeMapSectionServer({
+  categories,
+  labels,
+  localePrefix,
+  endpoint,
+}: ServerProps) {
+  const mapSpots = await getSpotsForMap().catch(() => []);
+  const spots = mapSpots.slice(0, 50).map((spot) => ({
+    id: spot.id,
+    slug: spot.slug,
+    name: spot.name,
+    categorySlug: spot.categorySlug,
+    latitude: spot.latitude,
+    longitude: spot.longitude,
+  }));
+
+  return (
+    <HomeMapSection
+      spots={spots}
+      categories={categories}
+      labels={labels}
+      localePrefix={localePrefix}
+      endpoint={endpoint}
+    />
   );
 }

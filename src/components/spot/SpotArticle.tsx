@@ -199,7 +199,9 @@ export default function SpotArticle({
                 const ytMatch = spot.movie.match(/youtube(?:-nocookie)?\.com\/embed\/([a-zA-Z0-9_-]{11})/);
                 return ytMatch ? (
                   <div className="video-container">
-                    <YouTubeFacade videoId={ytMatch[1]} title={spotName} />
+                    <div className="video-facade-wrapper">
+                      <YouTubeFacade videoId={ytMatch[1]} title={spotName} />
+                    </div>
                   </div>
                 ) : (
                   <div
