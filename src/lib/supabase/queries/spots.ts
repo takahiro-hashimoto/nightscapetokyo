@@ -190,33 +190,6 @@ const _getRecommendedSpotSlugs = unstable_cache(async (): Promise<string[]> => {
 export const getRecommendedSpotSlugs = cache(_getRecommendedSpotSlugs);
 
 /** トップスポットをフルリレーション付きで取得（recommend ページ用・1クエリ版） */
-export const getTopSpotsWithRelations = cache(unstable_cache(async (limit = 60): Promise<SpotWithRelations[]> => {
-  if (!isSupabaseConfigured) return [];
-
-  const supabase = await getSupabaseClient();
-
-  const { data } = (await supabase
-    .from("spots")
-    .select(`${FULL_SELECT}, spot_tags(tag:tags(*))`)
-    .eq("type", "spot")
-    .eq("published", true)
-    .order("rating_beautiful", { ascending: false })
-    .limit(limit)) as any;
-
-  if (!data) return [];
-
-  const seen = new Set<string>();
-  return data
-    .map((spot: any) => {
-      const tags = spot.spot_tags?.map((r: any) => r.tag) ?? [];
-      return normalizeSpotRelations({ ...spot, tags });
-    })
-    .filter((s: SpotWithRelations) => {
-      if (seen.has(s.id)) return false;
-      seen.add(s.id);
-      return true;
-    });
-}, ["top-spots-full"], { revalidate: 3600, tags: ["spots"] }));
 
 export async function getSpotCount(): Promise<number> {
   if (!isSupabaseConfigured) return 0;
