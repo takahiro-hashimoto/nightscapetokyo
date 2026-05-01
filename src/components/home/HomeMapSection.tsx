@@ -130,6 +130,7 @@ export async function HomeMapSectionServer({
       labels={labels}
       localePrefix={localePrefix}
       endpoint={endpoint}
+      initialSpots={mapSpots}
     />
   );
 }

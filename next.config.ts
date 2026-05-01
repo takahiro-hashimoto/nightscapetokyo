@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
 
   images: {
     unoptimized: false,
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
     minimumCacheTTL: 2592000, // 30日: 最適化済み画像をサーバー側でキャッシュ
     deviceSizes: [640, 828, 960, 1280, 1920],
     imageSizes: [180, 256, 384],
@@ -26,14 +26,6 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*.r2.dev",
-      },
-      {
-        protocol: "https",
-        hostname: "picsum.photos",
-      },
-      {
-        protocol: "https",
-        hostname: "fastly.picsum.photos",
       },
       {
         protocol: "https",

@@ -432,7 +432,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   }
 
   return result;
-}, ["sitemap-all-entries"], { revalidate: 3600, tags: ["spots", "areas", "articles", "tags", "tag-pages", "translations"] });
+}, ["sitemap-all-entries"], { revalidate: 86400, tags: ["spots", "areas", "articles", "tags", "tag-pages", "translations"] });
 
 /**
  * Convert a list of SitemapUrl entries to XML string.

@@ -63,20 +63,21 @@ const _getSpotsForMapTranslatedCached = unstable_cache(
 
     const supabase = await getSupabaseClient();
 
-    const [{ data }, { data: translations }] = await Promise.all([
-      supabase
-        .from("spots")
-        .select(SPOT_SELECT)
-        .eq("published", true)
-        .not("latitude", "is", null)
-        .not("longitude", "is", null) as any,
-      supabase
-        .from("spot_translations")
-        .select("spot_id, name, category_name")
-        .eq("locale", dbLocale) as any,
-    ]);
+    const { data } = (await supabase
+      .from("spots")
+      .select(SPOT_SELECT)
+      .eq("published", true)
+      .not("latitude", "is", null)
+      .not("longitude", "is", null)) as any;
 
     if (!data) return [];
+
+    const spotIds = data.map((s: any) => s.id);
+    const { data: translations } = (await supabase
+      .from("spot_translations")
+      .select("spot_id, name, category_name")
+      .eq("locale", dbLocale)
+      .in("spot_id", spotIds)) as any;
 
     const tMap = new Map<string, { name: string; category_name: string }>(
       (translations ?? []).map((t: any) => [t.spot_id, t])

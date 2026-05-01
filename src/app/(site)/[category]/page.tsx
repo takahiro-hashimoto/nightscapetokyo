@@ -324,6 +324,7 @@ export default async function AreaPage({ params }: Props) {
             labels={hp.mapSection}
             localePrefix={`/${localeSlug}`}
             endpoint={`/api/map-spots?locale=${localeSlug}`}
+            initialSpots={mapSpots}
           />
         </DeferredRender>
         <DeferredRender>

@@ -276,14 +276,28 @@ export async function updateSpot(id: string, formData: FormData) {
     });
   }
 
-  // Revalidate both admin and public pages
-  revalidateSpotCaches();
-  revalidatePath("/admin/spots");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const catSlug = (current as any)?.category?.slug;
-  if (catSlug) {
-    revalidatePath(`/${catSlug}/${slug}`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const publishedChanged = published !== (current as any)?.published;
+
+  if (publishedChanged) {
+    // published 状態の変更はエリア一覧の表示件数にも影響するため全体を無効化
+    revalidateSpotCaches();
+  } else {
+    // コンテンツのみ更新: 対象スポットのページだけ無効化（ISR Writes 削減）
+    // Vercel Data Cache のスポットデータは fetch revalidate TTL(1h) で自然更新
+    const LOCALE_SLUGS = ["en", "ko", "tw", "cn"] as const;
+    if (catSlug) {
+      revalidatePath(`/${catSlug}/${slug}`);
+      for (const loc of LOCALE_SLUGS) {
+        revalidatePath(`/${loc}/${catSlug}/${slug}`);
+      }
+      revalidatePath(`/${catSlug}`);
+    }
+    revalidatePath("/");
   }
+  revalidatePath("/admin/spots");
 
   return { success: true };
 }

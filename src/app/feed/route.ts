@@ -1,6 +1,8 @@
 import { getArticles } from "@/lib/supabase/queries/articles";
 import { SITE_URL } from "@/lib/types";
 
+export const revalidate = 86400;
+
 function escapeXml(str: string): string {
   return str
     .replace(/&/g, "&amp;")

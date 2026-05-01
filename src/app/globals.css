@@ -875,6 +875,15 @@ main > .home-section:nth-child(even of .home-section) {
   background: #000;
 }
 
+.video-facade-wrapper {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+}
+
 /* --- Section Headings --- */
 .spot-section-header {
   display: flex;
@@ -3466,5 +3475,21 @@ body.modal-open [id*="aswift"] {
 
 .m-table-wrap .m-table tbody tr:nth-child(even) td {
   background: #f8fafc;
+}
+
+.moon-info-modal__title {
+  color: #fff;
+  margin: 0 0 2px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.sim-info-modal__title {
+  color: #fff;
+  margin: 0 0 2px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.4;
 }
 

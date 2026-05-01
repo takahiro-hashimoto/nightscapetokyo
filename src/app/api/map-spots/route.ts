@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSpotsForMap, getSpotsForMapTranslated } from "@/lib/supabase/queries";
 
-export const revalidate = 3600;
+export const revalidate = false;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

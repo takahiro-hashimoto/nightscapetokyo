@@ -29,7 +29,7 @@ const _getSpotBySlugUncached = async (
 
   const { data: spot, error } = (await supabase
     .from("spots")
-    .select(`${FULL_SELECT}, spot_tags(tag:tags(*))`)
+    .select(`${FULL_SELECT}, spot_tags(tag:tags(id, slug, name))`)
     .eq("slug", spotSlug)
     .eq("published", true)
     .single()) as any;
@@ -147,7 +147,7 @@ export const getTopSpotsForRecommend = cache(unstable_cache(async (limit = 60): 
 
   const { data } = (await supabase
     .from("spots")
-    .select("*, category:categories(*), images:spot_images(*), hotel:spot_hotels(*)")
+    .select("*, category:categories(id, slug, name), images:spot_images(id, spot_id, url, alt, sort_order), hotel:spot_hotels(id, spot_id, checkin, checkout, amenity, affiliate_1, affiliate_2, affiliate_3, affiliate_4)")
     .eq("type", "spot")
     .eq("published", true)
     .order("rating_beautiful", { ascending: false })
@@ -189,18 +189,7 @@ const _getRecommendedSpotSlugs = unstable_cache(async (): Promise<string[]> => {
 
 export const getRecommendedSpotSlugs = cache(_getRecommendedSpotSlugs);
 
-/** トップスポットをフルリレーション付きで取得（recommend ページ用・1クエリ版） */
 
-export async function getSpotCount(): Promise<number> {
-  if (!isSupabaseConfigured) return 0;
-  const supabase = await getSupabaseClient();
-  const { count } = await supabase
-    .from("spots")
-    .select("*", { count: "exact", head: true })
-    .eq("type", "spot")
-    .eq("published", true);
-  return count ?? 0;
-}
 
 export const getHotelSpots = cache(unstable_cache(async (limit = 4): Promise<SpotListItem[]> => {
   if (!isSupabaseConfigured) {
@@ -235,21 +224,24 @@ const _getTopSpotsTranslatedUncached = async (
   const supabase = await getSupabaseClient();
   const allowedSet = allowedCategorySlugsSorted ? new Set(allowedCategorySlugsSorted) : null;
 
-  const [{ data: spots }, { data: translations }] = await Promise.all([
-    supabase
-      .from("spots")
-      .select(LISTING_SELECT)
-      .eq("type", "spot")
-      .eq("published", true)
-      .order("rating_beautiful", { ascending: false })
-      .limit(100) as any,
-    supabase
-      .from("spot_translations")
-      .select("spot_id, name, lead, category_name")
-      .eq("locale", dbLocale) as any,
-  ]);
+  const { data: spots } = (await supabase
+    .from("spots")
+    .select(LISTING_SELECT)
+    .eq("type", "spot")
+    .eq("published", true)
+    .order("rating_beautiful", { ascending: false })
+    .limit(100)) as any;
 
-  if (!spots?.length || !translations?.length) return [];
+  if (!spots?.length) return [];
+
+  const spotIds = spots.map((s: any) => s.id);
+  const { data: translations } = (await supabase
+    .from("spot_translations")
+    .select("spot_id, name, lead, category_name")
+    .eq("locale", dbLocale)
+    .in("spot_id", spotIds)) as any;
+
+  if (!translations?.length) return [];
 
   const tMap = buildTranslationMap(translations);
 
@@ -294,21 +286,24 @@ export const getHotelSpotsTranslated = cache(
 
       const supabase = await getSupabaseClient();
 
-      const [{ data: spots }, { data: translations }] = await Promise.all([
-        supabase
-          .from("spots")
-          .select(LISTING_SELECT)
-          .eq("type", "hotel")
-          .eq("published", true)
-          .order("rating_beautiful", { ascending: false })
-          .limit(limit * 5) as any,
-        supabase
-          .from("spot_translations")
-          .select("spot_id, name, lead, category_name")
-          .eq("locale", dbLocale) as any,
-      ]);
+      const { data: spots } = (await supabase
+        .from("spots")
+        .select(LISTING_SELECT)
+        .eq("type", "hotel")
+        .eq("published", true)
+        .order("rating_beautiful", { ascending: false })
+        .limit(limit * 5)) as any;
 
-      if (!spots?.length || !translations?.length) return [];
+      if (!spots?.length) return [];
+
+      const spotIds = spots.map((s: any) => s.id);
+      const { data: translations } = (await supabase
+        .from("spot_translations")
+        .select("spot_id, name, lead, category_name")
+        .eq("locale", dbLocale)
+        .in("spot_id", spotIds)) as any;
+
+      if (!translations?.length) return [];
 
       const tMap = buildTranslationMap(translations);
 
@@ -544,7 +539,7 @@ async function _getSpotsBySlugsTranslatedCore(
 
   const { data: translations } = (await supabase
     .from("spot_translations")
-    .select("*")
+    .select("spot_id, name, title, lead, recommend_description, report, content, address, station, parking, hours, holiday, money, height, official_label, sns_label, relation_label, category_name, image_alts")
     .eq("locale", dbLocale)
     .in("spot_id", spotIds)) as any;
 
@@ -602,7 +597,7 @@ export const getSpotWithTranslation = cache(async function getSpotWithTranslatio
 
   const { data: translation } = (await supabase
     .from("spot_translations")
-    .select("*")
+    .select("spot_id, name, title, lead, report, content, address, station, parking, hours, holiday, money, height, official_label, sns_label, relation_label, category_name, image_alts, faqs, tag_names")
     .eq("spot_id", spot.id)
     .eq("locale", dbLocale)
     .single()) as any;
@@ -692,29 +687,6 @@ export const getAvailableTranslations = cache(
   )
 );
 
-/** 翻訳済みの全スポットスラッグを取得（SSG用） */
-export async function getAllTranslatedSlugs(): Promise<
-  { locale: string; category: string; slug: string }[]
-> {
-  if (!isSupabaseConfigured) return [];
-
-  const supabase = await getSupabaseClient();
-
-  const { data } = (await supabase
-    .from("spot_translations")
-    .select("locale, spot:spots!inner(slug, published, category:categories(slug))")
-    .eq("spot.published", true)) as any;
-
-  if (!data) return [];
-
-  return data
-    .filter((d: any) => d.spot?.category?.slug && d.spot?.slug && LOCALE_TO_SLUG[d.locale])
-    .map((d: any) => ({
-      locale: LOCALE_TO_SLUG[d.locale],
-      category: d.spot.category.slug,
-      slug: d.spot.slug,
-    }));
-}
 
 /** スラッグ一覧から featured_image を軽量取得 */
 export const getSpotImagesBySlugs = unstable_cache(

@@ -3,14 +3,12 @@ import type { Metadata } from "next";
 import SpotArticle from "@/components/spot/SpotArticle";
 import {
   getSpotWithTranslation,
-  getAllTranslatedSlugs,
   getAvailableTranslations,
   getRelatedSpotsTranslated,
 } from "@/lib/supabase/queries";
 import { ALL_LOCALE_SLUGS } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { buildSpotMetadata } from "@/lib/metadata";
-import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 
 /*
  * URL: /en/shibuya/shibuya-sky, /tw/shibuya/shibuya-sky
@@ -24,16 +22,9 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  if (shouldSkipStaticGenerationForPreview()) {
-    return [];
-  }
-
-  const slugs = await getAllTranslatedSlugs();
-  return slugs.map((s) => ({
-    category: s.locale,
-    slug: s.category,
-    spotSlug: s.slug,
-  }));
+  // 全件 SSG せず ISR で提供（Build Minutes 削減）
+  // 未生成パスは revalidate=86400 のオンデマンド ISR でキャッシュされる
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

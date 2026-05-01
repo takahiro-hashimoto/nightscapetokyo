@@ -31,6 +31,6 @@ export const getSiteChromeData = cache(
       return { areas, tags, spotCount };
     },
     ["site-chrome"],
-    { revalidate: 3600, tags: ["areas", "tags", "spots"] }
+    { revalidate: 86400, tags: ["areas", "tags", "spots"] }
   )
 );

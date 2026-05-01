@@ -157,19 +157,22 @@ const _getSpotsByCategoryTranslatedUncached = async (
 
   if (!cat) return [];
 
-  const [{ data: spots }, { data: translations }] = await Promise.all([
-    supabase
-      .from("spots")
-      .select(LISTING_SELECT)
-      .eq("published", true)
-      .eq("category_id", cat.id) as any,
-    supabase
-      .from("spot_translations")
-      .select("spot_id, name, lead, category_name")
-      .eq("locale", dbLocale) as any,
-  ]);
+  const { data: spots } = (await supabase
+    .from("spots")
+    .select(LISTING_SELECT)
+    .eq("published", true)
+    .eq("category_id", cat.id)) as any;
 
-  if (!spots?.length || !translations?.length) return [];
+  if (!spots?.length) return [];
+
+  const spotIds = spots.map((s: any) => s.id);
+  const { data: translations } = (await supabase
+    .from("spot_translations")
+    .select("spot_id, name, lead, category_name")
+    .eq("locale", dbLocale)
+    .in("spot_id", spotIds)) as any;
+
+  if (!translations?.length) return [];
 
   const tMap = buildTranslationMap(translations);
 

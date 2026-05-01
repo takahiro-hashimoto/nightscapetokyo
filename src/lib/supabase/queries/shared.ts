@@ -75,7 +75,7 @@ export const LISTING_SELECT =
 
 /** フルリレーション取得の select カラム */
 export const FULL_SELECT =
-  "*, category:categories(*), images:spot_images(*), faqs:spot_faqs(*), reviews:spot_reviews(*), hotel:spot_hotels(*), event:spot_events(*)";
+  "*, category:categories(id, slug, name), images:spot_images(id, spot_id, url, alt, sort_order), faqs:spot_faqs(id, spot_id, question, answer, sort_order), reviews:spot_reviews(id, spot_id, name, rating, title, content, created_at), hotel:spot_hotels(id, spot_id, checkin, checkout, amenity, affiliate_1, affiliate_2, affiliate_3, affiliate_4), event:spot_events(id, spot_id, start_date, end_date, place, event_hour)";
 
 /** エリア別カテゴリ除外スラッグ */
 export const NON_AREA_SLUGS = ["article", "pickup", "event"];

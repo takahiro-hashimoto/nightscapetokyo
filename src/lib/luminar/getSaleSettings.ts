@@ -28,5 +28,5 @@ export const getSaleSettings = unstable_cache(
     }
   },
   ['luminar-sale-settings'],
-  { revalidate: 300 },
+  { revalidate: 3600 },
 )
