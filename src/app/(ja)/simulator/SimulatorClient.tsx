@@ -60,6 +60,7 @@ export default function SimulatorClient() {
         sunsetAzimuth={sunData.sunsetAzimuth}
         onMarkerMove={handleMarkerMove}
         onViewChange={handleViewChange}
+        onLandmarkClick={handleLocationFound}
       />
 
       <SimulatorFooter

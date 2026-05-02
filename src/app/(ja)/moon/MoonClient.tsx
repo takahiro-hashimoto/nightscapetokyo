@@ -75,6 +75,7 @@ export default function MoonClient() {
         moonsetAzimuth={moonData.moonsetAzimuth}
         onMarkerMove={handleMarkerMove}
         onViewChange={handleViewChange}
+        onLandmarkClick={handleLocationFound}
       />
 
       <MoonFooter

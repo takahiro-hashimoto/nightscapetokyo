@@ -13,6 +13,7 @@ import {
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { defaultMarkerIcon } from "@/lib/leaflet-config";
+import LandmarkLayer from "@/components/shared/LandmarkLayer";
 
 export interface AzimuthMapProps {
   center: [number, number];
@@ -26,6 +27,7 @@ export interface AzimuthMapProps {
   ariaLabel?: string;
   onMarkerMove: (lat: number, lng: number) => void;
   onViewChange: (lat: number, lng: number, zoom: number) => void;
+  onLandmarkClick?: (lat: number, lng: number) => void;
 }
 
 function calcPathEnd(lat: number, lng: number, azimuth: number): [number, number] {
@@ -104,6 +106,7 @@ export default function AzimuthMap({
   ariaLabel,
   onMarkerMove,
   onViewChange,
+  onLandmarkClick,
 }: AzimuthMapProps) {
   const risePath = useMemo(() => {
     if (riseAzimuth === null) return null;
@@ -160,6 +163,7 @@ export default function AzimuthMap({
       <MapSizeInvalidator />
       <MapCenterUpdater center={center} />
       <MapEvents onMarkerMove={onMarkerMove} onViewChange={onViewChange} />
+      {onLandmarkClick && <LandmarkLayer onLandmarkClick={onLandmarkClick} />}
     </MapContainer>
   );
 }
