@@ -152,7 +152,7 @@ export default function MoonPage() {
             </ol>
           </div>
 
-          <AdSenseUnit {...ADS.MOON_SIDEBAR} />
+          <AdSenseUnit slot={ADS.MOON_SIDEBAR.slot} format="auto" label="月ナビSP" />
 
           <div className="moon-sp-content__section">
             <h2 className="moon-sp-content__section-title">こんな時に役立ちます</h2>
