@@ -15,7 +15,7 @@ export default function SimulatorInfoModal({ faq }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem(SEEN_KEY)) setOpen(true);
+    if (window.innerWidth >= 768 && !localStorage.getItem(SEEN_KEY)) setOpen(true);
     const handler = () => setOpen(true);
     window.addEventListener("sim:open-info", handler);
     return () => window.removeEventListener("sim:open-info", handler);
@@ -73,6 +73,25 @@ export default function SimulatorInfoModal({ faq }: Props) {
             地図を使う →
           </button>
 
+          {/* 活用シーン */}
+          <div className="sim-info-modal__section">
+            <h2 className="sim-info-modal__section-title">こんな時に役立ちます</h2>
+            <div className="sim-definition">
+              <dl className="sim-definition__body">
+                <dt>初日の出の下見</dt>
+                <dd>元旦の日付を指定して候補スポットの方角・時刻を事前確認</dd>
+                <dt>朝日・夕日の撮影構図</dt>
+                <dd>撮影日と地点を合わせて光が差し込む方角とゴールデンタイムを把握</dd>
+                <dt>マンション・不動産の日当たり確認</dt>
+                <dd>物件の住所を検索して季節ごとの日照変化をチェック</dd>
+                <dt>ハイキング・登山の計画</dt>
+                <dd>山頂や展望台からの日の出方角を日程に合わせて確認</dd>
+                <dt>農作業・園芸の日照管理</dt>
+                <dd>畑やベランダへの日当たりを季節別に確認</dd>
+              </dl>
+            </div>
+          </div>
+
           {/* 豆知識 */}
           <div className="sim-info-modal__section">
             <h2 className="sim-info-modal__section-title">日の出・日の入りの豆知識</h2>
@@ -105,6 +124,9 @@ export default function SimulatorInfoModal({ faq }: Props) {
             </dl>
           </div>
 
+          <p className="sim-info-modal__top-link">
+            <Link href="/moon/">月の出・月の入り方角ナビはこちら →</Link>
+          </p>
           <p className="sim-info-modal__top-link">
             <Link href="/">← 東京夜景ナビトップへ戻る</Link>
           </p>

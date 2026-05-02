@@ -952,4 +952,96 @@
   .sim-map .leaflet-control-zoom {
     display: none !important;
   }
+
+  /* SP: 地図を少し短くして下のコンテンツを覗かせる（スクロール起点を作る） */
+  .sim-container {
+    height: calc(100dvh - 36px);
+    min-height: calc(100svh - 36px);
+  }
+
+  /* SP: 16px未満のinputはiOS/Androidが自動ズームするため16pxに統一 */
+  .sim-search__input {
+    font-size: 16px;
+  }
+}
+
+/* --- SP Content (below map, SP only) --- */
+.sim-sp-content {
+  background: #f3f4f6;
+  padding: 20px 12px 48px;
+}
+
+.sim-sp-content__inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.sim-sp-content__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 4px;
+  line-height: 1.4;
+}
+
+.sim-sp-content__subtitle {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.sim-sp-content__lead {
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  margin: 12px 0 16px;
+}
+
+.sim-sp-content__section {
+  background: #fff;
+  border-radius: 12px;
+  margin: 24px 0;
+  padding: 16px;
+  box-shadow: 0 1px 3px #0000000f;
+}
+
+.sim-sp-content__section .sim-sp-content__section-title {
+  color: #333;
+  text-align: center;
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.sim-sp-content__section .sim-definition {
+  border: none;
+  border-radius: 0;
+}
+
+.sim-sp-content__section .sim-definition__body {
+  margin: 0;
+  padding: 0;
+}
+
+.sim-sp-content__link {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.sim-sp-content__link a {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.sim-sp-content__link a:hover {
+  color: #374151;
+}
+
+@media (min-width: 768px) {
+  .sim-sp-content {
+    display: none;
+  }
 }

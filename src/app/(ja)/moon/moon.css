@@ -599,11 +599,11 @@
   font-weight: 800;
 }
 .moon-faq-a {
-  font-size: 1rem;
-  line-height: 1.8;
   color: #555;
   margin: 0;
-  padding-left: 25px;
+  /* padding-left: 25px; */
+  font-size: 1rem;
+  line-height: 1.8;
 }
 .moon-faq-a::before {
   content: "A. ";
@@ -1117,5 +1117,92 @@
 @media (max-width: 767px) {
   .moon-map .leaflet-control-zoom {
     display: none !important;
+  }
+
+  /* SP: 地図を少し短くして下のコンテンツを覗かせる（スクロール起点を作る） */
+  .moon-container {
+    height: calc(100dvh - 48px);
+    min-height: calc(100svh - 48px);
+  }
+}
+
+/* --- SP Content (below map, SP only) --- */
+.moon-sp-content {
+  background: #f3f4f6;
+  padding: 20px 12px 48px;
+}
+
+.moon-sp-content__inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.moon-sp-content__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 4px;
+  line-height: 1.4;
+}
+
+.moon-sp-content__subtitle {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.moon-sp-content__lead {
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  margin: 12px 0 16px;
+}
+
+.moon-sp-content__section {
+  background: #fff;
+  border-radius: 12px;
+  margin: 24px 0;
+  padding: 16px;
+  box-shadow: 0 1px 3px #0000000f;
+}
+
+.moon-sp-content__section .moon-sp-content__section-title {
+  color: rgb(51, 51, 51);
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 8px 0px 24px;
+}
+
+.moon-sp-content__section .moon-definition {
+  border: none;
+  border-radius: 0;
+}
+
+.moon-sp-content__section .moon-definition__body {
+  margin: 0;
+  padding: 0;
+}
+
+.moon-sp-content__link {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.moon-sp-content__link a {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.moon-sp-content__link a:hover {
+  color: #374151;
+}
+
+@media (min-width: 768px) {
+  .moon-sp-content {
+    display: none;
   }
 }

@@ -15,7 +15,7 @@ export default function MoonInfoModal({ faq }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem(SEEN_KEY)) setOpen(true);
+    if (window.innerWidth >= 768 && !localStorage.getItem(SEEN_KEY)) setOpen(true);
     const handler = () => setOpen(true);
     window.addEventListener("moon:open-info", handler);
     return () => window.removeEventListener("moon:open-info", handler);
@@ -77,6 +77,25 @@ export default function MoonInfoModal({ faq }: Props) {
             地図を使う →
           </button>
 
+          {/* 活用シーン */}
+          <div className="moon-info-modal__section">
+            <h2 className="moon-info-modal__section-title">こんな時に役立ちます</h2>
+            <div className="moon-definition">
+              <dl className="moon-definition__body">
+                <dt>満月・新月の撮影計画</dt>
+                <dd>月がどの方角から昇るか・何時頃に昇るかを撮影日の前に把握</dd>
+                <dt>星景写真・天体観測の下見</dt>
+                <dd>月明かりの影響が少ない時間帯を選んで観測計画を立てる</dd>
+                <dt>月と夜景の撮影構図</dt>
+                <dd>月出方位角を把握して建物・橋・富士山との位置関係を事前確認</dd>
+                <dt>海釣り・潮汐管理</dt>
+                <dd>満月・新月（大潮）の時期と月の出時刻を合わせて確認</dd>
+                <dt>月齢カレンダーの活用</dt>
+                <dd>今月・来月の新月・満月の日程を一覧でチェック</dd>
+              </dl>
+            </div>
+          </div>
+
           {/* 豆知識 */}
           <div className="moon-info-modal__section">
             <h2 className="moon-info-modal__section-title">月の出・月の入りの豆知識</h2>
@@ -109,6 +128,9 @@ export default function MoonInfoModal({ faq }: Props) {
             </dl>
           </div>
 
+          <p className="moon-info-modal__top-link">
+            <Link href="/simulator/">日の出・日の入り方角ナビはこちら →</Link>
+          </p>
           <p className="moon-info-modal__top-link">
             <Link href="/">← 東京夜景ナビトップへ戻る</Link>
           </p>
