@@ -50,8 +50,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: `${SITE_URL}/og-moon-tool.png`,
-        width: 1200,
-        height: 630,
+        width: 1424,
+        height: 752,
         alt: OG_TITLE,
       },
     ],
@@ -243,6 +243,7 @@ export default function MoonPage() {
               applicationSubCategory: "月齢シミュレーション",
               operatingSystem: "Web",
               url: "https://nightscape.tokyo/moon/",
+              dateModified: "2026-05-02",
               keywords:
                 "月の出, 月の入り, 方角, 月齢, マーカー, 地図, シミュレーション",
               countriesSupported: ["JP"],

@@ -46,8 +46,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: `${SITE_URL}/og-simulator-tool.png`,
-        width: 1200,
-        height: 630,
+        width: 1424,
+        height: 752,
         alt: OG_TITLE,
       },
     ],
@@ -239,6 +239,7 @@ export default function SimulatorPage() {
               applicationSubCategory: "日照シミュレーション",
               operatingSystem: "Web",
               url: "https://nightscape.tokyo/simulator/",
+              dateModified: "2026-05-02",
               keywords:
                 "日の出, 日の入り, 方角, マーカー, 地図, シミュレーション",
               countriesSupported: ["JP"],
