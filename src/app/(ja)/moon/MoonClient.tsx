@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { formatDateJa } from "@/lib/date-utils";
 import Link from "next/link";
 import { calculateMoonData } from "@/lib/moon-calc";
@@ -40,6 +40,8 @@ export default function MoonClient() {
     return () => window.removeEventListener(MAP_EVENTS.MOON_DATE_SELECTED, handler);
   }, [handleDateChange]);
 
+  const [showLandmarks, setShowLandmarks] = useState(true);
+
   const moonData = useMemo(() => {
     return calculateMoonData(selectedDate, markerPosition[0], markerPosition[1]);
   }, [selectedDate, markerPosition]);
@@ -70,6 +72,8 @@ export default function MoonClient() {
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}
         shareText={shareText}
+        showLandmarks={showLandmarks}
+        onToggleLandmarks={() => setShowLandmarks((v) => !v)}
       />
 
       <MoonHeader
@@ -89,6 +93,7 @@ export default function MoonClient() {
         onMarkerMove={handleMarkerMove}
         onViewChange={handleViewChange}
         onLandmarkClick={handleLocationFound}
+        showLandmarks={showLandmarks}
       />
 
       <MoonFooter

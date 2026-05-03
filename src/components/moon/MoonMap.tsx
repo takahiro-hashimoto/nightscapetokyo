@@ -11,6 +11,7 @@ interface MoonMapProps {
   onMarkerMove: (lat: number, lng: number) => void;
   onViewChange: (lat: number, lng: number, zoom: number) => void;
   onLandmarkClick?: (lat: number, lng: number) => void;
+  showLandmarks?: boolean;
 }
 
 export default function MoonMap({

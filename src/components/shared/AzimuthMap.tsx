@@ -28,6 +28,7 @@ export interface AzimuthMapProps {
   onMarkerMove: (lat: number, lng: number) => void;
   onViewChange: (lat: number, lng: number, zoom: number) => void;
   onLandmarkClick?: (lat: number, lng: number) => void;
+  showLandmarks?: boolean;
 }
 
 function calcPathEnd(lat: number, lng: number, azimuth: number): [number, number] {
@@ -107,6 +108,7 @@ export default function AzimuthMap({
   onMarkerMove,
   onViewChange,
   onLandmarkClick,
+  showLandmarks = true,
 }: AzimuthMapProps) {
   const risePath = useMemo(() => {
     if (riseAzimuth === null) return null;
@@ -163,7 +165,7 @@ export default function AzimuthMap({
       <MapSizeInvalidator />
       <MapCenterUpdater center={center} />
       <MapEvents onMarkerMove={onMarkerMove} onViewChange={onViewChange} />
-      {onLandmarkClick && <LandmarkLayer onLandmarkClick={onLandmarkClick} />}
+      {onLandmarkClick && showLandmarks && <LandmarkLayer onLandmarkClick={onLandmarkClick} />}
     </MapContainer>
   );
 }

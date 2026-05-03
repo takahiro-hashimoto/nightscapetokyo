@@ -3645,6 +3645,52 @@ body.modal-open [id*="aswift"] {
   transform: none;
 }
 
+/* ランドマーク表示トグルボタン */
+.landmark-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ccc;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+}
+
+.landmark-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.landmark-toggle-btn--on {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.landmark-toggle-btn--off {
+  opacity: 0.6;
+}
+
+.landmark-toggle-btn__label {
+  flex: 1;
+}
+
+.landmark-toggle-btn__state {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.landmark-toggle-btn--on .landmark-toggle-btn__state {
+  background: rgba(99, 179, 237, 0.3);
+  color: #90cdf4;
+}
+
 .landmark-pin {
   display: flex;
   align-items: center;

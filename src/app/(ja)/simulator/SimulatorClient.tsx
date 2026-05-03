@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { calculateSunData } from "@/lib/sun-calc";
 import { usePersistedMapState } from "@/hooks/usePersistedMapState";
@@ -30,6 +30,8 @@ export default function SimulatorClient() {
     closeModal,
   } = usePersistedMapState();
 
+  const [showLandmarks, setShowLandmarks] = useState(true);
+
   const sunData = useMemo(() => {
     return calculateSunData(selectedDate, markerPosition[0], markerPosition[1]);
   }, [selectedDate, markerPosition]);
@@ -56,6 +58,8 @@ export default function SimulatorClient() {
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}
         shareText={shareText}
+        showLandmarks={showLandmarks}
+        onToggleLandmarks={() => setShowLandmarks((v) => !v)}
       />
 
       <SimulatorHeader
@@ -73,6 +77,7 @@ export default function SimulatorClient() {
         onMarkerMove={handleMarkerMove}
         onViewChange={handleViewChange}
         onLandmarkClick={handleLocationFound}
+        showLandmarks={showLandmarks}
       />
 
       <SimulatorFooter
