@@ -3537,7 +3537,7 @@ body.modal-open [id*="aswift"] {
 
 /* icon-onlyモード: paddingをリセット */
 .share-btn--icon {
-  padding: 0;
+  padding: 0 !important;
   background: transparent;
   border: none;
 }
@@ -3754,7 +3754,7 @@ body.modal-open [id*="aswift"] {
 @media (max-width: 767px) {
   /* SP: 凡例を非表示 */
   .map-legend {
-    display: none;
+    display: none !important;
   }
 
   .map-panel {
