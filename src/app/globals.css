@@ -3548,7 +3548,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .share-modal {
-  background: #28292b;
+  background: #fff;
   border-radius: 16px;
   width: 100%;
   max-width: 360px;
@@ -3560,8 +3560,8 @@ body.modal-open [id*="aswift"] {
 
 .share-modal__close {
   cursor: pointer;
-  color: #ccc;
-  background: rgba(255, 255, 255, 0.1);
+  color: #666;
+  background: rgba(0, 0, 0, 0.06);
   border: none;
   border-radius: 50%;
   justify-content: center;
@@ -3576,12 +3576,15 @@ body.modal-open [id*="aswift"] {
 }
 
 .share-modal__close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: rgba(0, 0, 0, 0.14);
+  color: #333;
 }
 
 .share-modal__copy {
   margin-bottom: 16px;
+  background: #1e2633 !important;
+  color: #fff !important;
+  border: none !important;
 }
 
 .share-modal__sns-title {
