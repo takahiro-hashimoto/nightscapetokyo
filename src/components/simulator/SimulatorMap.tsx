@@ -27,8 +27,8 @@ export default function SimulatorMap({
       setAzimuth={sunsetAzimuth}
       riseColor="#f0c040"
       setColor="#e05530"
-      riseLabel="日の出方向"
-      setLabel="日の入り方向"
+      riseLabel="日の出"
+      setLabel="日の入り"
       mapClassName="sim-map"
       ariaLabel="日の出・日の入り方角シミュレーター地図"
     />

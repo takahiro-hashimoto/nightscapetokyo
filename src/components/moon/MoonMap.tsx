@@ -27,8 +27,8 @@ export default function MoonMap({
       setAzimuth={moonsetAzimuth}
       riseColor="#f0a830"
       setColor="#4a7ec8"
-      riseLabel="月の出方向"
-      setLabel="月の入り方向"
+      riseLabel="月の出"
+      setLabel="月の入り"
       mapClassName="moon-map"
       ariaLabel="月の出・月の入り方角シミュレーター地図"
     />
