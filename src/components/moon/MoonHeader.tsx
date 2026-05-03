@@ -37,7 +37,6 @@ export default function MoonHeader({
           </button>
           <ShareButton
             shareText={shareText}
-            title="月の出・月の入りナビ"
             iconOnly
             className="moon-sp-header__btn"
           />

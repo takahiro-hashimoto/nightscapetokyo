@@ -54,7 +54,6 @@ export default function SimulatorSidebar({
         <div className="sim-sidebar__section">
           <ShareButton
             shareText={shareText}
-            title="日の出・日の入りナビ"
             className="share-btn--full"
           />
           <p className="sim-share__title">\気に入ったらシェア/</p>

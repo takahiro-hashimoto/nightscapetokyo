@@ -5,19 +5,13 @@ import { Share2, Check } from "lucide-react";
 
 interface ShareButtonProps {
   shareText: string;
-  title: string;
+  title?: string;
   className?: string;
   iconOnly?: boolean;
 }
 
-/** タッチデバイスかどうかを判定（PCでWeb Share APIを使わないため） */
-function isTouchDevice(): boolean {
-  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-}
-
 export default function ShareButton({
   shareText,
-  title,
   className = "",
   iconOnly = false,
 }: ShareButtonProps) {
@@ -25,17 +19,6 @@ export default function ShareButton({
 
   const handleShare = useCallback(async () => {
     const url = window.location.href;
-
-    // SPのみWeb Share APIを使用。PCは常にクリップボードコピー
-    if (navigator.share && isTouchDevice()) {
-      try {
-        await navigator.share({ title, text: shareText, url });
-        return;
-      } catch {
-        // キャンセルまたは失敗 → クリップボードにフォールバック
-      }
-    }
-
     try {
       await navigator.clipboard.writeText(`${shareText}\n${url}`);
       setState("copied");
@@ -43,7 +26,7 @@ export default function ShareButton({
     } catch {
       // clipboard API unavailable
     }
-  }, [shareText, title]);
+  }, [shareText]);
 
   const copied = state === "copied";
 

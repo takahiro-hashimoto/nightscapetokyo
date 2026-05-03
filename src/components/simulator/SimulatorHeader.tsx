@@ -29,7 +29,6 @@ export default function SimulatorHeader({
           </button>
           <ShareButton
             shareText={shareText}
-            title="日の出・日の入りナビ"
             iconOnly
             className="sim-sp-header__btn"
           />
