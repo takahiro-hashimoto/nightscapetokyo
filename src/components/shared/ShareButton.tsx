@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { Share2, Check, X } from "lucide-react";
 
 interface ShareButtonProps {
@@ -75,7 +76,7 @@ export default function ShareButton({
           <Share2 size={20} />
         </button>
 
-        {modalOpen && (
+        {modalOpen && createPortal(
           <div
             className="sp-overlay share-modal__overlay"
             onClick={() => setModalOpen(false)}
@@ -84,7 +85,6 @@ export default function ShareButton({
               className="share-modal"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* 閉じるボタン */}
               <button
                 className="share-modal__close"
                 onClick={() => setModalOpen(false)}
@@ -93,7 +93,6 @@ export default function ShareButton({
                 <X size={18} />
               </button>
 
-              {/* クリップボードコピー */}
               <button
                 className={`share-btn share-btn--full share-modal__copy ${copied ? "share-btn--copied" : ""}`}
                 onClick={handleCopy}
@@ -102,7 +101,6 @@ export default function ShareButton({
                 <span>{copied ? "コピーしました！" : "この設定をシェア"}</span>
               </button>
 
-              {/* SNSシェア */}
               <p className="share-modal__sns-title">＼気に入ったらシェア／</p>
               <ul className="share-sns__links">
                 {buildSNSLinks(shareText).map(({ label, href, className: cls, aria }) => (
@@ -120,7 +118,8 @@ export default function ShareButton({
                 ))}
               </ul>
             </div>
-          </div>
+          </div>,
+          document.body
         )}
       </>
     );
