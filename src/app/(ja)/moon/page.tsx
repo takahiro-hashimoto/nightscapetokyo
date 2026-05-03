@@ -1,9 +1,63 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SunCalc from "suncalc";
 import MoonLoader from "./MoonLoader";
 import MoonInfoModal from "@/components/moon/MoonInfoModal";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
+
+// ============================================================
+// 満月日程の動的計算（サーバーサイド）
+// ============================================================
+const WEEKDAYS_JA = ["日", "月", "火", "水", "木", "金", "土"];
+
+/** 指定した年月の満月に最も近い日を返す（その月に満月がない場合は null） */
+function findFullMoonInMonth(year: number, month: number): Date | null {
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  let maxFraction = -1;
+  let fullMoonDate: Date | null = null;
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day, 12, 0, 0);
+    const { fraction } = SunCalc.getMoonIllumination(date);
+    if (fraction > maxFraction) {
+      maxFraction = fraction;
+      fullMoonDate = date;
+    }
+  }
+  // 輝面比が95%以上 = 満月とみなす
+  return maxFraction > 0.95 ? fullMoonDate : null;
+}
+
+function formatFullMoonDate(date: Date): string {
+  const m = date.getMonth() + 1;
+  const d = date.getDate();
+  const w = WEEKDAYS_JA[date.getDay()];
+  return `${m}月${d}日（${w}）`;
+}
+
+/** 今月〜3ヶ月後の満月FAQ を生成 */
+function buildFullMoonFAQ(): { q: string; a: string }[] {
+  const now = new Date();
+  const result: { q: string; a: string }[] = [];
+
+  for (let i = 0; i < 4; i++) {
+    const target = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    const year = target.getFullYear();
+    const month = target.getMonth();
+    const fullMoon = findFullMoonInMonth(year, month);
+    if (!fullMoon) continue;
+
+    const label = `${year}年${month + 1}月`;
+    const dateStr = `${label}${formatFullMoonDate(fullMoon)}`;
+    result.push({
+      q: `${label}の満月はいつ？`,
+      a: `${dateStr}が満月です。このページで日付を${month + 1}月${fullMoon.getDate()}日に設定すると、お住まいの地域での満月の出方角・時刻を確認できます。`,
+    });
+  }
+
+  return result;
+}
 
 const SITE_URL = "https://nightscape.tokyo";
 
@@ -64,7 +118,7 @@ export const metadata: Metadata = {
   },
 };
 
-const FAQ = [
+const STATIC_FAQ = [
   {
     q: "月の出の方角の調べ方は？",
     a: "このツールで地図上のマーカーを調べたい地点に移動するだけで、月の出の方角（月出方位角）が自動計算されます。日付を変えると満月・新月など特定の日の方角も確認できます。",
@@ -134,6 +188,8 @@ const FAQ = [
     a: "天文計算ライブラリをもとにした高精度な計算を行っており、実際の月の出・月の入り時刻との誤差は通常1〜2分以内です。地形や大気差（光の屈折）の影響は含まれないため、山間部や海岸では実際の時刻と多少異なる場合があります。",
   },
 ];
+
+const FAQ = [...buildFullMoonFAQ(), ...STATIC_FAQ];
 
 export default function MoonPage() {
   return (

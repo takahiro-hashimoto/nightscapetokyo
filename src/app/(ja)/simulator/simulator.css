@@ -116,7 +116,7 @@
   gap: 6px;
   width: 100%;
   text-align: center;
-  padding: 8px;
+  padding: 4px;
   background-color: #32343a;
   margin-bottom: 10px;
   border-radius: 999px;
@@ -124,6 +124,7 @@
   color: #ccc;
   cursor: pointer;
   font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 /* --- Sun times (sidebar table) --- */
@@ -165,14 +166,20 @@
 .sim-hour-header {
   background-color: #fff;
   display: flex;
+  align-items: stretch;
   border-bottom: 1px solid #e2e8f0;
-  padding: 10px;
-  line-height: 1.4;
+  padding: 8px;
 }
 
 .sim-hour-header__item {
   flex: 1;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  line-height: 1.3;
 }
 
 .sim-hour-header__label {
@@ -969,8 +976,8 @@
 
   /* SP: 地図を少し短くして下のコンテンツを覗かせる（スクロール起点を作る） */
   .sim-container {
-    height: calc(100dvh - 36px);
-    min-height: calc(100svh - 36px);
+    height: calc(100dvh - 32px);
+    min-height: calc(100svh - 32px);
   }
 
   /* SP: 16px未満のinputはiOS/Androidが自動ズームするため16pxに統一 */
