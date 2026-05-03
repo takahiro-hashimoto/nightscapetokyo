@@ -3757,7 +3757,7 @@ body.modal-open [id*="aswift"] {
 
 /* 凡例エリア */
 .map-legend {
-  padding: 8px 14px;
+  padding: 10px 14px;
   display: flex;
   flex-direction: row;
   gap: 14px;
