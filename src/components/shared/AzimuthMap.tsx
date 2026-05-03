@@ -194,7 +194,7 @@ export default function AzimuthMap({
             aria-label={showLandmarks ? "ランドマークを非表示" : "ランドマークを表示"}
             title={showLandmarks ? "ランドマークを非表示" : "ランドマークを表示"}
           >
-            <span className="map-ctrl-landmark__icon">🗼</span>
+            <span className="map-ctrl-landmark__label">ランドマーク表示</span>
             <span className="map-ctrl-landmark__track">
               <span className="map-ctrl-landmark__thumb" />
             </span>

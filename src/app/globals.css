@@ -3731,8 +3731,8 @@ body.modal-open [id*="aswift"] {
 
 .map-legend {
   position: absolute;
-  bottom: 28px;
-  left: 10px;
+  bottom: 62px;
+  right: 10px;
   z-index: 1000;
   background: rgba(255, 255, 255, 0.92);
   border-radius: 6px;
@@ -3828,11 +3828,11 @@ body.modal-open [id*="aswift"] {
 .map-ctrl-landmark {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   background: #fff;
   border: none;
   border-radius: 6px;
-  padding: 4px 8px 4px 6px;
+  padding: 4px 10px;
   cursor: pointer;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   transition: background 0.15s;
@@ -3843,8 +3843,10 @@ body.modal-open [id*="aswift"] {
   background: #f0f0f0;
 }
 
-.map-ctrl-landmark__icon {
-  font-size: 14px;
+.map-ctrl-landmark__label {
+  font-size: 0.75rem;
+  color: #333;
+  white-space: nowrap;
   line-height: 1;
 }
 
