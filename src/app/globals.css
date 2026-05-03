@@ -3754,11 +3754,12 @@ body.modal-open [id*="aswift"] {
 
 /* 凡例エリア */
 .map-legend {
-  padding: 10px 14px;
+  padding: 8px 14px;
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-direction: row;
+  gap: 14px;
   border-bottom: 1px solid #e8e8e8;
+  align-items: center;
 }
 
 .map-legend__item {
