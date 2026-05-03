@@ -3781,7 +3781,7 @@ body.modal-open [id*="aswift"] {
 
 .map-legend__line {
   display: inline-block;
-  width: 20px;
+  width: 28px;
   height: 3px;
   border-radius: 2px;
   flex-shrink: 0;
