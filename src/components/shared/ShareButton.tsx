@@ -98,29 +98,35 @@ export default function ShareButton({
                 <p className="share-modal__desc">現在の地点・日付の設定をURLで<br />友人や家族に共有できます。</p>
               </div>
 
-              <button
-                className={`share-btn share-btn--full share-modal__copy ${copied ? "share-btn--copied" : ""}`}
-                onClick={handleCopy}
-              >
-                {copied ? <Check size={16} /> : <Share2 size={16} />}
-                <span>{copied ? "コピーしました！" : "この設定をシェア"}</span>
-              </button>
+              <div className="share-modal__section">
+                <p className="share-modal__section-label">リンクをコピー</p>
+                <button
+                  className={`share-btn share-btn--full share-modal__copy ${copied ? "share-btn--copied" : ""}`}
+                  onClick={handleCopy}
+                >
+                  {copied ? <Check size={16} /> : <Share2 size={16} />}
+                  <span>{copied ? "コピーしました！" : "この設定をシェア"}</span>
+                </button>
+              </div>
 
-              <ul className="share-sns__links">
-                {buildSNSLinks(shareText).map(({ label, href, className: cls, aria }) => (
-                  <li key={label}>
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={aria}
-                      className={`share-sns__btn ${cls}`}
-                    >
-                      {label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <div className="share-modal__section">
+                <p className="share-modal__section-label">SNSでシェア</p>
+                <ul className="share-sns__links">
+                  {buildSNSLinks(shareText).map(({ label, href, className: cls, aria }) => (
+                    <li key={label}>
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={aria}
+                        className={`share-sns__btn ${cls}`}
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>,
           document.body

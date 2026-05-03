@@ -3601,8 +3601,25 @@ body.modal-open [id*="aswift"] {
   margin: 0;
 }
 
+.share-modal__section {
+  margin-bottom: 14px;
+}
+
+.share-modal__section:last-child {
+  margin-bottom: 0;
+}
+
+.share-modal__section-label {
+  color: #888;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
 .share-modal__copy {
-  margin-bottom: 16px;
+  margin-bottom: 0;
   background: #fff !important;
   color: #1e2633 !important;
   border: none !important;
