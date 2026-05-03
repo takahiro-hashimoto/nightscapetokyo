@@ -3551,18 +3551,20 @@ body.modal-open [id*="aswift"] {
   border-radius: 16px;
   width: 100%;
   max-width: 360px;
-  padding: 48px 20px 24px;
+  padding: 44px 20px 20px;
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
 }
 
 .share-modal__close {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   background: rgba(255, 255, 255, 0.1);
   border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3577,7 +3579,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .share-modal__copy {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .share-modal__sns-title {
@@ -3585,28 +3587,32 @@ body.modal-open [id*="aswift"] {
   font-size: 0.85rem;
   color: #aaa;
   font-weight: bold;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 /* SNSシェアボタン（モーダル用） */
 .share-sns__links {
-  list-style: none;
-  display: flex;
+  list-style: none !important;
+  display: flex !important;
   justify-content: center;
-  padding: 0;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
   gap: 10px;
 }
 
+.share-sns__links li {
+  display: block;
+}
+
 .share-sns__btn {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  color: #fff;
-  text-decoration: none;
+  color: #fff !important;
+  text-decoration: none !important;
   font-weight: bold;
   font-size: 14px;
   transition: opacity 0.2s;
@@ -3616,10 +3622,10 @@ body.modal-open [id*="aswift"] {
   opacity: 0.8;
 }
 
-.share-sns__btn--x    { background: #1a1a1a; }
-.share-sns__btn--fb   { background: #1877f2; }
-.share-sns__btn--hatena { background: #00a4de; }
-.share-sns__btn--line { background: #06c755; font-size: 11px; }
+.share-sns__btn--x      { background: #1a1a1a !important; }
+.share-sns__btn--fb     { background: #1877f2 !important; }
+.share-sns__btn--hatena { background: #00a4de !important; }
+.share-sns__btn--line   { background: #06c755 !important; font-size: 11px; }
 
 /* SPヘッダー内のアクションエリア: 絶対配置にして中のbtnをstaticに */
 .sim-sp-header__actions,
