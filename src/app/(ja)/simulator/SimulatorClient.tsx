@@ -58,8 +58,6 @@ export default function SimulatorClient() {
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}
         shareText={shareText}
-        showLandmarks={showLandmarks}
-        onToggleLandmarks={() => setShowLandmarks((v) => !v)}
       />
 
       <SimulatorHeader
@@ -78,6 +76,7 @@ export default function SimulatorClient() {
         onViewChange={handleViewChange}
         onLandmarkClick={handleLocationFound}
         showLandmarks={showLandmarks}
+        onToggleLandmarks={() => setShowLandmarks((v) => !v)}
       />
 
       <SimulatorFooter

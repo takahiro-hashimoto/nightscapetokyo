@@ -17,8 +17,6 @@ interface MoonSidebarProps {
   onDateChange: (date: Date) => void;
   onLocationFound: (lat: number, lng: number) => void;
   shareText: string;
-  showLandmarks: boolean;
-  onToggleLandmarks: () => void;
 }
 
 export default function MoonSidebar({
@@ -31,8 +29,6 @@ export default function MoonSidebar({
   onDateChange,
   onLocationFound,
   shareText,
-  showLandmarks,
-  onToggleLandmarks,
 }: MoonSidebarProps) {
   return (
     <div className="moon-sidebar">
@@ -62,17 +58,6 @@ export default function MoonSidebar({
 
         <div className="moon-sidebar__section">
           <AdSenseUnit {...ADS.MOON_SIDEBAR} />
-        </div>
-
-        <div className="moon-sidebar__section">
-          <button
-            className={`landmark-toggle-btn ${showLandmarks ? "landmark-toggle-btn--on" : "landmark-toggle-btn--off"}`}
-            onClick={onToggleLandmarks}
-          >
-            <span className="landmark-toggle-btn__icon">🗼</span>
-            <span className="landmark-toggle-btn__label">ランドマーク</span>
-            <span className="landmark-toggle-btn__state">{showLandmarks ? "表示中" : "非表示"}</span>
-          </button>
         </div>
 
         <div className="moon-sidebar__section">

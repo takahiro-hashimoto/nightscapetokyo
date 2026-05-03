@@ -12,6 +12,7 @@ interface SimulatorMapProps {
   onViewChange: (lat: number, lng: number, zoom: number) => void;
   onLandmarkClick?: (lat: number, lng: number) => void;
   showLandmarks?: boolean;
+  onToggleLandmarks?: () => void;
 }
 
 export default function SimulatorMap({

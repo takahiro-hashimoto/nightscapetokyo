@@ -3771,3 +3771,113 @@ body.modal-open [id*="aswift"] {
   }
 }
 
+/* ==========================================
+   Map Custom Controls（ズーム + ランドマークトグル）
+   ========================================== */
+
+.map-controls {
+  position: absolute;
+  bottom: 24px;
+  right: 10px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 767px) {
+  .map-controls {
+    display: none;
+  }
+}
+
+/* ズームボタン */
+.map-ctrl-zoom {
+  display: flex;
+  flex-direction: row;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.map-ctrl-zoom__btn {
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: background 0.15s;
+  border-right: 1px solid #e0e0e0;
+}
+
+.map-ctrl-zoom__btn:last-child {
+  border-right: none;
+}
+
+.map-ctrl-zoom__btn:hover {
+  background: #f0f0f0;
+}
+
+/* ランドマークトグル */
+.map-ctrl-landmark {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px 4px 6px;
+  cursor: pointer;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  transition: background 0.15s;
+  height: 30px;
+}
+
+.map-ctrl-landmark:hover {
+  background: #f0f0f0;
+}
+
+.map-ctrl-landmark__icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* iOS風トグルトラック */
+.map-ctrl-landmark__track {
+  display: inline-flex;
+  align-items: center;
+  width: 28px;
+  height: 16px;
+  border-radius: 8px;
+  background: #ccc;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.map-ctrl-landmark--on .map-ctrl-landmark__track {
+  background: #3b82f6;
+}
+
+/* サム（つまみ） */
+.map-ctrl-landmark__thumb {
+  position: absolute;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: left 0.2s;
+}
+
+.map-ctrl-landmark--on .map-ctrl-landmark__thumb {
+  left: 14px;
+}
+

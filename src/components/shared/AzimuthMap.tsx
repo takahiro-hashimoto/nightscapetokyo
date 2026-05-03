@@ -6,7 +6,6 @@ import {
   TileLayer,
   Marker,
   Polyline,
-  ZoomControl,
   useMap,
   useMapEvents,
 } from "react-leaflet";
@@ -31,6 +30,7 @@ export interface AzimuthMapProps {
   onViewChange: (lat: number, lng: number, zoom: number) => void;
   onLandmarkClick?: (lat: number, lng: number) => void;
   showLandmarks?: boolean;
+  onToggleLandmarks?: () => void;
 }
 
 function calcPathEnd(lat: number, lng: number, azimuth: number): [number, number] {
@@ -97,6 +97,13 @@ function MapEvents({
   return null;
 }
 
+/** MapContainer内でmapインスタンスを外部refに渡す */
+function MapRefCapture({ mapRef }: { mapRef: React.MutableRefObject<L.Map | null> }) {
+  const map = useMap();
+  mapRef.current = map;
+  return null;
+}
+
 export default function AzimuthMap({
   center,
   zoom,
@@ -113,7 +120,10 @@ export default function AzimuthMap({
   onViewChange,
   onLandmarkClick,
   showLandmarks = true,
+  onToggleLandmarks,
 }: AzimuthMapProps) {
+  const mapRef = useRef<L.Map | null>(null);
+
   const risePath = useMemo(() => {
     if (riseAzimuth === null) return null;
     return [
@@ -168,12 +178,42 @@ export default function AzimuthMap({
         {setPath && (
           <Polyline positions={setPath} pathOptions={{ color: setColor, weight: 3 }} />
         )}
-        <ZoomControl position="bottomright" />
         <MapSizeInvalidator />
         <MapCenterUpdater center={center} />
         <MapEvents onMarkerMove={onMarkerMove} onViewChange={onViewChange} />
+        <MapRefCapture mapRef={mapRef} />
         {onLandmarkClick && showLandmarks && <LandmarkLayer onLandmarkClick={onLandmarkClick} />}
       </MapContainer>
+
+      {/* カスタムコントロール（PC のみ表示） */}
+      <div className="map-controls">
+        {onToggleLandmarks && (
+          <button
+            className={`map-ctrl-landmark ${showLandmarks ? "map-ctrl-landmark--on" : "map-ctrl-landmark--off"}`}
+            onClick={onToggleLandmarks}
+            aria-label={showLandmarks ? "ランドマークを非表示" : "ランドマークを表示"}
+            title={showLandmarks ? "ランドマークを非表示" : "ランドマークを表示"}
+          >
+            <span className="map-ctrl-landmark__icon">🗼</span>
+            <span className="map-ctrl-landmark__track">
+              <span className="map-ctrl-landmark__thumb" />
+            </span>
+          </button>
+        )}
+        <div className="map-ctrl-zoom">
+          <button
+            className="map-ctrl-zoom__btn"
+            onClick={() => mapRef.current?.zoomIn()}
+            aria-label="拡大"
+          >＋</button>
+          <button
+            className="map-ctrl-zoom__btn"
+            onClick={() => mapRef.current?.zoomOut()}
+            aria-label="縮小"
+          >－</button>
+        </div>
+      </div>
+
       {showLegend && (
         <div className="map-legend">
           {riseAzimuth !== null && riseLabel && (

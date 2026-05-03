@@ -72,8 +72,6 @@ export default function MoonClient() {
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}
         shareText={shareText}
-        showLandmarks={showLandmarks}
-        onToggleLandmarks={() => setShowLandmarks((v) => !v)}
       />
 
       <MoonHeader
@@ -94,6 +92,7 @@ export default function MoonClient() {
         onViewChange={handleViewChange}
         onLandmarkClick={handleLocationFound}
         showLandmarks={showLandmarks}
+        onToggleLandmarks={() => setShowLandmarks((v) => !v)}
       />
 
       <MoonFooter
