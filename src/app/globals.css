@@ -3540,6 +3540,87 @@ body.modal-open [id*="aswift"] {
   border: none;
 }
 
+/* シェアモーダル */
+.share-modal__overlay {
+  z-index: 9500;
+}
+
+.share-modal {
+  position: relative;
+  background: #28292b;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 360px;
+  padding: 48px 20px 24px;
+}
+
+.share-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ccc;
+  transition: background 0.2s;
+}
+
+.share-modal__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.share-modal__copy {
+  margin-bottom: 20px;
+}
+
+.share-modal__sns-title {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #aaa;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* SNSシェアボタン（モーダル用） */
+.share-sns__links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+}
+
+.share-sns__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  transition: opacity 0.2s;
+}
+
+.share-sns__btn:hover {
+  opacity: 0.8;
+}
+
+.share-sns__btn--x    { background: #1a1a1a; }
+.share-sns__btn--fb   { background: #1877f2; }
+.share-sns__btn--hatena { background: #00a4de; }
+.share-sns__btn--line { background: #06c755; font-size: 11px; }
+
 /* SPヘッダー内のアクションエリア: 絶対配置にして中のbtnをstaticに */
 .sim-sp-header__actions,
 .moon-sp-header__actions {
