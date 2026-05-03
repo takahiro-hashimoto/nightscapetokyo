@@ -329,8 +329,9 @@
 
 .sim-menu li {
   -webkit-backdrop-filter: blur(8px);
-  background-color: #050f23ad;
-  border: 1px solid #ffffff80;
+  backdrop-filter: blur(8px);
+  background-color: rgba(30, 38, 58, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 10px;
   margin-right: 6px;
   font-size: 0.9rem;
@@ -339,8 +340,8 @@
 }
 
 .sim-menu li:hover {
-  background-color: rgba(30, 20, 5, 0.75);
-  border-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(20, 27, 45, 0.96);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .sim-menu li a,
