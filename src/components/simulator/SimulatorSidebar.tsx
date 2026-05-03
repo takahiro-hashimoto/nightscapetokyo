@@ -28,7 +28,7 @@ export default function SimulatorSidebar({
     <div className="sim-sidebar">
       <div className="sim-sidebar__header">
         <h1 className="sim-sidebar__title">日の出・日の入り方角ナビ</h1>
-        <p className="sim-sidebar__lead">日付・場所を指定して日の出・日の入りの方角と時刻を地図上で確認できる無料ツール。ダイヤモンド富士・夕日撮影や旅行の計画に。</p>
+        <p className="sim-sidebar__lead">日付・場所を指定して日の出・日の入りの方角と時刻を地図上で確認できる無料ツール。</p>
       </div>
       <div className="sim-sidebar__body">
         <div className="sim-sidebar__section">

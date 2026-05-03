@@ -34,7 +34,7 @@ export default function MoonSidebar({
     <div className="moon-sidebar">
       <div className="moon-sidebar__header">
         <h1 className="moon-sidebar__title">月の出・月の入り時刻方角ナビ</h1>
-        <p className="moon-sidebar__lead">日付・場所を指定して月の出・月の入りの方角と時刻を地図上で確認できる無料ツール。満月・月夜の撮影計画や天体観測の下見に。</p>
+        <p className="moon-sidebar__lead">日付・場所を指定して月の出・月の入りの方角と時刻を地図上で確認できる無料ツール。</p>
       </div>
       <div className="moon-sidebar__body">
         <div className="moon-sidebar__section">
