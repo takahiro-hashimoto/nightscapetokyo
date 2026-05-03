@@ -319,8 +319,8 @@
 .sim-menu {
   display: none;
   position: absolute;
-  right: 20px;
-  top: 8px;
+  right: 12px;
+  top: 10px;
   z-index: 999;
   list-style: none;
   padding: 0;
