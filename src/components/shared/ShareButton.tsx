@@ -101,7 +101,6 @@ export default function ShareButton({
                 <span>{copied ? "コピーしました！" : "この設定をシェア"}</span>
               </button>
 
-              <p className="share-modal__sns-title">＼気に入ったらシェア／</p>
               <ul className="share-sns__links">
                 {buildSNSLinks(shareText).map(({ label, href, className: cls, aria }) => (
                   <li key={label}>
