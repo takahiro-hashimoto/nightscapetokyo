@@ -5,6 +5,7 @@ import Link from "next/link";
 import { calculateSunData } from "@/lib/sun-calc";
 import { usePersistedMapState } from "@/hooks/usePersistedMapState";
 import { MAP_EVENTS } from "@/lib/map-events";
+import { formatDateJa } from "@/lib/date-utils";
 import SimulatorMap from "@/components/simulator/SimulatorMap";
 import SimulatorSidebar from "@/components/simulator/SimulatorSidebar";
 import SimulatorHeader from "@/components/simulator/SimulatorHeader";
@@ -33,6 +34,15 @@ export default function SimulatorClient() {
     return calculateSunData(selectedDate, markerPosition[0], markerPosition[1]);
   }, [selectedDate, markerPosition]);
 
+  const shareText = useMemo(() => {
+    const dateStr = formatDateJa(selectedDate);
+    const rise = sunData.sunriseTime ?? "日の出なし";
+    const set = sunData.sunsetTime ?? "日の入りなし";
+    const riseAz = sunData.sunriseAzimuth !== null ? `（方位角 ${Math.round(sunData.sunriseAzimuth)}°）` : "";
+    const setAz = sunData.sunsetAzimuth !== null ? `（方位角 ${Math.round(sunData.sunsetAzimuth)}°）` : "";
+    return `【日の出・日の入りナビ】\n📅 ${dateStr}\n🌅 日の出 ${rise}${riseAz}\n🌇 日の入り ${set}${setAz}`;
+  }, [selectedDate, sunData]);
+
   if (!initialized) {
     return <LoadingScreen containerClassName="sim-container" />;
   }
@@ -45,11 +55,13 @@ export default function SimulatorClient() {
         selectedDate={selectedDate}
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}
+        shareText={shareText}
       />
 
       <SimulatorHeader
         sunriseTime={sunData.sunriseTime}
         sunsetTime={sunData.sunsetTime}
+        shareText={shareText}
       />
 
       <SimulatorMap

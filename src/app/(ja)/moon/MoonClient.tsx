@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useEffect } from "react";
+import { formatDateJa } from "@/lib/date-utils";
 import Link from "next/link";
 import { calculateMoonData } from "@/lib/moon-calc";
 import { MOON_STORAGE_KEY } from "@/lib/map-persistence";
@@ -43,6 +44,16 @@ export default function MoonClient() {
     return calculateMoonData(selectedDate, markerPosition[0], markerPosition[1]);
   }, [selectedDate, markerPosition]);
 
+  const shareText = useMemo(() => {
+    const dateStr = formatDateJa(selectedDate);
+    const rise = moonData.moonriseTime ?? "月の出なし";
+    const set = moonData.moonsetTime ?? "月の入りなし";
+    const riseAz = moonData.moonriseAzimuth !== null ? `（方位角 ${Math.round(moonData.moonriseAzimuth)}°）` : "";
+    const setAz = moonData.moonsetAzimuth !== null ? `（方位角 ${Math.round(moonData.moonsetAzimuth)}°）` : "";
+    const phase = `${moonData.phaseName}（輝面比 ${Math.round(moonData.illumination * 100)}%）`;
+    return `【月の出・月の入りナビ】\n📅 ${dateStr} ${phase}\n🌕 月の出 ${rise}${riseAz}\n🌑 月の入り ${set}${setAz}`;
+  }, [selectedDate, moonData]);
+
   if (!initialized) {
     return <LoadingScreen containerClassName="moon-container" />;
   }
@@ -58,6 +69,7 @@ export default function MoonClient() {
         selectedDate={selectedDate}
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}
+        shareText={shareText}
       />
 
       <MoonHeader
@@ -65,6 +77,7 @@ export default function MoonClient() {
         moonsetTime={moonData.moonsetTime}
         phaseName={moonData.phaseName}
         illumination={moonData.illumination}
+        shareText={shareText}
       />
 
       <MoonMap

@@ -3,6 +3,7 @@
 import LocationSearch from "@/components/simulator/LocationSearch";
 import MoonTimesDisplay from "./MoonTimesDisplay";
 import MoonCalendar from "./MoonCalendar";
+import ShareButton from "@/components/shared/ShareButton";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
 
@@ -15,6 +16,7 @@ interface MoonSidebarProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   onLocationFound: (lat: number, lng: number) => void;
+  shareText: string;
 }
 
 export default function MoonSidebar({
@@ -26,6 +28,7 @@ export default function MoonSidebar({
   selectedDate,
   onDateChange,
   onLocationFound,
+  shareText,
 }: MoonSidebarProps) {
   return (
     <div className="moon-sidebar">
@@ -58,6 +61,11 @@ export default function MoonSidebar({
         </div>
 
         <div className="moon-sidebar__section">
+          <ShareButton
+            shareText={shareText}
+            title="月の出・月の入りナビ"
+            className="share-btn--full"
+          />
           <p className="moon-share__title">\気に入ったらシェア/</p>
           <ul className="moon-share__links">
             <li>

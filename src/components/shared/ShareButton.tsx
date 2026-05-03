@@ -1,0 +1,56 @@
+"use client";
+
+import { useState, useCallback } from "react";
+import { Share2, Check } from "lucide-react";
+
+interface ShareButtonProps {
+  shareText: string;   // URLなしの本文（ShareButton内でwindow.location.hrefを付加）
+  title: string;       // Web Share APIのtitle
+  className?: string;
+  iconOnly?: boolean;  // trueのときアイコンのみ（SPヘッダー用）
+}
+
+export default function ShareButton({
+  shareText,
+  title,
+  className = "",
+  iconOnly = false,
+}: ShareButtonProps) {
+  const [state, setState] = useState<"idle" | "copied">("idle");
+
+  const handleShare = useCallback(async () => {
+    const url = window.location.href;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text: shareText, url });
+        return;
+      } catch {
+        // キャンセルまたは失敗 → クリップボードにフォールバック
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(`${shareText}\n${url}`);
+      setState("copied");
+      setTimeout(() => setState("idle"), 2000);
+    } catch {
+      // clipboard API unavailable
+    }
+  }, [shareText, title]);
+
+  const copied = state === "copied";
+
+  return (
+    <button
+      className={`share-btn ${copied ? "share-btn--copied" : ""} ${className}`}
+      onClick={handleShare}
+      aria-label={copied ? "コピーしました" : "この設定をシェア・コピー"}
+    >
+      {copied ? <Check size={16} /> : <Share2 size={16} />}
+      {!iconOnly && (
+        <span>{copied ? "コピーしました！" : "この設定をシェア"}</span>
+      )}
+    </button>
+  );
+}

@@ -3493,17 +3493,65 @@ body.modal-open [id*="aswift"] {
   line-height: 1.4;
 }
 
+/* ==========================================
+   Share Button
+   ========================================== */
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.share-btn--full {
+  width: 100%;
+  justify-content: center;
+  padding: 10px 16px;
+  background: #f0f4ff;
+  color: #1a56db;
+  border: 1px solid #c3d3f7;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.share-btn--full:hover {
+  background: #dce8ff;
+}
+
+.share-btn--copied {
+  background: #ecfdf5 !important;
+  color: #16a34a !important;
+  border-color: #bbf7d0 !important;
+}
+
+/* SPヘッダー内のアクションエリア */
+.sim-sp-header__actions,
+.moon-sp-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .landmark-pin {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  background: #fff;
-  border-radius: 50%;
-  border: 2.5px solid #222;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45), 0 0 0 1.5px rgba(255,255,255,0.8);
-  font-size: 32px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  font-size: 24px;
   cursor: pointer;
   transition: transform 0.15s ease;
 }

@@ -3,6 +3,7 @@
 import LocationSearch from "./LocationSearch";
 import SunTimesDisplay from "./SunTimesDisplay";
 import SimpleCalendar from "./SimpleCalendar";
+import ShareButton from "@/components/shared/ShareButton";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
 
@@ -12,6 +13,7 @@ interface SimulatorSidebarProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   onLocationFound: (lat: number, lng: number) => void;
+  shareText: string;
 }
 
 export default function SimulatorSidebar({
@@ -20,6 +22,7 @@ export default function SimulatorSidebar({
   selectedDate,
   onDateChange,
   onLocationFound,
+  shareText,
 }: SimulatorSidebarProps) {
   return (
     <div className="sim-sidebar">
@@ -49,6 +52,11 @@ export default function SimulatorSidebar({
         </div>
 
         <div className="sim-sidebar__section">
+          <ShareButton
+            shareText={shareText}
+            title="日の出・日の入りナビ"
+            className="share-btn--full"
+          />
           <p className="sim-share__title">\気に入ったらシェア/</p>
           <ul className="sim-share__links">
             <li>
