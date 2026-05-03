@@ -240,7 +240,16 @@ export default function SimulatorPage() {
               applicationSubCategory: "日照シミュレーション",
               operatingSystem: "Web",
               url: "https://nightscape.tokyo/simulator/",
-              dateModified: "2026-05-02",
+              dateModified: "2026-05-03",
+              featureList: [
+                "日の出・日の入り方位角計算",
+                "地図上のマーカーで任意地点を指定",
+                "地点名・住所・郵便番号で検索",
+                "日付指定（過去・未来対応）",
+                "現在地取得",
+                "地点・日付URLシェア",
+                "ランドマークピン表示",
+              ],
               keywords:
                 "日の出, 日の入り, 方角, マーカー, 地図, シミュレーション",
               countriesSupported: ["JP"],

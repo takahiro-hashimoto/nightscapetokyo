@@ -168,9 +168,9 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     }
   }
 
-  // simulator / moon (JA only)
-  result.ja.push({ loc: `${SITE_URL}/simulator/`, changefreq: "monthly", priority: 0.5 });
-  result.ja.push({ loc: `${SITE_URL}/moon/`, changefreq: "monthly", priority: 0.5 });
+  // simulator / moon (JA only) — ツール系の重要ページ
+  result.ja.push({ loc: `${SITE_URL}/simulator/`, changefreq: "weekly", priority: 0.9 });
+  result.ja.push({ loc: `${SITE_URL}/moon/`, changefreq: "weekly", priority: 0.9 });
 
   if (!db) return result;
 
