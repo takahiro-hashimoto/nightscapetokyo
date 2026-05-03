@@ -3752,9 +3752,8 @@ body.modal-open [id*="aswift"] {
 }
 
 @media (max-width: 767px) {
-  /* SP: 凡例・ランドマークトグルを隠してズームボタンのみ表示 */
-  .map-legend,
-  .map-ctrl-landmark {
+  /* SP: 凡例を非表示 */
+  .map-legend {
     display: none;
   }
 
