@@ -77,27 +77,30 @@
 }
 
 .sim-sp-header__top {
-  position: relative;
-  padding: 12px 0;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
 }
 
 .sim-sp-header__title {
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   line-height: 1;
+  flex: 1;
+  text-align: center;
 }
 
 .sim-sp-header__btn {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
   color: #fff;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 4px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* --- SP Footer --- */

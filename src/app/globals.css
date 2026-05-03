@@ -3750,8 +3750,16 @@ body.modal-open [id*="aswift"] {
 }
 
 @media (max-width: 767px) {
-  .map-panel {
+  /* SP: 凡例・ランドマークトグルを隠してズームボタンのみ表示 */
+  .map-legend,
+  .map-ctrl-landmark {
     display: none;
+  }
+
+  .map-panel {
+    bottom: 54px;
+    right: 10px;
+    border-radius: 8px;
   }
 }
 

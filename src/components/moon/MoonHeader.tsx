@@ -26,21 +26,19 @@ export default function MoonHeader({
   return (
     <header className="moon-sp-header">
       <div className="moon-sp-header__top">
+        <button
+          className="moon-sp-header__btn"
+          onClick={handleMenuClick}
+          aria-label="メニューを開く"
+        >
+          <HelpCircle size={20} />
+        </button>
         <h1 className="moon-sp-header__title">月の出・月の入り時刻方角ナビ</h1>
-        <div className="moon-sp-header__actions">
-          <button
-            className="moon-sp-header__btn"
-            onClick={handleMenuClick}
-            aria-label="メニューを開く"
-          >
-            <HelpCircle size={20} />
-          </button>
-          <ShareButton
-            shareText={shareText}
-            iconOnly
-            className="moon-sp-header__btn"
-          />
-        </div>
+        <ShareButton
+          shareText={shareText}
+          iconOnly
+          className="moon-sp-header__btn"
+        />
       </div>
       <MoonTimesDisplay
         moonriseTime={moonriseTime}

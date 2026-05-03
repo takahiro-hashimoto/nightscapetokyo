@@ -22,17 +22,15 @@ export default function SimulatorHeader({
   return (
     <header className="sim-sp-header">
       <div className="sim-sp-header__top">
+        <button className="sim-sp-header__btn" onClick={handleMenuClick} aria-label="メニューを開く">
+          <HelpCircle size={20} />
+        </button>
         <h1 className="sim-sp-header__title">日の出・日の入り方角ナビ</h1>
-        <div className="sim-sp-header__actions">
-          <button className="sim-sp-header__btn" onClick={handleMenuClick} aria-label="メニューを開く">
-            <HelpCircle size={20} />
-          </button>
-          <ShareButton
-            shareText={shareText}
-            iconOnly
-            className="sim-sp-header__btn"
-          />
-        </div>
+        <ShareButton
+          shareText={shareText}
+          iconOnly
+          className="sim-sp-header__btn"
+        />
       </div>
       <SunTimesDisplay
         sunriseTime={sunriseTime}
