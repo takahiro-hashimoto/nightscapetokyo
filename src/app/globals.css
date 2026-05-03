@@ -3533,12 +3533,29 @@ body.modal-open [id*="aswift"] {
   border-color: #bbf7d0 !important;
 }
 
-/* SPヘッダー内のアクションエリア */
+/* icon-onlyモード: paddingをリセット */
+.share-btn--icon {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+/* SPヘッダー内のアクションエリア: 絶対配置にして中のbtnをstaticに */
 .sim-sp-header__actions,
 .moon-sp-header__actions {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
+}
+
+.sim-sp-header__actions .sim-sp-header__btn,
+.moon-sp-header__actions .moon-sp-header__btn {
+  position: static;
+  transform: none;
 }
 
 .landmark-pin {

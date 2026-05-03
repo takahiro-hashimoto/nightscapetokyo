@@ -4,10 +4,15 @@ import { useState, useCallback } from "react";
 import { Share2, Check } from "lucide-react";
 
 interface ShareButtonProps {
-  shareText: string;   // URLなしの本文（ShareButton内でwindow.location.hrefを付加）
-  title: string;       // Web Share APIのtitle
+  shareText: string;
+  title: string;
   className?: string;
-  iconOnly?: boolean;  // trueのときアイコンのみ（SPヘッダー用）
+  iconOnly?: boolean;
+}
+
+/** タッチデバイスかどうかを判定（PCでWeb Share APIを使わないため） */
+function isTouchDevice(): boolean {
+  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
 }
 
 export default function ShareButton({
@@ -21,7 +26,8 @@ export default function ShareButton({
   const handleShare = useCallback(async () => {
     const url = window.location.href;
 
-    if (navigator.share) {
+    // SPのみWeb Share APIを使用。PCは常にクリップボードコピー
+    if (navigator.share && isTouchDevice()) {
       try {
         await navigator.share({ title, text: shareText, url });
         return;
@@ -43,7 +49,7 @@ export default function ShareButton({
 
   return (
     <button
-      className={`share-btn ${copied ? "share-btn--copied" : ""} ${className}`}
+      className={`share-btn ${iconOnly ? "share-btn--icon" : ""} ${copied ? "share-btn--copied" : ""} ${className}`}
       onClick={handleShare}
       aria-label={copied ? "コピーしました" : "この設定をシェア・コピー"}
     >

@@ -28,12 +28,6 @@ export default function MoonHeader({
       <div className="moon-sp-header__top">
         <h1 className="moon-sp-header__title">月の出・月の入り時刻方角ナビ</h1>
         <div className="moon-sp-header__actions">
-          <ShareButton
-            shareText={shareText}
-            title="月の出・月の入りナビ"
-            iconOnly
-            className="moon-sp-header__btn"
-          />
           <button
             className="moon-sp-header__btn"
             onClick={handleMenuClick}
@@ -41,6 +35,12 @@ export default function MoonHeader({
           >
             <HelpCircle size={20} />
           </button>
+          <ShareButton
+            shareText={shareText}
+            title="月の出・月の入りナビ"
+            iconOnly
+            className="moon-sp-header__btn"
+          />
         </div>
       </div>
       <MoonTimesDisplay
