@@ -93,11 +93,6 @@ export default function ShareButton({
                 <X size={18} />
               </button>
 
-              <div className="share-modal__header">
-                <p className="share-modal__title">この設定をシェア</p>
-                <p className="share-modal__desc">現在の地点・日付の設定をURLで<br />友人や家族に共有できます。</p>
-              </div>
-
               <div className="share-modal__section">
                 <p className="share-modal__section-label">リンクをコピー</p>
                 <button
