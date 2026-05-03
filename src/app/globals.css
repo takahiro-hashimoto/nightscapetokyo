@@ -3499,15 +3499,17 @@ body.modal-open [id*="aswift"] {
 .share-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
   border: none;
-  border-radius: 6px;
-  background: transparent;
-  color: inherit;
-  font-size: 0.85rem;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: opacity 0.2s;
+  text-decoration: none;
+  line-height: 1;
 }
 
 .share-btn--full {
@@ -3765,10 +3767,10 @@ body.modal-open [id*="aswift"] {
 
 /* 凡例エリア */
 .map-legend {
-  padding: 10px 14px;
+  padding: 8px 14px;
   display: flex;
   flex-direction: row;
-  gap: 14px;
+  gap: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   align-items: center;
 }

@@ -264,7 +264,8 @@
   cursor: pointer;
   white-space: nowrap;
   font-size: 0.85rem;
-  font-weight: bold;
+  font-weight: 700;
+  line-height: 1.5;
 }
 
 .sim-datepicker__btn:hover {
@@ -298,6 +299,7 @@
   color: #e0e0e0;
   background-color: #32343a;
   cursor: pointer;
+  line-height: 1.5;
 }
 
 .sim-datepicker__date-btn:hover {
