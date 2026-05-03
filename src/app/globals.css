@@ -3757,10 +3757,9 @@ body.modal-open [id*="aswift"] {
   }
 
   .map-panel {
-    bottom: 0;
-    right: 0;
-    border-radius: 0;
-    border-top-left-radius: 8px;
+    border-radius: 8px;
+    bottom: 12px;
+    right: 12px;
   }
 }
 
