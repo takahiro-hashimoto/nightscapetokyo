@@ -23,6 +23,8 @@ export interface AzimuthMapProps {
   setAzimuth: number | null;
   riseColor: string;
   setColor: string;
+  riseLabel?: string;
+  setLabel?: string;
   mapClassName: string;
   ariaLabel?: string;
   onMarkerMove: (lat: number, lng: number) => void;
@@ -103,6 +105,8 @@ export default function AzimuthMap({
   setAzimuth,
   riseColor,
   setColor,
+  riseLabel,
+  setLabel,
   mapClassName,
   ariaLabel,
   onMarkerMove,
@@ -137,35 +141,55 @@ export default function AzimuthMap({
     [onMarkerMove]
   );
 
+  const showLegend = (riseLabel || setLabel) && (riseAzimuth !== null || setAzimuth !== null);
+
   return (
-    <MapContainer
-      center={center}
-      zoom={zoom}
-      className={mapClassName}
-      zoomControl={false}
-      aria-label={ariaLabel}
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <Marker
-        position={markerPosition}
-        draggable
-        icon={defaultMarkerIcon}
-        eventHandlers={eventHandlers}
-      />
-      {risePath && (
-        <Polyline positions={risePath} pathOptions={{ color: riseColor, weight: 3 }} />
+    <div className="azimuth-map-wrapper">
+      <MapContainer
+        center={center}
+        zoom={zoom}
+        className={mapClassName}
+        zoomControl={false}
+        aria-label={ariaLabel}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker
+          position={markerPosition}
+          draggable
+          icon={defaultMarkerIcon}
+          eventHandlers={eventHandlers}
+        />
+        {risePath && (
+          <Polyline positions={risePath} pathOptions={{ color: riseColor, weight: 3 }} />
+        )}
+        {setPath && (
+          <Polyline positions={setPath} pathOptions={{ color: setColor, weight: 3 }} />
+        )}
+        <ZoomControl position="bottomright" />
+        <MapSizeInvalidator />
+        <MapCenterUpdater center={center} />
+        <MapEvents onMarkerMove={onMarkerMove} onViewChange={onViewChange} />
+        {onLandmarkClick && showLandmarks && <LandmarkLayer onLandmarkClick={onLandmarkClick} />}
+      </MapContainer>
+      {showLegend && (
+        <div className="map-legend">
+          {riseAzimuth !== null && riseLabel && (
+            <div className="map-legend__item">
+              <span className="map-legend__line" style={{ background: riseColor }} />
+              <span className="map-legend__label">{riseLabel}</span>
+            </div>
+          )}
+          {setAzimuth !== null && setLabel && (
+            <div className="map-legend__item">
+              <span className="map-legend__line" style={{ background: setColor }} />
+              <span className="map-legend__label">{setLabel}</span>
+            </div>
+          )}
+        </div>
       )}
-      {setPath && (
-        <Polyline positions={setPath} pathOptions={{ color: setColor, weight: 3 }} />
-      )}
-      <ZoomControl position="bottomright" />
-      <MapSizeInvalidator />
-      <MapCenterUpdater center={center} />
-      <MapEvents onMarkerMove={onMarkerMove} onViewChange={onViewChange} />
-      {onLandmarkClick && showLandmarks && <LandmarkLayer onLandmarkClick={onLandmarkClick} />}
-    </MapContainer>
+    </div>
   );
 }
