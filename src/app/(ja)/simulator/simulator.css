@@ -325,28 +325,33 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background-color: rgba(30, 38, 58, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  flex-direction: row;
 }
 
 .sim-menu li {
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  background-color: rgba(30, 38, 58, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  margin-right: 6px;
-  font-size: 0.9rem;
-  transition: background 0.2s, border 0.2s;
   display: inline-block;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.15s;
+}
+
+.sim-menu li:last-child {
+  border-right: none;
 }
 
 .sim-menu li:hover {
-  background-color: rgba(20, 27, 45, 0.96);
-  border-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .sim-menu li a,
 .sim-menu li button {
-  padding: 9px 14px;
+  padding: 9px 16px;
   text-decoration: none;
   color: #fff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -356,6 +361,7 @@
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .sim-menu li a:hover,
@@ -845,7 +851,7 @@
   }
 
   .sim-menu {
-    display: block;
+    display: flex;
   }
 
   .sim-search__button {
