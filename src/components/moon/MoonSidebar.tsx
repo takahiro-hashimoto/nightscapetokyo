@@ -65,7 +65,6 @@ export default function MoonSidebar({
             shareText={shareText}
             className="share-btn--full"
           />
-          <p className="moon-share__title">\気に入ったらシェア/</p>
           <ul className="moon-share__links">
             <li>
               <a

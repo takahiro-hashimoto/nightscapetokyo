@@ -56,7 +56,6 @@ export default function SimulatorSidebar({
             shareText={shareText}
             className="share-btn--full"
           />
-          <p className="sim-share__title">\気に入ったらシェア/</p>
           <ul className="sim-share__links">
             <li>
               <a
