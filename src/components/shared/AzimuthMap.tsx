@@ -185,51 +185,52 @@ export default function AzimuthMap({
         {onLandmarkClick && showLandmarks && <LandmarkLayer onLandmarkClick={onLandmarkClick} />}
       </MapContainer>
 
-      {/* カスタムコントロール（PC のみ表示） */}
-      <div className="map-controls">
-        {onToggleLandmarks && (
-          <button
-            className={`map-ctrl-landmark ${showLandmarks ? "map-ctrl-landmark--on" : "map-ctrl-landmark--off"}`}
-            onClick={onToggleLandmarks}
-            aria-label={showLandmarks ? "ランドマークを非表示" : "ランドマークを表示"}
-            title={showLandmarks ? "ランドマークを非表示" : "ランドマークを表示"}
-          >
-            <span className="map-ctrl-landmark__label">ランドマーク表示</span>
-            <span className="map-ctrl-landmark__track">
-              <span className="map-ctrl-landmark__thumb" />
-            </span>
-          </button>
+      {/* 右下パネル：凡例 + コントロール（PC のみ表示） */}
+      <div className="map-panel">
+        {showLegend && (
+          <div className="map-legend">
+            {riseAzimuth !== null && riseLabel && (
+              <div className="map-legend__item">
+                <span className="map-legend__line" style={{ background: riseColor }} />
+                <span className="map-legend__label">{riseLabel}</span>
+              </div>
+            )}
+            {setAzimuth !== null && setLabel && (
+              <div className="map-legend__item">
+                <span className="map-legend__line" style={{ background: setColor }} />
+                <span className="map-legend__label">{setLabel}</span>
+              </div>
+            )}
+          </div>
         )}
-        <div className="map-ctrl-zoom">
-          <button
-            className="map-ctrl-zoom__btn"
-            onClick={() => mapRef.current?.zoomIn()}
-            aria-label="拡大"
-          >＋</button>
-          <button
-            className="map-ctrl-zoom__btn"
-            onClick={() => mapRef.current?.zoomOut()}
-            aria-label="縮小"
-          >－</button>
+        <div className="map-controls">
+          {onToggleLandmarks && (
+            <button
+              className={`map-ctrl-landmark ${showLandmarks ? "map-ctrl-landmark--on" : "map-ctrl-landmark--off"}`}
+              onClick={onToggleLandmarks}
+              aria-label={showLandmarks ? "ランドマークを非表示" : "ランドマークを表示"}
+              title={showLandmarks ? "ランドマークを非表示" : "ランドマークを表示"}
+            >
+              <span className="map-ctrl-landmark__label">ランドマーク表示</span>
+              <span className="map-ctrl-landmark__track">
+                <span className="map-ctrl-landmark__thumb" />
+              </span>
+            </button>
+          )}
+          <div className="map-ctrl-zoom">
+            <button
+              className="map-ctrl-zoom__btn"
+              onClick={() => mapRef.current?.zoomIn()}
+              aria-label="拡大"
+            >＋</button>
+            <button
+              className="map-ctrl-zoom__btn"
+              onClick={() => mapRef.current?.zoomOut()}
+              aria-label="縮小"
+            >－</button>
+          </div>
         </div>
       </div>
-
-      {showLegend && (
-        <div className="map-legend">
-          {riseAzimuth !== null && riseLabel && (
-            <div className="map-legend__item">
-              <span className="map-legend__line" style={{ background: riseColor }} />
-              <span className="map-legend__label">{riseLabel}</span>
-            </div>
-          )}
-          {setAzimuth !== null && setLabel && (
-            <div className="map-legend__item">
-              <span className="map-legend__line" style={{ background: setColor }} />
-              <span className="map-legend__label">{setLabel}</span>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }

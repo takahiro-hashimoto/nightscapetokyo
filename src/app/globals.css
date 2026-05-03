@@ -3729,19 +3729,36 @@ body.modal-open [id*="aswift"] {
   height: 100% !important;
 }
 
-.map-legend {
+/* ==========================================
+   Map Panel（凡例 + コントロール 統合）
+   ========================================== */
+
+.map-panel {
   position: absolute;
-  bottom: 62px;
+  bottom: 24px;
   right: 10px;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 6px;
-  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 767px) {
+  .map-panel {
+    display: none;
+  }
+}
+
+/* 凡例エリア */
+.map-legend {
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  pointer-events: none;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .map-legend__item {
@@ -3752,76 +3769,25 @@ body.modal-open [id*="aswift"] {
 
 .map-legend__line {
   display: inline-block;
-  width: 24px;
+  width: 20px;
   height: 3px;
   border-radius: 2px;
   flex-shrink: 0;
 }
 
 .map-legend__label {
-  font-size: 0.75rem;
-  color: #333;
+  font-size: 0.72rem;
+  color: #444;
   white-space: nowrap;
   line-height: 1;
 }
 
-@media (max-width: 767px) {
-  .map-legend {
-    display: none;
-  }
-}
-
-/* ==========================================
-   Map Custom Controls（ズーム + ランドマークトグル）
-   ========================================== */
-
+/* コントロールエリア */
 .map-controls {
-  position: absolute;
-  bottom: 24px;
-  right: 10px;
-  z-index: 1000;
   display: flex;
   align-items: center;
-  gap: 6px;
-}
-
-@media (max-width: 767px) {
-  .map-controls {
-    display: none;
-  }
-}
-
-/* ズームボタン */
-.map-ctrl-zoom {
-  display: flex;
-  flex-direction: row;
-  border-radius: 6px;
-  overflow: hidden;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-}
-
-.map-ctrl-zoom__btn {
-  width: 30px;
-  height: 30px;
-  background: #fff;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-  transition: background 0.15s;
-  border-right: 1px solid #e0e0e0;
-}
-
-.map-ctrl-zoom__btn:last-child {
-  border-right: none;
-}
-
-.map-ctrl-zoom__btn:hover {
-  background: #f0f0f0;
+  gap: 0;
+  padding: 0;
 }
 
 /* ランドマークトグル */
@@ -3829,23 +3795,22 @@ body.modal-open [id*="aswift"] {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #fff;
+  background: transparent;
   border: none;
-  border-radius: 6px;
-  padding: 4px 10px;
+  border-right: 1px solid #e8e8e8;
+  padding: 0 12px;
   cursor: pointer;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  height: 34px;
   transition: background 0.15s;
-  height: 30px;
 }
 
 .map-ctrl-landmark:hover {
-  background: #f0f0f0;
+  background: #f5f5f5;
 }
 
 .map-ctrl-landmark__label {
-  font-size: 0.75rem;
-  color: #333;
+  font-size: 0.72rem;
+  color: #444;
   white-space: nowrap;
   line-height: 1;
 }
@@ -3881,5 +3846,30 @@ body.modal-open [id*="aswift"] {
 
 .map-ctrl-landmark--on .map-ctrl-landmark__thumb {
   left: 14px;
+}
+
+/* ズームボタン */
+.map-ctrl-zoom {
+  display: flex;
+  flex-direction: row;
+}
+
+.map-ctrl-zoom__btn {
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid #e8e8e8;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: background 0.15s;
+}
+
+.map-ctrl-zoom__btn:hover {
+  background: #f5f5f5;
 }
 
