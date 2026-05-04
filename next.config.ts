@@ -77,6 +77,26 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/:path*/feed/",
+        destination: "/:path*/",
+        permanent: true,
+      },
+      {
+        source: "/feed/",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/page/:num/",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ko|tw|cn)/page/:num/",
+        destination: "/:locale/",
+        permanent: true,
+      },
+      {
         source: "/post/",
         destination: "/",
         permanent: true,

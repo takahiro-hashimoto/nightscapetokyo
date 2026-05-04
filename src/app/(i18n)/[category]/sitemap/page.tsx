@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: canonicalUrl,
       languages: buildAreaHreflangAlternates(SITE_URL, "sitemap", ALL_LOCALE_SLUGS),
     },
+    robots: { index: false, follow: true },
   };
 }
 

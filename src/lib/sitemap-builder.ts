@@ -144,11 +144,9 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     });
   }
 
-  // ── 固定ページ ──
+  // ── 固定ページ（集客に貢献するページのみ） ──
   const staticPages = [
-    "/about", "/contact", "/guidelines", "/privacy-policy",
-    "/caution", "/links", "/sitemap",
-    "/time-lapse", "/wallpaper",
+    "/about", "/time-lapse", "/wallpaper",
   ];
   for (const page of staticPages) {
     const alts = buildAlternates(page);

@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     canonical: `${SITE_URL}/sitemap/`,
     languages: buildAreaHreflangAlternates(SITE_URL, "sitemap", ALL_LOCALE_SLUGS),
   },
+  robots: { index: false, follow: true },
 };
 
 type CategoryWithSpots = {
@@ -142,7 +143,6 @@ export default async function SitemapPage() {
         <h2>その他</h2>
         <ul>
           <li><Link href="/">ホーム</Link></li>
-          <li><Link href="/search/">スポット検索</Link></li>
           <li><Link href="/recommend">おすすめの夜景スポット</Link></li>
           <li><Link href="/time-lapse">タイムラプス映像集</Link></li>
           <li><Link href="/wallpaper">スマホ壁紙</Link></li>
