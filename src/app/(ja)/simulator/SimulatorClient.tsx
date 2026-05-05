@@ -88,7 +88,7 @@ export default function SimulatorClient() {
       <nav aria-label="関連ページ">
         <ul className="sim-menu">
           <li>
-            <Link href="/">サイトTOP</Link>
+            <Link href="/">東京夜景ナビTOP</Link>
           </li>
           <li>
             <Link href="/moon/">月の出・月の入りの方角</Link>

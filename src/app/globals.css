@@ -1098,6 +1098,38 @@ main > .home-section:nth-child(even of .home-section) {
   background: #e2e8f0;
 }
 
+.hero-suggest {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.hero-suggest-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.hero-suggest-item:hover,
+.hero-suggest-item--active {
+  background: #f1f5f9;
+}
+
+.hero-suggest-icon {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
 .hero-quick-links {
   display: flex;
   justify-content: center;
@@ -3925,5 +3957,59 @@ body.modal-open [id*="aswift"] {
 
 .map-ctrl-zoom__btn:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.sim-datepicker__date-btn {
+  text-align: center;
+  color: #e0e0e0;
+  cursor: pointer;
+  background-color: #32343a;
+  border: 1px solid #3e4046;
+  border-radius: 8px;
+  flex: 1;
+  padding: 4px 12px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.sim-hour-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  align-items: stretch;
+  padding: 4px;
+  display: flex;
+}
+
+.sim-hour-header__label {
+  font-size: .8rem;
+  font-weight: 400;
+  display: block;
+}
+
+.sim-hour-header__time {
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: block;
+}
+
+.moon-hour-header__time {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.sim-datepicker__btn {
+  color: #ccc;
+  cursor: pointer;
+  white-space: nowrap;
+  background-color: #3e4046;
+  border: 1px solid #555;
+  border-radius: 8px;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 12px;
+  font-size: .85rem;
+  font-weight: 700;
+  line-height: 1.5;
+  display: flex;
 }
 
