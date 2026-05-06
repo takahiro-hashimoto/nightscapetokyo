@@ -189,6 +189,7 @@ export default function MobileMenu({
           <Globe size={15} className="drawer-lang-select-icon" aria-hidden="true" />
           <select
             className="drawer-lang-select"
+            aria-label="言語を選択"
             value={locale ?? "ja"}
             onChange={(e) => { handleLangChange(e.target.value); closeMenu(); }}
           >

@@ -6,6 +6,8 @@ import type { AdSlotConfig } from "@/lib/ads";
 
 type Props = AdSlotConfig & {
   className?: string;
+  /** false にすると IntersectionObserver を使わず即時 push() する（スクロール不能な位置の広告用） */
+  lazy?: boolean;
 };
 
 declare global {
@@ -30,7 +32,7 @@ const FORMAT_MIN_HEIGHT: Record<AdSlotConfig["format"], number> = {
  *   → 画面外の広告リクエストを抑制しメインスレッドの負荷を分散
  * - フォーマット別 minHeight を指定して CLS を防止
  */
-export default function AdSenseUnit({ slot, format = "auto", layout, label, className, width, height }: Props) {
+export default function AdSenseUnit({ slot, format = "auto", layout, label, className, width, height, lazy = true }: Props) {
   const showAds = useShowAds();
   const containerRef = useRef<HTMLDivElement>(null);
   const isFixed = format === "fixed";
@@ -41,24 +43,34 @@ export default function AdSenseUnit({ slot, format = "auto", layout, label, clas
 
     const el = containerRef.current;
 
+    const pushAd = () => {
+      const ins = el.querySelector<HTMLElement>("ins.adsbygoogle");
+      if (!ins?.dataset.adsbygoogleStatus) {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch {}
+      }
+    };
+
+    if (!lazy) {
+      // スクロール不能な位置など、ビューポートに入らない広告は即時 push
+      const timer = setTimeout(pushAd, 100);
+      return () => clearTimeout(timer);
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          const ins = el.querySelector<HTMLElement>("ins.adsbygoogle");
-          if (!ins?.dataset.adsbygoogleStatus) {
-            try {
-              (window.adsbygoogle = window.adsbygoogle || []).push({});
-            } catch {}
-          }
+          pushAd();
           observer.disconnect();
         }
       },
-      { rootMargin: "200px" } // ビューポート 200px 手前でトリガー
+      { rootMargin: "200px" }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [showAds]);
+  }, [showAds, lazy]);
 
   if (!showAds) {
     return (

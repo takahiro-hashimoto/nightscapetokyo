@@ -88,7 +88,7 @@ html {
   --color-bg-gray: var(--color-bg-subtle);
   --color-header-bg: #28292b;
   --color-header-text: var(--color-text-inverse);
-  --color-star: #eab308;
+  --color-star: #b45309;
   --color-star-bg: #d1d5db;
   --container-padding: 16px;
 }
@@ -1338,7 +1338,7 @@ main > .home-section:nth-child(even of .home-section) {
   margin-bottom: 8px;
 }
 .spot-card-category {
-  color: var(--color-main);
+  color: #004da1;
   background: #e8f4fd;
 }
 
@@ -3298,7 +3298,7 @@ body.modal-open [id*="aswift"] {
 }
 .pr-banner-heading {
   background: #e8913a;
-  color: #fff;
+  color: #1a1a1a;
   font-size: 16px;
   font-weight: 700;
   text-align: center;
@@ -3339,7 +3339,7 @@ body.modal-open [id*="aswift"] {
 
 .pr-banner-heading {
   background: #e8913a;
-  color: #fff;
+  color: #1a1a1a;
   font-size: 16px;
   font-weight: 700;
   text-align: center;
@@ -3392,23 +3392,23 @@ body.modal-open [id*="aswift"] {
 }
 
 .pr-banner-cta.cta-filled {
-  background: #338df4;
+  background: #0060b3;
   color: #fff;
-  border: 1px solid #338df4;
+  border: 1px solid #0060b3;
 }
 
 .pr-banner-cta.cta-filled:hover {
-  background: #1a7ae0;
+  background: #004d99;
 }
 
 .pr-banner-cta.cta-outline {
   background: #fff;
-  color: #338df4;
-  border: 1px solid #338df4;
+  color: #0055a5;
+  border: 1px solid #0055a5;
 }
 
 .pr-banner-cta.cta-outline:hover {
-  background: rgba(51, 141, 244, 0.08);
+  background: rgba(0, 85, 165, 0.08);
 }
 
 @media (max-width: 600px) {

@@ -165,7 +165,7 @@ export default function SimulatorPage() {
             </ol>
           </div>
 
-          <AdSenseUnit slot={ADS.SIMULATOR_SIDEBAR.slot} format="auto" label="シミュレーターSP" />
+          <AdSenseUnit {...ADS.MAP_SP} />
 
           <div className="sim-sp-content__section">
             <h2 className="sim-sp-content__section-title">こんな時に役立ちます</h2>
@@ -202,6 +202,8 @@ export default function SimulatorPage() {
               </dl>
             </div>
           </div>
+
+          <AdSenseUnit {...ADS.MAP_SP} />
 
           <div className="sim-sp-content__section">
             <h2 className="sim-sp-content__section-title">よくある質問</h2>

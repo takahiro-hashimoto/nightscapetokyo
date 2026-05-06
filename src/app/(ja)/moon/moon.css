@@ -917,13 +917,13 @@
 }
 
 /* --- Date picker footer (shared with simulator) --- */
-.sim-datepicker {
+.moon-container .sim-datepicker {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.sim-datepicker__btn {
+.moon-container .sim-datepicker__btn {
   display: flex;
   align-items: center;
   gap: 2px;
@@ -938,13 +938,13 @@
   font-weight: bold;
 }
 
-.sim-datepicker__btn:hover {
+.moon-container .sim-datepicker__btn:hover {
   background-color: #4a7ec8;
   border-color: #4a7ec8;
   color: #fff;
 }
 
-.sim-datepicker__input {
+.moon-container .sim-datepicker__input {
   flex: 1;
   border: 1px solid #3e4046;
   border-radius: 8px;
@@ -955,7 +955,7 @@
   background-color: #32343a;
 }
 
-.sim-datepicker__input::-webkit-calendar-picker-indicator {
+.moon-container .sim-datepicker__input::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 
@@ -971,7 +971,7 @@
 }
 
 /* --- Footer date button --- */
-.sim-datepicker__date-btn {
+.moon-container .sim-datepicker__date-btn {
   flex: 1;
   border: 1px solid #3e4046;
   border-radius: 8px;
@@ -983,7 +983,7 @@
   cursor: pointer;
 }
 
-.sim-datepicker__date-btn:hover {
+.moon-container .sim-datepicker__date-btn:hover {
   background-color: #3e4046;
 }
 
@@ -1215,5 +1215,11 @@
 @media (min-width: 768px) {
   .moon-sp-content {
     display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .map-panel {
+    display: none !important;
   }
 }

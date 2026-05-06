@@ -1,6 +1,3 @@
-"use client";
-
-import { useRef, useCallback } from "react";
 import Link from "next/link";
 
 type SubNavItem = { label: string; href: string; count?: number };
@@ -16,17 +13,8 @@ export default function DesktopNavDropdown({
   items: SubNavItem[];
   extraLinks?: { href: string; label: string }[];
 }) {
-  const navItemRef = useRef<HTMLDivElement>(null);
-
-  const handleLinkClick = useCallback(() => {
-    const el = navItemRef.current;
-    if (!el) return;
-    el.classList.add("is-closing");
-    setTimeout(() => el.classList.remove("is-closing"), 300);
-  }, []);
-
   return (
-    <div ref={navItemRef} className="site-header-nav-item">
+    <div className="site-header-nav-item">
       <button className="site-header-nav-link site-header-nav-trigger" type="button">
         {label}
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -39,7 +27,6 @@ export default function DesktopNavDropdown({
             key={item.href}
             href={item.href}
             className="site-header-dropdown-link"
-            onClick={handleLinkClick}
           >
             {item.count != null ? `${item.label}（${item.count}）` : item.label}
           </Link>
@@ -49,7 +36,6 @@ export default function DesktopNavDropdown({
             key={link.href}
             href={link.href}
             className="site-header-dropdown-link"
-            onClick={handleLinkClick}
           >
             {link.label}
           </Link>

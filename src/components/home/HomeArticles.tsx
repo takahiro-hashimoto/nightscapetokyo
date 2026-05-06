@@ -33,7 +33,7 @@ export default async function HomeArticles() {
                   {article.thumbnail && (
                     <Image
                       src={article.thumbnail}
-                      alt={article.title}
+                      alt=""
                       fill
                       sizes="(max-width: 768px) calc(50vw - 28px), 320px"
                     />

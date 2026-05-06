@@ -17,7 +17,7 @@ import { calculateSunData } from "@/lib/sun-calc";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildHomeHreflangAlternates } from "@/lib/types";
 import { buildFaqJsonLd, buildItemListJsonLd } from "@/lib/json-ld";
-import SpotShare from "@/components/spot/SpotShare";
+import SpotShare from "@/components/spot/SpotShareLazy";
 
 export async function generateMetadata(): Promise<Metadata> {
   const hp = getComponentLabels("ja").homePage;

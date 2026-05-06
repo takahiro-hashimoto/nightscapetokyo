@@ -111,4 +111,14 @@ export const ADS = {
     height: 277,
     label: "月ナビサイドバー",
   },
+  /**
+   * シミュレーター・月ナビ SP マップ下
+   * 形式: ディスプレイ（auto）
+   * 設置: simulator/page.tsx, moon/page.tsx (SP only)
+   */
+  MAP_SP: {
+    slot: "2208842462",
+    format: "auto",
+    label: "東京夜景ナビ_next_マップ_SP",
+  },
 } as const satisfies Record<string, AdSlotConfig>;

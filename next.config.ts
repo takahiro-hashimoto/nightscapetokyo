@@ -29,6 +29,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev",
+      },
+      {
+        protocol: "https",
         hostname: "i.ytimg.com",
       },
     ],

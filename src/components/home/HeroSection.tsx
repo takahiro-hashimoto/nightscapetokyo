@@ -1,6 +1,7 @@
 import Image from "next/image";
-import HeroSearchInput from "./HeroSearchInput";
+import { Search } from "lucide-react";
 import type { HomePageLabels } from "@/lib/i18n-labels";
+import HeroSearchInputSlot from "./HeroSearchInputSlot";
 
 type Props = {
   labels?: HomePageLabels["hero"];
@@ -11,6 +12,7 @@ type Props = {
 export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
   const l = labels;
   const count = spotCount ?? 200;
+  const prefix = localeSlug ? `/${localeSlug}` : "";
 
   return (
     <section className="hero-section">
@@ -41,12 +43,34 @@ export default function HeroSection({ labels, localeSlug, spotCount }: Props) {
           <h1 className="hero-subtitle">
             {l?.subtitle(count) ?? `デート・撮影などにおすすめの東京の夜景スポットを定番から穴場まで紹介【${count}件掲載】`}
           </h1>
-          <HeroSearchInput
-            placeholder={l?.searchPlaceholder}
-            ariaLabel={l?.searchAriaLabel}
-            buttonLabel={l?.searchButton}
-            localeSlug={localeSlug}
-          />
+          {/* サーバー側でレンダリングされる静的フォーム。JS なしでも動作する */}
+          <form
+            id="hero-search"
+            className="hero-search"
+            action={`${prefix}/search/`}
+            role="search"
+          >
+            <Search size={18} className="hero-search-icon" aria-hidden="true" />
+            <input
+              id="hero-q"
+              type="text"
+              name="q"
+              placeholder={l?.searchPlaceholder ?? "エリアやキーワードで夜景スポットを検索"}
+              className="hero-search-input"
+              aria-label={l?.searchAriaLabel ?? "夜景スポットを検索"}
+              aria-autocomplete="list"
+              autoComplete="off"
+            />
+            <button
+              type="submit"
+              className="hero-search-btn"
+              aria-label={l?.searchButton ?? "検索"}
+            >
+              <Search size={18} />
+            </button>
+          </form>
+          {/* 非同期で読み込まれるサジェスト overlay（JS 拡張） */}
+          <HeroSearchInputSlot localeSlug={localeSlug} />
         </div>
       </div>
     </section>

@@ -1066,3 +1066,9 @@
     display: none;
   }
 }
+
+@media (max-width: 767px) {
+  .map-panel {
+    display: none !important;
+  }
+}

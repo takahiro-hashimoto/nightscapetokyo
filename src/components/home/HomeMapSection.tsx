@@ -90,7 +90,7 @@ export default function HomeMapSection({
           <ul>
             {spots.slice(0, 50).map((spot) => (
               <li key={spot.id}>
-                <Link href={`${localePrefix ?? ""}/${spot.categorySlug}/${spot.slug}`}>{spot.name}</Link>
+                <Link href={`${localePrefix ?? ""}/${spot.categorySlug}/${spot.slug}`} tabIndex={-1}>{spot.name}</Link>
               </li>
             ))}
           </ul>

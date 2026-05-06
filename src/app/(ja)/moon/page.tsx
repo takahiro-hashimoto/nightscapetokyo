@@ -225,7 +225,7 @@ export default function MoonPage() {
             </ol>
           </div>
 
-          <AdSenseUnit slot={ADS.MOON_SIDEBAR.slot} format="auto" label="月ナビSP" />
+          <AdSenseUnit {...ADS.MAP_SP} />
 
           <div className="moon-sp-content__section">
             <h2 className="moon-sp-content__section-title">こんな時に役立ちます</h2>
@@ -262,6 +262,8 @@ export default function MoonPage() {
               </dl>
             </div>
           </div>
+
+          <AdSenseUnit {...ADS.MAP_SP} />
 
           <div className="moon-sp-content__section">
             <h2 className="moon-sp-content__section-title">よくある質問</h2>
