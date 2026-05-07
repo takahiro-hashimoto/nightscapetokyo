@@ -134,6 +134,8 @@ const FAQ = [
 export default function SimulatorPage() {
   return (
     <>
+      {/* OpenStreetMap タイル取得のため事前接続（このページ専用） */}
+      <link rel="preconnect" href="https://tile.openstreetmap.org" />
       {/* ツール本体（100vh / SSR なし） */}
       <SimulatorLoader />
 

@@ -194,6 +194,8 @@ const FAQ = [...buildFullMoonFAQ(), ...STATIC_FAQ];
 export default function MoonPage() {
   return (
     <>
+      {/* OpenStreetMap タイル取得のため事前接続（このページ専用） */}
+      <link rel="preconnect" href="https://tile.openstreetmap.org" />
       {/* ツール本体（100vh / SSR なし） */}
       <MoonLoader />
 
