@@ -3,9 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { revalidateArticleCaches } from "@/lib/cache-invalidation";
 
 export async function createArticle(formData: FormData) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
 
   const title = (formData.get("title") as string)?.trim();
@@ -36,6 +38,7 @@ export async function createArticle(formData: FormData) {
 }
 
 export async function updateArticle(id: string, formData: FormData) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
 
   const title = (formData.get("title") as string)?.trim();
@@ -79,6 +82,7 @@ export async function updateArticle(id: string, formData: FormData) {
 }
 
 export async function deleteArticle(id: string) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
   const { error } = await admin.from("articles").delete().eq("id", id);
   if (error) return { error: error.message };

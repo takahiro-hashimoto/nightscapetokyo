@@ -45,15 +45,18 @@ export async function GET(req: NextRequest) {
   const spots: SuggestItem[] = [];
 
   // メイン検索結果を追加
-  for (const s of (mainRes.data ?? []) as any[]) {
+  type SpotRow = { slug: string; name?: string; title?: string; category?: { slug: string } | { slug: string }[] };
+  type TransRow = { name: string; spot: SpotRow | SpotRow[] };
+
+  for (const s of (mainRes.data ?? []) as SpotRow[]) {
     if (seen.has(s.slug)) continue;
     seen.add(s.slug);
     const cat = Array.isArray(s.category) ? s.category[0] : s.category;
-    spots.push({ slug: s.slug, name: s.name || s.title, categorySlug: cat?.slug ?? "" });
+    spots.push({ slug: s.slug, name: s.name || s.title || "", categorySlug: cat?.slug ?? "" });
   }
 
   // 翻訳テーブルのヒットを追加（重複除去）
-  for (const t of (transRes.data ?? []) as any[]) {
+  for (const t of (transRes.data ?? []) as TransRow[]) {
     const spotRow = Array.isArray(t.spot) ? t.spot[0] : t.spot;
     if (!spotRow?.slug || seen.has(spotRow.slug)) continue;
     seen.add(spotRow.slug);

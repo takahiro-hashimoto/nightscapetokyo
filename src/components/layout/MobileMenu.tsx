@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, startTransition } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
@@ -81,7 +81,7 @@ export default function MobileMenu({
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => { startTransition(() => setMenuOpen(false)); }, [pathname]);
 
   useEffect(() => {
     const btn = document.getElementById("hamburger-btn");

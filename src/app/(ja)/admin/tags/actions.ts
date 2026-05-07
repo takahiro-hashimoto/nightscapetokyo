@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { revalidateTagCaches } from "@/lib/cache-invalidation";
 
 export async function createTag(formData: FormData) {
@@ -16,6 +17,7 @@ export async function createTag(formData: FormData) {
     return { error: "スラッグは半角英数字とハイフンのみ使用できます" };
   }
 
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
   const { error } = await admin.from("tags").insert({ name, slug, image_url });
 
@@ -41,6 +43,7 @@ export async function updateTag(id: string, formData: FormData) {
     return { error: "スラッグは半角英数字とハイフンのみ使用できます" };
   }
 
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
   const { error } = await admin
     .from("tags")
@@ -58,6 +61,7 @@ export async function updateTag(id: string, formData: FormData) {
 }
 
 export async function deleteTag(id: string) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
   const { error } = await admin.from("tags").delete().eq("id", id);
 

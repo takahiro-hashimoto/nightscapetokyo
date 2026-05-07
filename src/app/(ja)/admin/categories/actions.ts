@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { revalidateCategoryCaches } from "@/lib/cache-invalidation";
 
 export async function createCategory(formData: FormData) {
@@ -15,6 +16,7 @@ export async function createCategory(formData: FormData) {
     return { error: "スラッグは半角英数字とハイフンのみ使用できます" };
   }
 
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
   const { error } = await admin.from("categories").insert({ name, slug });
 
@@ -39,6 +41,7 @@ export async function updateCategory(id: string, formData: FormData) {
     return { error: "スラッグは半角英数字とハイフンのみ使用できます" };
   }
 
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
   const { error } = await admin
     .from("categories")
@@ -56,6 +59,7 @@ export async function updateCategory(id: string, formData: FormData) {
 }
 
 export async function deleteCategory(id: string) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
 
   // Check for spots referencing this category

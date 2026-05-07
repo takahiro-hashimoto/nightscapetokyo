@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { createAuthClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin/auth";
 
 const s3 = new S3Client({
   region: "auto",
@@ -20,12 +20,17 @@ const ALLOWED_TYPES: Record<string, string> = {
   "image/gif": "gif",
 };
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
 export async function POST(req: NextRequest) {
-  // 管理者認証チェック
-  const supabase = await createAuthClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
+  const admin = await requireAdmin();
+  if (!admin) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const contentLength = req.headers.get("content-length");
+  if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE) {
+    return NextResponse.json({ error: "ファイルサイズが上限（10MB）を超えています" }, { status: 413 });
   }
 
   const { filename, contentType } = await req.json();

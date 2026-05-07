@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, startTransition } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 import "@/app/(ja)/moon/moon.css";
@@ -14,12 +14,15 @@ const SEEN_KEY = "moon_seen_info";
 export default function MoonInfoModal({ faq }: Props) {
   const [open, setOpen] = useState(false);
 
+  const handleOpen = useCallback(() => startTransition(() => setOpen(true)), []);
+
   useEffect(() => {
-    if (window.innerWidth >= 768 && !localStorage.getItem(SEEN_KEY)) setOpen(true);
-    const handler = () => setOpen(true);
-    window.addEventListener("moon:open-info", handler);
-    return () => window.removeEventListener("moon:open-info", handler);
-  }, []);
+    if (window.innerWidth >= 768 && !localStorage.getItem(SEEN_KEY)) {
+      startTransition(() => setOpen(true));
+    }
+    window.addEventListener("moon:open-info", handleOpen);
+    return () => window.removeEventListener("moon:open-info", handleOpen);
+  }, [handleOpen]);
 
   const handleClose = () => {
     localStorage.setItem(SEEN_KEY, "1");

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, startTransition } from "react";
 import { loadMapState, saveMapState, DEFAULT_MAP_STATE } from "@/lib/map-persistence";
 
 interface UsePersistedMapStateOptions {
@@ -69,11 +69,13 @@ export function usePersistedMapState({ storageKey }: UsePersistedMapStateOptions
     mapStateRef.current = { lat: initLat, lng: initLng, zoom: initZoom };
     dateRef.current = initDate;
 
-    setMarkerPosition([initLat, initLng]);
-    setMapCenter([initLat, initLng]);
-    setZoom(initZoom);
-    setSelectedDate(initDate);
-    setInitialized(true);
+    startTransition(() => {
+      setMarkerPosition([initLat, initLng]);
+      setMapCenter([initLat, initLng]);
+      setZoom(initZoom);
+      setSelectedDate(initDate);
+      setInitialized(true);
+    });
 
     // URLを正規化（部分的なパラメータしかない場合も補完）
     updateUrlState(initLat, initLng, initZoom, initDate);

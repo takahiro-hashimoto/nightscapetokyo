@@ -1,11 +1,13 @@
 'use server'
 
-import { createAdminClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server';
+import { requireAdmin } from '@/lib/admin/auth'
 
 export async function updateSaleSettings(
   _prev: { error?: string; success?: boolean } | null,
   formData: FormData,
 ): Promise<{ error?: string; success?: boolean }> {
+  if (!(await requireAdmin())) return { error: "Unauthorized" }
   const admin = createAdminClient()
 
   const saleName = (formData.get('sale_name') as string)?.trim()

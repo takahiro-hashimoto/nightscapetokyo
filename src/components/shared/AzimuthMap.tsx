@@ -100,7 +100,9 @@ function MapEvents({
 /** MapContainer内でmapインスタンスを外部refに渡す */
 function MapRefCapture({ mapRef }: { mapRef: React.MutableRefObject<L.Map | null> }) {
   const map = useMap();
-  mapRef.current = map;
+  useEffect(() => {
+    mapRef.current = map;
+  }, [map, mapRef]);
   return null;
 }
 

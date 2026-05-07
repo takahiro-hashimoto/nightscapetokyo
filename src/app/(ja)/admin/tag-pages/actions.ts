@@ -3,10 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { parseArrayFields } from "@/lib/admin/parse-form";
 import { revalidateTagPageCaches } from "@/lib/cache-invalidation";
 
 export async function createTagPage(formData: FormData) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
 
   const tagId = (formData.get("tag_id") as string)?.trim();
@@ -59,6 +61,7 @@ export async function createTagPage(formData: FormData) {
 }
 
 export async function updateTagPage(id: string, formData: FormData) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
 
   const tagId = (formData.get("tag_id") as string)?.trim();
@@ -92,16 +95,19 @@ export async function updateTagPage(id: string, formData: FormData) {
     return { error: error.message };
   }
 
-  // Delete → re-insert children
+  // Delete → re-insert children (fail-fast on error)
   await admin.from("tag_page_pr_banners").delete().eq("tag_page_id", id);
-  await savePrBanner(admin, id, formData);
+  const prErr = await savePrBanner(admin, id, formData);
+  if (prErr) return { error: `PRバナーの保存に失敗しました: ${prErr}` };
 
   // Sections: delete old (cascade removes section_spots)
   await admin.from("tag_page_sections").delete().eq("tag_page_id", id);
-  await saveSections(admin, id, formData);
+  const secErr = await saveSections(admin, id, formData);
+  if (secErr) return { error: `セクションの保存に失敗しました: ${secErr}` };
 
   await admin.from("tag_page_faqs").delete().eq("tag_page_id", id);
-  await saveFaqs(admin, id, formData);
+  const faqErr = await saveFaqs(admin, id, formData);
+  if (faqErr) return { error: `FAQの保存に失敗しました: ${faqErr}` };
 
   // Revalidate
   revalidateTagPageCaches();
@@ -125,6 +131,7 @@ export async function updateTagPage(id: string, formData: FormData) {
 }
 
 export async function deleteTagPage(id: string) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
   const { error } = await admin.from("tag_pages").delete().eq("id", id);
 
@@ -138,31 +145,32 @@ export async function deleteTagPage(id: string) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function savePrBanner(admin: any, pageId: string, formData: FormData) {
+async function savePrBanner(admin: any, pageId: string, formData: FormData): Promise<string | null> {
   const prEnabled = formData.get("pr_banner_enabled") === "on";
-  if (!prEnabled) return;
+  if (!prEnabled) return null;
 
   const heading = (formData.get("pr_banner_heading") as string)?.trim();
-  if (!heading) return;
+  if (!heading) return null;
 
-  const { data: banner } = await admin
+  const { data: banner, error } = await admin
     .from("tag_page_pr_banners")
     .insert({
       tag_page_id: pageId,
       heading,
       image: (formData.get("pr_banner_image") as string)?.trim() || null,
       body: parseArrayFields(formData, "pr_banner_body")
-        .map((b) => b.text?.trim())
+        .map(b => b.text?.trim())
         .filter(Boolean),
     })
     .select("id")
     .single();
 
-  if (!banner) return;
+  if (error) return error.message;
+  if (!banner) return null;
 
   const links = parseArrayFields(formData, "pr_banner_links");
   if (links.length > 0) {
-    await admin.from("tag_page_pr_banner_links").insert(
+    const { error: linkErr } = await admin.from("tag_page_pr_banner_links").insert(
       links
         .filter((l) => l.label?.trim() && l.href?.trim())
         .map((l, i) => ({
@@ -172,18 +180,20 @@ async function savePrBanner(admin: any, pageId: string, formData: FormData) {
           sort_order: i,
         }))
     );
+    if (linkErr) return linkErr.message;
   }
+  return null;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function saveSections(admin: any, pageId: string, formData: FormData) {
+async function saveSections(admin: any, pageId: string, formData: FormData): Promise<string | null> {
   const sections = parseArrayFields(formData, "sections");
 
   for (let si = 0; si < sections.length; si++) {
     const sec = sections[si];
     if (!sec.key?.trim() || !sec.heading?.trim()) continue;
 
-    const { data: section } = await admin
+    const { data: section, error } = await admin
       .from("tag_page_sections")
       .insert({
         tag_page_id: pageId,
@@ -195,14 +205,15 @@ async function saveSections(admin: any, pageId: string, formData: FormData) {
       .select("id")
       .single();
 
+    if (error) return error.message;
     if (!section) continue;
 
     // Section spots
     const spots = parseArrayFields(formData, `sections.${si}.spots`);
     if (spots.length > 0) {
-      await admin.from("tag_page_section_spots").insert(
+      const { error: spotErr } = await admin.from("tag_page_section_spots").insert(
         spots
-          .filter((s) => s.spot_id?.trim())
+          .filter(s => s.spot_id?.trim())
           .map((s, i) => ({
             section_id: section.id,
             spot_id: s.spot_id.trim(),
@@ -210,17 +221,19 @@ async function saveSections(admin: any, pageId: string, formData: FormData) {
             sort_order: i,
           }))
       );
+      if (spotErr) return spotErr.message;
     }
   }
+  return null;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function saveFaqs(admin: any, pageId: string, formData: FormData) {
+async function saveFaqs(admin: any, pageId: string, formData: FormData): Promise<string | null> {
   const faqs = parseArrayFields(formData, "faqs");
   if (faqs.length > 0) {
-    await admin.from("tag_page_faqs").insert(
+    const { error } = await admin.from("tag_page_faqs").insert(
       faqs
-        .filter((faq) => faq.question?.trim() && faq.answer?.trim())
+        .filter(faq => faq.question?.trim() && faq.answer?.trim())
         .map((faq, i) => ({
           tag_page_id: pageId,
           question: faq.question.trim(),
@@ -228,5 +241,7 @@ async function saveFaqs(admin: any, pageId: string, formData: FormData) {
           sort_order: i,
         }))
     );
+    if (error) return error.message;
   }
+  return null;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, startTransition } from "react";
 
 /**
  * Non-critical CSS loader
@@ -14,7 +14,7 @@ export default function NonCriticalCss({ href }: { href: string }) {
   const [media, setMedia] = useState<string>("print");
 
   useEffect(() => {
-    setMedia("all");
+    startTransition(() => setMedia("all"));
   }, []);
 
   return (

@@ -350,20 +350,23 @@ export function wrapTables(html: string): string {
   )
 }
 
+import DOMPurify from "isomorphic-dompurify";
+
 /**
  * DB / CMS 由来の HTML を dangerouslySetInnerHTML に渡す前にサニタイズする。
- * - <script> タグを除去
- * - インラインイベントハンドラ (on*) を除去
- * - javascript: URI を除去
- * ※ <iframe> は Google Maps / YouTube 埋め込みで必要なため残す。
+ * DOMPurify で XSS を除去した後、CMS 固有のクリーンアップを適用する。
+ * ※ <iframe> は Google Maps / YouTube 埋め込みで必要なため ALLOW_TAGS に含める。
  */
 export function sanitizeHtml(html: string): string {
-  return html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-    .replace(/\s+on\w+="[^"]*"/gi, "")
-    .replace(/\s+on\w+='[^']*'/gi, "")
-    .replace(/javascript:/gi, "")
-    .replace(/\[[^\]]+\]/g, "")
+  const clean = DOMPurify.sanitize(html, {
+    ADD_TAGS: ["iframe"],
+    ADD_ATTR: ["loading", "allowfullscreen", "frameborder", "allow", "referrerpolicy"],
+    // iframe の src は https のみ許可
+    ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel|#):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
+  });
+
+  // CMS (WordPress) 固有のクリーンアップ
+  return clean
     .replace(/\s*class="wp-block-heading"/g, "")
     .replace(/<!--\s*\/?wp:[^>]*-->/g, "")
     .replace(/\s*class="wp-block-list"/g, "")
@@ -371,6 +374,6 @@ export function sanitizeHtml(html: string): string {
     .replace(/<!--\$-->/g, "")
     .replace(/\bl-bottom-medium\b\s*/g, "")
     .replace(/<span[^>]*data-icon="[^"]*"[^>]*>[\s\S]*?<\/span>/gi, "")
-    // CMS 由来の iframe（YouTube・Google Maps 等）は常にフォールド以下のため遅延ロード
+    // CMS 由来の iframe（YouTube・Google Maps 等）は遅延ロード
     .replace(/<iframe\b(?![^>]*\bloading\b)/gi, '<iframe loading="lazy"');
 }

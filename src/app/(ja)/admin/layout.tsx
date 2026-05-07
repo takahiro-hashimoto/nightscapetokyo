@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { requireAdmin } from "@/lib/admin/auth";
 import { createAuthClient } from "@/lib/supabase/server";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 
@@ -16,18 +18,22 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createAuthClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  // Login page renders without sidebar
+  // Not logged in: render children (login form) without sidebar
   if (!user) {
     return <>{children}</>;
   }
 
+  // Logged in but not admin: show 403
+  const admin = await requireAdmin();
+  if (!admin) {
+    redirect("/admin/login");
+  }
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <AdminSidebar userEmail={user.email} />
+      <AdminSidebar userEmail={admin.email} />
       <main className="flex-1 p-8">{children}</main>
     </div>
   );

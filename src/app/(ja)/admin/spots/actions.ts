@@ -3,10 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { parseArrayFields } from "@/lib/admin/parse-form";
 import { revalidateSpotCaches } from "@/lib/cache-invalidation";
 
 export async function createSpot(formData: FormData) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
 
   const title = (formData.get("title") as string)?.trim();
@@ -140,6 +142,7 @@ export async function createSpot(formData: FormData) {
 }
 
 export async function updateSpot(id: string, formData: FormData) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
 
   const title = (formData.get("title") as string)?.trim();
@@ -208,20 +211,21 @@ export async function updateSpot(id: string, formData: FormData) {
     return { error: error.message };
   }
 
-  // Sync tags: delete all → re-insert
+  // Sync tags: delete all → re-insert (fail-fast on insert error)
   await admin.from("spot_tags").delete().eq("spot_id", id);
   const tagIds = formData.getAll("tag_ids") as string[];
   if (tagIds.length > 0) {
-    await admin.from("spot_tags").insert(
+    const { error: tagErr } = await admin.from("spot_tags").insert(
       tagIds.map((tag_id) => ({ spot_id: id, tag_id }))
     );
+    if (tagErr) return { error: `タグの保存に失敗しました: ${tagErr.message}` };
   }
 
   // Sync images: delete all → re-insert
   await admin.from("spot_images").delete().eq("spot_id", id);
   const images = parseArrayFields(formData, "images");
   if (images.length > 0) {
-    await admin.from("spot_images").insert(
+    const { error: imgErr } = await admin.from("spot_images").insert(
       images
         .filter((img) => img.url?.trim())
         .map((img, i) => ({
@@ -231,13 +235,14 @@ export async function updateSpot(id: string, formData: FormData) {
           sort_order: parseInt(img.sort_order) || i,
         }))
     );
+    if (imgErr) return { error: `画像の保存に失敗しました: ${imgErr.message}` };
   }
 
   // Sync FAQs: delete all → re-insert
   await admin.from("spot_faqs").delete().eq("spot_id", id);
   const faqs = parseArrayFields(formData, "faqs");
   if (faqs.length > 0) {
-    await admin.from("spot_faqs").insert(
+    const { error: faqErr } = await admin.from("spot_faqs").insert(
       faqs
         .filter((faq) => faq.question?.trim() && faq.answer?.trim())
         .map((faq, i) => ({
@@ -247,12 +252,13 @@ export async function updateSpot(id: string, formData: FormData) {
           sort_order: parseInt(faq.sort_order) || i,
         }))
     );
+    if (faqErr) return { error: `FAQの保存に失敗しました: ${faqErr.message}` };
   }
 
   // Sync hotel info
   await admin.from("spot_hotels").delete().eq("spot_id", id);
   if (spotData.type === "hotel") {
-    await admin.from("spot_hotels").insert({
+    const { error: hotelErr } = await admin.from("spot_hotels").insert({
       spot_id: id,
       checkin: (formData.get("checkin") as string)?.trim() || null,
       checkout: (formData.get("checkout") as string)?.trim() || null,
@@ -262,18 +268,20 @@ export async function updateSpot(id: string, formData: FormData) {
       affiliate_3: (formData.get("affiliate_3") as string)?.trim() || null,
       affiliate_4: (formData.get("affiliate_4") as string)?.trim() || null,
     });
+    if (hotelErr) return { error: `ホテル情報の保存に失敗しました: ${hotelErr.message}` };
   }
 
   // Sync event info
   await admin.from("spot_events").delete().eq("spot_id", id);
   if (spotData.type === "event") {
-    await admin.from("spot_events").insert({
+    const { error: eventErr } = await admin.from("spot_events").insert({
       spot_id: id,
       start_date: (formData.get("start_date") as string)?.trim() || null,
       end_date: (formData.get("end_date") as string)?.trim() || null,
       place: (formData.get("place") as string)?.trim() || null,
       event_hour: (formData.get("event_hour") as string)?.trim() || null,
     });
+    if (eventErr) return { error: `イベント情報の保存に失敗しました: ${eventErr.message}` };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -303,6 +311,7 @@ export async function updateSpot(id: string, formData: FormData) {
 }
 
 export async function deleteSpot(id: string) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
   const { error } = await admin.from("spots").delete().eq("id", id);
 
@@ -316,6 +325,7 @@ export async function deleteSpot(id: string) {
 }
 
 export async function toggleSpotPublished(id: string, published: boolean) {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
   const updateData: Record<string, unknown> = { published };
   if (published) {

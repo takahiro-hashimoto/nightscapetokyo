@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, startTransition } from "react";
 
 export function useCalendarState(selectedDate: Date) {
   const [viewYear, setViewYear] = useState(() => selectedDate.getFullYear());
@@ -10,8 +10,10 @@ export function useCalendarState(selectedDate: Date) {
   const month = selectedDate.getMonth();
 
   useEffect(() => {
-    setViewYear(year);
-    setViewMonth(month);
+    startTransition(() => {
+      setViewYear(year);
+      setViewMonth(month);
+    });
   }, [year, month]);
 
   const prevMonth = () => {
