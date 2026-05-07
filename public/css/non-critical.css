@@ -839,6 +839,76 @@
 }
 
 /* =========================================
+   Module - CTA Pair (hotel + ranking side by side)
+   ========================================= */
+.cta-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0 0;
+}
+
+/* single child (JA: no hotel CTA) → full width */
+.cta-pair > :only-child {
+  grid-column: 1 / -1;
+}
+
+/* reset individual margin when inside pair */
+.cta-pair .recommend-cta {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .cta-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   Module - Hotel Affiliate CTA (white / navy border)
+   ========================================= */
+.cta-pair .hotel-cta {
+  background: #fff;
+  border: 2px solid #0f3460;
+  color: #1a1a2e;
+}
+
+.cta-pair .hotel-cta::before {
+  display: none;
+}
+
+.cta-pair .hotel-cta .recommend-cta-icon {
+  background: rgba(15, 52, 96, 0.08);
+  color: #0f3460;
+}
+
+.cta-pair .hotel-cta .recommend-cta-label {
+  color: #0f3460;
+}
+
+.cta-pair .hotel-cta .recommend-cta-title {
+  color: #1a1a2e;
+}
+
+.cta-pair .hotel-cta .recommend-cta-desc {
+  color: rgba(26, 26, 46, 0.55);
+}
+
+.cta-pair .hotel-cta .recommend-cta-arrow {
+  background: rgba(15, 52, 96, 0.08);
+  color: #0f3460;
+}
+
+.cta-pair .hotel-cta:hover {
+  background: #f5f8ff;
+}
+
+.cta-pair .hotel-cta:hover .recommend-cta-arrow {
+  background: rgba(15, 52, 96, 0.15);
+  color: #0f3460;
+}
+
+/* =========================================
    Module - Related Spots
    ========================================= */
 .related-section {
@@ -987,6 +1057,11 @@
 
 .share-btn-weibo {
   background: #e6162d;
+}
+
+.share-btn-kakao {
+  background: #fee500;
+  color: #3c1e1e;
 }
 
 .share-btn-copy {

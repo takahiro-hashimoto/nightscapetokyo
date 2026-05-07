@@ -595,15 +595,21 @@ const LABELS = {
       ],
       moreLink: "Learn more about us",
     },
+    hotelCta: {
+      heading: (area) => `Staying near ${area}?`,
+      body: "Browse hotels in the area — photos, ratings, and instant booking via Booking.com.",
+      linkText: (area) => `Find hotels near ${area}`,
+      note: "via Booking.com",
+    },
   },
   ko: {
-    seoH1: (name) => `${name} 가는 길・영업시간・야경 볼거리 가이드`,
+    seoH1: (name) => `${name} 야경 가이드 | 교통편・영업시간・요금 총정리`,
     seoDescription: (name, area, type, _lead) => {
       if (type === "hotel")
-        return `${area}에 위치한 ${name}의 야경 정보를 소개합니다. 객실과 레스토랑에서의 야경·전망, 교통편, 숙박 요금 등 야경을 즐길 수 있는 호텔을 찾고 계신 분은 꼭 확인해 보세요!`;
+        return `도쿄 ${area}에서 야경이 아름다운 호텔 ${name}. 객실·레스토랑 전망, 교통편, 숙박 요금 등 상세 정보를 확인하세요.`;
       if (type === "event")
-        return `${name}의 이벤트 정보를 소개합니다. 개최 기간·개최 시간·장소·교통편 등 이벤트 상세 정보를 알고 싶은 분은 꼭 확인해 보세요!`;
-      return `${area}에 위치한 ${name}의 야경·석양 정보를 소개합니다. ${name} 가는 방법·주소·영업시간·입장료·가까운 역·전망 볼거리, 언제 방문하면 좋은지 등을 알고 싶은 분은 꼭 확인해 보세요!`;
+        return `${name} 이벤트 정보. 개최 기간·시간·장소·교통편 등 상세 내용을 한눈에 확인하세요.`;
+      return `도쿄 여행 중 ${area}의 야경 명소 ${name}. 교통편·영업시간·입장료·최적 방문 시간까지 한눈에 확인하세요. 야경 사진, 데이트 코스, 관광 계획에 활용하세요.`;
     },
     heroImageAlt: (name) => `${name}의 야경`,
     closedBadge: "영구 폐쇄",
@@ -695,6 +701,7 @@ const LABELS = {
       copy: "URL 복사",
       copied: "복사했습니다!",
       facebook: "Facebook",
+      kakao: "카카오톡",
     },
     anchor: {
       report: "방문 리포트",
@@ -898,15 +905,21 @@ const LABELS = {
       ],
       moreLink: "프로필·활동 실적 더 보기",
     },
+    hotelCta: {
+      heading: (area) => `${area} 근처 호텔을 찾고 계신가요?`,
+      body: "Booking.com에서 이 지역 호텔을 검색해 보세요 — 사진·평점·요금을 한눈에 비교할 수 있습니다.",
+      linkText: (area) => `${area} 호텔 검색하기`,
+      note: "via Booking.com",
+    },
   },
   tw: {
     seoH1: (name) => `${name}的交通方式・營業時間・夜景看點指南`,
     seoDescription: (name, area, type, _lead) => {
       if (type === "hotel")
-        return `介紹位於${area}的${name}夜景資訊。客房與餐廳的夜景、交通方式、住宿費用等，想找能欣賞夜景的飯店的人請務必參考！`;
+        return `東京${area}夜景飯店${name}。客房及餐廳的夜景、交通方式、住宿費用等詳細資訊一覽，是尋找夜景飯店的最佳參考。`;
       if (type === "event")
-        return `介紹${name}的活動資訊。舉辦期間、舉辦時間、地點、交通方式等，想了解活動詳情的人請務必參考！`;
-      return `介紹位於${area}的${name}夜景・夕陽資訊。前往${name}的交通方式、地址、營業時間、門票、最近車站、眺望看點及最佳造訪時間等，想了解的人請務必參考！`;
+        return `${name}活動資訊。舉辦期間、時間、地點及交通方式等詳情一次掌握。`;
+      return `東京${area}必訪夜景景點${name}完整攻略。交通方式、營業時間、票價及最佳觀賞時段一次掌握，適合攝影愛好者、情侶約會及觀光旅遊。`;
     },
     heroImageAlt: (name) => `${name}的夜景`,
     closedBadge: "永久關閉",
@@ -1201,15 +1214,21 @@ const LABELS = {
       ],
       moreLink: "查看更多個人簡介及活動實績",
     },
+    hotelCta: {
+      heading: (area) => `在${area}尋找住宿？`,
+      body: "在 Agoda 搜尋該地區的飯店 — 照片、評分與即時訂房一次搞定。",
+      linkText: (area) => `搜尋${area}飯店`,
+      note: "由 Agoda 提供",
+    },
   },
   cn: {
     seoH1: (name) => `${name}的交通方式・营业时间・夜景看点指南`,
     seoDescription: (name, area, type, _lead) => {
       if (type === "hotel")
-        return `介绍位于${area}的${name}夜景信息。客房与餐厅的夜景、交通方式、住宿费用等，想找能欣赏夜景的酒店的朋友请务必看看！`;
+        return `东京${area}夜景酒店${name}。客房及餐厅的夜景、交通方式、住宿费用等详细信息一览，是寻找夜景酒店的最佳参考。`;
       if (type === "event")
-        return `介绍${name}的活动信息。举办时间、举办地点、交通方式等，想了解活动详情的朋友请务必看看！`;
-      return `介绍位于${area}的${name}夜景・夕阳信息。前往${name}的交通方式、地址、营业时间、门票、最近车站、眺望看点及最佳造访时间等，想了解的朋友请务必看看！`;
+        return `${name}活动信息。举办时间、地点及交通方式等详情一次掌握。`;
+      return `东京${area}必游夜景景点${name}全攻略。交通路线、营业时间、票价及最佳观赏时间一目了然，适合摄影爱好者、情侣约会及观光游览。`;
     },
     heroImageAlt: (name) => `${name}的夜景`,
     closedBadge: "永久关闭",
@@ -1503,6 +1522,12 @@ const LABELS = {
         "为NHK、BS TBS、朝日电视台等提供影像与照片",
       ],
       moreLink: "查看更多个人简介及活动实绩",
+    },
+    hotelCta: {
+      heading: (area) => `在${area}寻找住宿？`,
+      body: "在 Agoda 搜索该地区的酒店 — 照片、评分与即时预订一次完成。",
+      linkText: (area) => `搜索${area}酒店`,
+      note: "由 Agoda 提供",
     },
   },
 } satisfies Record<SiteLocale, ComponentLabels>;

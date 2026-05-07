@@ -43,7 +43,10 @@ export default function BaseLayout({
             />
           </>
         )}
-        <NonCriticalCss href="/css/non-critical.min.css?v=20260425a" />
+        {process.env.NAVER_SITE_VERIFICATION && (
+          <meta name="naver-site-verification" content={process.env.NAVER_SITE_VERIFICATION} />
+        )}
+        <NonCriticalCss href="/css/non-critical.min.css?v=20260508a" />
       </head>
       <body className="antialiased min-h-screen flex flex-col">
         {isProd && (

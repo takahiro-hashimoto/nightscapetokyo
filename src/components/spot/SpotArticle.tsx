@@ -18,6 +18,8 @@ import SpotAccess from "@/components/spot/SpotAccess";
 import SpotFaq from "@/components/spot/SpotFaq";
 import SpotBestTime from "@/components/spot/SpotBestTime";
 import RecommendCta from "@/components/common/RecommendCta";
+import HotelAffiliateCta from "@/components/common/HotelAffiliateCta";
+import type { HotelAffiliateLang } from "@/data/hotel-affiliate";
 
 import SpotRelated from "@/components/spot/SpotRelated";
 import SpotShare from "@/components/spot/SpotShare";
@@ -260,7 +262,17 @@ export default function SpotArticle({
 
 <SpotFaq faqs={spot.faqs} labels={labels.faq} />
 
-          <RecommendCta locale={currentLocale} />
+          <div className="cta-pair">
+            {currentLocale && labels.hotelCta && (
+              <HotelAffiliateCta
+                wardSlug={categorySlug}
+                areaName={spot.category.name}
+                locale={currentLocale as HotelAffiliateLang}
+                labels={labels.hotelCta}
+              />
+            )}
+            <RecommendCta locale={currentLocale} />
+          </div>
 
           <SpotShare
             url={canonicalUrl}

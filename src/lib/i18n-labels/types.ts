@@ -114,6 +114,7 @@ export type ShareLabels = {
   facebook?: string;
   whatsapp?: string;
   weibo?: string;
+  kakao?: string;
 };
 
 export type FooterLabels = {
@@ -244,6 +245,13 @@ export type HomeAuthorLabels = {
   moreLink: string;
 };
 
+export type HotelCtaLabels = {
+  heading: (area: string) => string;
+  body: string;
+  linkText: (area: string) => string;
+  note: string;
+};
+
 export type ComponentLabels = {
   seoH1: (name: string) => string;
   seoDescription: (name: string, area: string, type: string, lead?: string | null) => string;
@@ -268,4 +276,5 @@ export type ComponentLabels = {
   searchPage: SearchPageLabels;
   notFound: NotFoundLabels;
   homeAuthor: HomeAuthorLabels;
+  hotelCta?: HotelCtaLabels;
 };

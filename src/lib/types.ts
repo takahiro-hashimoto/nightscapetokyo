@@ -164,6 +164,14 @@ export const LOCALE_SLUG_MAP: Record<string, string> = Object.fromEntries(
   Object.entries(LOCALE_CONFIG).map(([slug, c]) => [slug, c.dbLocale])
 );
 
+/** URL slug → hreflang BCP-47 tag（Google推奨: zh-TW / zh-CN） */
+export const HREFLANG_LANG_MAP: Record<string, string> = {
+  en: "en",
+  ko: "ko",
+  tw: "zh-TW",
+  cn: "zh-CN",
+};
+
 /** DB locale → URL slug (reverse) */
 export const LOCALE_TO_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(LOCALE_CONFIG).map(([slug, c]) => [c.dbLocale, slug])
@@ -366,7 +374,7 @@ export function buildHreflangAlternates(
   };
 
   for (const urlSlug of availableLocales) {
-    const hreflang = LOCALE_SLUG_MAP[urlSlug]; // tw → zh-Hant, cn → zh-Hans
+    const hreflang = HREFLANG_LANG_MAP[urlSlug];
     if (hreflang) {
       languages[hreflang] = `${siteUrl}/${urlSlug}/${categorySlug}/${spotSlug}/`;
     }
@@ -391,7 +399,7 @@ export function buildAreaHreflangAlternates(
   };
 
   for (const urlSlug of availableLocales) {
-    const hreflang = LOCALE_SLUG_MAP[urlSlug];
+    const hreflang = HREFLANG_LANG_MAP[urlSlug];
     if (hreflang) {
       languages[hreflang] = `${siteUrl}/${urlSlug}/${categorySlug}/`;
     }
@@ -414,7 +422,7 @@ export function buildHomeHreflangAlternates(
   };
 
   for (const urlSlug of availableLocales) {
-    const hreflang = LOCALE_SLUG_MAP[urlSlug];
+    const hreflang = HREFLANG_LANG_MAP[urlSlug];
     if (hreflang) {
       languages[hreflang] = `${siteUrl}/${urlSlug}/`;
     }
@@ -438,7 +446,7 @@ export function buildTagHreflangAlternates(
     "x-default": jaUrl,
   };
   for (const urlSlug of availableLocales) {
-    const hreflang = LOCALE_SLUG_MAP[urlSlug];
+    const hreflang = HREFLANG_LANG_MAP[urlSlug];
     if (hreflang) {
       languages[hreflang] = `${siteUrl}/${urlSlug}/tag/${tagSlug}/`;
     }
