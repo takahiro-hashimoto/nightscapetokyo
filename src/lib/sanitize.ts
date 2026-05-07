@@ -350,19 +350,47 @@ export function wrapTables(html: string): string {
   )
 }
 
-import DOMPurify from "isomorphic-dompurify";
+import sanitize from "sanitize-html";
 
 /**
  * DB / CMS 由来の HTML を dangerouslySetInnerHTML に渡す前にサニタイズする。
- * DOMPurify で XSS を除去した後、CMS 固有のクリーンアップを適用する。
- * ※ <iframe> は Google Maps / YouTube 埋め込みで必要なため ALLOW_TAGS に含める。
+ * sanitize-html（htmlparser2 ベース、jsdom 不要）で XSS を除去した後、
+ * CMS 固有のクリーンアップを適用する。
+ * ※ <iframe> は Google Maps / YouTube 埋め込みで必要なため許可リストに含める。
  */
 export function sanitizeHtml(html: string): string {
-  const clean = DOMPurify.sanitize(html, {
-    ADD_TAGS: ["iframe"],
-    ADD_ATTR: ["loading", "allowfullscreen", "frameborder", "allow", "referrerpolicy"],
-    // iframe の src は https のみ許可
-    ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel|#):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
+  const clean = sanitize(html, {
+    allowedTags: [
+      "div", "p", "br", "hr",
+      "h1", "h2", "h3", "h4", "h5", "h6",
+      "ul", "ol", "li",
+      "blockquote", "pre", "code",
+      "table", "thead", "tbody", "tfoot", "tr", "th", "td",
+      "figure", "figcaption",
+      "a", "span", "strong", "b", "em", "i", "u", "s", "del", "ins",
+      "sub", "sup", "abbr", "mark", "small",
+      "img", "video", "audio", "source",
+      "iframe",
+    ],
+    allowedAttributes: {
+      "*": ["class", "id"],
+      "a": ["href", "target", "rel"],
+      "img": ["src", "alt", "loading", "decoding", "width", "height", "srcset", "sizes"],
+      "iframe": ["src", "width", "height", "frameborder", "allow", "allowfullscreen", "loading", "title", "referrerpolicy"],
+      "video": ["src", "controls", "autoplay", "muted", "loop", "preload", "poster", "width", "height"],
+      "audio": ["src", "controls", "autoplay", "muted", "loop", "preload"],
+      "source": ["src", "type", "media"],
+      "td": ["colspan", "rowspan", "align"],
+      "th": ["colspan", "rowspan", "align", "scope"],
+    },
+    allowedSchemes: ["https", "http", "mailto", "tel"],
+    allowedSchemesAppliedToAttributes: ["href", "src"],
+    // iframe は YouTube / Google Maps ドメインのみ許可
+    allowedIframeHostnames: [
+      "www.youtube.com", "youtube.com",
+      "www.google.com", "google.com",
+      "maps.google.com",
+    ],
   });
 
   // CMS (WordPress) 固有のクリーンアップ
