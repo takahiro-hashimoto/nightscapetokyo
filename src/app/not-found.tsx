@@ -1,15 +1,9 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { getComponentLabels } from "@/lib/i18n-labels";
-import { ALL_LOCALE_SLUGS } from "@/lib/types";
 
-export default async function NotFound() {
-  const headersList = await headers();
-  const localeSlug = headersList.get("x-locale") ?? "";
-  const locale = ALL_LOCALE_SLUGS.includes(localeSlug) ? localeSlug : "ja";
-
-  const labels = getComponentLabels(locale).notFound;
-  const homeHref = locale === "ja" ? "/" : `/${locale}`;
+export default function NotFound() {
+  const labels = getComponentLabels("ja").notFound;
+  const homeHref = "/";
 
   return (
     <main className="flex-1 flex items-center justify-center">
