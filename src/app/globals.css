@@ -4245,3 +4245,23 @@ body.modal-open [id*="aswift"] {
   line-height: 1.6;
   margin: 0;
 }
+
+@media (min-width: 768px) {
+  .best-time-unified--two .best-time-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+}
+
+.best-time-weather-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.best-time-unified .weather-widget {
+  background: transparent;
+  border: none;
+  padding: 0;
+}

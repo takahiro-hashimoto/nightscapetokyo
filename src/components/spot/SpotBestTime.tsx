@@ -3,20 +3,27 @@ import { getSunsetTime } from "@/lib/sunset";
 import type { BestTimeLabels } from "@/lib/i18n-labels";
 import SpotBestTimeBody from "./SpotBestTimeBody";
 
+function extractWard(address: string | null | undefined): string | null {
+  if (!address) return null;
+  const stripped = address.replace(/^.+?[都道府県]/, "");
+  const m = stripped.match(/([一-龥぀-ヿ]+(?:区|市|郡|町|村))/);
+  return m?.[1] ?? null;
+}
+
 type Props = {
   spotName: string | null;
   latitude: number | null;
   longitude: number | null;
+  address?: string | null;
   labels?: BestTimeLabels;
-  wardName?: string | null;
 };
 
 export default function SpotBestTime({
   spotName,
   latitude,
   longitude,
+  address,
   labels,
-  wardName,
 }: Props) {
   const now = new Date();
   const { sunset } = getSunsetTime(
@@ -35,9 +42,12 @@ export default function SpotBestTime({
     ? labels.sunset(sunset)
     : `※本日の日没は ${sunset} です。`;
 
-  const weatherTitle = wardName
-    ? (labels?.weatherHeading?.(wardName) ?? `${wardName}の天気情報`)
-    : undefined;
+  const ward = extractWard(address);
+  const weatherTitle = labels?.weatherHeading
+    ? labels.weatherHeading(ward)
+    : ward
+    ? `${ward}の天気情報`
+    : "天気情報";
 
   return (
     <section
@@ -57,9 +67,9 @@ export default function SpotBestTime({
         longitude={longitude}
         desc={desc}
         todaySunsetNote={todaySunsetNote}
+        weatherTitle={weatherTitle}
         nightviewLabel={labels?.nightviewLabel ?? "夜景撮影ベストタイム"}
         sunsetOtherFormat={labels?.sunsetOtherFormat ?? "{date}の日没は {time} です。"}
-        weatherTitle={weatherTitle}
       />
     </section>
   );
