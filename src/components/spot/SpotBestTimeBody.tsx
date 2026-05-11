@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getSunsetTime } from "@/lib/sunset";
-import WeatherWidget from "@/components/moon/WeatherWidget";
+import SpotWeatherWidget from "@/components/spot/SpotWeatherWidget";
 
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
 const MAX_FUTURE_DAYS = 3;
@@ -107,7 +107,7 @@ export default function SpotBestTimeBody({
         {hasCoords && (
           <div className="best-time-weather-col">
             <h3 className="best-time-section-heading">{weatherTitle}</h3>
-            <WeatherWidget lat={latitude!} lng={longitude!} date={targetDate} />
+            <SpotWeatherWidget lat={latitude!} lng={longitude!} date={targetDate} />
           </div>
         )}
       </div>

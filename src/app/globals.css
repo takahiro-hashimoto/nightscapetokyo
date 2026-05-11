@@ -4161,6 +4161,118 @@ body.modal-open [id*="aswift"] {
 }
 
 /* =========================================
+   SpotWeatherWidget (spot article hourly)
+   ========================================= */
+.weather-widget__title {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #e0e0e0;
+  margin-bottom: 4px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #c0392b;
+  display: inline-block;
+}
+
+.weather-widget__title-sub {
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: #888;
+}
+
+.weather-widget__notice {
+  font-size: 0.75rem;
+  color: #888;
+  text-align: center;
+  padding: 12px 0;
+  margin: 0;
+}
+
+.weather-widget__date-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 8px 0 10px;
+}
+
+.weather-widget__date-label {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #aaa;
+  letter-spacing: 0.05em;
+}
+
+.weather-widget__date-right {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.weather-widget__hours {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+
+.weather-widget__hour {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background-color: #28292b;
+  border-radius: 8px;
+  padding: 6px 2px 5px;
+  border: 1px solid transparent;
+}
+
+.weather-widget__hour--current {
+  border-color: #c0392b;
+  background-color: #2e1a1a;
+}
+
+.weather-widget__hour--skeleton {
+  opacity: 0.4;
+}
+
+.weather-widget__hour-time {
+  font-size: 0.6rem;
+  color: #aaa;
+  line-height: 1;
+}
+
+.weather-widget__hour--current .weather-widget__hour-time {
+  color: #e57373;
+}
+
+.weather-widget__hour-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.weather-widget__hour-icon-placeholder {
+  width: 28px;
+  height: 28px;
+  background-color: #3e4046;
+  border-radius: 4px;
+}
+
+.weather-widget__hour-temp {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #e0e0e0;
+  line-height: 1;
+}
+
+.weather-widget__hour-precip {
+  font-size: 0.6rem;
+  color: #888;
+  line-height: 1;
+}
+
+.weather-widget__hour-precip--high {
+  color: #4a9eff;
+  font-weight: bold;
+}
+
+/* =========================================
    Best Time Unified (spot article)
    ========================================= */
 .best-time-unified {
@@ -4264,4 +4376,22 @@ body.modal-open [id*="aswift"] {
   background: transparent;
   border: none;
   padding: 0;
+}
+
+.best-time-unified .weather-widget__title,
+.best-time-unified .weather-widget__date-row {
+  display: none;
+}
+
+.best-time-unified .weather-widget__hour {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.best-time-unified .weather-widget__hour--current {
+  border-color: #c8aa6e;
+  background-color: rgba(200, 170, 110, 0.1);
+}
+
+.best-time-unified .weather-widget__hour--current .weather-widget__hour-time {
+  color: #c8aa6e;
 }
