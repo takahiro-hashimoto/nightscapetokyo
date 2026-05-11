@@ -8,6 +8,7 @@ type Props = {
   latitude: number | null;
   longitude: number | null;
   labels?: BestTimeLabels;
+  wardName?: string | null;
 };
 
 export default function SpotBestTime({
@@ -15,6 +16,7 @@ export default function SpotBestTime({
   latitude,
   longitude,
   labels,
+  wardName,
 }: Props) {
   const now = new Date();
   const { sunset } = getSunsetTime(
@@ -32,6 +34,10 @@ export default function SpotBestTime({
   const todaySunsetNote = labels
     ? labels.sunset(sunset)
     : `※本日の日没は ${sunset} です。`;
+
+  const weatherTitle = wardName
+    ? (labels?.weatherHeading?.(wardName) ?? `${wardName}の天気情報`)
+    : undefined;
 
   return (
     <section
@@ -53,6 +59,7 @@ export default function SpotBestTime({
         todaySunsetNote={todaySunsetNote}
         nightviewLabel={labels?.nightviewLabel ?? "夜景撮影ベストタイム"}
         sunsetOtherFormat={labels?.sunsetOtherFormat ?? "{date}の日没は {time} です。"}
+        weatherTitle={weatherTitle}
       />
     </section>
   );

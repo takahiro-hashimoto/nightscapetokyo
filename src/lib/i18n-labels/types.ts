@@ -55,6 +55,7 @@ export type BestTimeLabels = {
   sunset: (time: string) => string;
   nightviewLabel?: string;
   sunsetOtherFormat?: string;
+  weatherHeading?: (ward: string) => string;
 };
 
 export type ReviewLabels = {

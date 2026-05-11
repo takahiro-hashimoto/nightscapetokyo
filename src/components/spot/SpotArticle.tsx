@@ -257,6 +257,7 @@ export default function SpotArticle({
             latitude={spot.latitude}
             longitude={spot.longitude}
             labels={labels.bestTime}
+            wardName={spot.category.name}
           />
 
 

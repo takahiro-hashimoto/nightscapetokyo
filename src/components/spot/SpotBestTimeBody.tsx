@@ -35,6 +35,7 @@ interface Props {
   nightviewLabel: string;
   sunsetOtherFormat: string;
   weatherSuitabilityLabel?: string;
+  weatherTitle?: string;
 }
 
 export default function SpotBestTimeBody({
@@ -45,6 +46,7 @@ export default function SpotBestTimeBody({
   nightviewLabel,
   sunsetOtherFormat,
   weatherSuitabilityLabel = "夜景撮影",
+  weatherTitle,
 }: Props) {
   const [offset, setOffset] = useState(0);
 
@@ -102,12 +104,17 @@ export default function SpotBestTimeBody({
           </p>
         </div>
 
-        <WeatherWidget
-          lat={latitude ?? 35.6895}
-          lng={longitude ?? 139.6917}
-          date={targetDate}
-          suitabilityLabel={weatherSuitabilityLabel}
-        />
+        <div className="best-time-weather">
+          {weatherTitle && (
+            <h3 className="best-time-section-heading">{weatherTitle}</h3>
+          )}
+          <WeatherWidget
+            lat={latitude ?? 35.6895}
+            lng={longitude ?? 139.6917}
+            date={targetDate}
+            suitabilityLabel={weatherSuitabilityLabel}
+          />
+        </div>
       </div>
     </div>
   );

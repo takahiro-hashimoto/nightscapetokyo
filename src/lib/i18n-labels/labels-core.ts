@@ -63,6 +63,7 @@ const LABELS = {
       sunset: (time) => `今日の日没は ${time} です。`,
       nightviewLabel: "夜景撮影ベストタイム",
       sunsetOtherFormat: "{date}の日没は {time} です。",
+      weatherHeading: (ward) => `${ward}の天気情報`,
     },
     review: {
       heading: (name) => `${name || "スポット"}を訪れた方の口コミ`,
@@ -339,6 +340,7 @@ const LABELS = {
       sunset: (time) => `Today's sunset is at ${time}.`,
       nightviewLabel: "Night Photography Best Time",
       sunsetOtherFormat: "Sunset on {date} is at {time}.",
+      weatherHeading: (ward) => `Weather in ${ward}`,
     },
     review: {
       heading: (name) => `Reviews of ${name || "This Spot"}`,
@@ -666,6 +668,7 @@ const LABELS = {
       sunset: (time) => `오늘의 일몰은 ${time}입니다.`,
       nightviewLabel: "야경 촬영 베스트 타임",
       sunsetOtherFormat: "{date}의 일몰은 {time}입니다.",
+      weatherHeading: (ward) => `${ward} 날씨 정보`,
     },
     review: {
       heading: (name) => `${name || "이 장소"}를 방문한 분들의 후기`,
@@ -978,6 +981,7 @@ const LABELS = {
       sunset: (time) => `今日日落時間為 ${time}。`,
       nightviewLabel: "最佳夜景拍攝時間",
       sunsetOtherFormat: "{date}日落時間為 {time}。",
+      weatherHeading: (ward) => `${ward}的天氣資訊`,
     },
     review: {
       heading: (name) => `${name || "此景點"}的訪客評價`,
@@ -1289,6 +1293,7 @@ const LABELS = {
       sunset: (time) => `今日日落时间为 ${time}。`,
       nightviewLabel: "最佳夜景拍摄时间",
       sunsetOtherFormat: "{date}日落时间为 {time}。",
+      weatherHeading: (ward) => `${ward}的天气信息`,
     },
     review: {
       heading: (name) => `${name || "此景点"}的访客评价`,
