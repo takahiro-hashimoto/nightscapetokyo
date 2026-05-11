@@ -1,0 +1,56 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import type { WeatherResult } from "@/app/api/weather/route";
+
+export type { WeatherResult };
+
+type WeatherState =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: WeatherResult }
+  | { status: "far-future" }
+  | { status: "error" };
+
+function toDateStr(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+export function useWeather(lat: number, lng: number, date: Date): WeatherState {
+  const dateStr = toDateStr(date);
+  const [state, setState] = useState<WeatherState>({ status: "idle" });
+
+  useEffect(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const target = new Date(dateStr);
+    const diffDays = Math.floor((target.getTime() - today.getTime()) / 86400000);
+
+    if (diffDays > 14) {
+      setState({ status: "far-future" });
+      return;
+    }
+
+    setState({ status: "loading" });
+    const controller = new AbortController();
+
+    fetch(`/api/weather?lat=${lat}&lng=${lng}&date=${dateStr}`, {
+      signal: controller.signal,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("api error");
+        return res.json() as Promise<WeatherResult>;
+      })
+      .then((data) => setState({ status: "success", data }))
+      .catch((err) => {
+        if (err.name !== "AbortError") setState({ status: "error" });
+      });
+
+    return () => controller.abort();
+  }, [lat, lng, dateStr]);
+
+  return state;
+}

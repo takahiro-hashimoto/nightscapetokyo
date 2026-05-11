@@ -55,6 +55,7 @@ export default function SimulatorClient() {
         sunriseTime={sunData.sunriseTime}
         sunsetTime={sunData.sunsetTime}
         selectedDate={selectedDate}
+        markerPosition={markerPosition}
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}
         shareText={shareText}

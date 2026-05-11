@@ -3,6 +3,7 @@
 import LocationSearch from "./LocationSearch";
 import SunTimesDisplay from "./SunTimesDisplay";
 import SimpleCalendar from "./SimpleCalendar";
+import WeatherWidget from "@/components/moon/WeatherWidget";
 import ShareButton from "@/components/shared/ShareButton";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
@@ -11,6 +12,7 @@ interface SimulatorSidebarProps {
   sunriseTime: string | null;
   sunsetTime: string | null;
   selectedDate: Date;
+  markerPosition: [number, number];
   onDateChange: (date: Date) => void;
   onLocationFound: (lat: number, lng: number) => void;
   shareText: string;
@@ -20,6 +22,7 @@ export default function SimulatorSidebar({
   sunriseTime,
   sunsetTime,
   selectedDate,
+  markerPosition,
   onDateChange,
   onLocationFound,
   shareText,
@@ -44,6 +47,14 @@ export default function SimulatorSidebar({
             sunriseTime={sunriseTime}
             sunsetTime={sunsetTime}
             variant="sidebar"
+          />
+        </div>
+
+        <div className="sim-sidebar__section">
+          <WeatherWidget
+            lat={markerPosition[0]}
+            lng={markerPosition[1]}
+            date={selectedDate}
           />
         </div>
 

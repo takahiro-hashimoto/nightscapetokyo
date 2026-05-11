@@ -4013,3 +4013,250 @@ body.modal-open [id*="aswift"] {
   display: flex;
 }
 
+
+/* =========================================
+   Weather Widget (shared: moon + simulator + spot)
+   ========================================= */
+.weather-widget {
+  background-color: #1e1f21;
+  border: 1px solid #3e4046;
+  border-radius: 10px;
+  padding: 12px 12px 10px;
+  color: #e0e0e0;
+}
+
+.weather-widget__title {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #e0e0e0;
+  margin-bottom: 4px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #c0392b;
+  display: inline-block;
+}
+
+.weather-widget__title-sub {
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: #888;
+}
+
+.weather-widget__notice {
+  font-size: 0.75rem;
+  color: #888;
+  text-align: center;
+  padding: 12px 0;
+  margin: 0;
+}
+
+.weather-widget__date-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 8px 0 10px;
+}
+
+.weather-widget__date-label {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #aaa;
+  letter-spacing: 0.05em;
+}
+
+.weather-widget__date-right {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.weather-widget__hours {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+
+.weather-widget__hour {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background-color: #28292b;
+  border-radius: 8px;
+  padding: 6px 2px 5px;
+  border: 1px solid transparent;
+}
+
+.weather-widget__hour--current {
+  border-color: #c0392b;
+  background-color: #2e1a1a;
+}
+
+.weather-widget__hour--skeleton {
+  opacity: 0.4;
+}
+
+.weather-widget__hour-time {
+  font-size: 0.6rem;
+  color: #aaa;
+  line-height: 1;
+}
+
+.weather-widget__hour--current .weather-widget__hour-time {
+  color: #e57373;
+}
+
+.weather-widget__hour-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.weather-widget__hour-icon-placeholder {
+  width: 28px;
+  height: 28px;
+  background-color: #3e4046;
+  border-radius: 4px;
+}
+
+.weather-widget__hour-temp {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #e0e0e0;
+  line-height: 1;
+}
+
+.weather-widget__hour-precip {
+  font-size: 0.6rem;
+  color: #888;
+  line-height: 1;
+}
+
+.weather-widget__hour-precip--high {
+  color: #4a9eff;
+  font-weight: bold;
+}
+
+
+/* =========================================
+   Best Time Unified (spot article)
+   ========================================= */
+.best-time-unified {
+  background: #1e2430;
+  border: 1px solid #c8aa6e;
+  border-radius: 8px;
+  isolation: isolate;
+  padding: 20px;
+  color: #fff;
+}
+
+.best-time-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.best-time-nav__date {
+  flex: 1;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #c8aa6e;
+  font-weight: 600;
+}
+
+.best-time-nav__btn {
+  background: none;
+  border: 1px solid #3e4046;
+  border-radius: 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+  color: #c8aa6e;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.15s;
+}
+
+.best-time-nav__btn:hover {
+  opacity: 1;
+}
+
+.best-time-nav__btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.best-time-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.best-time-info {
+  text-align: left;
+}
+
+.best-time-unified .best-time-section-heading {
+  font-size: 0.78rem;
+  font-weight: bold;
+  color: #c8aa6e;
+  letter-spacing: 0.05em;
+  margin: 0 0 6px;
+  display: block;
+  align-items: unset;
+  padding-bottom: 0;
+  line-height: 1.4;
+}
+
+.best-time-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+  line-height: 1.2;
+}
+
+.best-time-desc {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .best-time-unified--two .best-time-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+}
+
+.best-time-weather-col {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* WeatherWidget inside unified best-time — inherit dark gold theme, no inner card */
+.best-time-unified .weather-widget {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.best-time-unified .weather-widget__title,
+.best-time-unified .weather-widget__date-row {
+  display: none;
+}
+
+.best-time-unified .weather-widget__hour {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.best-time-unified .weather-widget__hour--current {
+  border-color: #c8aa6e;
+  background-color: rgba(200, 170, 110, 0.1);
+}
+
+.best-time-unified .weather-widget__hour--current .weather-widget__hour-time {
+  color: #c8aa6e;
+}

@@ -24,8 +24,7 @@ import type { HotelAffiliateLang } from "@/data/hotel-affiliate";
 import SpotRelated from "@/components/spot/SpotRelated";
 import SpotShare from "@/components/spot/SpotShare";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import dynamic from "next/dynamic";
-const DevEditLink = dynamic(() => import("@/components/layout/DevEditLink"), { ssr: false });
+import DevEditLink from "@/components/layout/DevEditLinkDynamic";
 import type { SpotWithRelations, SpotListItem } from "@/lib/types";
 import { SITE_URL, LOCALE_LABELS, LOCALE_SLUG_MAP } from "@/lib/types";
 import type { ComponentLabels } from "@/lib/i18n-labels";
@@ -257,6 +256,7 @@ export default function SpotArticle({
             spotName={spot.name}
             latitude={spot.latitude}
             longitude={spot.longitude}
+            address={spot.address}
             labels={labels.bestTime}
           />
 

@@ -364,6 +364,7 @@ export function sanitizeHtml(html: string): string {
       "div", "p", "br", "hr",
       "h1", "h2", "h3", "h4", "h5", "h6",
       "ul", "ol", "li",
+      "dl", "dt", "dd",
       "blockquote", "pre", "code",
       "table", "thead", "tbody", "tfoot", "tr", "th", "td",
       "figure", "figcaption",

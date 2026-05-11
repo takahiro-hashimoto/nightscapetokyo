@@ -69,6 +69,7 @@ export default function MoonClient() {
         illumination={moonData.illumination}
         phase={moonData.phase}
         selectedDate={selectedDate}
+        markerPosition={markerPosition}
         onDateChange={handleDateChange}
         onLocationFound={handleLocationFound}
         shareText={shareText}

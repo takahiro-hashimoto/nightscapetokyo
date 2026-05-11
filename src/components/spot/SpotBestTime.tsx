@@ -1,11 +1,20 @@
 import { Moon } from "lucide-react";
 import { getSunsetTime } from "@/lib/sunset";
 import type { BestTimeLabels } from "@/lib/i18n-labels";
+import SpotBestTimeBody from "./SpotBestTimeBody";
+
+function extractWard(address: string | null | undefined): string | null {
+  if (!address) return null;
+  const stripped = address.replace(/^.+?[都道府県]/, "");
+  const m = stripped.match(/([一-龥぀-ヿ]+(?:区|市|郡|町|村))/);
+  return m?.[1] ?? null;
+}
 
 type Props = {
   spotName: string | null;
   latitude: number | null;
   longitude: number | null;
+  address?: string | null;
   labels?: BestTimeLabels;
 };
 
@@ -13,10 +22,11 @@ export default function SpotBestTime({
   spotName,
   latitude,
   longitude,
+  address,
   labels,
 }: Props) {
   const now = new Date();
-  const { sunset, bestStart, bestEnd, dateLabel } = getSunsetTime(
+  const { sunset } = getSunsetTime(
     now,
     latitude ?? undefined,
     longitude ?? undefined
@@ -26,14 +36,18 @@ export default function SpotBestTime({
     ? labels.heading(spotName)
     : `${spotName || "この場所"}の夜景鑑賞・撮影にベストな時間`;
 
-  const timeLabel = labels
-    ? labels.label(dateLabel)
-    : `本日（${dateLabel}）の夜景撮影ベストタイム`;
-
   const desc = labels?.desc ?? "空の青さと街の明かりが交差する「マジックアワー」です。";
-  const sunsetNote = labels
+
+  const todaySunsetNote = labels
     ? labels.sunset(sunset)
     : `※本日の日没は ${sunset} です。`;
+
+  const ward = extractWard(address);
+  const weatherTitle = labels?.weatherHeading
+    ? labels.weatherHeading(ward)
+    : ward
+    ? `${ward}の天気情報`
+    : "天気情報";
 
   return (
     <section
@@ -48,20 +62,15 @@ export default function SpotBestTime({
         {heading}
       </h2>
 
-      <div className="best-time-card">
-        <div className="best-time-label">
-          {timeLabel}
-        </div>
-        <p className="best-time-value">
-          <time dateTime={bestStart}>{bestStart}</time>〜
-          <time dateTime={bestEnd}>{bestEnd}</time>
-        </p>
-        <p className="best-time-desc">
-          {desc}
-          <br />
-          {sunsetNote}
-        </p>
-      </div>
+      <SpotBestTimeBody
+        latitude={latitude}
+        longitude={longitude}
+        desc={desc}
+        todaySunsetNote={todaySunsetNote}
+        weatherTitle={weatherTitle}
+        nightviewLabel={labels?.nightviewLabel ?? "夜景撮影ベストタイム"}
+        sunsetOtherFormat={labels?.sunsetOtherFormat ?? "{date}の日没は {time} です。"}
+      />
     </section>
   );
 }

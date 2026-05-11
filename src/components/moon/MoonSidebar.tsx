@@ -3,6 +3,7 @@
 import LocationSearch from "@/components/simulator/LocationSearch";
 import MoonTimesDisplay from "./MoonTimesDisplay";
 import MoonCalendar from "./MoonCalendar";
+import WeatherWidget from "./WeatherWidget";
 import ShareButton from "@/components/shared/ShareButton";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
@@ -14,6 +15,7 @@ interface MoonSidebarProps {
   illumination: number;
   phase: number;
   selectedDate: Date;
+  markerPosition: [number, number];
   onDateChange: (date: Date) => void;
   onLocationFound: (lat: number, lng: number) => void;
   shareText: string;
@@ -26,6 +28,7 @@ export default function MoonSidebar({
   illumination,
   phase,
   selectedDate,
+  markerPosition,
   onDateChange,
   onLocationFound,
   shareText,
@@ -53,6 +56,14 @@ export default function MoonSidebar({
             illumination={illumination}
             phase={phase}
             variant="sidebar"
+          />
+        </div>
+
+        <div className="moon-sidebar__section">
+          <WeatherWidget
+            lat={markerPosition[0]}
+            lng={markerPosition[1]}
+            date={selectedDate}
           />
         </div>
 
