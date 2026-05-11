@@ -4015,125 +4015,150 @@ body.modal-open [id*="aswift"] {
 
 
 /* =========================================
-   Weather Widget (shared: moon + simulator + spot)
+   Weather Widget (moon + simulator sidebars)
    ========================================= */
 .weather-widget {
-  background-color: #1e1f21;
+  background-color: #32343a;
   border: 1px solid #3e4046;
-  border-radius: 10px;
-  padding: 12px 12px 10px;
+  border-radius: 8px;
+  padding: 10px 10px 8px;
   color: #e0e0e0;
 }
 
-.weather-widget__title {
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #e0e0e0;
-  margin-bottom: 4px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid #c0392b;
-  display: inline-block;
-}
-
-.weather-widget__title-sub {
-  font-size: 0.7rem;
-  font-weight: normal;
-  color: #888;
-}
-
-.weather-widget__notice {
-  font-size: 0.75rem;
-  color: #888;
-  text-align: center;
-  padding: 12px 0;
-  margin: 0;
-}
-
-.weather-widget__date-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin: 8px 0 10px;
-}
-
-.weather-widget__date-label {
-  font-size: 0.7rem;
-  font-weight: bold;
-  color: #aaa;
-  letter-spacing: 0.05em;
-}
-
-.weather-widget__date-right {
-  font-size: 0.75rem;
-  color: #888;
-}
-
-.weather-widget__hours {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 4px;
-}
-
-.weather-widget__hour {
+.weather-widget--loading,
+.weather-widget--unavailable {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  background-color: #28292b;
-  border-radius: 8px;
-  padding: 6px 2px 5px;
-  border: 1px solid transparent;
+  justify-content: center;
+  min-height: 48px;
+  gap: 6px;
 }
 
-.weather-widget__hour--current {
-  border-color: #c0392b;
-  background-color: #2e1a1a;
-}
-
-.weather-widget__hour--skeleton {
-  opacity: 0.4;
-}
-
-.weather-widget__hour-time {
-  font-size: 0.6rem;
-  color: #aaa;
-  line-height: 1;
-}
-
-.weather-widget__hour--current .weather-widget__hour-time {
-  color: #e57373;
-}
-
-.weather-widget__hour-icon {
-  width: 28px;
-  height: 28px;
-}
-
-.weather-widget__hour-icon-placeholder {
-  width: 28px;
-  height: 28px;
-  background-color: #3e4046;
-  border-radius: 4px;
-}
-
-.weather-widget__hour-temp {
+.weather-widget__loading-text,
+.weather-widget__unavailable-text {
   font-size: 0.75rem;
+  color: #888;
+}
+
+.weather-widget__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.weather-widget__nav-btn {
+  background: none;
+  border: 1px solid #3e4046;
+  border-radius: 4px;
+  padding: 3px 5px;
+  cursor: pointer;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.weather-widget__nav-btn:hover {
+  color: #e0e0e0;
+}
+
+.weather-widget__nav-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.weather-widget__nav-date {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  flex: 1;
+}
+
+.weather-widget__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.weather-widget__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.weather-widget__condition {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.weather-widget__condition-text {
+  font-size: 0.85rem;
   font-weight: bold;
   color: #e0e0e0;
-  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.weather-widget__hour-precip {
+.weather-widget__label-badge {
+  font-size: 0.65rem;
+  color: #888;
+}
+
+.weather-widget__suitability {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  background-color: #1e1f21;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.weather-widget__suitability-label {
   font-size: 0.6rem;
   color: #888;
-  line-height: 1;
 }
 
-.weather-widget__hour-precip--high {
-  color: #4a9eff;
+.weather-widget__suitability-value {
+  font-size: 0.85rem;
   font-weight: bold;
 }
 
+.weather-widget__suitability--good .weather-widget__suitability-value { color: #4ade80; }
+.weather-widget__suitability--fair .weather-widget__suitability-value { color: #facc15; }
+.weather-widget__suitability--poor .weather-widget__suitability-value { color: #f87171; }
+
+.weather-widget__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 8px;
+}
+
+.weather-widget__stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.weather-widget__stat-icon {
+  color: #888;
+  flex-shrink: 0;
+}
+
+.weather-widget__stat-value {
+  font-size: 0.72rem;
+  color: #bbb;
+}
 
 /* =========================================
    Best Time Unified (spot article)
@@ -4219,44 +4244,4 @@ body.modal-open [id*="aswift"] {
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.6;
   margin: 0;
-}
-
-@media (min-width: 768px) {
-  .best-time-unified--two .best-time-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    align-items: start;
-  }
-}
-
-.best-time-weather-col {
-  display: flex;
-  flex-direction: column;
-}
-
-
-/* WeatherWidget inside unified best-time — inherit dark gold theme, no inner card */
-.best-time-unified .weather-widget {
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-
-.best-time-unified .weather-widget__title,
-.best-time-unified .weather-widget__date-row {
-  display: none;
-}
-
-.best-time-unified .weather-widget__hour {
-  background-color: rgba(255, 255, 255, 0.06);
-}
-
-.best-time-unified .weather-widget__hour--current {
-  border-color: #c8aa6e;
-  background-color: rgba(200, 170, 110, 0.1);
-}
-
-.best-time-unified .weather-widget__hour--current .weather-widget__hour-time {
-  color: #c8aa6e;
 }

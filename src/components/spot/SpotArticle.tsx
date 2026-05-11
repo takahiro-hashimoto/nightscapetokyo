@@ -256,7 +256,6 @@ export default function SpotArticle({
             spotName={spot.name}
             latitude={spot.latitude}
             longitude={spot.longitude}
-            address={spot.address}
             labels={labels.bestTime}
           />
 

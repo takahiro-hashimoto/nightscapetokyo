@@ -54,7 +54,8 @@ export default function SimulatorSidebar({
           <WeatherWidget
             lat={markerPosition[0]}
             lng={markerPosition[1]}
-            date={selectedDate}
+            showNavigation
+            suitabilityLabel="夜景撮影"
           />
         </div>
 

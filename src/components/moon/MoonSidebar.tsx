@@ -63,7 +63,7 @@ export default function MoonSidebar({
           <WeatherWidget
             lat={markerPosition[0]}
             lng={markerPosition[1]}
-            date={selectedDate}
+            showNavigation
           />
         </div>
 

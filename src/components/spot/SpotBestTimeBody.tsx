@@ -32,9 +32,9 @@ interface Props {
   longitude: number | null;
   desc: string;
   todaySunsetNote: string;
-  weatherTitle: string;
   nightviewLabel: string;
   sunsetOtherFormat: string;
+  weatherSuitabilityLabel?: string;
 }
 
 export default function SpotBestTimeBody({
@@ -42,9 +42,9 @@ export default function SpotBestTimeBody({
   longitude,
   desc,
   todaySunsetNote,
-  weatherTitle,
   nightviewLabel,
   sunsetOtherFormat,
+  weatherSuitabilityLabel = "夜景撮影",
 }: Props) {
   const [offset, setOffset] = useState(0);
 
@@ -62,10 +62,8 @@ export default function SpotBestTimeBody({
       ? todaySunsetNote
       : sunsetOtherFormat.replace("{date}", dateLabel).replace("{time}", sunset);
 
-  const hasCoords = latitude != null && longitude != null;
-
   return (
-    <div className={`best-time-unified${hasCoords ? " best-time-unified--two" : ""}`}>
+    <div className="best-time-unified">
       <div className="best-time-nav">
         <button
           type="button"
@@ -104,12 +102,12 @@ export default function SpotBestTimeBody({
           </p>
         </div>
 
-        {hasCoords && (
-          <div className="best-time-weather-col">
-            <h3 className="best-time-section-heading">{weatherTitle}</h3>
-            <WeatherWidget lat={latitude!} lng={longitude!} date={targetDate} />
-          </div>
-        )}
+        <WeatherWidget
+          lat={latitude ?? 35.6895}
+          lng={longitude ?? 139.6917}
+          date={targetDate}
+          suitabilityLabel={weatherSuitabilityLabel}
+        />
       </div>
     </div>
   );

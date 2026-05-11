@@ -2,19 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-const TARGET_HOURS = [6, 9, 12, 15, 18, 21];
-
-export type HourData = {
-  hour: number;
+export type WeatherResult = {
+  conditionText: string;
   conditionIcon: string;
   tempC: number;
-  precipProb: number;
-};
-
-export type WeatherResult = {
-  date: string; // YYYY-MM-DD
-  hours: HourData[];
-  currentHour: number | null; // nearest TARGET_HOUR ≤ now, only for today
+  tempMaxC: number;
+  tempMinC: number;
+  cloud: number;
+  humidity: number;
+  visKm: number;
+  isCurrentWeather: boolean;
 };
 
 export async function GET(req: NextRequest) {
@@ -43,40 +40,45 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "weather api error" }, { status: res.status });
     }
     const raw = await res.json();
+
+    const isToday = date === today;
     const forecastDay = raw.forecast?.forecastday?.[0];
-    if (!forecastDay) {
+
+    let result: WeatherResult;
+
+    if (isToday && raw.current) {
+      result = {
+        conditionText: raw.current.condition.text,
+        conditionIcon: raw.current.condition.icon,
+        tempC: raw.current.temp_c,
+        tempMaxC: forecastDay?.day?.maxtemp_c ?? raw.current.temp_c,
+        tempMinC: forecastDay?.day?.mintemp_c ?? raw.current.temp_c,
+        cloud: raw.current.cloud,
+        humidity: raw.current.humidity,
+        visKm: raw.current.vis_km,
+        isCurrentWeather: true,
+      };
+    } else if (forecastDay) {
+      const hours: { cloud: number }[] = forecastDay.hour ?? [];
+      const avgCloud =
+        hours.length > 0
+          ? Math.round(hours.reduce((sum, h) => sum + h.cloud, 0) / hours.length)
+          : 0;
+
+      result = {
+        conditionText: forecastDay.day.condition.text,
+        conditionIcon: forecastDay.day.condition.icon,
+        tempC: forecastDay.day.avgtemp_c,
+        tempMaxC: forecastDay.day.maxtemp_c,
+        tempMinC: forecastDay.day.mintemp_c,
+        cloud: avgCloud,
+        humidity: forecastDay.day.avghumidity,
+        visKm: forecastDay.day.avgvis_km,
+        isCurrentWeather: false,
+      };
+    } else {
       return NextResponse.json({ error: "no data" }, { status: 404 });
     }
-
-    const rawHours: {
-      time: string;
-      condition: { icon: string };
-      temp_c: number;
-      chance_of_rain: number;
-    }[] = forecastDay.hour ?? [];
-
-    const hours: HourData[] = TARGET_HOURS.map((h) => {
-      const raw = rawHours.find((r) => {
-        const t = new Date(r.time);
-        return t.getHours() === h;
-      });
-      return {
-        hour: h,
-        conditionIcon: raw?.condition.icon ?? "",
-        tempC: Math.round(raw?.temp_c ?? 0),
-        precipProb: raw?.chance_of_rain ?? 0,
-      };
-    });
-
-    // current hour: largest TARGET_HOUR that is ≤ now (today only)
-    let currentHour: number | null = null;
-    if (date === today) {
-      const nowHour = new Date().getHours();
-      const active = TARGET_HOURS.filter((h) => h <= nowHour);
-      currentHour = active.length > 0 ? active[active.length - 1] : TARGET_HOURS[0];
-    }
-
-    const result: WeatherResult = { date, hours, currentHour };
 
     return NextResponse.json(result, {
       headers: { "Cache-Control": "public, s-maxage=1800, stale-while-revalidate=3600" },
