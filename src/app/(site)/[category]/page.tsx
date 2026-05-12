@@ -25,6 +25,7 @@ import {
   getMapSpotsByCategory,
   getSpotsForMapTranslated,
 } from "@/lib/supabase/queries";
+import SpotBestTime from "@/components/spot/SpotBestTime";
 import AreaMapLoader from "@/components/map/AreaMapLoader";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
@@ -388,6 +389,9 @@ export default async function AreaPage({ params }: Props) {
   const displayName = buildAreaDisplayName(categorySlug, cat.name);
   const areaDescription = buildAreaDescription(cat.name, spots);
   const faqs = generateAreaFaq(cat.name, spots);
+  const areaCoords = mapSpots.length > 0
+    ? { latitude: mapSpots[0].latitude, longitude: mapSpots[0].longitude }
+    : null;
   const relatedAreas = allAreas
     .filter((a) => a.slug !== categorySlug && !NON_AREA_SLUGS.includes(a.slug))
     .sort((a, b) => b.spot_count - a.spot_count)
@@ -447,6 +451,17 @@ export default async function AreaPage({ params }: Props) {
         )}
 
         {mapSpots.length > 0 && <AdSenseUnit {...ADS.AREA_PAGE} className="my-4" />}
+
+        {/* マジックアワー＆天気情報 */}
+        {areaCoords && (
+          <SpotBestTime
+            spotName={cat.name}
+            latitude={areaCoords.latitude}
+            longitude={areaCoords.longitude}
+            address={`東京都${cat.name}`}
+            labels={getComponentLabels("ja").bestTime}
+          />
+        )}
 
         {/* エリアFAQ */}
         {faqs.length > 0 && (

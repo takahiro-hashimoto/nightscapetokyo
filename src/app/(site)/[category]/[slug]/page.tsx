@@ -120,6 +120,9 @@ export default async function SpotOrAreaPage({ params }: Props) {
 
     const translatedAreaName = spots[0]?.category.name ?? cat.name;
     const labels = getComponentLabels(category);
+    const areaCoords = mapSpots.length > 0
+      ? { latitude: mapSpots[0].latitude, longitude: mapSpots[0].longitude }
+      : null;
 
     return (
       <TranslatedAreaContent
@@ -130,6 +133,7 @@ export default async function SpotOrAreaPage({ params }: Props) {
         areaLabels={labels.areaPage}
         availableLocales={availableLocales}
         mapSpots={mapSpots}
+        areaCoords={areaCoords}
       />
     );
   }

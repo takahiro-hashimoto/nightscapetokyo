@@ -16,6 +16,7 @@ type Props = {
   longitude: number | null;
   address?: string | null;
   labels?: BestTimeLabels;
+  locale?: string | null;
 };
 
 export default function SpotBestTime({
@@ -24,6 +25,7 @@ export default function SpotBestTime({
   longitude,
   address,
   labels,
+  locale,
 }: Props) {
   const now = new Date();
   const { sunset } = getSunsetTime(
@@ -70,6 +72,7 @@ export default function SpotBestTime({
         weatherTitle={weatherTitle}
         nightviewLabel={labels?.nightviewLabel ?? "夜景撮影ベストタイム"}
         sunsetOtherFormat={labels?.sunsetOtherFormat ?? "{date}の日没は {time} です。"}
+        locale={locale}
       />
     </section>
   );

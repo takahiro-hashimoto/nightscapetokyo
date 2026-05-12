@@ -200,6 +200,37 @@ export const getSpotsByCategoryTranslated = cache(
   })
 );
 
+/** エリアの代表座標を取得（上位スポットの lat/lng） */
+export const getAreaCoords = cache(async function getAreaCoords(
+  categorySlug: string
+): Promise<{ latitude: number; longitude: number } | null> {
+  if (!isSupabaseConfigured) return null;
+
+  const supabase = await getSupabaseClient();
+
+  const { data: cat } = (await supabase
+    .from("categories")
+    .select("id")
+    .eq("slug", categorySlug)
+    .single()) as any;
+
+  if (!cat) return null;
+
+  const { data } = (await supabase
+    .from("spots")
+    .select("latitude, longitude")
+    .eq("published", true)
+    .eq("category_id", cat.id)
+    .not("latitude", "is", null)
+    .not("longitude", "is", null)
+    .order("rating_beautiful", { ascending: false })
+    .limit(1)
+    .single()) as any;
+
+  if (!data?.latitude || !data?.longitude) return null;
+  return { latitude: data.latitude, longitude: data.longitude };
+});
+
 /** 翻訳済みエリアページのSSGパラメータを取得 */
 export async function getTranslatedAreaSlugs(): Promise<
   { locale: string; category: string }[]

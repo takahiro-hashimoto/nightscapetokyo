@@ -5,7 +5,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getSunsetTime } from "@/lib/sunset";
 import SpotWeatherWidget from "@/components/spot/SpotWeatherWidget";
 
-const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
+const WEEKDAYS: Record<string, string[]> = {
+  ja: ["日", "月", "火", "水", "木", "金", "土"],
+  ko: ["일", "월", "화", "수", "목", "금", "토"],
+  en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  tw: ["日", "一", "二", "三", "四", "五", "六"],
+  cn: ["日", "一", "二", "三", "四", "五", "六"],
+};
 const MAX_FUTURE_DAYS = 3;
 
 function startOfToday(): Date {
@@ -35,6 +41,7 @@ interface Props {
   weatherTitle: string;
   nightviewLabel: string;
   sunsetOtherFormat: string;
+  locale?: string | null;
 }
 
 export default function SpotBestTimeBody({
@@ -45,6 +52,7 @@ export default function SpotBestTimeBody({
   weatherTitle,
   nightviewLabel,
   sunsetOtherFormat,
+  locale,
 }: Props) {
   const [offset, setOffset] = useState(0);
 
@@ -55,7 +63,8 @@ export default function SpotBestTimeBody({
     [targetDate, latitude, longitude]
   );
 
-  const navLabel = `${targetDate.getMonth() + 1}/${targetDate.getDate()}（${WEEKDAYS[targetDate.getDay()]}）`;
+  const weekdays = WEEKDAYS[locale ?? "ja"] ?? WEEKDAYS.ja;
+  const navLabel = `${targetDate.getMonth() + 1}/${targetDate.getDate()}（${weekdays[targetDate.getDay()]}）`;
 
   const sunsetNote =
     offset === 0
@@ -107,7 +116,7 @@ export default function SpotBestTimeBody({
         {hasCoords && (
           <div className="best-time-weather-col">
             <h3 className="best-time-section-heading">{weatherTitle}</h3>
-            <SpotWeatherWidget lat={latitude!} lng={longitude!} date={targetDate} />
+            <SpotWeatherWidget lat={latitude!} lng={longitude!} date={targetDate} locale={locale} />
           </div>
         )}
       </div>

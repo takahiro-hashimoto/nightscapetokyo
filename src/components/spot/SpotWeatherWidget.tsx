@@ -6,17 +6,34 @@ interface Props {
   lat: number;
   lng: number;
   date: Date;
+  locale?: string | null;
 }
 
-const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
+const WEEKDAYS: Record<string, string[]> = {
+  ja: ["日", "月", "火", "水", "木", "金", "土"],
+  ko: ["일", "월", "화", "수", "목", "금", "토"],
+  en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  tw: ["日", "一", "二", "三", "四", "五", "六"],
+  cn: ["日", "一", "二", "三", "四", "五", "六"],
+};
 
-function formatDateLabel(dateStr: string): string {
+const HOUR_SUFFIX: Record<string, string> = {
+  ja: "時",
+  ko: "시",
+  en: ":00",
+  tw: "時",
+  cn: "时",
+};
+
+function formatDateLabel(dateStr: string, locale: string | null | undefined): string {
   const d = new Date(dateStr);
-  return `${d.getMonth() + 1}/${d.getDate()}（${WEEKDAYS[d.getDay()]}）`;
+  const weekdays = WEEKDAYS[locale ?? "ja"] ?? WEEKDAYS.ja;
+  return `${d.getMonth() + 1}/${d.getDate()}（${weekdays[d.getDay()]}）`;
 }
 
-export default function SpotWeatherWidget({ lat, lng, date }: Props) {
+export default function SpotWeatherWidget({ lat, lng, date, locale }: Props) {
   const state = useHourlyWeather(lat, lng, date);
+  const hourSuffix = HOUR_SUFFIX[locale ?? "ja"] ?? HOUR_SUFFIX.ja;
 
   const today = new Date();
   const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
@@ -40,7 +57,7 @@ export default function SpotWeatherWidget({ lat, lng, date }: Props) {
               {isToday ? "TODAY" : selectedDateStr.slice(5).replace("-", "/")}
             </span>
             <span className="weather-widget__date-right">
-              {formatDateLabel(selectedDateStr)}
+              {formatDateLabel(selectedDateStr, locale)}
             </span>
           </div>
 
@@ -61,7 +78,7 @@ export default function SpotWeatherWidget({ lat, lng, date }: Props) {
                       key={h.hour}
                       className={`weather-widget__hour${isCurrent ? " weather-widget__hour--current" : ""}`}
                     >
-                      <span className="weather-widget__hour-time">{h.hour}時</span>
+                      <span className="weather-widget__hour-time">{h.hour}{hourSuffix}</span>
                       {h.conditionIcon ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img

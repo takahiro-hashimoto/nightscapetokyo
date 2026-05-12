@@ -13,6 +13,7 @@ import { SITE_URL, LOCALE_LABELS, LOCALE_SLUG_MAP } from "@/lib/types";
 import type { AreaPageLabels } from "@/lib/i18n-labels";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import type { MapSpotItem } from "@/lib/supabase/queries";
+import SpotBestTime from "@/components/spot/SpotBestTime";
 
 type Props = {
   localeSlug: string;
@@ -22,6 +23,7 @@ type Props = {
   areaLabels: AreaPageLabels;
   availableLocales: string[];
   mapSpots?: MapSpotItem[];
+  areaCoords?: { latitude: number; longitude: number } | null;
 };
 
 /** FAQ自動生成 */
@@ -86,6 +88,7 @@ export default function TranslatedAreaContent({
   areaLabels: al,
   availableLocales,
   mapSpots = [],
+  areaCoords,
 }: Props) {
   const faqs = generateAreaFaq(al, areaName, spots);
   const bcp47Locale = LOCALE_SLUG_MAP[localeSlug] ?? localeSlug;
@@ -177,6 +180,17 @@ export default function TranslatedAreaContent({
         )}
 
         {mapSpots.length > 0 && <AdSenseUnit {...ADS.AREA_PAGE} className="my-4" />}
+
+        {areaCoords && (
+          <SpotBestTime
+            spotName={areaName}
+            latitude={areaCoords.latitude}
+            longitude={areaCoords.longitude}
+            address={`東京都${areaName}`}
+            labels={componentLabels.bestTime}
+            locale={localeSlug}
+          />
+        )}
 
         {faqs.length > 0 && (
           <DeferredRender as="section" className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">

@@ -118,7 +118,7 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
                     </div>
                     <h3 className="spot-card-title" itemProp="name">{spot.name}</h3>
                     <p className="spot-card-lead" itemProp="description">{spot.lead}</p>
-                    {stationText && (
+                    {stationText && !localeSlug && (
                       <p className="spot-card-station">
                         <Train size={11} aria-hidden="true" />
                         <span className="sr-only">最寄駅：</span>
