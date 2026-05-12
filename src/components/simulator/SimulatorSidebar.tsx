@@ -51,16 +51,16 @@ export default function SimulatorSidebar({
         </div>
 
         <div className="sim-sidebar__section">
+          <AdSenseUnit {...ADS.SIMULATOR_SIDEBAR} />
+        </div>
+
+        <div className="sim-sidebar__section">
           <WeatherWidget
             lat={markerPosition[0]}
             lng={markerPosition[1]}
             showNavigation
             suitabilityLabel="夜景撮影"
           />
-        </div>
-
-        <div className="sim-sidebar__section">
-          <AdSenseUnit {...ADS.SIMULATOR_SIDEBAR} />
         </div>
 
         <div className="sim-sidebar__section">

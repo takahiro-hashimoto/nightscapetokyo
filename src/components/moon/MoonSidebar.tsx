@@ -60,15 +60,15 @@ export default function MoonSidebar({
         </div>
 
         <div className="moon-sidebar__section">
+          <AdSenseUnit {...ADS.MOON_SIDEBAR} />
+        </div>
+
+        <div className="moon-sidebar__section">
           <WeatherWidget
             lat={markerPosition[0]}
             lng={markerPosition[1]}
             showNavigation
           />
-        </div>
-
-        <div className="moon-sidebar__section">
-          <AdSenseUnit {...ADS.MOON_SIDEBAR} />
         </div>
 
         <div className="moon-sidebar__section">
