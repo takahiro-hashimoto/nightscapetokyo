@@ -69,7 +69,7 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
                 </div>
                 <h3 className="spot-card-title">{spot.name}</h3>
                 <p className="spot-card-lead">{spot.lead}</p>
-                {stationText && (
+                {stationText && !localeSlug && (
                   <p className="spot-card-station">
                     <Train size={11} aria-hidden="true" />
                     <span className="sr-only">最寄駅：</span>

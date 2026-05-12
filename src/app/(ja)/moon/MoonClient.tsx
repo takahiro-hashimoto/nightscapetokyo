@@ -105,7 +105,7 @@ export default function MoonClient() {
       <nav aria-label="関連ページ">
         <ul className="moon-menu">
           <li>
-            <Link href="/">サイトTOP</Link>
+            <Link href="/">東京夜景ナビTOP</Link>
           </li>
           <li>
             <Link href="/simulator/">日の出・日の入りの方角</Link>

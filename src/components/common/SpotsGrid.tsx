@@ -76,7 +76,7 @@ export default function SpotsGrid({ spots, localeSlug, closedBadge = "閉鎖済�
                   <p className="spot-card-lead" itemProp="description">
                     {spot.lead}
                   </p>
-                  {stationText && (
+                  {stationText && !localeSlug && (
                     <p className="spot-card-station">
                       <Train size={11} aria-hidden="true" />
                       <span className="sr-only">最寄駅：</span>

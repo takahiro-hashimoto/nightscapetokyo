@@ -61,7 +61,7 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
                 </div>
                 <h3 className="spot-card-title">{hotel.name}</h3>
                 <p className="spot-card-lead">{hotel.lead}</p>
-                {stationText && (
+                {stationText && !localeSlug && (
                   <p className="spot-card-station">
                     <Train size={11} aria-hidden="true" />
                     <span className="sr-only">最寄駅：</span>
