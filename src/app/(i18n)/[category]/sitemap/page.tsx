@@ -8,7 +8,7 @@ import { supabase } from "@/lib/supabase/client";
 import { SITEMAP_LABELS } from "@/lib/i18n-static-pages";
 import { TAG_NAME } from "@/lib/constants";
 
-export const revalidate = 86400;
+export const revalidate = 604800;
 
 export async function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((c) => ({ category: c }));

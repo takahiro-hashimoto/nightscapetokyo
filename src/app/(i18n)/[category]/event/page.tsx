@@ -100,7 +100,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = 86400;
+export const revalidate = 604800;
 export const fetchCache = "force-cache";
 
 /* ─── Page ─── */

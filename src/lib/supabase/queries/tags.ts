@@ -36,7 +36,7 @@ export const getPurposeTags = cache(unstable_cache(async () => {
     .filter((t) => t.spot_count > 0);
 
   return result.sort((a, b) => b.spot_count - a.spot_count);
-}, ["purpose-tags"], { revalidate: 86400, tags: ["tags"] }));
+}, ["purpose-tags"], { revalidate: 604800, tags: ["tags"] }));
 
 /** タグ情報をslugで取得 */
 export const getTagBySlug = cache(async function getTagBySlug(tagSlug: string) {

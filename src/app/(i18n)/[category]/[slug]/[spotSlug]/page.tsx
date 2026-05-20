@@ -23,7 +23,7 @@ type Props = {
 
 export async function generateStaticParams() {
   // 全件 SSG せず ISR で提供（Build Minutes 削減）
-  // 未生成パスは revalidate=86400 のオンデマンド ISR でキャッシュされる
+  // 未生成パスは revalidate=604800 のオンデマンド ISR でキャッシュされる
   return [];
 }
 
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   );
 }
 
-export const revalidate = 86400;
+export const revalidate = 604800;
 export const fetchCache = "force-cache";
 
 export default async function TranslatedSpotPage({ params }: Props) {

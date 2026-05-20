@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabase/client";
 import { getArticles } from "@/lib/supabase/queries";
 import { getAllPostsSummary } from '@/lib/luminar/articles-meta';
 
-export const revalidate = 86400;
+export const revalidate = 604800;
 
 export const metadata: Metadata = {
   title: "サイトマップ | 東京夜景ナビ",

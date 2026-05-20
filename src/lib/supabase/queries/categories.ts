@@ -71,7 +71,7 @@ export const getAreas = cache(unstable_cache(async () => {
     if (bi !== -1) return -1;
     return b.spot_count - a.spot_count;
   });
-}, ["areas"], { revalidate: 86400, tags: ["areas"] }));
+}, ["areas"], { revalidate: 604800, tags: ["areas"] }));
 
 /** 翻訳付きエリアデータ取得（ホームページ翻訳版用） */
 export const getAreasTranslated = cache(unstable_cache(async (urlSlug: string) => {
@@ -101,7 +101,7 @@ export const getAreasTranslated = cache(unstable_cache(async (urlSlug: string) =
     ...a,
     name: nameMap.get(a.slug) || a.name,
   }));
-}, ["areas-translated"], { revalidate: 86400, tags: ["areas", "translations"] }));
+}, ["areas-translated"], { revalidate: 604800, tags: ["areas", "translations"] }));
 
 /** カテゴリslugに属するスポット一覧を取得 */
 const _getSpotsByCategoryUncached = async (categorySlug: string): Promise<SpotListItem[]> => {
@@ -134,7 +134,7 @@ const _getSpotsByCategoryUncached = async (categorySlug: string): Promise<SpotLi
 
 export const getSpotsByCategory = cache(
   unstable_cache(_getSpotsByCategoryUncached, ["spots-by-category"], {
-    revalidate: 86400,
+    revalidate: 604800,
     tags: ["spots"],
   })
 );
@@ -195,7 +195,7 @@ const _getSpotsByCategoryTranslatedUncached = async (
 
 export const getSpotsByCategoryTranslated = cache(
   unstable_cache(_getSpotsByCategoryTranslatedUncached, ["spots-by-category-translated"], {
-    revalidate: 86400,
+    revalidate: 604800,
     tags: ["spots", "translations"],
   })
 );
@@ -301,6 +301,6 @@ export const getAvailableAreaLocales = cache(
       return Array.from(locales);
     },
     ["available-area-locales"],
-    { revalidate: 86400, tags: ["spots", "translations"] }
+    { revalidate: 604800, tags: ["spots", "translations"] }
   )
 );
