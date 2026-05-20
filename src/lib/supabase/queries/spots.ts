@@ -102,7 +102,7 @@ export const getTotalSpotCount = cache(unstable_cache(async (): Promise<number> 
     .select("*", { count: "exact", head: true })
     .eq("published", true);
   return count ?? 0;
-}, ["spot-count"], { revalidate: 3600, tags: ["spots"] }));
+}, ["spot-count"], { revalidate: 86400, tags: ["spots"] }));
 
 /** limit によらず共有できる上位100件のキャッシュ */
 const _getTopSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {
@@ -132,7 +132,7 @@ const _getTopSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {
       return true;
     })
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg);
-}, ["top-spots"], { revalidate: 3600, tags: ["spots"] });
+}, ["top-spots"], { revalidate: 86400, tags: ["spots"] });
 
 export const getTopSpots = cache(async (limit = 6): Promise<SpotListItem[]> => {
   const all = await _getTopSpotsAll();
@@ -163,7 +163,7 @@ export const getTopSpotsForRecommend = cache(unstable_cache(async (limit = 60): 
       seen.add(spot.id);
       return true;
     });
-}, ["top-spots-recommend"], { revalidate: 3600, tags: ["spots"] }));
+}, ["top-spots-recommend"], { revalidate: 86400, tags: ["spots"] }));
 
 /** おすすめバッジ判定用の軽量 slug 一覧 */
 const _getRecommendedSpotSlugs = unstable_cache(async (): Promise<string[]> => {
@@ -185,7 +185,7 @@ const _getRecommendedSpotSlugs = unstable_cache(async (): Promise<string[]> => {
     .filter((spot: any) => TOKYO_AREA_SLUGS.has(spot.category?.slug ?? "") && !spot.closed)
     .slice(0, 30)
     .map((spot: any) => spot.slug);
-}, ["recommended-spot-slugs"], { revalidate: 3600, tags: ["spots", "areas"] });
+}, ["recommended-spot-slugs"], { revalidate: 86400, tags: ["spots", "areas"] });
 
 export const getRecommendedSpotSlugs = cache(_getRecommendedSpotSlugs);
 
@@ -210,7 +210,7 @@ export const getHotelSpots = cache(unstable_cache(async (limit = 4): Promise<Spo
   if (!data) return [];
 
   return data.map(mapSpotToListing);
-}, ["hotel-spots"], { revalidate: 3600, tags: ["spots"] }));
+}, ["hotel-spots"], { revalidate: 86400, tags: ["spots"] }));
 
 /** 翻訳付きトップスポット取得（ホームページ翻訳版用） */
 const _getTopSpotsTranslatedUncached = async (

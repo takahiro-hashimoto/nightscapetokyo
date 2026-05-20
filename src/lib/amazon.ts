@@ -136,7 +136,7 @@ async function callGetItems(asins: string[]): Promise<AmazonProduct[]> {
             "images.primary.medium",
           ],
         }),
-        next: { revalidate: 3600 },
+        next: { revalidate: 86400 },
       });
 
       if (!res.ok) continue;

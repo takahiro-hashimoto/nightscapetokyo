@@ -101,7 +101,7 @@ export const getAreasTranslated = cache(unstable_cache(async (urlSlug: string) =
     ...a,
     name: nameMap.get(a.slug) || a.name,
   }));
-}, ["areas-translated"], { revalidate: 3600, tags: ["areas", "translations"] }));
+}, ["areas-translated"], { revalidate: 86400, tags: ["areas", "translations"] }));
 
 /** カテゴリslugに属するスポット一覧を取得 */
 const _getSpotsByCategoryUncached = async (categorySlug: string): Promise<SpotListItem[]> => {

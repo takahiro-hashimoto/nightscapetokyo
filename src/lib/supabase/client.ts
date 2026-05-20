@@ -40,7 +40,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       return fetch(url as RequestInfo, {
         ...(options as RequestInit),
         next: {
-          revalidate: 3600,
+          revalidate: 86400,
           ...(tags.length > 0 ? { tags } : {}),
         },
       } as RequestInit);

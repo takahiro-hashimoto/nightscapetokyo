@@ -17,7 +17,7 @@ export const getArticles = cache(unstable_cache(async (): Promise<Article[]> => 
     .order("published_at", { ascending: false });
   if (error || !data) return [];
   return data as Article[];
-}, ["articles"], { revalidate: 3600, tags: ["articles"] }));
+}, ["articles"], { revalidate: 86400, tags: ["articles"] }));
 
 export const getArticleBySlug = cache(async function getArticleBySlug(
   slug: string
@@ -36,7 +36,7 @@ export const getArticleBySlug = cache(async function getArticleBySlug(
       return data as Article;
     },
     [`article`, slug],
-    { revalidate: 3600, tags: ["articles", `article-${slug}`] }
+    { revalidate: 86400, tags: ["articles", `article-${slug}`] }
   )();
 });
 

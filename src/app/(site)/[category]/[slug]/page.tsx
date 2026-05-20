@@ -102,7 +102,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildSpotMetadata(spot, labels, category, slug, "ja", translations.map((t) => t.locale));
 }
 
-export const revalidate = 86400;
+export const revalidate = false;
 export const fetchCache = "force-cache";
 
 export default async function SpotOrAreaPage({ params }: Props) {
