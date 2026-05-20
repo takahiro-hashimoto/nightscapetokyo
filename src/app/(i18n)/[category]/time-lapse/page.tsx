@@ -324,7 +324,7 @@ export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((locale) => ({ category: locale }));
 }
 
-export const revalidate = 604800;
+export const revalidate = false;
 export const fetchCache = "force-cache";
 
 export default async function TimeLapseLocalePage({ params }: PageProps) {

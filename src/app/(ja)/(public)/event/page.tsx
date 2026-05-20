@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 604800;
+export const revalidate = false;
 export const fetchCache = "force-cache";
 
 export default async function EventListPage() {

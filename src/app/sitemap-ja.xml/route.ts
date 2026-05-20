@@ -1,5 +1,5 @@
 import { makeSitemapResponse } from "@/lib/sitemap-builder";
 
-export const revalidate = 604800;
+export const revalidate = false;
 
 export const GET = () => makeSitemapResponse("ja");

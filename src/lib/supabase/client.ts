@@ -16,6 +16,13 @@ const TABLE_TAGS: Record<string, string[]> = {
   spot_hotels: ["spots"],
   spot_events: ["spots"],
   spot_translations: ["spots"],
+  tag_pages: ["tag-pages"],
+  tag_page_sections: ["tag-pages"],
+  tag_page_section_spots: ["tag-pages", "spots"],
+  tag_page_faqs: ["tag-pages"],
+  tag_page_pr_banners: ["tag-pages"],
+  tag_page_pr_banner_links: ["tag-pages"],
+  tag_page_translations: ["tag-pages", "translations"],
 };
 
 function getTagsFromUrl(url: string | URL): string[] {
@@ -40,7 +47,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       return fetch(url as RequestInfo, {
         ...(options as RequestInit),
         next: {
-          revalidate: 604800,
+          revalidate: false,
           ...(tags.length > 0 ? { tags } : {}),
         },
       } as RequestInit);

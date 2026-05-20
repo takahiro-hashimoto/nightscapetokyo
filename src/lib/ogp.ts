@@ -39,7 +39,7 @@ async function fetchOgp(url: string): Promise<OgpData> {
     const res = await fetch(url, {
       signal: controller.signal,
       headers: { "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1)" },
-      next: { revalidate: 604800 }, // 24時間キャッシュ
+      next: { revalidate: false }, // 24時間キャッシュ
     });
     clearTimeout(timer);
 

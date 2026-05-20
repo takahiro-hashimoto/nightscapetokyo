@@ -42,7 +42,7 @@ const _getSpotBySlugUncached = async (
 
 export const getSpotBySlug = cache(
   unstable_cache(_getSpotBySlugUncached, ["spot-by-slug"], {
-    revalidate: 604800,
+    revalidate: false,
     tags: ["spots"],
   })
 );
@@ -102,7 +102,7 @@ export const getTotalSpotCount = cache(unstable_cache(async (): Promise<number> 
     .select("*", { count: "exact", head: true })
     .eq("published", true);
   return count ?? 0;
-}, ["spot-count"], { revalidate: 604800, tags: ["spots"] }));
+}, ["spot-count"], { revalidate: false, tags: ["spots"] }));
 
 /** limit によらず共有できる上位100件のキャッシュ */
 const _getTopSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {
@@ -132,7 +132,7 @@ const _getTopSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {
       return true;
     })
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg);
-}, ["top-spots"], { revalidate: 604800, tags: ["spots"] });
+}, ["top-spots"], { revalidate: false, tags: ["spots"] });
 
 export const getTopSpots = cache(async (limit = 6): Promise<SpotListItem[]> => {
   const all = await _getTopSpotsAll();
@@ -163,7 +163,7 @@ export const getTopSpotsForRecommend = cache(unstable_cache(async (limit = 60): 
       seen.add(spot.id);
       return true;
     });
-}, ["top-spots-recommend"], { revalidate: 604800, tags: ["spots"] }));
+}, ["top-spots-recommend"], { revalidate: false, tags: ["spots"] }));
 
 /** おすすめバッジ判定用の軽量 slug 一覧 */
 const _getRecommendedSpotSlugs = unstable_cache(async (): Promise<string[]> => {
@@ -185,7 +185,7 @@ const _getRecommendedSpotSlugs = unstable_cache(async (): Promise<string[]> => {
     .filter((spot: any) => TOKYO_AREA_SLUGS.has(spot.category?.slug ?? "") && !spot.closed)
     .slice(0, 30)
     .map((spot: any) => spot.slug);
-}, ["recommended-spot-slugs"], { revalidate: 604800, tags: ["spots", "areas"] });
+}, ["recommended-spot-slugs"], { revalidate: false, tags: ["spots", "areas"] });
 
 export const getRecommendedSpotSlugs = cache(_getRecommendedSpotSlugs);
 
@@ -210,7 +210,7 @@ export const getHotelSpots = cache(unstable_cache(async (limit = 4): Promise<Spo
   if (!data) return [];
 
   return data.map(mapSpotToListing);
-}, ["hotel-spots"], { revalidate: 604800, tags: ["spots"] }));
+}, ["hotel-spots"], { revalidate: false, tags: ["spots"] }));
 
 /** 翻訳付きトップスポット取得（ホームページ翻訳版用） */
 const _getTopSpotsTranslatedUncached = async (
@@ -267,7 +267,7 @@ const _getTopSpotsTranslatedUncached = async (
 const _getTopSpotsTranslatedCached = unstable_cache(
   _getTopSpotsTranslatedUncached,
   ["top-spots-translated"],
-  { revalidate: 604800, tags: ["spots", "translations"] }
+  { revalidate: false, tags: ["spots", "translations"] }
 );
 
 export const getTopSpotsTranslated = cache(
@@ -324,7 +324,7 @@ export const getHotelSpotsTranslated = cache(
         });
     },
     ["hotel-spots-translated"],
-    { revalidate: 604800, tags: ["spots", "translations"] }
+    { revalidate: false, tags: ["spots", "translations"] }
   )
 );
 
@@ -514,7 +514,7 @@ const _getSpotsBySlugsTranslatedCached = unstable_cache(
     return _getSpotsBySlugsTranslatedCore(slugsSorted, urlSlug);
   },
   ["spots-by-slugs-translated"],
-  { revalidate: 604800, tags: ["spots", "translations"] }
+  { revalidate: false, tags: ["spots", "translations"] }
 );
 
 export const getSpotsBySlugsTranslated = cache(
@@ -683,7 +683,7 @@ export const getAvailableTranslations = cache(
         .map((d) => ({ locale: LOCALE_TO_SLUG[d.locale] }));
     },
     ["available-translations"],
-    { revalidate: 604800, tags: ["translations"] }
+    { revalidate: false, tags: ["translations"] }
   )
 );
 
@@ -701,5 +701,5 @@ export const getSpotImagesBySlugs = unstable_cache(
     return Object.fromEntries(data.map((s: any) => [s.slug, s.featured_image ?? ""]));
   },
   ["spot-images-by-slugs"],
-  { revalidate: 604800, tags: ["spots"] }
+  { revalidate: false, tags: ["spots"] }
 );

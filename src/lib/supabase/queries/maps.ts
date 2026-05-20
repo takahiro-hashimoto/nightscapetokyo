@@ -51,7 +51,7 @@ export const getSpotsForMap = cache(unstable_cache(async (): Promise<MapSpotItem
     });
     return acc;
   }, []);
-}, ["map-spots"], { revalidate: 604800, tags: ["spots"] }));
+}, ["map-spots"], { revalidate: false, tags: ["spots"] }));
 
 const SPOT_SELECT =
   "id, slug, name, title, featured_image, latitude, longitude, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(slug, name)";
@@ -103,7 +103,7 @@ const _getSpotsForMapTranslatedCached = unstable_cache(
     }, []);
   },
   ["map-spots-translated"],
-  { revalidate: 604800, tags: ["spots", "translations"] }
+  { revalidate: false, tags: ["spots", "translations"] }
 );
 
 export async function getSpotsForMapTranslated(localeSlug: string): Promise<MapSpotItem[]> {
@@ -148,7 +148,7 @@ const _getMapSpotsByCategoryUncached = async (categorySlug: string): Promise<Map
 
 export const getMapSpotsByCategory = cache(
   unstable_cache(_getMapSpotsByCategoryUncached, ["map-spots-by-category"], {
-    revalidate: 604800,
+    revalidate: false,
     tags: ["spots"],
   })
 );
