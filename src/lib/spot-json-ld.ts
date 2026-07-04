@@ -99,21 +99,18 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
       mainSchema.openingHours = spot.hours;
     }
 
-    const ratingValues = [
-      spot.rating_beautiful,
-      spot.rating_access,
-      spot.rating_atmosphere,
-      spot.rating_cost,
-    ].filter((v): v is number => v != null);
-
-    if (ratingValues.length > 0) {
-      const avg = ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length;
+    // AggregateRating はユーザーレビューの集計のみに使う。
+    // 編集部評価（rating_beautiful 等）を集計として出すと
+    // Google の自己申告レビュー禁止ポリシーに抵触するリスクがある
+    if (spot.reviews.length > 0) {
+      const avg =
+        spot.reviews.reduce((sum, r) => sum + r.rating, 0) / spot.reviews.length;
       mainSchema.aggregateRating = {
         "@type": "AggregateRating",
         ratingValue: Math.round(avg * 10) / 10,
         bestRating: 5,
         worstRating: 1,
-        ratingCount: ratingValues.length,
+        ratingCount: spot.reviews.length,
       };
     }
 

@@ -13,6 +13,7 @@ import {
   getSpotListByTagSlugTranslated,
   getTagPageBySlugWithTranslation,
   getAvailableTagPageLocales,
+  tagPageExists,
   getAllTagPageLocales,
   getMapSpotsByTag,
   getPurposeTags,
@@ -151,9 +152,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // 翻訳タグページがない場合はシンプル一覧のメタデータ
   if (!translationResult) {
-    const [tag, spots] = await Promise.all([
+    const [tag, spots, hasRichPage] = await Promise.all([
       getTagBySlug(tagSlug),
       getSpotListByTagSlugTranslated(tagSlug, [], localeSlug),
+      tagPageExists(tagSlug),
     ]);
     if (!tag) return {};
     const labels = TAG_ARTICLE_LABELS[localeSlug as SiteLocale] ?? TAG_ARTICLE_LABELS.en;
@@ -174,7 +176,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
       alternates: {
         canonical: canonicalUrl,
-        languages: buildTagHreflangAlternates(SITE_URL, tagSlug, ALL_LOCALE_SLUGS),
+        // リッチ版 (tag_pages) が存在するタグの未翻訳ロケールはhreflangクラスタ外
+        // （ja側が宣言しないため、宣言すると非相互になる）。
+        // リッチ版がないタグは全ロケールがシンプル一覧を返すので全クラスタを宣言（ja側と一致）
+        languages: hasRichPage
+          ? undefined
+          : buildTagHreflangAlternates(SITE_URL, tagSlug, ALL_LOCALE_SLUGS),
       },
     };
   }

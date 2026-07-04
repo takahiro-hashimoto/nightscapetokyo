@@ -1,4 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin/auth";
+
+const ALLOWED_AMAZON_HOSTS = [
+  "amazon.co.jp", "amazon.com", "amazon.co.uk", "amazon.de", "amazon.fr",
+  "amazon.it", "amazon.es", "amazon.ca", "amazon.com.au", "amazon.com.br",
+  "amazon.com.mx", "amazon.nl", "amazon.sg", "amazon.se", "amazon.pl",
+  "amazon.ae", "amazon.in", "amazon.com.tr", "amzn.to", "amzn.asia",
+];
+
+function isAllowedAmazonUrl(raw: string): boolean {
+  let parsed: URL;
+  try {
+    parsed = new URL(raw);
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== "https:") return false;
+  const host = parsed.hostname.toLowerCase();
+  return ALLOWED_AMAZON_HOSTS.some((d) => host === d || host.endsWith(`.${d}`));
+}
 
 function decodeHtmlEntities(str: string): string {
   return str
@@ -13,15 +33,17 @@ function decodeHtmlEntities(str: string): string {
 }
 
 export async function GET(req: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const url = req.nextUrl.searchParams.get("url");
   if (!url) {
     return NextResponse.json({ error: "url パラメータが必要です" }, { status: 400 });
   }
 
-  const isAmazon =
-    /amazon\.(co\.jp|com|co\.uk|de|fr|it|es|ca|com\.au|com\.br|com\.mx|nl|sg|se|pl|ae|in|com\.tr)\//i.test(url) ||
-    /amzn\.to\//i.test(url);
-  if (!isAmazon) {
+  if (!isAllowedAmazonUrl(url)) {
     return NextResponse.json({ error: "Amazon の URL を入力してください" }, { status: 400 });
   }
 
@@ -45,8 +67,13 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const html = await res.text();
+    // 短縮URL（amzn.to等）のリダイレクト先もAmazonドメインであることを確認
     const finalUrl = res.url;
+    if (finalUrl && !isAllowedAmazonUrl(finalUrl)) {
+      return NextResponse.json({ error: "Amazon の URL を入力してください" }, { status: 400 });
+    }
+
+    const html = await res.text();
 
     // Title: og:title → <title>
     const ogTitleMatch =

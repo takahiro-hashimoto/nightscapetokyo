@@ -271,7 +271,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = false;
+// 翻訳ホームのタイトル等に現在年 (new Date().getFullYear()) を含むため日次で再生成する
+export const revalidate = 86400;
 export const fetchCache = "force-cache";
 
 export default async function AreaPage({ params }: Props) {

@@ -66,6 +66,9 @@ const OG_TITLE =
 const OG_DESC =
   "月の出・月の入りの方角（月出方位角）と時刻を地図上で無料確認できるWebアプリ。場所・日付を指定するだけで月の出る方向を即表示。満月・星景写真の撮影計画、天体観測の下見に。";
 
+// 満月FAQ・月齢カレンダーが現在日時に依存するため日次で再生成する
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "月の出・月の入り方角シミュレーター【無料】｜月出方位角・月齢を地図で確認",
   description:

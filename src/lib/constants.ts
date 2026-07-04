@@ -83,7 +83,6 @@ export const DRAWER_MENU_ITEMS: Record<
       { label: "品川区", href: "/shinagawa/" },
     ],
     content: [
-      { label: "おすすめスポット", href: "/recommend/" },
       { label: "記事一覧", href: "/article/" },
       { label: "タイムラプス動画", href: "/time-lapse/" },
     ],
@@ -109,7 +108,6 @@ export const DRAWER_MENU_ITEMS: Record<
       { label: "Shinagawa", href: "/en/shinagawa/" },
     ],
     content: [
-      { label: "Recommended Spots", href: "/en/recommend/" },
       { label: "Time-lapse Videos", href: "/en/time-lapse/" },
     ],
     siteInfo: [
@@ -134,7 +132,6 @@ export const DRAWER_MENU_ITEMS: Record<
       { label: "시나가와구", href: "/ko/shinagawa/" },
     ],
     content: [
-      { label: "추천 스팟", href: "/ko/recommend/" },
       { label: "타임랩스 영상", href: "/ko/time-lapse/" },
     ],
     siteInfo: [
@@ -159,7 +156,6 @@ export const DRAWER_MENU_ITEMS: Record<
       { label: "品川區", href: "/tw/shinagawa/" },
     ],
     content: [
-      { label: "推薦景點", href: "/tw/recommend/" },
       { label: "縮時攝影影片", href: "/tw/time-lapse/" },
     ],
     siteInfo: [
@@ -184,7 +180,6 @@ export const DRAWER_MENU_ITEMS: Record<
       { label: "品川区", href: "/cn/shinagawa/" },
     ],
     content: [
-      { label: "推荐景点", href: "/cn/recommend/" },
       { label: "延时摄影视频", href: "/cn/time-lapse/" },
     ],
     siteInfo: [

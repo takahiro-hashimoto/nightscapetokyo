@@ -79,6 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         url: canonicalUrl,
         siteName,
         locale: OG_LOCALE_MAP[category] ?? "en_US",
+        images: [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630 }],
       },
       twitter: {
         card: "summary_large_image",

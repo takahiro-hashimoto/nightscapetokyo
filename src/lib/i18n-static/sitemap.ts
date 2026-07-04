@@ -15,7 +15,6 @@ export const SITEMAP_LABELS: Record<string, StaticPageLabels & {
     otherHeading: "その他",
     otherLinks: [
       { href: "/", label: "ホーム" },
-      { href: "/recommend/", label: "おすすめの夜景スポット" },
       { href: "/time-lapse/", label: "タイムラプス映像集" },
       { href: "/simulator/", label: "日の出・日の入り方角シミュレーター" },
       { href: "/about/", label: "運営者情報" },
@@ -28,7 +27,6 @@ export const SITEMAP_LABELS: Record<string, StaticPageLabels & {
     otherHeading: "Other Pages",
     otherLinks: [
       { href: "/", label: "Home" },
-      { href: "/recommend/", label: "Recommended Night View Spots" },
       { href: "/time-lapse/", label: "Time-lapse Videos" },
       { href: "/wallpaper/", label: "Smartphone Wallpapers" },
       { href: "/about/", label: "About" },
@@ -44,7 +42,6 @@ export const SITEMAP_LABELS: Record<string, StaticPageLabels & {
     otherHeading: "기타 페이지",
     otherLinks: [
       { href: "/", label: "홈" },
-      { href: "/recommend/", label: "추천 야경 스폿" },
       { href: "/time-lapse/", label: "타임랩스 영상집" },
       { href: "/wallpaper/", label: "스마트폰 배경화면" },
       { href: "/about/", label: "운영자 정보" },
@@ -60,7 +57,6 @@ export const SITEMAP_LABELS: Record<string, StaticPageLabels & {
     otherHeading: "其他頁面",
     otherLinks: [
       { href: "/", label: "首頁" },
-      { href: "/recommend/", label: "推薦夜景景點" },
       { href: "/time-lapse/", label: "縮時攝影集" },
       { href: "/wallpaper/", label: "手機桌布" },
       { href: "/about/", label: "關於我們" },
@@ -76,7 +72,6 @@ export const SITEMAP_LABELS: Record<string, StaticPageLabels & {
     otherHeading: "其他页面",
     otherLinks: [
       { href: "/", label: "首页" },
-      { href: "/recommend/", label: "推荐夜景景点" },
       { href: "/time-lapse/", label: "延时摄影集" },
       { href: "/wallpaper/", label: "手机壁纸" },
       { href: "/about/", label: "关于我们" },

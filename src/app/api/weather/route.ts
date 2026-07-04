@@ -23,6 +23,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Missing params" }, { status: 400 });
   }
 
+  const latNum = Number(lat);
+  const lngNum = Number(lng);
+  if (
+    !Number.isFinite(latNum) || latNum < -90 || latNum > 90 ||
+    !Number.isFinite(lngNum) || lngNum < -180 || lngNum > 180 ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(date)
+  ) {
+    return NextResponse.json({ error: "Invalid params" }, { status: 400 });
+  }
+
   const apiKey = process.env.WEATHERAPI_KEY;
   if (!apiKey) {
     return NextResponse.json({ error: "API key not configured" }, { status: 500 });
@@ -32,7 +42,7 @@ export async function GET(req: NextRequest) {
   const isPast = date < today;
   const endpoint = isPast ? "history" : "forecast";
 
-  const url = `https://api.weatherapi.com/v1/${endpoint}.json?key=${apiKey}&q=${lat},${lng}&dt=${date}&lang=ja&aqi=no&alerts=no`;
+  const url = `https://api.weatherapi.com/v1/${endpoint}.json?key=${apiKey}&q=${latNum},${lngNum}&dt=${date}&lang=ja&aqi=no&alerts=no`;
 
   try {
     const res = await fetch(url, { next: { revalidate: 1800 } });

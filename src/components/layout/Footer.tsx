@@ -31,7 +31,6 @@ const FOOTER_LABELS = {
     tagHeading: "タグページ",
     contentHeading: "コンテンツ",
     contentLinks: [
-      { label: "おすすめスポット", href: "/recommend" },
       { label: "無料壁紙", href: "/wallpaper" },
       { label: "タイムラプス動画", href: "/time-lapse" },
       { label: "日の出・日の入りシミュレーター", href: "/simulator" },
@@ -56,7 +55,6 @@ const FOOTER_LABELS = {
     tagHeading: "Tag Pages",
     contentHeading: "Content",
     contentLinks: [
-      { label: "Recommended Spots", href: "/recommend" },
       { label: "Free Wallpapers", href: "/wallpaper" },
       { label: "Time-lapse Videos", href: "/time-lapse" },
     ],
@@ -76,7 +74,6 @@ const FOOTER_LABELS = {
     tagHeading: "태그 페이지",
     contentHeading: "콘텐츠",
     contentLinks: [
-      { label: "추천 스폿", href: "/recommend" },
       { label: "무료 배경화면", href: "/wallpaper" },
       { label: "타임랩스 영상", href: "/time-lapse" },
     ],
@@ -96,7 +93,6 @@ const FOOTER_LABELS = {
     tagHeading: "標籤頁面",
     contentHeading: "內容",
     contentLinks: [
-      { label: "推薦景點", href: "/recommend" },
       { label: "免費桌布", href: "/wallpaper" },
       { label: "縮時攝影影片", href: "/time-lapse" },
     ],
@@ -116,7 +112,6 @@ const FOOTER_LABELS = {
     tagHeading: "标签页面",
     contentHeading: "内容",
     contentLinks: [
-      { label: "推荐景点", href: "/recommend" },
       { label: "免费壁纸", href: "/wallpaper" },
       { label: "延时摄影视频", href: "/time-lapse" },
     ],

@@ -82,13 +82,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       modifiedTime: article.updated_at,
       images: article.thumbnail
         ? [{ url: articleThumbnail(article.thumbnail)!, width: 1200, height: 630, alt: article.title }]
-        : undefined,
+        : [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630, alt: article.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description,
-      images: article.thumbnail ? [articleThumbnail(article.thumbnail)!] : undefined,
+      images: article.thumbnail ? [articleThumbnail(article.thumbnail)!] : [`${SITE_URL}/hero.jpg`],
     },
   };
 }

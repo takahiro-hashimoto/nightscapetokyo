@@ -237,6 +237,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonicalUrl,
       locale: ogLocale,
       alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
+      images: [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630 }],
     },
     alternates: {
       canonical: canonicalUrl,

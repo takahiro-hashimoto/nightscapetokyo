@@ -121,7 +121,7 @@ export default function SpotShare({ url, title, labels, locale = "ja", className
   const shareOnKakao = () => {
     const doShare = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).Kakao.Share.sendDefault({
+      (window as any).Kakao?.Share?.sendDefault?.({
         objectType: "feed",
         content: {
           title,
@@ -140,8 +140,12 @@ export default function SpotShare({ url, title, labels, locale = "ja", className
     script.crossOrigin = "anonymous";
     script.onload = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).Kakao.init(KAKAO_APP_KEY);
+      (window as any).Kakao?.init?.(KAKAO_APP_KEY);
       doShare();
+    };
+    script.onerror = () => {
+      console.error("[SpotShare] Kakao SDK の読み込みに失敗しました");
+      script.remove();
     };
     document.head.appendChild(script);
   };

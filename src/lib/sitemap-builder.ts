@@ -127,23 +127,6 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     });
   }
 
-  // ── /recommend（重要度が高いため個別設定） ──
-  const recommendAlts = buildAlternates("/recommend");
-  result.ja.push({
-    loc: `${SITE_URL}/recommend/`,
-    changefreq: "weekly",
-    priority: 0.8,
-    alternates: recommendAlts,
-  });
-  for (const slug of locales) {
-    result[slug as keyof AllEntries].push({
-      loc: `${SITE_URL}/${slug}/recommend/`,
-      changefreq: "weekly",
-      priority: 0.7,
-      alternates: recommendAlts,
-    });
-  }
-
   // ── 固定ページ（集客に貢献するページのみ） ──
   const staticPages = [
     "/about", "/time-lapse", "/wallpaper",

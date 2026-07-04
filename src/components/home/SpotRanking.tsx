@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { SpotListItem } from "@/lib/types";
 import { extractTownAddress } from "@/lib/types";
-import { Star, ChevronRight, Train } from "lucide-react";
+import { Star, Train } from "lucide-react";
 import type { HomePageLabels } from "@/lib/i18n-labels";
 import type { ReactNode } from "react";
 
@@ -27,7 +27,7 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
           {labels?.heading(currentYear) ?? `東京都内の夜景スポット ランキング【${currentYear}年】`}
         </h2>
         <p className="home-section-desc">
-          {labels?.desc1 ?? <>実際に訪問した200ヶ所以上の東京の夜景スポットの中から<Link href={`${prefix}/recommend`}>おすすめの場所</Link>をランキング形式でご紹介！</>}
+          {labels?.desc1 ?? <>実際に訪問した200ヶ所以上の東京の夜景スポットの中からおすすめの場所をランキング形式でご紹介！</>}
         </p>
         <p className="home-section-desc">
           {labels?.desc2 ?? <>各スポットの評価は<strong>美しさ</strong>、<strong>アクセスの良さ</strong>、<strong>雰囲気の良さ</strong>、<strong>コスパ</strong>の4項目から決定しています。デートや撮影の目的先を決めるのにご活用ください。</>}
@@ -82,12 +82,6 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
             );
           })}
         </ol>
-        <div className="home-section-more">
-          <Link href={`${prefix}/recommend`} className="home-more-link">
-            {labels?.moreLink ?? "東京の夜景スポットおすすめランキング"}
-            <ChevronRight size={16} />
-          </Link>
-        </div>
       </div>
     </section>
   );

@@ -29,6 +29,27 @@ export async function getAllTagPageLocales(): Promise<
     .filter((r): r is { slug: string; locale: string } => !!r.slug && !!r.locale);
 }
 
+/**
+ * リッチなタグページ (tag_pages) が存在するかだけを返す軽量チェック。
+ * hreflang クラスタの判定（リッチ版が存在するタグの未翻訳ロケールは
+ * クラスタ外として hreflang を宣言しない）に使用する。
+ */
+export const tagPageExists = cache(async function tagPageExists(
+  tagSlug: string
+): Promise<boolean> {
+  if (!isSupabaseConfigured) return false;
+
+  const supabase = await getSupabaseClient();
+
+  const { data } = (await supabase
+    .from("tag_pages")
+    .select("id, tag:tags!inner(slug)")
+    .eq("tag.slug", tagSlug)
+    .maybeSingle()) as any;
+
+  return !!data;
+});
+
 /** タグページの翻訳済みロケールを取得 */
 export async function getAvailableTagPageLocales(
   tagSlug: string

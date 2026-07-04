@@ -49,6 +49,12 @@ export default function JaLayout({
 }) {
   const headContent = (
     <>
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="東京夜景ナビ 新着記事"
+        href={`${SITE_URL}/feed/`}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}

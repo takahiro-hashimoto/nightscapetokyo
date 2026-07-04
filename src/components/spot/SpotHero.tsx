@@ -44,7 +44,7 @@ export default function SpotHero({
             <span className="spot-card-closed-badge">{closedBadge}</span>
           )}
           {isRecommended && !closed && (
-            <Link href="/recommend/" className="spot-card-recommend-badge">おすすめTOP30</Link>
+            <Link href="/" className="spot-card-recommend-badge">おすすめTOP30</Link>
           )}
         </figure>
       )}

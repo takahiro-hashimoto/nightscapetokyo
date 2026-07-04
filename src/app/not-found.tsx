@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getComponentLabels } from "@/lib/i18n-labels";
+
+export const metadata: Metadata = {
+  title: "ページが見つかりません",
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   const labels = getComponentLabels("ja").notFound;

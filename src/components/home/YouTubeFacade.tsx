@@ -45,6 +45,7 @@ export default function YouTubeFacade({ videoId, title }: Props) {
         sizes="(max-width: 768px) 100vw, 560px"
         loading="lazy"
         style={{ objectFit: "cover" }}
+        unoptimized
       />
       {/* Play button overlay */}
       <span

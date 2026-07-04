@@ -13,8 +13,19 @@ const { title: PAGE_TITLE, description: PAGE_DESCRIPTION, lead1, lead2, topLink 
 export const metadata: Metadata = {
   title: { absolute: `${PAGE_TITLE} | 東京夜景ナビ` },
   description: PAGE_DESCRIPTION,
-  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION },
-  twitter: { title: PAGE_TITLE, description: PAGE_DESCRIPTION },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    url: `${SITE_URL}/wallpaper/`,
+    locale: "ja_JP",
+    images: [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [`${SITE_URL}/hero.jpg`],
+  },
   alternates: {
     canonical: `${SITE_URL}/wallpaper/`,
     languages: buildAreaHreflangAlternates(SITE_URL, "wallpaper", ALL_LOCALE_SLUGS),

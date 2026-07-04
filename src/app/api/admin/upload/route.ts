@@ -33,7 +33,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "ファイルサイズが上限（10MB）を超えています" }, { status: 413 });
   }
 
-  const { filename, contentType } = await req.json();
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "不正なリクエストです" }, { status: 400 });
+  }
+
+  const { filename, contentType } = (body ?? {}) as { filename?: unknown; contentType?: unknown };
+
+  if (
+    typeof filename !== "string" || filename.length === 0 || filename.length > 255 ||
+    typeof contentType !== "string"
+  ) {
+    return NextResponse.json({ error: "不正なリクエストです" }, { status: 400 });
+  }
 
   if (!ALLOWED_TYPES[contentType]) {
     return NextResponse.json({ error: "許可されていないファイル形式です" }, { status: 400 });

@@ -19,7 +19,14 @@ function toDateStr(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
-export function useHourlyWeather(lat: number, lng: number, date: Date): HourlyWeatherState {
+// 約1km精度に丸める。天気の粒度には十分で、URLが安定するためCDNキャッシュに乗る
+function roundCoord(n: number): number {
+  return Math.round(n * 100) / 100;
+}
+
+export function useHourlyWeather(rawLat: number, rawLng: number, date: Date): HourlyWeatherState {
+  const lat = roundCoord(rawLat);
+  const lng = roundCoord(rawLng);
   const dateStr = toDateStr(date);
   const [state, setState] = useState<HourlyWeatherState>({ status: "idle" });
 

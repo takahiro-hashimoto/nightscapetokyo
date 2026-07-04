@@ -45,17 +45,22 @@ export default function HomeMapSection({
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Map",
+    "@type": "ItemList",
     name: labels.heading,
-    url: `${SITE_URL}/`,
-    hasPart: spots.slice(0, 50).map((spot) => ({
-      "@type": "TouristAttraction",
+    itemListElement: spots.slice(0, 50).map((spot, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
       name: spot.name,
       url: `${SITE_URL}/${spot.categorySlug}/${spot.slug}/`,
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: spot.latitude,
-        longitude: spot.longitude,
+      item: {
+        "@type": "TouristAttraction",
+        name: spot.name,
+        url: `${SITE_URL}/${spot.categorySlug}/${spot.slug}/`,
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: spot.latitude,
+          longitude: spot.longitude,
+        },
       },
     })),
   };

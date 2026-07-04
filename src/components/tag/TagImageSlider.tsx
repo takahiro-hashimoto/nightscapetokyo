@@ -18,6 +18,8 @@ export default function TagImageSlider({ images, name, locale, priority, rank }:
   const l = TAG_SLIDER_LABELS[(locale ?? "ja") as SiteLocale] ?? TAG_SLIDER_LABELS.ja;
   const [current, setCurrent] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  // 一度でも表示したスライドのみ <Image> を描画し、未表示スライドの画像ロードを遅延させる
+  const [visited, setVisited] = useState<Set<number>>(() => new Set([0]));
   const loadedUrls = useRef<Set<string>>(new Set());
   const total = images.length;
 
@@ -25,6 +27,7 @@ export default function TagImageSlider({ images, name, locale, priority, rank }:
   const goTo = useCallback((idx: number) => {
     setIsLoading(!loadedUrls.current.has(images[idx].url));
     setCurrent(idx);
+    setVisited((prev) => (prev.has(idx) ? prev : new Set(prev).add(idx)));
   }, [images]);
 
   const prev = useCallback(() => {
@@ -43,21 +46,23 @@ export default function TagImageSlider({ images, name, locale, priority, rank }:
     <div className="tag-slider">
       <div className="tag-slider-viewport">
         {isLoading && <div className="tag-slider-skeleton" aria-hidden="true" />}
-        {images.map((img, i) => (
-          <Image
-            key={img.url}
-            src={img.url}
-            alt={i === current ? altText : ""}
-            fill
-            sizes="(max-width: 768px) 100vw, 880px"
-            priority={priority && i === 0}
-            style={{ opacity: i === current ? 1 : 0 }}
-            onLoad={() => {
-              loadedUrls.current.add(img.url);
-              if (i === current) setIsLoading(false);
-            }}
-          />
-        ))}
+        {images.map((img, i) =>
+          visited.has(i) ? (
+            <Image
+              key={img.url}
+              src={img.url}
+              alt={i === current ? altText : ""}
+              fill
+              sizes="(max-width: 768px) 100vw, 880px"
+              priority={priority && i === 0}
+              style={{ opacity: i === current ? 1 : 0 }}
+              onLoad={() => {
+                loadedUrls.current.add(img.url);
+                if (i === current) setIsLoading(false);
+              }}
+            />
+          ) : null
+        )}
         {rank != null && (
           <span className="tag-slider-rank-badge">{l.rankBadge(rank)}</span>
         )}

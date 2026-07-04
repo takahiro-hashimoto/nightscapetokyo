@@ -19,7 +19,14 @@ function toDateStr(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
-export function useWeather(lat: number, lng: number, date: Date): WeatherState {
+// 約1km精度に丸める。天気の粒度には十分で、URLが安定するためCDNキャッシュに乗る
+function roundCoord(n: number): number {
+  return Math.round(n * 100) / 100;
+}
+
+export function useWeather(rawLat: number, rawLng: number, date: Date): WeatherState {
+  const lat = roundCoord(rawLat);
+  const lng = roundCoord(rawLng);
   const dateStr = toDateStr(date);
   const [state, setState] = useState<WeatherState>({ status: "idle" });
 

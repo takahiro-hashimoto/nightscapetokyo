@@ -84,11 +84,11 @@ export async function searchSpots(query: string, fieldLabels?: FieldLabels, loca
     : null;
 
   const [textHitsResult, matchedTagsResult, matchedCatsResult, transHitsResult] = await Promise.all([
-    (supabase.from("spots").select(searchSelect).eq("published", true).or(textOr)) as any,
-    (supabase.from("tags").select("id, name").or(tagOr)) as any,
-    (supabase.from("categories").select("id, name").or(catOr)) as any,
+    (supabase.from("spots").select(searchSelect).eq("published", true).or(textOr).limit(300)) as any,
+    (supabase.from("tags").select("id, name").or(tagOr).limit(100)) as any,
+    (supabase.from("categories").select("id, name").or(catOr).limit(100)) as any,
     transOr
-      ? (supabase.from("spot_translations").select("spot_id, name, lead, category_name").eq("locale", dbLocale!).or(transOr)) as any
+      ? (supabase.from("spot_translations").select("spot_id, name, lead, category_name").eq("locale", dbLocale!).or(transOr).limit(300)) as any
       : Promise.resolve({ data: [] as any[] }),
   ]);
 

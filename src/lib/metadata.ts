@@ -80,7 +80,7 @@ export function buildSpotMetadata(
   const ogLocale = OG_LOCALE_MAP[localeSlug] || "ja_JP";
   const ogImages = spot.featured_image
     ? [{ url: spot.featured_image, width: 1200, height: 630, alt: spotName }]
-    : undefined;
+    : [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630, alt: spotName }];
 
   // og:locale:alternate: ja + 翻訳済みロケールのうち現在ロケール以外
   const allLocalesForPage = ["ja", ...availableLocales];
@@ -106,7 +106,7 @@ export function buildSpotMetadata(
       card: "summary_large_image",
       title: pageTitle,
       description,
-      images: spot.featured_image ? [spot.featured_image] : undefined,
+      images: spot.featured_image ? [spot.featured_image] : [`${SITE_URL}/hero.jpg`],
     },
     alternates: {
       canonical: canonicalUrl,

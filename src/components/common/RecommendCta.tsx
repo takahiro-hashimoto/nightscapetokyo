@@ -33,7 +33,7 @@ export default function RecommendCta({ locale }: Props) {
   const cta = RECOMMEND_CTA_LABELS[(locale ?? "ja") as SiteLocale];
   return (
     <Link
-      href={locale ? `/${locale}/recommend` : "/recommend"}
+      href={locale ? `/${locale}/` : "/"}
       className="recommend-cta"
     >
       <span className="recommend-cta-icon">

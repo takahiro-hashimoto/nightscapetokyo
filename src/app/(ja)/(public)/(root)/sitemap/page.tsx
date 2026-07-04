@@ -143,7 +143,6 @@ export default async function SitemapPage() {
         <h2>その他</h2>
         <ul>
           <li><Link href="/">ホーム</Link></li>
-          <li><Link href="/recommend">おすすめの夜景スポット</Link></li>
           <li><Link href="/time-lapse">タイムラプス映像集</Link></li>
           <li><Link href="/wallpaper">スマホ壁紙</Link></li>
           <li><Link href="/simulator">日の出・日の入り方角シミュレーター</Link></li>

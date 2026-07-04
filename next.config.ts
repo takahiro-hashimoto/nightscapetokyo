@@ -33,21 +33,13 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "i.ytimg.com",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn.weatherapi.com",
-      },
-      {
-        protocol: "https",
         hostname: "picsum.photos",
       },
     ],
   },
 
   experimental: {
-    optimizePackageImports: ["lucide-react", "suncalc", "swiper"],
+    optimizePackageImports: ["lucide-react", "suncalc"],
   },
 
   async redirects() {
@@ -61,6 +53,16 @@ const nextConfig: NextConfig = {
       {
         source: "/luminar/about/",
         destination: "/about/",
+        permanent: true,
+      },
+      {
+        source: "/recommend/",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ko|tw|cn)/recommend/",
+        destination: "/:locale/",
         permanent: true,
       },
       {
@@ -89,13 +91,10 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/:path*/feed/",
+        // WordPress遺産の各ページ配下 /feed/ は親ページへ。
+        // :path+ (1セグメント以上) にすることでルートの /feed/ (RSS配信) は除外する
+        source: "/:path+/feed/",
         destination: "/:path*/",
-        permanent: true,
-      },
-      {
-        source: "/feed/",
-        destination: "/",
         permanent: true,
       },
       {

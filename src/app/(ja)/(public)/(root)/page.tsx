@@ -30,6 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: `${SITE_URL}/`,
+      siteName: "東京夜景ナビ",
       locale: "ja_JP",
       alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
       images: [{ url: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/cta-mv.jpg", width: 1200, height: 630, alt: title }],
@@ -42,7 +43,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = false;
+// タイトル等に現在年 (new Date().getFullYear()) を含むため日次で再生成する
+export const revalidate = 86400;
 export const fetchCache = "force-cache";
 
 export default async function Home() {
@@ -51,8 +53,8 @@ export default async function Home() {
   const labels = getComponentLabels("ja");
 
   const [spots, hotels, areas, purposeTags, spotCount] = await Promise.all([
-    getTopSpots(12).catch(() => []),
-    getHotelSpots(4).catch(() => []),
+    getTopSpots(24).catch(() => []),
+    getHotelSpots(8).catch(() => []),
     getAreas().catch(() => []),
     getPurposeTags().catch(() => []),
     getTotalSpotCount().catch(() => 200),

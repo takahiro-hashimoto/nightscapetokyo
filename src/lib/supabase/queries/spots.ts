@@ -126,6 +126,7 @@ const _getTopSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {
   const seen = new Set<string>();
   return data
     .map(mapSpotToListing)
+    .filter((s: SpotListItem) => !s.closed) // 閉鎖済みはランキングに載せない
     .filter((s: SpotListItem) => {
       if (seen.has(s.id)) return false;
       seen.add(s.id);
@@ -138,32 +139,6 @@ export const getTopSpots = cache(async (limit = 6): Promise<SpotListItem[]> => {
   const all = await _getTopSpotsAll();
   return all.slice(0, limit);
 });
-
-/** /recommend 用: FAQ・レビュー・イベントを除いた軽量フルデータ */
-export const getTopSpotsForRecommend = cache(unstable_cache(async (limit = 60): Promise<SpotWithRelations[]> => {
-  if (!isSupabaseConfigured) return [];
-
-  const supabase = await getSupabaseClient();
-
-  const { data } = (await supabase
-    .from("spots")
-    .select("*, category:categories(id, slug, name), images:spot_images(id, spot_id, url, alt, sort_order), hotel:spot_hotels(id, spot_id, checkin, checkout, amenity, affiliate_1, affiliate_2, affiliate_3, affiliate_4)")
-    .eq("type", "spot")
-    .eq("published", true)
-    .order("rating_beautiful", { ascending: false })
-    .limit(limit)) as any;
-
-  if (!data) return [];
-
-  const seen = new Set<string>();
-  return data
-    .map((spot: any) => normalizeSpotRelations({ ...spot, tags: [] }))
-    .filter((spot: SpotWithRelations) => {
-      if (seen.has(spot.id)) return false;
-      seen.add(spot.id);
-      return true;
-    });
-}, ["top-spots-recommend"], { revalidate: false, tags: ["spots"] }));
 
 /** おすすめバッジ判定用の軽量 slug 一覧 */
 const _getRecommendedSpotSlugs = unstable_cache(async (): Promise<string[]> => {
@@ -191,10 +166,11 @@ export const getRecommendedSpotSlugs = cache(_getRecommendedSpotSlugs);
 
 
 
-export const getHotelSpots = cache(unstable_cache(async (limit = 4): Promise<SpotListItem[]> => {
+/** limit によらず共有できるホテル一覧のキャッシュ（表示と同じ rating_avg 順） */
+const _getHotelSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {
   if (!isSupabaseConfigured) {
     const { dummyHotelSpots } = await import("../../dummy-home-data");
-    return dummyHotelSpots.slice(0, limit);
+    return dummyHotelSpots;
   }
 
   const supabase = await getSupabaseClient();
@@ -205,12 +181,20 @@ export const getHotelSpots = cache(unstable_cache(async (limit = 4): Promise<Spo
     .eq("type", "hotel")
     .eq("published", true)
     .order("rating_beautiful", { ascending: false })
-    .limit(limit)) as any;
+    .limit(100)) as any;
 
   if (!data) return [];
 
-  return data.map(mapSpotToListing);
-}, ["hotel-spots"], { revalidate: false, tags: ["spots"] }));
+  return data
+    .map(mapSpotToListing)
+    .filter((s: SpotListItem) => !s.closed) // 閉鎖済みはランキングに載せない
+    .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg);
+}, ["hotel-spots"], { revalidate: false, tags: ["spots"] });
+
+export const getHotelSpots = cache(async (limit = 4): Promise<SpotListItem[]> => {
+  const all = await _getHotelSpotsAll();
+  return all.slice(0, limit);
+});
 
 /** 翻訳付きトップスポット取得（ホームページ翻訳版用） */
 const _getTopSpotsTranslatedUncached = async (

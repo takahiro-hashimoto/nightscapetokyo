@@ -10,6 +10,10 @@ type Props = {
   localeSlug?: string;
 };
 
+// 同一セッション内の同じクエリで /api/search-suggest を再度叩かないための簡易キャッシュ
+const suggestCache = new Map<string, SuggestItem[]>();
+const SUGGEST_CACHE_MAX = 100;
+
 /**
  * サジェスト overlay のみを担当する client component。
  * フォーム本体は HeroSection がサーバー側で id="hero-search" / id="hero-q" として描画する。
@@ -58,10 +62,27 @@ export default function HeroSearchInput({ localeSlug }: Props) {
       });
     };
 
+    const applySuggestions = (spots: SuggestItem[]) => {
+      setSuggestions(spots);
+      if (spots.length > 0) {
+        updateRect();
+        setOpen(true);
+      } else {
+        setOpen(false);
+      }
+      setActiveIndex(-1);
+    };
+
     const fetchSuggestions = async (q: string) => {
       if (q.trim().length < 1) {
         setSuggestions([]);
         setOpen(false);
+        return;
+      }
+      const cacheKey = `${localeSlug ?? ""}:${q.trim().toLowerCase()}`;
+      const cached = suggestCache.get(cacheKey);
+      if (cached) {
+        applySuggestions(cached);
         return;
       }
       try {
@@ -69,14 +90,13 @@ export default function HeroSearchInput({ localeSlug }: Props) {
         if (localeSlug) params.set("locale", localeSlug);
         const res = await fetch(`/api/search-suggest?${params}`);
         const { spots } = await res.json();
-        setSuggestions(spots ?? []);
-        if ((spots ?? []).length > 0) {
-          updateRect();
-          setOpen(true);
-        } else {
-          setOpen(false);
+        const items: SuggestItem[] = spots ?? [];
+        if (suggestCache.size >= SUGGEST_CACHE_MAX) {
+          const oldest = suggestCache.keys().next().value;
+          if (oldest !== undefined) suggestCache.delete(oldest);
         }
-        setActiveIndex(-1);
+        suggestCache.set(cacheKey, items);
+        applySuggestions(items);
       } catch {
         setSuggestions([]);
         setOpen(false);

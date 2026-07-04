@@ -76,7 +76,6 @@ export function buildMainNavItems(
   }));
 
   const items: NavItem[] = [
-    { label: labels.recommend, href: `${prefix}/recommend/` },
     { label: labels.area, children: areaChildren, dropdownClass: "site-header-dropdown--area" },
     { label: labels.tag, children: tagChildren },
   ];

@@ -1,17 +1,17 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 
-export const revalidate = 3600
+export const revalidate = 86400
 
 export async function GET() {
   const admin = createAdminClient()
-  const { data } = await admin
+  const { data, error } = await admin
     .from('luminar_sale_settings')
     .select('sale_name, sale_start, sale_end, has_coupon')
     .eq('id', 1)
     .single()
 
-  if (!data) {
+  if (error || !data) {
     return NextResponse.json({ isActive: false, saleName: 'セール', hasCoupon: true })
   }
 

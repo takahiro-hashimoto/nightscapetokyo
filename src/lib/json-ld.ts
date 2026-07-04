@@ -67,6 +67,8 @@ export function buildOrganizationJsonLd() {
     logo: {
       "@type": "ImageObject",
       url: `${SITE_URL}/logo.png`,
+      width: 556,
+      height: 115,
     },
     founder: {
       "@type": "Person",
@@ -95,7 +97,6 @@ export function buildOrganizationJsonLd() {
 /** SiteNavigationElement（サイト全体に1つ） */
 export function buildSiteNavigationJsonLd(links?: { name: string; url: string }[]) {
   const navLinks = links ?? [
-    { name: "おすすめ夜景スポット", url: `${SITE_URL}/recommend/` },
     { name: "港区の夜景スポット", url: `${SITE_URL}/minato/` },
     { name: "渋谷区の夜景スポット", url: `${SITE_URL}/shibuya/` },
     { name: "千代田区の夜景スポット", url: `${SITE_URL}/chiyoda/` },
@@ -111,11 +112,17 @@ export function buildSiteNavigationJsonLd(links?: { name: string; url: string }[
     { name: "お問い合わせ", url: `${SITE_URL}/contact/` },
   ];
 
+  // name/url に配列を持つ単一エンティティは schema.org 的に不正なため、
+  // ItemList + SiteNavigationElement の形式で1リンク=1エンティティにする
   return {
     "@context": "https://schema.org",
-    "@type": "SiteNavigationElement",
-    name: navLinks.map((l) => l.name),
-    url: navLinks.map((l) => l.url),
+    "@type": "ItemList",
+    itemListElement: navLinks.map((l, i) => ({
+      "@type": "SiteNavigationElement",
+      position: i + 1,
+      name: l.name,
+      url: l.url,
+    })),
   };
 }
 
@@ -190,9 +197,13 @@ export function buildSiteNavigationJsonLdForLocale(locale: string) {
 
   return {
     "@context": "https://schema.org",
-    "@type": "SiteNavigationElement",
-    name: links.map((l) => l.name),
-    url: links.map((l) => `${SITE_URL}${l.path}`),
+    "@type": "ItemList",
+    itemListElement: links.map((l, i) => ({
+      "@type": "SiteNavigationElement",
+      position: i + 1,
+      name: l.name,
+      url: `${SITE_URL}${l.path}`,
+    })),
   };
 }
 
