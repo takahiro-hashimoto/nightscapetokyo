@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
 import Breadcrumb from "@/components/layout/Breadcrumb";

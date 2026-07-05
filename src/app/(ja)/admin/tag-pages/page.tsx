@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { Plus } from "lucide-react";
 import { getTagPages } from "@/lib/supabase/queries";
 import { createAdminClient } from "@/lib/supabase/server";

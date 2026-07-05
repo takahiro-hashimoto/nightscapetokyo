@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { getSpotsByCategoryTranslated } from "@/lib/supabase/queries";
 import { ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";

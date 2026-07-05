@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, startTransition } from "react";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { X } from "lucide-react";
 import "@/app/(ja)/moon/moon.css";
 

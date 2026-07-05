@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { getComponentLabels } from "@/lib/i18n-labels";
 
 export const metadata: Metadata = {

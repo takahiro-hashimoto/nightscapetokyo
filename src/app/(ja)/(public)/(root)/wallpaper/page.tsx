@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import Image from "next/image";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import RecommendCta from "@/components/common/RecommendCta";

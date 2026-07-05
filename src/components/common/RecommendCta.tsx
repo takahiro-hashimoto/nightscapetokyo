@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { Crown, ChevronRight } from "lucide-react";
 import type { SiteLocale } from "@/lib/types";
 

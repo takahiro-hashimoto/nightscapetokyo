@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { ExternalLink } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/server";
 import SpotForm from "@/components/admin/SpotForm";

@@ -1,6 +1,6 @@
 import { sanitizeHtml } from "@/lib/sanitize";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { Star, MapPin, Clock, Banknote, Mountain, Train } from "lucide-react";
 import type { SpotWithRelations, SiteLocale } from "@/lib/types";
 import { calcRatingAvg } from "@/lib/types";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import Image from "next/image";
 import { SITE_NAMES } from "@/lib/types";
 import type { SiteLocale } from "@/lib/types";

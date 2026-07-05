@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import SimulatorLoader from "./SimulatorLoader";
 import SimulatorInfoModal from "@/components/simulator/SimulatorInfoModal";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";

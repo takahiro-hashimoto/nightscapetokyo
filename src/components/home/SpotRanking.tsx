@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import type { SpotListItem } from "@/lib/types";
 import { extractTownAddress } from "@/lib/types";
 import { Star, Train } from "lucide-react";

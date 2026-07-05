@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, MapPin, FolderOpen, Tag, FileText, Newspaper, LogOut, Zap } from "lucide-react";
 import { logoutAction } from "@/app/(ja)/admin/actions";

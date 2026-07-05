@@ -9,9 +9,14 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
 
   images: {
-    unoptimized: false,
-    formats: ["image/webp"],
-    minimumCacheTTL: 2592000, // 30日: 最適化済み画像をサーバー側でキャッシュ
+    // R2直配信: 事前生成した幅別webp（scripts/backfill-r2-image-variants.mjs +
+    // /api/admin/upload が生成）を src/lib/image-loader.ts が返す。
+    // /_next/image を通らないため Image Transformations と画像分の
+    // Fast Data Transfer 課金がゼロになる（R2エグレスは無料）。
+    // deviceSizes / imageSizes は srcset の幅集合として引き続き使われるので、
+    // 変更する場合はバリアントの再生成（image-variants.ts と backfill）が必要。
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
     deviceSizes: [640, 828, 960, 1280, 1920],
     imageSizes: [180, 256, 384],
     remotePatterns: [

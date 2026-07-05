@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { Plus, Pencil } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/server";
 

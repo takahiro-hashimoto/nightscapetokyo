@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { ChevronRight } from "lucide-react";
 import { getArticlesBySlugs } from "@/lib/supabase/queries";
 import { LUMINAR_ARTICLE } from "@/lib/featured-articles";

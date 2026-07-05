@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { Star, MapPin } from "lucide-react";
 import type { RatingLabels } from "@/lib/i18n-labels";
 

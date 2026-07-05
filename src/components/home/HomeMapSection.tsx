@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import dynamic from "next/dynamic";
 import type { MapSpotItem } from "@/lib/supabase/queries";
 import { getSpotsForMap } from "@/lib/supabase/queries";

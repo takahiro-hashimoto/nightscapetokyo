@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { Star } from "lucide-react";
 import type { SpotListItem } from "@/lib/types";
 import { extractTownAddress } from "@/lib/types";

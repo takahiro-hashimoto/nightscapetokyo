@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { calculateSunData } from "@/lib/sun-calc";
 import { usePersistedMapState } from "@/hooks/usePersistedMapState";
 import { MAP_EVENTS } from "@/lib/map-events";

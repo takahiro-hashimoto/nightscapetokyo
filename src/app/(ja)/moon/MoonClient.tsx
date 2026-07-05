@@ -2,7 +2,7 @@
 
 import { useMemo, useEffect, useState } from "react";
 import { formatDateJa } from "@/lib/date-utils";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { calculateMoonData } from "@/lib/moon-calc";
 import { MOON_STORAGE_KEY } from "@/lib/map-persistence";
 import { usePersistedMapState } from "@/hooks/usePersistedMapState";

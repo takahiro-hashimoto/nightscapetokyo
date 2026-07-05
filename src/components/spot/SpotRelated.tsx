@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { Star } from "lucide-react";
 import type { SpotListItem } from "@/lib/types";
 import type { RelatedLabels } from "@/lib/i18n-labels";

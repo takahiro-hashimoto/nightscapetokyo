@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";

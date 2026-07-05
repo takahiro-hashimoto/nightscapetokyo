@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { getArticles } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";
 import Breadcrumb from "@/components/layout/Breadcrumb";

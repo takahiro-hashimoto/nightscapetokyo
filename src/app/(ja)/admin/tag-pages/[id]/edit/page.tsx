@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { ExternalLink } from "lucide-react";
 import TagPageForm from "@/components/admin/TagPageForm";
 import { getTagPageById, getTagPageTranslationStatus } from "@/lib/supabase/queries";

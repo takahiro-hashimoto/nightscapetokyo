@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import Script from "next/script";
 import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles, getSpotImagesBySlugs } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, startTransition } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Globe } from "lucide-react";

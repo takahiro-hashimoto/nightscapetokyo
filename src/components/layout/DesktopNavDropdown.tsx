@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 
 type SubNavItem = { label: string; href: string; count?: number };
 

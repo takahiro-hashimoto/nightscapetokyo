@@ -6,7 +6,7 @@ import {
   Train,
   Clock,
 } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { sanitizeHtml } from "@/lib/sanitize";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import SpotHero from "@/components/spot/SpotHero";

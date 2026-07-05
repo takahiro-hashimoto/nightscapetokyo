@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import TagArticle from "@/components/tag/TagArticle";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";

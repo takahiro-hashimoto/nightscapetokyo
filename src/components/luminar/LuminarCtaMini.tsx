@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/common/AppLink'
 import { useSaleSettings } from '@/hooks/useSaleSettings'
 
 export default function LuminarCtaMini() {

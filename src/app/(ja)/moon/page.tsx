@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import SunCalc from "suncalc";
 import MoonLoader from "./MoonLoader";
 import MoonInfoModal from "@/components/moon/MoonInfoModal";

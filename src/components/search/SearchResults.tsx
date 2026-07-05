@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { Star, ArrowUpDown } from "lucide-react";
 import type { SearchSpotItem } from "@/lib/supabase/queries";
 

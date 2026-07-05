@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import DevEditLink from "@/components/layout/DevEditLink";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import HeaderLogo from "./HeaderLogo";
 import DevAdminLink from "./DevAdminLink";
 import DesktopNavDropdown from "./DesktopNavDropdown";

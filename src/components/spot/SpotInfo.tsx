@@ -13,7 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import type { InfoLabels } from "@/lib/i18n-labels";
 import { localizeAffiliateHtml } from "@/lib/i18n-labels";
 import type { SpotHotel, SpotEvent } from "@/lib/types";

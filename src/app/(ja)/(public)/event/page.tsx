@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { getSpotsByCategory } from "@/lib/supabase/queries";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 import Breadcrumb from "@/components/layout/Breadcrumb";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import type { HomePageLabels } from "@/lib/i18n-labels";
 
 type FaqItem = {

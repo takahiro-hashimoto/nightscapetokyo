@@ -197,28 +197,21 @@ function SortableImageItem({
     setUploadError(null);
 
     try {
-      // 署名付きURLを取得
+      // サーバー経由でアップロード（幅別バリアントをサーバー側で生成してR2へ保存）
+      const formData = new FormData();
+      formData.append("file", file);
+
       const res = await fetch("/api/admin/upload", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ filename: file.name, contentType: file.type }),
+        body: formData,
       });
 
       if (!res.ok) {
         const { error } = await res.json();
-        throw new Error(error ?? "アップロードURLの取得に失敗しました");
+        throw new Error(error ?? "アップロードに失敗しました");
       }
 
-      const { signedUrl, publicUrl } = await res.json();
-
-      // R2に直接アップロード
-      const uploadRes = await fetch(signedUrl, {
-        method: "PUT",
-        headers: { "Content-Type": file.type },
-        body: file,
-      });
-
-      if (!uploadRes.ok) throw new Error("R2へのアップロードに失敗しました");
+      const { publicUrl } = await res.json();
 
       // URLフィールドに自動セット
       onUpdate(index, { ...img, url: publicUrl });

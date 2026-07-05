@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/common/AppLink'
 import { AFFILIATE_URL, COUPON_CODE } from '@/lib/luminar/config'
 import { useSaleSettings } from '@/hooks/useSaleSettings'
 

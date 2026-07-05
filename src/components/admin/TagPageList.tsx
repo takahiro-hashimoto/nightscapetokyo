@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { Pencil, Trash2, Loader2, ExternalLink } from "lucide-react";
 import { deleteTagPage } from "@/app/(ja)/admin/tag-pages/actions";
 

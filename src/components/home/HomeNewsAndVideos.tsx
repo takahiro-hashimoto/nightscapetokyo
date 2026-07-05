@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { getRecentSpots } from "@/lib/supabase/queries";
 import YouTubeFacade from "./YouTubeFacade";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import Link from "next/link";
+import Link from "@/components/common/AppLink";
 import { useRouter } from "next/navigation";
 import { Plus, Pencil, Trash2, Eye, EyeOff, Languages, Loader2 } from "lucide-react";
 import {
