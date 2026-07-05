@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/common/AppLink'
 import Image from 'next/image'
 import Footer from '@/components/layout/Footer'
 import Breadcrumb from '@/components/layout/Breadcrumb'
@@ -34,7 +34,7 @@ const FAQ_JSON_LD = [
     name: '拡張機能（Proツール）は必須ですか？',
     acceptedAnswer: {
       '@type': 'Answer',
-      text: '必須ではありません。基本機能だけでも十分な編集が可能です。ただし、ノイズ除去や超解像といった高度な処理を使いたい場合はProツールが必要になります。',
+      text: '現在はProツール全8種（ノイズ除去、超解像、HDR合成など）がすべての買い切りライセンスに標準で含まれており、追加購入なしで永続利用できます。パスの購入は生成AIの継続利用や新機能アップデートが欲しい場合のみ検討すればOKです。',
     },
   },
   {
@@ -142,8 +142,8 @@ export default async function LuminarTopPage() {
                   Luminar Neo 完全購入ガイド｜ ルミナーネオの特徴・料金・安く買う方法を解説
                 </h1>
                 <div className="firstVisual-meta">
-                  <time className="firstVisual-date" dateTime="2026-04-20">
-                    最終更新: 2026年4月20日
+                  <time className="firstVisual-date" dateTime="2026-07-05">
+                    最終更新: 2026年7月5日
                   </time>
                   <span className="firstVisual-badge">一部広告を含みます</span>
                 </div>
@@ -218,8 +218,8 @@ export default async function LuminarTopPage() {
                   </dd>
                   <dt>柔軟なライセンス</dt>
                   <dd>
-                    買い切り版なら基本機能が永続利用可能。サブスク疲れしている方にも選ばれています。
-                    必要に応じて拡張機能を追加していく形式です。
+                    買い切り版なら基本機能もProツールも永続利用可能。サブスク疲れしている方にも選ばれています。
+                    生成AIや新機能を使い続けたい場合だけパスを追加する形式です。
                   </dd>
                 </dl>
               </div>
@@ -255,8 +255,9 @@ export default async function LuminarTopPage() {
               </p>
               <p>
                 買い切りには3つのグレード（デスクトップ/クロスデバイス/Max）があり、
-                「パスを1年だけ購入してProツールを永続取得する」方法がコスパ最強と言われています。
-                ただ、正解は使用頻度や予算によって変わるので、自分に合ったプランを見つけることが大切です。
+                Proツール全8種はどのグレードにも標準で含まれ、永続的に使えます。
+                パスは生成AIの継続利用や新機能アップデートが欲しい人向けのオプション。
+                正解は使用頻度や予算によって変わるので、自分に合ったプランを見つけることが大切です。
               </p>
 
               <h3>買い切り版でできること・できないこと</h3>
@@ -265,22 +266,24 @@ export default async function LuminarTopPage() {
                 <dl className="definition-body">
                   <dt>買い切りライセンス</dt>
                   <dd>
-                    基本機能（RAW現像、Sky AI、補正AIなど）が永続的に使えます。
-                    デスクトップ版 約¥18,000、クロスデバイス版 約¥24,000、Max版 約¥27,000の3グレード展開。
+                    基本機能（RAW現像、Sky AI、補正AIなど）に加え、Proツール全8種（ノイズ除去、超解像、HDR合成など）も永続的に使えます。
+                    デスクトップ版 ¥15,980、クロスデバイス版 ¥17,980、Max版 ¥21,480の3グレード展開（セール価格・時期により変動）。
                   </dd>
                   <dt>パス（年額オプション）</dt>
                   <dd>
-                    Proツール全8種（ノイズ除去、超解像、HDR合成など）を永続取得できます。
-                    さらに生成AIと最新アップデートも利用可能。
-                    Upgrade Pass 年額約¥7,400、Ecosystem Pass 年額約¥10,400。
+                    有効期間中の新機能アップデートと生成AIの無制限利用ができます。
+                    Ecosystem PassならさらにLuminar Mobileやクロスデバイス編集、Spaces（Webギャラリー）も利用可能。
+                    Upgrade Pass 年額約¥7,400、Ecosystem Pass 年額約¥10,400（為替により変動）。
+                    パスが切れてもアプリ本体・基本機能・Proツールは永続で使えます。
                   </dd>
                 </dl>
               </div>
 
               <h3>AI機能は更新しないとどうなる？</h3>
               <p>
-                パス加入中のみ利用可能です。翌年更新しないと使えなくなりますが、
-                Proツールは手元に残ります。生成AIが不要なら更新しないという選択もアリです。
+                生成AIは買い切りの購入日から1年間利用でき、以後はパス等での更新が必要です。
+                更新しないと生成AIと新機能アップデートは止まりますが、
+                アプリ本体・基本機能・Proツールは手元に残ります。生成AIが不要なら更新しないという選択もアリです。
               </p>
 
               <h3>パスは1年だけでも問題ない？</h3>
@@ -369,8 +372,8 @@ export default async function LuminarTopPage() {
 
               <h3>何年使うとどちらが得か？</h3>
               <p>
-                たとえば3年間のコストで比較すると、Luminar Neo（買い切り＋パス1年）は約¥25,000、
-                Lightroomフォトプランは約¥42,000。コスト面ではLuminar Neoが有利です。
+                たとえば3年間のコストで比較すると、Luminar Neo（買い切りのみ）は約¥16,000、
+                Lightroomプラン（1TB・年間一括）は約¥42,240。コスト面ではLuminar Neoが有利です。
               </p>
               <p>
                 ただし、両方を併用している方も実は多くいます。LightroomからLuminar Neoをプラグインとして
@@ -460,8 +463,8 @@ export default async function LuminarTopPage() {
                 <div className="faq-item">
                   <dt className="faq-q">拡張機能（Proツール）は必須ですか？</dt>
                   <dd className="faq-a">
-                    必須ではありません。基本機能だけでも十分な編集が可能です。ただし、ノイズ除去や超解像といった
-                    高度な処理を使いたい場合はProツールが必要になります。詳細は「
+                    現在はProツール全8種（ノイズ除去、超解像、HDR合成など）がすべての買い切りライセンスに標準で含まれており、
+                    追加購入なしで永続利用できます。詳細は「
                     <Link href="/luminar/expand/">拡張機能でできることまとめ</Link>」で解説しています。
                   </dd>
                 </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
@@ -10,7 +10,7 @@ const META = {
   title: 'Luminar Neo購入前FAQ｜動作環境・対応カメラ・ライセンスの疑問を解決【2026年】',
   description: '「Luminar Neoって自分に合うのかな？」「買ってから後悔しない？」——そんな不安を抱えている方、多いと思います。このページでは、購入前によく寄せられる疑問をSkylum公式のカスタマーサポートにも問い合わせた上でQ&A形式でまとめました。',
   publishedAt: '2026-01-19T10:28:58',
-  updatedAt: '2026-01-23T13:49:18',
+  updatedAt: '2026-07-05T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/faq.jpg',
     alt: 'Luminar Neoの購入前によくある質問まとめ｜動作環境・対応カメラ・ライセンスの疑問を解決【FAQ】',
@@ -44,15 +44,15 @@ const lead = (
 )
 
 const FAQ_JSON_LD = [
-  { '@type': 'Question', name: 'Luminar Neoの価格はいくら？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoは「永久ライセンス デスクトップ版」「クロスデバイス 永続ライセンス」「永久 Maxライセンス」の3種類が用意されています。買い切りプランには基本機能のみが含まれ、Proツール（Noiseless AI、HDR Mergeなど8種）を使いたい場合は別途Upgrade PassまたはEcosystem Passの購入が必要です。' } },
+  { '@type': 'Question', name: 'Luminar Neoの価格はいくら？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoは「永久ライセンス デスクトップ版」「クロスデバイス 永続ライセンス」「永久 Maxライセンス」の3種類が用意されています。2026年7月時点のセール価格はデスクトップ版¥15,980、クロスデバイス¥17,980、Max¥21,480です（セール価格は時期により変動します）。Proツール（Noiseless AI、HDR Mergeなど8種）は現在すべての買い切りライセンスに標準で含まれており、追加購入なしで永続的に使えます。' } },
   { '@type': 'Question', name: 'Luminar Neoを安く買う方法はある？', acceptedAnswer: { '@type': 'Answer', text: '公式サイトでは定期的にクーポンコードが発行されています。また年に数回開催されるセール時にはさらに割引率が高くなることもあります。' } },
-  { '@type': 'Question', name: '買い切りとパスの違いは？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoは買い切り（永久ライセンス）プランのみの販売です。一度購入すれば基本機能はずっと使い続けられます。Proツール（8種）を使うにはUpgrade PassまたはEcosystem Passが必要ですが、一度購入すれば永続利用できます。' } },
+  { '@type': 'Question', name: '買い切りとパスの違いは？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoは買い切り（永久ライセンス）プランのみの販売です。一度購入すれば、Proツール（8種）を含む編集機能はずっと使い続けられます。Upgrade Pass（年額$49・約¥7,400）やEcosystem Pass（年額$69・約¥10,400）は、有効期間中の新機能アップデートと生成AIの無制限利用（Ecosystem Passはさらにモバイル連携など）を追加する年額オプションで、パスが失効してもアプリ本体とProツールはそのまま使い続けられます。' } },
   { '@type': 'Question', name: '合わなかった場合、返金できる？', acceptedAnswer: { '@type': 'Answer', text: 'はい、購入から30日以内であれば返金を申請できます。いわゆる「30日間返金保証」がついています。' } },
-  { '@type': 'Question', name: '無料体験版はある？', acceptedAnswer: { '@type': 'Answer', text: 'あります。公式サイトから7日間の無料トライアルをダウンロードできます。クレジットカードの登録も不要で、メールアドレスだけでOKです。' } },
+  { '@type': 'Question', name: '無料体験版はある？', acceptedAnswer: { '@type': 'Answer', text: 'あります。公式サイトから7日間の無料トライアルをダウンロードできます。クレジットカードの登録も不要で、メールアドレスだけでOKです。体験版ではProツールを含むすべての機能にフルアクセスできます。' } },
   { '@type': 'Question', name: '初心者でも使える？', acceptedAnswer: { '@type': 'Answer', text: '使えます。Luminar NeoはAIが自動で良い感じに仕上げてくれるアプローチなので、初心者でも直感的に操作できます。' } },
   { '@type': 'Question', name: 'Lightroomと何が違う？', acceptedAnswer: { '@type': 'Answer', text: 'Lightroomは「写真を管理しながら現像するソフト」、Luminar Neoは「編集に特化したソフト」です。日常的に大量の写真を扱うならLightroom、1枚1枚をしっかり仕上げたいならLuminar Neoという棲み分けになります。' } },
   { '@type': 'Question', name: 'LightroomやPhotoshopと併用できる？', acceptedAnswer: { '@type': 'Answer', text: 'できます。Luminar NeoはLightroom ClassicおよびPhotoshopのプラグインとして動作します。既存のワークフローを変えずに導入することが可能です。' } },
-  { '@type': 'Question', name: 'Proツール（拡張機能）は必要？', acceptedAnswer: { '@type': 'Answer', text: '用途によります。Proツールは買い切りプランには含まれていません。使うにはUpgrade Pass（年額約7,400円）またはEcosystem Pass（年額約10,400円）が必要ですが、一度購入すればProツールは永続的に使えます。' } },
+  { '@type': 'Question', name: 'Proツール（拡張機能）は必要？', acceptedAnswer: { '@type': 'Answer', text: '用途によります。Proツールは高度なノイズ除去やHDR合成など専門的な編集機能ですが、現在はProツール8種すべてが買い切り（永久）ライセンスに標準で含まれており、追加購入なしで永続的に使えます。' } },
   { '@type': 'Question', name: '対応しているカメラは？', acceptedAnswer: { '@type': 'Answer', text: 'Canon、Nikon、Sony、Fujifilmなど主要カメラメーカーに幅広く対応しています。対応カメラのライブラリは定期的に更新されます。' } },
   { '@type': 'Question', name: 'RAW現像もできる？', acceptedAnswer: { '@type': 'Answer', text: 'はい、できます。Luminar Neoは独自の強力なRAWエンジンを搭載していて、RAW現像ソフトとしても十分に使えます。' } },
   { '@type': 'Question', name: '編集は非破壊？', acceptedAnswer: { '@type': 'Answer', text: 'はい、非破壊編集に対応しています。元の写真ファイルを直接書き換えるのではなく、編集内容を別で保持する仕組みなので、いつでも元の状態に戻せます。' } },
@@ -60,9 +60,9 @@ const FAQ_JSON_LD = [
   { '@type': 'Question', name: '動作が重いことはある？', acceptedAnswer: { '@type': 'Answer', text: '正直に言うと、あります。特にAI機能を使った処理は負荷が高いので、PCのスペックによっては待ち時間が発生します。' } },
   { '@type': 'Question', name: '何台のPCにインストールできる？', acceptedAnswer: { '@type': 'Answer', text: '永久ライセンス デスクトップ版の場合、2台のPCにインストールできます。クロスデバイス版を選ぶと、さらに3台のモバイルデバイスでも使用できます。' } },
   { '@type': 'Question', name: 'オフライン環境でも使える？', acceptedAnswer: { '@type': 'Answer', text: '基本的には使えます。ただし、ライセンス認証や一部のAI機能、アップデートの確認にはインターネット接続が必要です。' } },
-  { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'いいえ、使えません。Proツールは買い切りプランには含まれていません。Proツールを使うにはUpgrade Pass（年額約7,400円）またはEcosystem Pass（年額約10,400円）の購入が必要です。' } },
-  { '@type': 'Question', name: '一度パスを買ったらProツールはずっと使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、永続的に使えます。パスを購入するとProツールは永続的にアンロックされます。翌年パスを更新しなくても、Proツールは消えません。ただし生成AI機能と最新アップデートはパスを継続しないと使えなくなります。' } },
-  { '@type': 'Question', name: 'コスパの良い買い方は？', acceptedAnswer: { '@type': 'Answer', text: '「Proツールだけ使えればいい」という方は、買い切りプラン＋Upgrade Pass 1年だけが最もコスパの良い選択です。初期費用は約25,200円ですが、一度パスを購入すればProツールは永続的に使えます。' } },
+  { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、使えます。現在はProツール（8種）がすべての買い切り（永久）ライセンスに標準で含まれており、パスの購入は不要です。永続的に利用できます。' } },
+  { '@type': 'Question', name: '一度パスを買ったらProツールはずっと使える？', acceptedAnswer: { '@type': 'Answer', text: 'そもそもProツールはパスの有無に関係なく、買い切りライセンスに標準で含まれ永続的に使えます。パス（Upgrade Pass／Ecosystem Pass）が担うのは有効期間中の新機能アップデートと生成AIの無制限利用で、パスが失効するとこれらのみ使えなくなります。アプリ本体とProツールはそのまま使い続けられます。' } },
+  { '@type': 'Question', name: 'コスパの良い買い方は？', acceptedAnswer: { '@type': 'Answer', text: '「Proツールを含む編集機能だけ使えればいい」という方は、永久ライセンス デスクトップ版だけの購入が最もコスパの良い選択です（2026年7月時点のセール価格で¥15,980）。Proツール8種も標準で含まれ永続的に使えます。生成AIの継続利用や新機能アップデートが欲しい場合のみ、Upgrade Pass（年額約¥7,400）を追加・更新する形になります。' } },
 ]
 
 export default async function Page() {
@@ -75,8 +75,8 @@ export default async function Page() {
         <div className="faq-item">
           <dt className="faq-q">Luminar Neoの価格はいくら？</dt>
           <dd className="faq-a">
-            Luminar Neoの価格は、選ぶプランによって変わります。現在は「永久ライセンス デスクトップ版」「クロスデバイス 永続ライセンス」「永久 Maxライセンス」の3種類が用意されていて、モバイルアプリやCreative Libraryへのアクセスが含まれるかどうかで価格が異なります。
-            <strong>重要：</strong>買い切りプランには基本機能のみが含まれます。Proツール（Noiseless AI、HDR Mergeなど8種）を使いたい場合は、別途Upgrade PassまたはEcosystem Passの購入が必要です。
+            Luminar Neoの価格は、選ぶプランによって変わります。現在は「永久ライセンス デスクトップ版」「クロスデバイス 永続ライセンス」「永久 Maxライセンス」の3種類が用意されていて、モバイルアプリやCreative Libraryへのアクセスが含まれるかどうかで価格が異なります。2026年7月時点のセール価格は、デスクトップ版¥15,980（通常¥29,960）、クロスデバイス¥17,980（通常¥44,990）、Max¥21,480（通常¥69,999）です。セール価格は時期により変動します。
+            <strong>重要：</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在すべての買い切りライセンスに標準で含まれています。追加購入なしで永続的に使えます。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">Luminar Neoの料金プラン詳細はこちら</Link>
           </dd>
         </div>
@@ -90,13 +90,14 @@ export default async function Page() {
         <div className="faq-item">
           <dt className="faq-q">買い切りとパスの違いは？</dt>
           <dd className="faq-a">
-            Luminar Neoは買い切り（永久ライセンス）プランのみの販売となっています。一度購入すれば基本機能はずっと使い続けられます。
-            ただし、以下の機能には別途パスの購入が必要です：
+            Luminar Neoは買い切り（永久ライセンス）プランのみの販売となっています。一度購入すれば、Proツール（8種）を含む編集機能はずっと使い続けられます。
+            パス（Upgrade Pass 年額$49・約¥7,400／Ecosystem Pass 年額$69・約¥10,400）は、以下を追加する年額オプションです：
             <ul>
-              <li><strong>Proツール（8種）</strong>：Noiseless AI、Supersharp AI、HDR Merge、Background Removal AIなど → <strong>Upgrade PassまたはEcosystem Passが必要</strong>（一度購入すれば永続利用可）</li>
-              <li><strong>生成AI機能</strong>：GenErase、GenSwap、GenExpand → 買い切りのみの場合は購入から1年間、パス購入時は2026年12月末まで</li>
-              <li><strong>最新アップデート</strong>：パス購入者のみ</li>
+              <li><strong>新機能アップデート</strong>：パスの有効期間中にリリースされる新機能・アップデートを受け取れます</li>
+              <li><strong>生成AI機能の無制限利用</strong>：GenErase、GenSwap、GenExpand → 買い切りのみの場合は購入日から1年間利用可、以後はパスで更新</li>
+              <li><strong>Ecosystem Passのみの特典</strong>：Luminar Mobile、クロスデバイス編集、Spaces</li>
             </ul>
+            パスが失効しても、アプリ本体とProツールはそのまま永続的に使えます。失効で止まるのは生成AIと以後のアップデートのみです。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">プラン形式の詳細を確認する</Link>
           </dd>
         </div>
@@ -116,7 +117,7 @@ export default async function Page() {
           <dd className="faq-a">
             あります。公式サイトから7日間の無料トライアルをダウンロードできます。クレジットカードの登録も不要で、メールアドレスだけでOK。
             基本的な操作感やインターフェースを確認するには十分な期間です。「自分のPCでちゃんと動くか」「操作感が合うか」をまず試してみてください。
-            ※Proツールについては、体験版での利用に制限がある場合があります。詳細は公式サイトでご確認ください。
+            体験版ではProツールを含むすべての機能にフルアクセスできるので、購入前に一通りの機能を試せます。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/trial/">体験版のダウンロードと詳細について</Link>
           </dd>
         </div>
@@ -164,8 +165,7 @@ export default async function Page() {
           <dt className="faq-q">Proツール（拡張機能）は必要？</dt>
           <dd className="faq-a">
             <strong>用途によります。</strong>Proツール（旧称：拡張機能・エクステンション）は、高度なノイズ除去やHDR合成など、より専門的な編集機能です。
-            <strong>【重要】Proツールは買い切りプランには含まれていません。</strong>公式カスタマーサポートによると、Proツールを使うにはUpgrade Pass（年額約¥7,400）またはEcosystem Pass（年額約¥10,400）の購入が必要です。
-            嬉しいのは、<strong>一度パスを購入すれば、Proツールは永続的に使える</strong>こと。翌年パスを更新しなくても、Proツールは消えません（生成AI機能と最新アップデートは使えなくなります）。
+            嬉しいのは、<strong>現在はProツール8種すべてが買い切り（永久）ライセンスに標準で含まれている</strong>こと。パスなどの追加購入は不要で、どの買い切りプランでも永続的に使えます。
             Proツール全8種：
             <ul>
               <li>Supersharp AI（シャープネス強化）</li>
@@ -294,23 +294,23 @@ export default async function Page() {
         <div className="faq-item">
           <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
           <dd className="faq-a">
-            <strong>いいえ、使えません。</strong>公式カスタマーサポートに確認したところ、Proツール（旧：拡張機能・エクステンション）は買い切りプランには含まれていません。
-            Proツールを使うには、Upgrade Pass（年額約¥7,400）またはEcosystem Pass（年額約¥10,400）の購入が必要です。
+            <strong>はい、使えます。</strong>現在は、Proツール（旧：拡張機能・エクステンション）8種すべてが買い切りプランに標準で含まれています。
+            パスなどの追加購入は不要で、どの買い切りライセンスでも永続的に利用できます。
           </dd>
         </div>
         <div className="faq-item">
           <dt className="faq-q">一度パスを買ったらProツールはずっと使える？</dt>
           <dd className="faq-a">
-            <strong>はい、永続的に使えます。</strong>パスを購入するとProツールは永続的にアンロックされます。翌年パスを更新しなくても、Proツールは消えません。
-            ただし、生成AI機能（GenErase、GenSwap、GenExpand）と最新アップデートは、パスを継続しないと使えなくなります。
+            そもそも<strong>Proツールはパスの有無に関係なく、買い切りライセンスで永続的に使えます</strong>。パスを購入・更新しなくても、Proツールが消えることはありません。
+            パス（Upgrade Pass／Ecosystem Pass）が担うのは、有効期間中の新機能アップデートと生成AI機能（GenErase、GenSwap、GenExpand）の無制限利用です。パスが失効すると、これらのみ使えなくなります。
           </dd>
         </div>
         <div className="faq-item faq-item-last">
           <dt className="faq-q">コスパの良い買い方は？</dt>
           <dd className="faq-a">
-            「Proツールだけ使えればいい」という方は、<strong>買い切りプラン＋Upgrade Pass 1年だけ</strong>が最もコスパの良い選択です。
-            初期費用は約¥25,200（買い切り約¥17,850＋パス約¥7,400）ですが、一度パスを購入すればProツールは永続的に使えます。5年使っても追加費用はかかりません。
-            生成AI機能も継続して使いたい場合は、毎年パスを更新する形になります。
+            「Proツールを含む編集機能だけ使えればいい」という方は、<strong>永久ライセンス デスクトップ版だけ</strong>を購入するのが最もコスパの良い選択です。
+            2026年7月時点のセール価格なら¥15,980（通常¥29,960）で、Proツール8種も標準で含まれて永続的に使えます。5年使っても追加費用はかかりません。
+            生成AI機能を継続して使いたい場合や、新機能アップデートを受け取りたい場合のみ、Upgrade Pass（年額約¥7,400）を追加・更新する形になります。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">料金プランの詳細とコストシミュレーション</Link>
           </dd>
         </div>

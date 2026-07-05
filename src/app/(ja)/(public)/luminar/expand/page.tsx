@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
@@ -10,14 +10,14 @@ import type { TocItem } from '@/lib/luminar/toc'
 
 const META = {
   slug: 'expand',
-  title: 'Luminar Neoの拡張機能まとめ。できること・メリットと価格プランの選び方',
+  title: 'Luminar NeoのProツール8種を徹底解説｜買い切り版に標準搭載【2026年】',
   description:
-    'Luminar Neoを使い始めて、ふと気になったことはありませんか？「Proツール（拡張機能）って、結局のところ必要なの？」と。 僕自身、最初はLuminar…',
+    'Luminar NeoのProツール8種（Noiseless AI・Upscale AI・HDR Mergeなど）でできることを解説。現在はすべての買い切りライセンスに標準搭載で、追加購入は不要です。各ツールの活用例と、パス（生成AI・アップデート）との関係もまとめました。',
   publishedAt: '2026-01-19T09:32:32',
-  updatedAt: '2026-01-21T19:10:26',
+  updatedAt: '2026-07-05T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/expand.jpg',
-    alt: 'Luminar Neoの拡張機能まとめ。できること・メリットと価格プランの選び方',
+    alt: 'Luminar NeoのProツール8種を徹底解説｜買い切り版に標準搭載【2026年】',
     width: 1920,
     height: 1080,
   },
@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const TOC: TocItem[] = [
   { id: 'what-is-pro', level: 2, text: 'Luminar NeoのProツール（拡張機能）とは何か？' },
-  { id: 'pro-not-included', level: 3, text: '【重要】Proツールは買い切りプランには含まれていない' },
+  { id: 'pro-included', level: 3, text: '【重要】Proツールはすべての買い切りプランに標準搭載' },
   { id: 'pro-list', level: 2, text: 'Proツール（拡張機能）全8種の一覧と特徴' },
   { id: 'supersharp', level: 3, text: '①スーパーシャープAI（Supersharp AI）' },
   { id: 'noiseless', level: 3, text: '②ノイズレスAI（Noiseless AI）' },
@@ -43,7 +43,7 @@ const TOC: TocItem[] = [
   { id: 'panorama', level: 3, text: '⑧パノラマスティッチング（Panorama Stitching）' },
   { id: 'purpose', level: 2, text: 'Proツール（拡張機能）があると何が変わる？（目的別）' },
   { id: 'compare-adobe', level: 2, text: 'Adobe Lightroom / Photoshopとの比較' },
-  { id: 'price', level: 2, text: 'Proツール（拡張機能）の価格と購入方法' },
+  { id: 'price', level: 2, text: 'Luminar Neoの価格プランとパスの役割' },
   { id: 'faq', level: 2, text: 'よくある質問（FAQ）' },
   { id: 'summary', level: 2, text: 'まとめ｜Proツールはどんな人に向いているか？' },
 ]
@@ -61,14 +61,14 @@ export default function Page() {
           <p>Luminar Neoを使い始めて、ふと気になったことはありませんか？「Proツール（拡張機能）って、結局のところ必要なの？」と。</p>
           <p>僕自身、最初はLuminar Neoの標準機能だけで十分だと思っていました。でも、使い込んでいくうちに「もうちょっとここをどうにかしたい」という場面が増えてきたんです。</p>
           <p>高感度で撮った夜景写真のノイズをもっときれいに消したい、手ブレしてしまった写真をなんとか救いたい…。そういった<strong>「あと一歩」の部分を補ってくれるのがProツール</strong>でした。</p>
-          <p>そこで本記事では日々Luminar Neoの拡張機能を愛用している僕が、この機能のできることや購入方法を解説していきます。</p>
+          <p>そこで本記事では日々Luminar NeoのProツールを愛用している僕が、この機能のできることや料金プランとの関係を解説していきます。</p>
           <div className="m-abstract">
             <span className="m-abstract__label">この記事の結論</span>
             <ul>
               <li><strong>Proツールとは？</strong>→ 高度な補正・特殊編集機能（全8種）</li>
-              <li><strong>買い切りに含まれる？</strong>→ 含まれない。パスの購入が必要</li>
-              <li><strong>一度買えば永続？</strong>→ はい。翌年更新しなくてもProツールは使い続けられる</li>
-              <li><strong>価格は？</strong>→ Upgrade Pass 年額約¥7,400</li>
+              <li><strong>買い切りに含まれる？</strong>→ 含まれる。現在はすべての買い切りライセンスに標準搭載</li>
+              <li><strong>追加費用は？</strong>→ 不要。Proツールは永続で使い続けられる</li>
+              <li><strong>パスが必要なのは？</strong>→ 生成AIツールと最新アップデートを使い続けたい場合のみ</li>
             </ul>
           </div>
           <LuminarCtaMini />
@@ -80,8 +80,8 @@ export default function Page() {
         <h2>Luminar NeoのProツール（拡張機能）とは何か？</h2>
         <p>Luminar NeoのProツール（旧称：拡張機能・エクステンション）は、標準のソフトウェアに追加できる<strong>「高度な補正機能」や「特殊な編集機能」</strong>のことです。Photoshopでいうところの「専用プラグイン」や「複雑な合成作業」を、ワンクリック〜数回の操作で実現できます。</p>
         <p>僕がProツールを使い始めて感じたのは、「これ、Photoshopでやろうとしたら何時間かかるんだろう」という作業が、本当に数クリックで終わる快適さでした。特に時間のない中で大量の写真を処理しなければならないときには、この差は想像以上に大きいです。</p>
-        <h3 id="pro-not-included">【重要】Proツールは買い切りプランには含まれていない</h3>
-        <p>公式カスタマーサポートに確認したところ、<strong>Proツールは基本の買い切りライセンスには含まれていません</strong>。Proツールを使うには、<strong>Upgrade Pass</strong>または<strong>Ecosystem Pass</strong>の購入が必要です。</p>
+        <h3 id="pro-included">【重要】Proツールはすべての買い切りプランに標準搭載</h3>
+        <p>以前は「拡張機能（エクステンション）」として別売りされていた時期もありましたが、<strong>現在はProツール8種すべてが、どの買い切り（永久）ライセンスにも標準で含まれています</strong>。追加購入やパスの契約は不要で、そのまま永続的に使えます。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -94,23 +94,23 @@ export default function Page() {
             <tbody>
               <tr>
                 <td>買い切りプランのみ</td>
-                <td><span className="text-false">×使えない</span></td>
-                <td>基本機能のみ</td>
+                <td><span className="text-true">◯標準搭載・永続利用可</span></td>
+                <td>全編集機能＋Proツール8種が使える</td>
               </tr>
               <tr>
                 <td>買い切り＋Upgrade Pass</td>
-                <td><span className="text-true">◯永続利用可</span></td>
-                <td>一度購入すれば永続</td>
+                <td><span className="text-true">◯標準搭載・永続利用可</span></td>
+                <td>さらに生成AI＋最新アップデートが継続</td>
               </tr>
               <tr>
                 <td>買い切り＋Ecosystem Pass</td>
-                <td><span className="text-true">◯永続利用可</span></td>
-                <td>モバイル機能も含む</td>
+                <td><span className="text-true">◯標準搭載・永続利用可</span></td>
+                <td>さらにモバイルアプリ・クロスデバイス編集も</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p>嬉しいポイントは、<strong>一度パスを購入すれば、Proツールは永続的に使える</strong>ということ。翌年パスを更新しなくても、Proツールは消えません（ただし生成AI機能と最新アップデートは使えなくなります）。</p>
+        <p>嬉しいポイントは、<strong>パスを買わなくてもProツールは永続的に使える</strong>ということ。パスが必要になるのは、生成AIツール（GenErase・GenSwap・GenExpand）や最新機能アップデートを使い続けたい場合だけです。パスが失効しても、アプリ本体・基本機能・Proツールはそのまま使えます。</p>
       </section>
 
       {/* セクション2: Proツール全8種 */}
@@ -359,7 +359,7 @@ export default function Page() {
             </tbody>
           </table>
         </div>
-        <p>僕自身の体験で言えば、ノイズレスAIとスーパーシャープAIだけでも、パスを購入した価値は十分にありました。「撮り直しが効かない写真を救えた」という経験は、金額以上の価値があったと思っています。</p>
+        <p>僕自身の体験で言えば、ノイズレスAIとスーパーシャープAIだけでも、Luminar Neoを選んだ価値は十分にありました。「撮り直しが効かない写真を救えた」という経験は、金額以上の価値があったと思っています。しかもこれらのProツールは買い切りライセンスに標準で含まれているので、追加費用はかかりません。</p>
       </section>
 
       {/* セクション4: Adobe比較 */}
@@ -403,8 +403,8 @@ export default function Page() {
               </tr>
               <tr>
                 <td><strong>価格（3年間）</strong></td>
-                <td><strong>約¥25,200</strong>（パス1年のみ）</td>
-                <td>約¥42,000（フォトプラン）</td>
+                <td><strong>¥15,980</strong>（買い切りのみ・Proツール込み）</td>
+                <td>約¥42,240（Lightroomプラン1TB・月1,480円）</td>
               </tr>
               <tr>
                 <td><strong>料金体系</strong></td>
@@ -425,8 +425,40 @@ export default function Page() {
 
       {/* セクション5: 価格と購入方法 */}
       <section id="price" className="content-card card-padding article-body">
-        <h2>Proツール（拡張機能）の価格と購入方法</h2>
-        <h3>Proツールを使うにはパスが必要</h3>
+        <h2>Luminar Neoの価格プランとパスの役割</h2>
+        <h3>Proツールは買い切りに標準搭載（追加購入は不要）</h3>
+        <p>繰り返しになりますが、<strong>Proツール8種はすべての買い切りライセンスに標準で含まれています</strong>。日本公式ストアの買い切りプランは以下の3種類です。</p>
+        <div className="m-table-wrap">
+          <table className="m-table">
+            <thead>
+              <tr>
+                <th>買い切りプラン</th>
+                <th>価格（セール中）</th>
+                <th>通常価格</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>デスクトップ</strong></td>
+                <td>¥15,980</td>
+                <td>¥29,960</td>
+              </tr>
+              <tr>
+                <td><strong>クロスデバイス</strong></td>
+                <td>¥17,980</td>
+                <td>¥44,990</td>
+              </tr>
+              <tr>
+                <td><strong>Max</strong></td>
+                <td>¥21,480</td>
+                <td>¥69,999</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>※価格・プラン情報は2026年7月5日確認時点（サマーセール価格）。セール価格は時期により変動しますが、ほぼ通年何らかのセールが実施されています。</p>
+        <h3>パスの役割は「生成AI」と「最新アップデート」</h3>
+        <p>では、UpgradeパスやEcosystemパスは何のためにあるのか？というと、<strong>生成AIツール（GenErase・GenSwap・GenExpand）の無制限利用と、新機能アップデートを受け取り続けるため</strong>のものです。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -439,52 +471,53 @@ export default function Page() {
             <tbody>
               <tr>
                 <td><strong>Upgrade Pass</strong></td>
-                <td>年額 約¥7,400</td>
-                <td>Proツール全8種（永続）＋生成AI＋最新アップデート</td>
+                <td>年額$49（約¥7,400・為替により変動）</td>
+                <td>パス有効期間中の新機能アップデート＋生成AIツール無制限</td>
               </tr>
               <tr>
                 <td><strong>Ecosystem Pass</strong></td>
-                <td>年額 約¥10,400</td>
-                <td>上記＋モバイルアプリ＋クロスデバイス編集</td>
+                <td>年額$69（約¥10,400）</td>
+                <td>上記＋Luminar Mobile＋クロスデバイス編集＋Spaces（Webギャラリー）</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <h3>コスパ最強の買い方</h3>
-        <p><strong>一度パスを購入すれば、Proツールは永続的に使えます</strong>。「買い切り＋パス1年だけ」が最もコスパの良い選択です。</p>
+        <p>なお、生成AIツールは買い切りの購入日から1年間は追加費用なしで使えます（クラウド処理のためネット接続必須）。<strong>パスが失効しても、アプリ本体・基本機能・Proツールはそのまま永続で使えます</strong>。使えなくなるのは「生成AIツール」と「以後の新機能アップデート」だけです。</p>
+        <h3>購入パターン別の費用目安</h3>
+        <p>Proツール目的なら<strong>買い切りだけでOK</strong>。生成AIやアップデートを継続したい場合のみパスを検討しましょう。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
               <tr>
                 <th>購入パターン</th>
-                <th>初期費用</th>
-                <th>5年間の総コスト</th>
+                <th>費用の目安</th>
+                <th>できること</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>買い切りのみ</td>
-                <td>約¥17,850</td>
-                <td>約¥17,850（Proツールなし）</td>
-              </tr>
               <tr style={{ backgroundColor: '#fffde7' }}>
-                <td><strong>買い切り＋パス1年だけ</strong></td>
-                <td>約¥25,200</td>
-                <td><strong>約¥25,200（Proツール永続）</strong></td>
+                <td><strong>買い切りのみ</strong></td>
+                <td><strong>¥15,980〜</strong></td>
+                <td><strong>全編集機能＋Proツール8種を永続利用</strong>（生成AIは購入から1年間）</td>
               </tr>
               <tr>
-                <td>買い切り＋パス毎年継続</td>
-                <td>約¥25,200</td>
-                <td>約¥54,600</td>
+                <td>買い切り＋Upgrade Pass 1年</td>
+                <td>約¥23,400</td>
+                <td>上記＋生成AI無制限＋最新アップデート</td>
+              </tr>
+              <tr>
+                <td>買い切り＋Ecosystem Pass 1年</td>
+                <td>約¥26,400</td>
+                <td>上記＋モバイルアプリ・クロスデバイス編集・Spaces</td>
               </tr>
             </tbody>
           </table>
         </div>
         <h3>購入方法</h3>
-        <p>Upgrade Pass・Ecosystem Passは<strong>Skylum公式サイト</strong>から購入できます。</p>
+        <p>買い切りライセンスも各パスも<strong>Skylum公式サイト</strong>から購入できます。</p>
         <ol>
           <li>公式サイトにアクセス</li>
-          <li>希望するプラン（買い切り＋パス）を選択</li>
+          <li>希望するプラン（買い切り、必要ならパスも）を選択</li>
           <li>カートに追加して決済</li>
           <li>メールでライセンスキーが届く</li>
         </ol>
@@ -511,19 +544,19 @@ export default function Page() {
         <dl>
           <div className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使えますか？</dt>
-            <dd className="faq-a"><strong>いいえ、使えません。</strong>Proツールを使うにはUpgrade PassまたはEcosystem Passの購入が必要です。</dd>
+            <dd className="faq-a"><strong>はい、使えます。</strong>現在はProツール8種すべてが、どの買い切りライセンスにも標準搭載されています。パスなどの追加購入は不要です。</dd>
           </div>
           <div className="faq-item">
-            <dt className="faq-q">一度パスを買ったらProツールはずっと使えますか？</dt>
-            <dd className="faq-a"><strong>はい、永続的に使えます。</strong>翌年パスを更新しなくても、Proツールは消えません。ただし生成AI機能と最新アップデートは使えなくなります。</dd>
+            <dt className="faq-q">パスを更新しないとProツールは使えなくなりますか？</dt>
+            <dd className="faq-a"><strong>いいえ、使えなくなりません。</strong>パスが失効しても、アプリ本体・基本機能・Proツールはそのまま永続で使えます。使えなくなるのは生成AIツール（GenErase・GenSwap・GenExpand）と、以後の新機能アップデートだけです。</dd>
           </div>
           <div className="faq-item">
             <dt className="faq-q">無料体験版でProツールは試せますか？</dt>
-            <dd className="faq-a">7日間の無料体験版で基本機能は試せます。Proツールは一部制限がある場合があるため、詳細は公式サイトでご確認ください。</dd>
+            <dd className="faq-a"><strong>はい、試せます。</strong>7日間の無料体験版はクレジットカード不要で、Proツールを含む全機能にフルアクセスできます。</dd>
           </div>
           <div className="faq-item">
             <dt className="faq-q">返金保証はありますか？</dt>
-            <dd className="faq-a">はい、<strong>30日間の返金保証</strong>があります。</dd>
+            <dd className="faq-a">はい、公式ストアからの直接購入なら<strong>30日間の全額返金保証</strong>があります。</dd>
           </div>
           <div className="faq-item">
             <dt className="faq-q">LightroomやPhotoshopと併用できますか？</dt>
@@ -563,9 +596,9 @@ export default function Page() {
           </div>
           <ul className="m-point-box__list">
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Proツールは全8種類</strong>：高度な補正・特殊編集機能</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>買い切りプランだけでは使えない</strong>→パスが必要</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>一度パスを購入すればProツールは永続</strong></li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>コスパ最強は「買い切り＋パス1年だけ」</strong>（約¥25,200）</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>すべての買い切りライセンスに標準搭載</strong>→追加購入は不要</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>パスを更新しなくてもProツールは永続利用可</strong></li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>パスが必要なのは生成AIと最新アップデートを続けたい場合のみ</strong>（Upgrade Pass 年額$49・約¥7,400）</li>
           </ul>
         </div>
       </section>

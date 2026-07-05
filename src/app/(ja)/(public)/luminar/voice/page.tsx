@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
@@ -13,7 +13,7 @@ const META = {
   description:
     '「Luminar Neoって実際どうなの？」「買って後悔しない？」という疑問を持っている方も多いはず。 ネットで評判を調べると、「AIがすごい！」という絶賛から…',
   publishedAt: '2026-01-22T23:14:58',
-  updatedAt: '2026-01-23T14:34:21',
+  updatedAt: '2026-07-05T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-voice.jpg',
     alt: 'Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態',
@@ -37,7 +37,7 @@ const TOC: TocItem[] = [
   { id: 'bad-heavy', level: 3, text: '動作が重い・PC環境に左右されるという評判' },
   { id: 'bad-overprocessed', level: 3, text: 'AI合成が派手になりすぎることも' },
   { id: 'bad-workflow', level: 3, text: '一括編集のワークフローに課題あり' },
-  { id: 'bad-price', level: 3, text: '拡張機能が別料金で分かりにくいという声' },
+  { id: 'bad-price', level: 3, text: '料金体系が分かりにくいという声' },
   { id: 'twitter', level: 2, text: 'X（旧Twitter）の口コミから見える評判の傾向' },
   { id: 'twitter-positive', level: 3, text: 'ポジティブな口コミの傾向' },
   { id: 'twitter-negative', level: 3, text: 'ネガティブな口コミの傾向' },
@@ -68,7 +68,7 @@ const lead = (
       </div>
       <ul className="m-point-box__list">
         <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>良い評判</strong>：AI編集が速い・初心者でも結果が出る・買い切りで使える</li>
-        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>悪い評判</strong>：動作が重い（低スペックPC）・Proツールが別料金でわかりにくい</li>
+        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>悪い評判</strong>：動作が重い（低スペックPC）・生成AIの継続利用にパスが必要でわかりにくい</li>
         <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>向いている人</strong>：編集時間を短縮したい・サブスク疲れの人</li>
         <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>向いていない人</strong>：細かく追い込みたい・写真管理重視の人</li>
         <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>購入前に</strong>：7日間の体験版で確認・セール時期を狙うのがおすすめ</li>
@@ -90,7 +90,7 @@ export default async function Page() {
         <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/about-luminar-neo.jpg" alt="Luminar Neoの管理画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>まず、評判の全体像を把握しておきましょう。</p>
         <p><strong>良い評判で多いのは</strong>、AI編集の手軽さと仕上がりの速さです。「Lightroomで1時間かかっていた作業が10分で終わった」「初心者の自分でもプロっぽい写真が作れた」という声が目立ちます。特に、空の置き換え（Sky AI）やノイズ除去（Noiseless AI）の評価は高く、「これだけでも買う価値がある」という意見も少なくありません。</p>
-        <p><strong>不満として挙がりやすいのは</strong>、動作の重さと料金体系のわかりにくさ。「古いノートPCだとカクカクする」「Proツール（拡張機能）が別料金だと知らなかった」という声は、購入前に知っておきたいポイントです。ただし、これらは事前に理解していれば回避できる問題でもあります。</p>
+        <p><strong>不満として挙がりやすいのは</strong>、動作の重さと料金体系のわかりにくさ。「古いノートPCだとカクカクする」「生成AI機能の継続にはパスの更新が必要だと知らなかった」という声は、購入前に知っておきたいポイントです。ただし、これらは事前に理解していれば回避できる問題でもあります。</p>
         <p>一言でまとめると、<strong>「サクッと仕上げたい人には最高、細かく追い込みたい人には物足りない」</strong>というのがLuminar Neoの評判の実態です。では、それぞれ詳しく見ていきましょう。</p>
       </section>
 
@@ -183,7 +183,7 @@ export default async function Page() {
             </blockquote>
           </div>
         </div>
-        <p>夜景撮影や星景写真など、高感度を使わざるを得ないシーンでは、この機能だけでもProツールを買う価値があると僕は思っています。</p>
+        <p>夜景撮影や星景写真など、高感度を使わざるを得ないシーンでは、この機能だけでもLuminar Neoを買う価値があると僕は思っています。</p>
 
         <h3 id="good-erase">不要物の消去も「違和感がない」と好評</h3>
         <div className="comparison-container">
@@ -325,17 +325,17 @@ export default async function Page() {
         <p>Lightroomには、選択した写真に同じ設定を一括適用する機能や、スマートコレクションで自動分類する機能があります。Luminar Neoにも同期機能はありますが、大量処理を前提としたワークフローはLightroomほど洗練されていません。</p>
         <p>撮影枚数が多い人、例えば結婚式やスポーツイベントを撮る人は、この点を考慮して選ぶ必要があります。</p>
 
-        <h3 id="bad-price">拡張機能が別料金で分かりにくいという声</h3>
+        <h3 id="bad-price">料金体系が分かりにくいという声</h3>
         <p>「買い切りって聞いてたのに、追加料金がかかるの？」という不満は、評判を調べていると必ず出てきます。これは<strong>Luminar Neoの料金体系が複雑</strong>なことが原因で、正直、Skylum側の説明不足も否めません。</p>
         <p>簡単に整理すると、こういう構造になっています。</p>
         <div className="definition">
           <dl className="definition-body">
             <dt>買い切りプラン</dt>
-            <dd>基本機能が永続で使える（約¥18,000）</dd>
+            <dd>基本機能とProツールが永続で使える（¥15,980〜）</dd>
             <dt>Proツール（旧：拡張機能）</dt>
-            <dd>ノイズ除去、HDR合成など8種類の高度な機能。<span className="m-mark-red">別途パスの購入が必要</span></dd>
+            <dd>ノイズ除去、HDR合成など8種類の高度な機能。<span className="m-mark-red">現在はすべての買い切りプランに標準で含まれ、永続利用可</span></dd>
             <dt>生成AI機能</dt>
-            <dd>GenErase、GenSwapなど。期間限定（1年〜）</dd>
+            <dd>GenErase、GenSwapなど。購入から1年間利用でき、継続にはパスの更新が必要</dd>
           </dl>
         </div>
         <p>Xでも「料金体系がわかりにくい」という声は見られます。</p>
@@ -348,8 +348,8 @@ export default async function Page() {
             </blockquote>
           </div>
         </div>
-        <p>つまり「買い切り」と言っても、<strong>Proツールを使いたいなら追加でパス（約¥7,400/年）を買う必要がある</strong>わけです。この点を知らずに購入すると「思ってたのと違う」「ノイズ除去が使えないじゃん」となります。特にノイズ除去（Noiseless AI）は人気機能なので、これが別料金と知ってがっかりする人は多いようです。</p>
-        <p>ただし朗報もあります。<strong>一度パスを購入すれば、Proツールは永続的に使えます</strong>。翌年パスを更新しなくても、Proツールは消えません。つまり、最初の1年だけパスを買えば、翌年以降は追加費用なしでProツールを使い続けられるのです。</p>
+        <p>つまり「買い切り」と言っても、<strong>生成AI機能を1年を超えて使い続けたいなら、パス（約¥7,400/年）を更新する必要がある</strong>わけです。この点を知らずに購入すると「思ってたのと違う」となりかねません。なお、以前はProツールの利用に別途パスが必要な時期がありましたが、現在はノイズ除去（Noiseless AI）を含むProツール8種すべてが買い切りライセンスに標準で含まれています。</p>
+        <p>ただし朗報もあります。<strong>パスを更新しなくても、アプリ本体とProツールは永続的に使えます</strong>。パスが切れて止まるのは生成AI機能と新機能アップデートのみ。つまり、生成AIが不要なら、買い切りだけで追加費用なしに使い続けられるのです。</p>
         <p>これを知っているかどうかで、印象はかなり変わります。「毎年課金が必要」と誤解している人も多いので、購入前にしっかり理解しておきましょう。</p>
         <div className="m-link-box">
           <div className="m-link-box__icon">
@@ -476,7 +476,7 @@ export default async function Page() {
 
         <h3 id="before-buy-timing">後悔しない購入方法・タイミング</h3>
         <p>体験版で納得したら、いよいよ購入です。ただし、買い方にも注意が必要です。</p>
-        <p><strong>おすすめは「買い切り＋パス1年だけ」</strong>。約¥25,200の初期投資で、Proツール（ノイズ除去、HDR合成など）が永続的に使えます。翌年以降はパスを更新しなくてもProツールは消えないので、長期的に見ると最もコスパの良い選択です。</p>
+        <p><strong>おすすめはまず「買い切りプランのみ」</strong>。現在はProツール（ノイズ除去、HDR合成など）がすべての買い切りプランに標準で含まれ、永続的に使えます。生成AI機能も購入から1年間は使えるので、使い続けたくなったらパス（約¥7,400/年）を更新すればOK。長期的に見てもコスパの良い選択です。</p>
         <p>また、<strong>セール時期を狙う</strong>のも賢い選択。ブラックフライデー（11月下旬）やサマーセールでは30〜50%オフになることもあります。先ほど紹介したすずきさんもブラックフライデーセールで購入されていましたね。急ぎでなければ、セールを待つのがおすすめです。プロモーションコード（クーポン）と併用できることもあるので、購入前にチェックしてみてください。</p>
         <div className="m-link-box">
           <div className="m-link-box__icon">
@@ -491,7 +491,7 @@ export default async function Page() {
         <dl>
           <div className="faq-item">
             <dt className="faq-q">Luminar Neoは「買い切り」なのに追加料金がかかるの？</dt>
-            <dd className="faq-a">基本機能は買い切りで永続利用できます。ただし<strong>Proツール（ノイズ除去、HDR合成など）を使うには、別途パスの購入が必要</strong>です。一度パスを買えばProツールは永続なので、1年だけ買うのが最もコスパ◎です。</dd>
+            <dd className="faq-a">基本機能もProツール（ノイズ除去、HDR合成など）も買い切りで永続利用できます。追加料金が関係するのは<strong>生成AI機能（GenEraseなど）のみ</strong>で、購入から1年間は含まれ、継続にはパス（約¥7,400/年）の更新が必要です。パスが切れてもアプリとProツールはそのまま使えます。</dd>
           </div>
           <div className="faq-item">
             <dt className="faq-q">Luminar Neoは本当に重いの？</dt>
@@ -529,7 +529,7 @@ export default async function Page() {
           </div>
           <ul className="m-point-box__list">
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>良い評判</strong>：AI編集が速い、初心者でも結果が出やすい、買い切りで使える</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>悪い評判</strong>：動作が重い（低スペックPC）、Proツールが別料金でわかりにくい、一括編集が弱い</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>悪い評判</strong>：動作が重い（低スペックPC）、生成AIの継続にパス更新が必要でわかりにくい、一括編集が弱い</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>向いている人</strong>：編集時間を短縮したい、サブスク疲れ、趣味で写真を楽しむ人</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>向いていない人</strong>：細かく追い込みたい、大量の写真管理をしたい、一括処理が必要</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>購入前に</strong>：7日間の体験版で自分の環境を確認、セール時期を狙うのがおすすめ</li>

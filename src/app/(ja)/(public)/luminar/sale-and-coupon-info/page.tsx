@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
@@ -10,9 +10,9 @@ import { SALE_NAME, SALE_START, SALE_END } from '@/lib/luminar/config'
 const META = {
   slug: 'sale-and-coupon-info',
   title: 'Luminar Neoを安く買う方法｜セール時期・クーポンコードまとめ【2026年】',
-  description: '「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」Luminar Neoは定価だと5万円以上する写真編集ソフトですが、実は購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能です。',
+  description: '「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」Luminar Neoは定価だと3〜7万円ほどする写真編集ソフトですが、実は購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能です。',
   publishedAt: '2026-01-18T10:36:49',
-  updatedAt: '2026-04-08T11:42:25',
+  updatedAt: '2026-07-05T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/how-to-buy.jpg',
     alt: 'Luminar Neoのセール時期はいつ？クーポンコードと安く買う方法について徹底解説【2026年最新】',
@@ -46,12 +46,12 @@ function buildLead(isSaleActive: boolean, saleName: string) {
         </div>
         <p>
           {isSaleActive
-            ? `クーポンコード「nightscape10」との併用でさらにお得に購入できます。`
+            ? `当サイト限定クーポンコード「nightscape10」（10%OFF）もご用意しています。セール価格との併用可否は購入画面でご確認ください。`
             : `現在セールは開催されていません。クーポンコード「nightscape10」で10%OFFは常時ご利用いただけます。次の大型セールはブラックフライデー（11月）やサマーセール（6〜8月）が狙い目です。`}
         </p>
       </div>
       <p>「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」</p>
-      <p>Luminar Neoは定価だと5万円以上する写真編集ソフトですが、実は<strong>購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能</strong>です。</p>
+      <p>Luminar Neoは定価だと3〜7万円ほどする写真編集ソフトですが、実は<strong>購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能</strong>です。</p>
       <p>ただし、セールの開催時期はバラバラで、「いつ買えばいいの？」と迷っている方も多いのではないでしょうか。</p>
       <p>そこで本記事では、現在使えるクーポンコード、過去のセール傾向から読み解く次回セールの予想、そしてお得に購入するための具体的な方法を詳しく解説します。「今買うべきか、セールを待つべきか」の判断材料にしてください。</p>
       <div className="m-point-box">
@@ -61,7 +61,7 @@ function buildLead(isSaleActive: boolean, saleName: string) {
           <span className="m-point-box__title">最安で購入するための3つのポイント</span>
         </div>
         <ul className="m-point-box__list">
-          <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>セール期間中</strong>にクーポンコードを併用する</li>
+          <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>セール期間中</strong>に購入する（クーポンとの併用可否は購入画面で確認）</li>
           <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 急ぎでなければ<strong>ブラックフライデー（11月）</strong>や<strong>サマーセール（6〜8月）</strong>を狙う</li>
           <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>30日間の返金保証</strong>があるため、セールを逃すリスクを避けて先に購入するのもあり</li>
         </ul>
@@ -74,10 +74,10 @@ function buildLead(isSaleActive: boolean, saleName: string) {
 const FAQ_JSON_LD = [
   { '@type': 'Question', name: '購入後に気に入らなかった場合は？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoには購入後30日間の返金保証があります。実際に使ってみて自分に合わないと感じた場合でも、リスクなく試すことができます。返金手続きはサポートに連絡するだけで簡単に行えます。' } },
   { '@type': 'Question', name: '無料体験版はある？', acceptedAnswer: { '@type': 'Answer', text: 'はい、7日間の無料体験版があります。ただし、セール期間中は体験版を試している間にセールが終わってしまうリスクがあります。返金保証が30日間あるため、セール中であれば先に購入してしまうのがおすすめです。' } },
-  { '@type': 'Question', name: 'クーポンはセール価格と併用できる？', acceptedAnswer: { '@type': 'Answer', text: 'はい、「セール割引」と「プロモーションコード」は併用可能です。セール価格からさらに10%OFFが適用されます。ただし、クーポン同士（複数のプロモーションコード）の併用はできません。' } },
+  { '@type': 'Question', name: 'クーポンはセール価格と併用できる？', acceptedAnswer: { '@type': 'Answer', text: '公式の規約上は割引の併用は不可とされており、併用できるかどうかは時期やキャンペーンによって異なります。購入画面でプロモーションコードを入力し、割引が適用されるかを確認してから決済してください。クーポン同士（複数のプロモーションコード）の併用はできません。' } },
   { '@type': 'Question', name: '何台のPCで使える？', acceptedAnswer: { '@type': 'Answer', text: '買い切りの永久ライセンス デスクトップ版は2台のパソコンでアクティベートできます。クロスデバイス版はさらに3台のモバイルデバイスでも利用可能です。' } },
-  { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'いいえ、使えません。Proツール（Noiseless AI、HDR Mergeなど8種）は買い切りプランには含まれていません。Upgrade PassまたはEcosystem Passの購入が必要です。ただし、一度パスを購入すればProツールは永続的に使えます。' } },
-  { '@type': 'Question', name: '1年で使えなくなる機能があるの？', acceptedAnswer: { '@type': 'Answer', text: '基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのはGenErase・GenSwap・GenExpandという3つの生成AI機能のみです。Proツールは一度パスを購入すれば永続的に使えます。' } },
+  { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Upgrade PassやEcosystem Passが必要なのは、生成AIの継続利用や新機能アップデートを受け取りたい場合のみです。' } },
+  { '@type': 'Question', name: '1年で使えなくなる機能があるの？', acceptedAnswer: { '@type': 'Answer', text: '基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのはGenErase・GenSwap・GenExpandという3つの生成AI機能のみで、継続利用にはパスの更新が必要です。Proツールも買い切りに含まれており永続的に使えます。' } },
 ]
 
 export default async function Page() {
@@ -95,7 +95,7 @@ export default async function Page() {
         <p>セールがない時期でもLuminar Neoをお得に入手する方法があります。以下の3つの鉄則を押さえておきましょう。</p>
         <h3>プロモーションコード（クーポン）を利用する</h3>
         <p>セール開催の有無にかかわらず、当サイト限定クーポンコード「nightscape10」を用意しています。これを購入画面にコードを入力するだけで、10%OFFが適用されるのでとてもお得です。</p>
-        <p>ちなみにこのクーポンは<strong>セール価格との併用が可能</strong>です。例えば、70%OFFセール中にこのクーポンを使えば、さらに10%OFFが適用されます。</p>
+        <p>なお、公式の規約上は割引の併用は不可とされており、<strong>セール価格との併用可否は購入画面で要確認</strong>です。カートでクーポンを入力してみて、割引が適用されるかを確認してから決済しましょう。</p>
         <h3>公式キャンペーン・大型セールを狙う</h3>
         <p>Skylum公式サイトでは、季節ごとにキャンペーンやセールを実施しています。通常価格から<strong>50%〜75%近い割引</strong>になることも珍しくありません。</p>
         <p>「<a href="#timing">過去のセール時期と年間スケジュール予想</a>」で詳しく解説していますが、セールの頻度も高いのでそれを狙うのがおすすめ。</p>
@@ -211,28 +211,29 @@ export default async function Page() {
             <tbody>
               <tr>
                 <td><strong>デスクトップライセンス</strong></td>
-                <td>約¥15,980</td>
+                <td>¥15,980<br /><small>（通常¥29,960）</small></td>
                 <td>PC2台で使用。最もシンプルでお手頃。</td>
               </tr>
               <tr>
                 <td><strong>クロスデバイスライセンス</strong></td>
-                <td>約¥19,980</td>
-                <td>PC＋スマホ・タブレット対応。デバイス間でデータ同期可能。</td>
+                <td>¥17,980<br /><small>（通常¥44,990）</small></td>
+                <td>PC2台＋モバイル3台対応。デバイス間でデータ同期可能。</td>
               </tr>
               <tr>
                 <td><strong>Maxライセンス</strong></td>
-                <td>約¥21,980</td>
+                <td>¥21,480<br /><small>（通常¥69,999）</small></td>
                 <td>全部入り。100個以上のプリセット、クリエイティブライブラリ付き。</td>
               </tr>
             </tbody>
           </table>
         </div>
+        <p>※価格は2026年7月5日確認時点の日本公式ストアのセール価格です。セールや為替レートにより変動するため、最新価格は公式サイトでご確認ください。</p>
         <h3>【重要】機能は3種類に分かれている</h3>
         <p>ここがLuminar Neoの料金体系で<span className="m-mark-yellow">最もわかりにくいポイント</span>です。機能は大きく3種類に分かれています。</p>
         <div className="m-notice m-notice--warn">
-          <div className="m-notice__head"><span className="m-notice__badge">重要</span><span className="m-notice__title">Proツールは買い切りプランに含まれていません</span></div>
-          <p>公式カスタマーサポートに確認したところ、<strong>Proツール（Noiseless AI、HDR Mergeなど8種）は買い切りプランには含まれていません</strong>。Proツールを使うには、<strong>Upgrade Pass（年額約¥7,400）</strong>または<strong>Ecosystem Pass（年額約¥10,400）</strong>の購入が必要です。</p>
-          <p>ただし、<strong>一度パスを購入すれば、Proツールは永続的に使えます</strong>（翌年パスを更新しなくてもOK）。</p>
+          <div className="m-notice__head"><span className="m-notice__badge">重要</span><span className="m-notice__title">Proツールは買い切りプランに標準で含まれています</span></div>
+          <p>現在は、<strong>Proツール（Noiseless AI、HDR Mergeなど8種）はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます</strong>。</p>
+          <p><strong>Upgrade Pass（年額約¥7,400）</strong>や<strong>Ecosystem Pass（年額約¥10,400）</strong>は、有効期間中の新機能アップデートや生成AIの無制限利用（Ecosystem PassはさらにLuminar Mobile・クロスデバイス編集・Spaces）のためのオプションです。パスが失効してもアプリとProツールはそのまま使い続けられます。</p>
         </div>
         <div className="m-table-wrap l-bottom-large">
           <table className="m-table">
@@ -252,18 +253,18 @@ export default async function Page() {
               <tr>
                 <td><strong>Proツール（8種）</strong></td>
                 <td>Noiseless AI、Supersharp AI、Upscale AI、HDR Merge、Focus Stacking、Background Removal AI、Magic Light AI、Panorama Stitching</td>
-                <td><span className="text-warn">パス購入が必要</span><br />※一度購入すれば永続利用可</td>
+                <td><span className="text-true">買い切りで永続利用可</span><br />※すべての永久ライセンスに標準搭載</td>
               </tr>
               <tr>
                 <td><strong>生成AI機能</strong></td>
                 <td>GenErase（生成AI削除）、GenSwap（生成AI置換）、GenExpand（生成AI拡張）</td>
-                <td><span className="text-false">期限あり</span><br />買い切りのみ：1年間<br />パス購入時：2026年12月末まで</td>
+                <td><span className="text-false">期限あり</span><br />買い切り購入から1年間<br />以後はパス有効期間中は利用可</td>
               </tr>
             </tbody>
           </table>
         </div>
         <h3>コスパ最強の買い方</h3>
-        <p>「Proツールも使いたいけど、コストは抑えたい」という方には、<strong>買い切りプラン＋Upgrade Pass 1年だけ</strong>がおすすめです。</p>
+        <p>Proツールを含む編集機能は買い切りだけで永続的に使えるので、基本は<strong>買い切りプランのみ</strong>で十分です。「生成AI機能を1年以降も使いたい」「新機能アップデートも受け取りたい」という方は、<strong>買い切りプラン＋Upgrade Pass 1年</strong>を目安にしましょう。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -271,23 +272,26 @@ export default async function Page() {
                 <th>購入パターン</th>
                 <th>初期費用（税込目安）</th>
                 <th>Proツール</th>
+                <th>生成AI・アップデート</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>買い切りのみ</td>
-                <td>約¥15,980〜</td>
-                <td><span className="text-false">×使えない</span></td>
+                <td>¥15,980〜</td>
+                <td><span className="text-true">◯永続利用可</span></td>
+                <td><span className="text-warn">生成AIは1年間<br />アップデートなし</span></td>
               </tr>
               <tr>
                 <td><strong>買い切り＋Upgrade Pass 1年</strong></td>
-                <td>約¥23,380〜</td>
+                <td>約¥23,400〜</td>
                 <td><span className="text-true">◯永続利用可</span></td>
+                <td><span className="text-true">パス有効期間中は<br />生成AI無制限＋アップデート</span></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p>一度パスを購入すればProツールは永続的に使えるので、翌年以降はパスを更新しなくてもOK。生成AI機能も継続して使いたい場合のみ、毎年パスを更新する形になります。</p>
+        <p>パスが失効してもアプリとProツールはそのまま永続的に使えます。生成AI機能や最新アップデートを継続して受け取りたい場合のみ、毎年パスを更新する形になります。</p>
         <p>「アップグレードパス」「エコシステムパス」の違いや、Luminarの長期利用のコストについては<Link href="/luminar/luminar-plan/">Luminar Neoの料金体系を徹底解説</Link>で詳しく解説しています。</p>
       </section>
 
@@ -304,7 +308,7 @@ export default async function Page() {
           </div>
           <div className="faq-item">
             <dt className="faq-q">クーポンはセール価格と併用できる？</dt>
-            <dd className="faq-a">はい、<strong>「セール割引」と「プロモーションコード」は併用可能</strong>です。セール価格からさらに10%OFFが適用されます。ただし、クーポン同士（複数のプロモーションコード）の併用はできません。</dd>
+            <dd className="faq-a">公式の規約上は割引の併用は不可とされており、<strong>併用できるかどうかは時期やキャンペーンによって異なります</strong>。購入画面でプロモーションコードを入力し、割引が適用されるかを確認してから決済してください。なお、クーポン同士（複数のプロモーションコード）の併用はできません。</dd>
           </div>
           <div className="faq-item">
             <dt className="faq-q">何台のPCで使える？</dt>
@@ -312,11 +316,11 @@ export default async function Page() {
           </div>
           <div className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
-            <dd className="faq-a"><strong>いいえ、使えません。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は買い切りプランには含まれていません。Upgrade PassまたはEcosystem Passの購入が必要です。ただし、一度パスを購入すればProツールは永続的に使えます。</dd>
+            <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Upgrade PassやEcosystem Passが必要なのは、生成AIの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
           </div>
           <div className="faq-item">
             <dt className="faq-q">1年で使えなくなる機能があるの？</dt>
-            <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は<strong>永久に使えます</strong>。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの<strong>生成AI機能のみ</strong>です。これらはサーバー側で処理が必要なため、継続利用には別途パスの購入が必要になります。なお、<strong>Proツールは一度パスを購入すれば永続的に使えます</strong>。</dd>
+            <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は<strong>永久に使えます</strong>。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの<strong>生成AI機能のみ</strong>です。これらはサーバー側で処理が必要なため、継続利用には別途パスの購入が必要になります。なお、<strong>Proツールも買い切りに含まれており永続的に使えます</strong>。</dd>
           </div>
         </dl>
       </section>
@@ -331,12 +335,12 @@ export default async function Page() {
             <span className="m-point-box__title">最安で購入するための3つのポイント</span>
           </div>
           <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>セール期間中</strong>にクーポンコードを併用する</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>セール期間中</strong>に購入する（クーポンとの併用可否は購入画面で確認）</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 急ぎでなければ<strong>ブラックフライデー（11月）</strong>や<strong>サマーセール（6〜8月）</strong>を狙う</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>30日間の返金保証</strong>があるため、セールを逃すリスクを避けて先に購入するのもあり</li>
           </ul>
         </div>
-        <p>Luminar NeoはAI機能を活用した直感的な操作が魅力の写真編集ソフトです。料金体系は一見複雑に見えますが、<strong>基本機能は買い切りで永久に使えます</strong>。Proツールも使いたい場合は、パスを1年だけ購入すれば永続的に使えるようになるので、コスパは良好です。</p>
+        <p>Luminar NeoはAI機能を活用した直感的な操作が魅力の写真編集ソフトです。料金体系は一見複雑に見えますが、<strong>Proツールを含む編集機能は買い切りで永久に使えます</strong>。生成AI機能の継続利用や新機能アップデートが欲しい場合のみ、パスを追加する形なのでコスパは良好です。</p>
         <p>この記事を参考に、ぜひお得にLuminar Neoを手に入れてください。</p>
       </section>
 

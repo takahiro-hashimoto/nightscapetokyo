@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
@@ -11,7 +11,7 @@ const META = {
   title: 'Luminar Neoのメリット・デメリット｜1年以上使ったリアルな評価【2026年】',
   description: '「Luminar Neo（ルミナーネオ）」って実際どうなの？Adobeから乗り換える価値はある？LightroomとPhotoshopのサブスクは年間3万円近く。1年以上使い込んで感じたリアルな良い点・イマイチな点を包み隠さずお伝えします。',
   publishedAt: '2026-01-18T10:37:52',
-  updatedAt: '2026-01-25T20:26:56',
+  updatedAt: '2026-07-05T10:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/review.jpg',
     alt: 'Luminar Neoの良い点・イマイチな点を夜景フォトグラファーが徹底解説【長期使用レビュー】',
@@ -94,12 +94,12 @@ export default async function Page() {
         <h3 id="quality">サクッと高クオリティな写真を現像できる</h3>
         <p>Luminar Neoを使い始めて最初に感動したのが、<strong>作業時間の短縮</strong>です。</p>
         <p>ここからは、僕が実際に使って気に入っている機能を作例とともに紹介していきます。</p>
-        <p>なお、Luminar Neoの機能はの3種類に分かれており、それぞれ利用条件が異なります。この記事では各機能にラベルを付けながら特に気に入っている機能を紹介しますので、参考にしてください。</p>
+        <p>なお、Luminar Neoの機能は3種類に分かれており、それぞれ利用条件が異なります。この記事では各機能にラベルを付けながら特に気に入っている機能を紹介しますので、参考にしてください。</p>
         <div className="m-point-box l-bottom-xlarge">
           <ul className="m-point-box__list">
             <li><strong>基本機能</strong>：買い切りプランで永続利用可</li>
-            <li><strong>Proツール（8種）</strong>：パス購入が必要（一度購入すれば永続利用可）</li>
-            <li><strong>生成AI機能（3種）</strong>：期限あり（継続利用にはパス更新が必要）</li>
+            <li><strong>Proツール（8種）</strong>：すべての買い切りプランに標準で含まれ、永続利用可</li>
+            <li><strong>生成AI機能（3種）</strong>：購入から1年間利用可（継続利用にはパス更新が必要）</li>
           </ul>
         </div>
 
@@ -321,17 +321,17 @@ export default async function Page() {
 
         <h3 id="price">お財布に優しい「買い切り型」ライセンス</h3>
         <p>ここ、結構重要なポイントです。</p>
-        <p>Adobe Creative Cloudって、フォトプラン（Lightroom + Photoshop）で<strong>月額2,380円〜</strong>かかりますよね。年間だと約28,000円。10年使ったら28万円…。</p>
+        <p>Adobe Creative Cloudって、フォトプラン（1TB・Lightroom + Photoshop）で<strong>月額2,380円〜</strong>かかりますよね。年間だと約28,000円。10年使ったら28万円…。</p>
         <p>もちろんAdobeのソフトは素晴らしいし、常に最新版を使えるサブスクのメリットも分かります。でも「毎月お金が出ていく」というのは、特に趣味で写真をやっている方には負担に感じることもあるのでは。</p>
         <p>Luminar Neoには<strong>「永久ライセンス（買い切り型）」</strong>があります。一度購入すれば、そのバージョンはずっと使い続けられる。</p>
         <div className="m-notice m-notice--warn">
           <div className="m-notice__head"><span className="m-notice__badge">ポイント</span><span className="m-notice__title">買い切りプランに含まれるもの・含まれないもの</span></div>
-          <p><strong>含まれる：</strong>基本的なAI編集機能（スカイAI、補正AI、電線除去など）、RAW現像機能、生成AI機能（購入から1年間）</p>
-          <p><strong>含まれない：</strong>Proツール全8種（Noiseless AI、HDR Mergeなど）→ Upgrade PassまたはEcosystem Passが必要</p>
-          <p>基本機能だけで十分という方は、買い切りプランのみで<strong>ランニングコストゼロ</strong>で使い続けられます。</p>
+          <p><strong>含まれる：</strong>基本的なAI編集機能（スカイAI、補正AI、電線除去など）、RAW現像機能、Proツール全8種（Noiseless AI、HDR Mergeなど）、生成AI機能（購入から1年間）</p>
+          <p><strong>含まれない：</strong>2年目以降の生成AIの継続利用と新機能アップデート → Upgrade PassまたはEcosystem Passが必要</p>
+          <p>生成AIの継続が不要という方は、買い切りプランのみで<strong>ランニングコストゼロ</strong>で使い続けられます。</p>
         </div>
-        <p>「料金体系がちょっと分かりづらい…」という声もありますが、実は<strong>やりたいことのほとんどは買い切りライセンスの中で実現可能</strong>です。</p>
-        <p>Proツールも使いたい場合は、パスを1年だけ購入すれば永続的にProツールが使えるようになります。コスパ重視の方は<strong>買い切り（約¥15,980）＋パス1年（約¥7,400）＝約¥23,380</strong>で、ほぼ全機能が永続的に使えるようになるのでおすすめです。</p>
+        <p>「料金体系がちょっと分かりづらい…」という声もありますが、実は<strong>やりたいことのほとんどは買い切りライセンスの中で実現可能</strong>です。Proツール全8種も買い切りに標準で含まれており、永続的に使えます。</p>
+        <p>生成AIを2年目以降も使い続けたい、常に新機能を取り込みたいという場合は、パス（Upgrade Pass 年額約¥7,400）を追加する形になります。<strong>買い切り（セール時 ¥15,980）＋パス1年（約¥7,400）＝約¥23,400</strong>が目安ですが、生成AI不要なら買い切りのみでOKなのでコスパは非常に良好です。</p>
         <p><i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">料金プランの詳細とコストシミュレーション</Link></p>
       </section>
 
@@ -464,7 +464,7 @@ export default async function Page() {
               <div className="m-pc-item">難しい知識なしで「映える」写真を作りたい人</div>
               <div className="m-pc-item">電線消しやポートレート補正の手間を減らしたい人</div>
               <div className="m-pc-item">サブスク嫌いな人：買い切りでほぼ全機能が使える</div>
-              <div className="m-pc-item">Proツールも使いたい人（パス1回購入で永続利用可）</div>
+              <div className="m-pc-item">Proツールも使いたい人（買い切りに標準搭載・永続利用可）</div>
             </div>
           </div>
           <div className="m-pc-box m-pc-box--cons">

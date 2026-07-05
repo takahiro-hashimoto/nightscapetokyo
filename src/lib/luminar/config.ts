@@ -10,7 +10,7 @@ export const LUMINAR_SITE_DESCRIPTION =
 // Affiliate URLs
 export const AFFILIATE_URL = 'https://skylum.evyy.net/552xL3' as const
 export const AFFILIATE_URL_PRICING = 'https://skylum.evyy.net/mO9BEa' as const
-export const AFFILIATE_URL_TRIAL = 'https://sskylum.evyy.net/qz5MQb' as const
+export const AFFILIATE_URL_TRIAL = 'https://skylum.evyy.net/qz5MQb' as const
 export const AFFILIATE_URL_UPGRADE = 'https://skylum.evyy.net/o4mEAm' as const
 
 // Coupon

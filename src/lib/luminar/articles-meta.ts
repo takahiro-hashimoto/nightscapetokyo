@@ -53,7 +53,7 @@ const ARTICLES: NormalizedPostSummary[] = [
     description:
       'Luminar Neoを最安値で手に入れる方法を解説。ブラックフライデーなどのセール時期、当サイト限定クーポンコードの使い方、返金保証の活用まで、購入タイミングと手順をまとめています。',
     publishedAt: '2026-01-18T10:36:49',
-    updatedAt: '2026-04-21T00:00:00',
+    updatedAt: '2026-07-05T00:00:00',
     featuredImage: {
       src: `${R2}/how-to-buy.jpg`,
       alt: 'Luminar Neoのセール時期はいつ？クーポンコードと安く買う方法について徹底解説【2026年最新】',
@@ -70,7 +70,7 @@ const ARTICLES: NormalizedPostSummary[] = [
     description:
       '写真の現像ソフト選びで、LightroomとLuminar Neoのどちらにするか迷っていませんか？どちらも人気のRAW現像ソフトですが、料金体系も操作感も設計思想がまったく違います。',
     publishedAt: '2026-01-18T10:36:17',
-    updatedAt: '2026-04-21T00:00:00',
+    updatedAt: '2026-07-05T00:00:00',
     featuredImage: {
       src: `${R2}/lightroom.jpg`,
       alt: 'Luminar NeoとLightroom徹底比較｜料金・機能・使いやすさの違いを結論から解説',
@@ -87,7 +87,7 @@ const ARTICLES: NormalizedPostSummary[] = [
     description:
       '突然ですが、Luminar Neoの料金体系、正直ちょっとわかりにくいですよね。買い切りって書いてあるのに、なんか追加料金がかかるの？アップグレードパス？エコシステムパス？何が違うの？',
     publishedAt: '2026-01-18T10:38:20',
-    updatedAt: '2026-04-21T00:00:00',
+    updatedAt: '2026-07-05T00:00:00',
     featuredImage: {
       src: `${R2}/plan.jpg`,
       alt: 'Luminar Neoの後悔しない選び方｜サブスク廃止後の買い切り版ライセンスを賢く購入【2026年】',
@@ -104,7 +104,7 @@ const ARTICLES: NormalizedPostSummary[] = [
     description:
       'Luminar Neoを1年以上使い続けた現役フォトグラファーによるリアルなレビュー。AIで現像が速くなる反面、動作の重さや写真管理の弱さも正直に解説。Adobeからの乗り換えを検討中の方向け。',
     publishedAt: '2026-01-18T10:37:52',
-    updatedAt: '2026-04-21T00:00:00',
+    updatedAt: '2026-07-05T00:00:00',
     featuredImage: {
       src: `${R2}/review.jpg`,
       alt: 'Luminar Neoの良い点・イマイチな点を夜景フォトグラファーが徹底解説【長期使用レビュー】',
@@ -121,7 +121,7 @@ const ARTICLES: NormalizedPostSummary[] = [
     description:
       '「気になるけど、いきなり買うのはちょっと…」写真編集ソフトを検討しているとき、こんな気持ちになったことはありませんか？特にLuminar Neoのように機能が豊富なソフトだと、自分のPCでちゃんと動くのか、本当に使いこなせるのか、不安になりますよね。',
     publishedAt: '2026-01-18T20:45:12',
-    updatedAt: '2026-04-21T00:00:00',
+    updatedAt: '2026-07-05T00:00:00',
     featuredImage: {
       src: `${R2}/trial.jpg`,
       alt: 'Luminar Neo体験版のダウンロード方法・製品版との違いを紹介',
@@ -134,11 +134,11 @@ const ARTICLES: NormalizedPostSummary[] = [
   {
     id: 6,
     slug: 'expand',
-    title: 'Luminar Neo Proツールは必要？拡張機能の内容と買い切りとの違い【2026年】',
+    title: 'Luminar NeoのProツール8種を徹底解説｜買い切り版に標準搭載【2026年】',
     description:
-      'Luminar NeoのProツール8種（Noiseless AI・超解像・HDR合成など）が本当に必要かを解説。買い切りプランに含まれる機能との違い、コスパの良い追加方法まで具体的にまとめています。',
+      'Luminar NeoのProツール8種（Noiseless AI・Upscale AI・HDR Mergeなど）でできることを解説。現在はすべての買い切りライセンスに標準搭載で、追加購入は不要です。各ツールの活用例と、パス（生成AI・アップデート）との関係もまとめました。',
     publishedAt: '2026-01-19T09:32:32',
-    updatedAt: '2026-04-21T00:00:00',
+    updatedAt: '2026-07-05T00:00:00',
     featuredImage: {
       src: `${R2}/expand.jpg`,
       alt: 'Luminar Neoの拡張機能まとめ。できること・メリットと価格プランの選び方',
@@ -155,7 +155,7 @@ const ARTICLES: NormalizedPostSummary[] = [
     description:
       'Luminar Neo購入前によく寄せられる疑問をQ&A形式で解説。動作環境の目安、対応カメラ・RAW形式、ライセンスの仕組みなど、Skylum公式サポートにも確認した情報をまとめています。',
     publishedAt: '2026-01-19T10:28:58',
-    updatedAt: '2026-04-21T00:00:00',
+    updatedAt: '2026-07-05T00:00:00',
     featuredImage: {
       src: `${R2}/faq.jpg`,
       alt: 'Luminar Neoの購入前によくある質問まとめ｜動作環境・対応カメラ・ライセンスの疑問を解決【FAQ】',
@@ -172,7 +172,7 @@ const ARTICLES: NormalizedPostSummary[] = [
     description:
       'SNSや購入者レビューからLuminar Neoの評判を良い・悪いに分けて整理しました。AIの手軽さを評価する声と、動作の重さへの不満が多い実態、初心者と上級者で評価がどう分かれるかも解説します。',
     publishedAt: '2026-01-22T23:14:58',
-    updatedAt: '2026-04-21T00:00:00',
+    updatedAt: '2026-07-05T00:00:00',
     featuredImage: {
       src: `${R2}/luminar-neo-voice.jpg`,
       alt: 'Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態',
@@ -189,7 +189,7 @@ const ARTICLES: NormalizedPostSummary[] = [
     description:
       'Luminar Neoを使っていて「動作が重い」「頻繁に落ちる」という症状に悩んでいませんか？ ネットで「再起動してください」「アップデートしてください」という対処法を見かけますが、正直それで解決するケースは少ないです。なぜなら、重い・落ちる原因は複数あり、原因によって対処法が全く異なるからです。',
     publishedAt: '2026-01-25T10:49:41',
-    updatedAt: '2026-04-21T00:00:00',
+    updatedAt: '2026-07-05T00:00:00',
     featuredImage: {
       src: `${R2}/failed.jpg`,
       alt: 'Luminar Neoが重い・落ちる原因と対処法｜症状別に今すぐ解決',

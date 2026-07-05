@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import MTabsInit from '@/components/luminar/MTabsInit'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
@@ -12,7 +12,7 @@ const META = {
   title: 'Luminar Neo体験版のダウンロード方法・製品版との違いを紹介',
   description: '「気になるけど、いきなり買うのはちょっと…」写真編集ソフトを検討しているとき、こんな気持ちになったことはありませんか？特にLuminar Neoのように機能が豊富なソフトだと、自分のPCでちゃんと動くのか、本当に使いこなせるのか、不安になりますよね。',
   publishedAt: '2026-01-18T20:45:12',
-  updatedAt: '2026-01-21T22:03:35',
+  updatedAt: '2026-07-05T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/trial.jpg',
     alt: 'Luminar Neo体験版のダウンロード方法・製品版との違いを紹介',
@@ -65,6 +65,7 @@ export default async function Page() {
             <div className="m-pc-head"><i className="fa-solid fa-circle-check"></i> 体験版でできること</div>
             <div className="m-pc-body">
               <div className="m-pc-item"><span className="m-pc-dot"></span> 主要AI機能（スカイAI、エンハンスAI、スキンAI等）がすべて使える</div>
+              <div className="m-pc-item"><span className="m-pc-dot"></span> Proツール（HDRマージ、Noiseless AI等の8種）も含めた全機能にフルアクセス</div>
               <div className="m-pc-item"><span className="m-pc-dot"></span> 透かし（ウォーターマーク）なしで書き出し可能</div>
               <div className="m-pc-item"><span className="m-pc-dot"></span> RAW現像に対応</div>
               <div className="m-pc-item"><span className="m-pc-dot"></span> 実際の作品として使える品質で出力できる</div>
@@ -74,12 +75,12 @@ export default async function Page() {
             <div className="m-pc-head"><i className="fa-solid fa-circle-xmark"></i> 体験版の制限</div>
             <div className="m-pc-body">
               <div className="m-pc-item"><span className="m-pc-dot"></span> 体験期間は7日間のみ</div>
-              <div className="m-pc-item"><span className="m-pc-dot"></span> 一部の拡張機能（HDRマージ、フォーカススタッキング等）は対象外の場合あり</div>
+              <div className="m-pc-item"><span className="m-pc-dot"></span> 生成AI機能（GenErase等）はクラウド処理のためインターネット接続が必要</div>
               <div className="m-pc-item"><span className="m-pc-dot"></span> 期間終了後は編集機能が使えなくなる</div>
             </div>
           </div>
         </div>
-        <p>基本的なAI編集機能やRAW現像機能は問題なく使えるため、「Luminar Neoが自分に合っているか」を判断するには十分な環境が整っています。</p>
+        <p>公式サイトでも、体験版は「すべてのツールと機能にフルアクセスできる」と明記されています。「Luminar Neoが自分に合っているか」を判断するには十分すぎる環境が整っています。</p>
         <div className="m-link-box">
           <div className="m-link-box__icon"><i className="fa-solid fa-circle-info"></i></div>
           <p className="m-link-box__text">どの機能が強みなのか詳しく知りたい方は<Link href="/luminar/merit-demerit/">Luminar Neoの良い点・イマイチな点</Link>をご覧ください。</p>
@@ -101,7 +102,7 @@ export default async function Page() {
         <p>これは意外と重要なポイントで、サブスクリプション型のサービスに慣れている方ほど「トライアル終了後の自動課金」を警戒しがちです。Luminar Neoの体験版ではその心配は無用です。</p>
         <h3>3. 製品版と近い環境で試せる</h3>
         <p>体験版だからといって機能が大幅に制限されているわけではありません。</p>
-        <p>先ほども触れたように、主要なAI機能はほぼすべて使えますし、書き出しも透かしなしで行えます。つまり、<strong>体験版で作った作品がそのまま使える</strong>ということです。</p>
+        <p>先ほども触れたように、Proツールを含むすべての機能にフルアクセスできますし、書き出しも透かしなしで行えます。つまり、<strong>体験版で作った作品がそのまま使える</strong>ということです。</p>
         <p>これは「製品版を買ったら思っていたのと違った」というミスマッチを防ぐ上で非常に重要です。体験版の段階で「自分の写真編集スタイルに合うかどうか」をしっかり見極めることができます。</p>
       </section>
 
@@ -178,12 +179,12 @@ export default async function Page() {
               <tr>
                 <td>OS</td>
                 <td>Windows 10（v1909以降）/ 11（64bit）</td>
-                <td>macOS 10.14.6以降</td>
+                <td>macOS 12.0以降</td>
               </tr>
               <tr>
                 <td>CPU</td>
                 <td>Intel Core i5（第8世代以降）/ AMD Ryzen 5以上</td>
-                <td>Intel Core i5以上 / Apple M1/M2/M3</td>
+                <td>Intel Core i5（第8世代以降）/ Apple M1〜M4</td>
               </tr>
               <tr>
                 <td>メモリ</td>
