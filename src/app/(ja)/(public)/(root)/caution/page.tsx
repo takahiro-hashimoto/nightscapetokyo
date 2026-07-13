@@ -75,6 +75,11 @@ export default function CautionPage() {
           Cookieを無効にする方法やGoogleアドセンスに関する詳細は「<a href="https://policies.google.com/technologies/ads?gl=jp" target="_blank" rel="noopener noreferrer">広告 – ポリシーと規約 – Google</a>」をご確認ください。
         </p>
 
+        <h2>Amazonアソシエイト・プログラムについて</h2>
+        <p>
+          当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。
+        </p>
+
         <h2>アクセス解析ツールについて</h2>
         <p>
           当サイトでは、アクセス解析ツールGoogleアナリティクスを使用し、Cookieの情報からアクセスを収集、記録、分析しています。
