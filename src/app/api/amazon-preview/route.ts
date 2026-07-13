@@ -93,23 +93,10 @@ export async function GET(req: NextRequest) {
       html.match(/<meta\s+content="([^"]+)"\s+property="og:image"/i);
     const image = ogImageMatch?.[1] ?? null;
 
-    // Price: a-offscreen (スクリーンリーダー向け価格テキスト) → priceblock
-    let price: string | null = null;
-    const offscreenMatches = [...html.matchAll(/<span\s+class="a-offscreen">([^<]+)<\/span>/g)];
-    if (offscreenMatches.length > 0) {
-      price = offscreenMatches[0][1].trim();
-    }
-    if (!price) {
-      const priceMatch = html.match(/id="priceblock_ourprice"[^>]*>\s*([^<]+)</);
-      if (priceMatch) price = priceMatch[1].trim();
-    }
-    if (!price) {
-      const aprice = html.match(/<span[^>]*class="[^"]*a-price-whole[^"]*"[^>]*>([^<]+)</);
-      if (aprice) {
-        const fraction = html.match(/<span[^>]*class="[^"]*a-price-fraction[^"]*"[^>]*>([^<]+)</);
-        price = `¥${aprice[1].replace(/[^\d,]/g, "")}${fraction ? fraction[1] : ""}`;
-      }
-    }
+    // Price: Amazon アソシエイト・プログラム運営規約により、Amazon価格コンテンツは
+    // 24時間を超えて保存・表示できない。カードに価格を表示しないため、
+    // 価格のスクレイピング・取得は行わない。
+    const price: string | null = null;
 
     // Canonical URL
     const canonicalMatch = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i);

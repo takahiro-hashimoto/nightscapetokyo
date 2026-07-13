@@ -6,7 +6,7 @@ import Link from "@/components/common/AppLink";
 import Script from "next/script";
 import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles, getSpotImagesBySlugs } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/types";
-import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks, convertPostLinks, convertShortcodes, wrapTables } from "@/lib/sanitize";
+import { sanitizeHtml, toR2Url, replaceWpImagesInHtml, embedYoutubeUrls, injectH3SpotLinks, convertPostLinks, convertShortcodes, wrapTables, stripAmazonCardPrice } from "@/lib/sanitize";
 import { prefetchAmazonProducts } from "@/lib/amazon";
 import { prefetchOgpData, type OgpData } from "@/lib/ogp";
 import { ARTICLE_SPOT_LINKS } from "@/lib/article-spot-links";
@@ -150,7 +150,9 @@ export default async function ArticleDetailPage({ params }: Props) {
           replaceWpImagesInHtml(
             sanitizeHtml(
               convertPostLinks(
-                convertShortcodes(rawContent, amazonProducts, ogpData),
+                stripAmazonCardPrice(
+                  convertShortcodes(rawContent, amazonProducts, ogpData)
+                ),
                 ogpData
               )
             )

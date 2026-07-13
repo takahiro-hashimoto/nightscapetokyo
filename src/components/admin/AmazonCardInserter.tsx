@@ -15,23 +15,13 @@ type Props = {
   textareaRef: React.RefObject<HTMLTextAreaElement | null>;
 };
 
-function formatFetchedAt(iso: string): string {
-  const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  const h = String(d.getHours()).padStart(2, "0");
-  const min = String(d.getMinutes()).padStart(2, "0");
-  return `${y}年${m}月${day}日 ${h}:${min}時点`;
-}
-
 function buildCardHtml(product: ProductData): string {
-  const timestampLabel = formatFetchedAt(product.fetchedAt);
+  // Amazon アソシエイト・プログラム運営規約対応：
+  // Amazon価格コンテンツは24時間を超えて保存・表示できないため、
+  // 記事本文に焼き込むカードには価格・取得時点を含めない
+  // （商品名・画像・購入リンクのみ）。
   const imageHtml = product.image
     ? `<img src="${product.image}" alt="${(product.title ?? "").replace(/"/g, "&quot;")}" loading="lazy" class="amazon-card-image">`
-    : "";
-  const priceHtml = product.price
-    ? `<p class="amazon-card-price">${product.price} <span class="amazon-card-timestamp">(${timestampLabel} <a href="${product.url}" target="_blank" rel="nofollow noopener noreferrer">詳しくはこちら</a>)</span></p>`
     : "";
 
   return [
@@ -40,7 +30,6 @@ function buildCardHtml(product: ProductData): string {
     `    <div class="amazon-card-info">`,
     `      <p class="amazon-card-title">${product.title ?? ""}</p>`,
     `      <p class="amazon-card-domain">amzn.to</p>`,
-    priceHtml ? `      ${priceHtml}` : "",
     `    </div>`,
     product.image
       ? `    <div class="amazon-card-image-wrap">${imageHtml}</div>`
@@ -181,22 +170,6 @@ export default function AmazonCardInserter({ textareaRef }: Props) {
                   <div className="amazon-card-info">
                     <p className="amazon-card-title">{product.title}</p>
                     <p className="amazon-card-domain">amzn.to</p>
-                    {product.price && (
-                      <p className="amazon-card-price">
-                        {product.price}{" "}
-                        <span className="amazon-card-timestamp">
-                          ({formatFetchedAt(product.fetchedAt)}{" "}
-                          <a
-                            href={product.url}
-                            target="_blank"
-                            rel="nofollow noopener noreferrer"
-                          >
-                            詳しくはこちら
-                          </a>
-                          )
-                        </span>
-                      </p>
-                    )}
                   </div>
                   {product.image && (
                     <div className="amazon-card-image-wrap">

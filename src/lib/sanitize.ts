@@ -176,22 +176,10 @@ function amazonCardHtml(
     return refCardHtml(url, titleFallback || url, "Amazon.co.jp");
   }
 
-  const { title, imageUrl, price, detailUrl, fetchedAt } = product;
-  const dateStr = fetchedAt.toLocaleDateString("ja-JP", {
-    year: "numeric", month: "2-digit", day: "2-digit",
-  });
-  const timeStr = fetchedAt.toLocaleTimeString("ja-JP", {
-    hour: "2-digit", minute: "2-digit",
-  });
-
-  const priceHtml = price
-    ? `<div class="amazon-card-price-row">` +
-      `<strong class="amazon-card-price">${price}</strong>` +
-      `<span class="amazon-card-note">` +
-      `(${dateStr} ${timeStr}時点 <a href="${detailUrl}" target="_blank" rel="noopener noreferrer">詳しくはこちら</a>)` +
-      `</span>` +
-      `</div>`
-    : "";
+  // Amazon アソシエイト・プログラム運営規約対応：
+  // Amazon価格コンテンツは24時間を超えて保存・表示できないため、
+  // カードに価格・取得時点は表示しない（商品名・画像・購入リンクのみ）。
+  const { title, imageUrl, detailUrl } = product;
 
   const thumbHtml = imageUrl
     ? `<div class="amazon-card-thumb"><img src="${imageUrl}" alt="${title}" loading="lazy"></div>`
@@ -201,7 +189,6 @@ function amazonCardHtml(
     `<div class="amazon-card">` +
     `<div class="amazon-card-content">` +
     `<p class="amazon-card-title">${title || titleFallback}</p>` +
-    priceHtml +
     `<a href="${detailUrl}" class="amazon-card-btn" target="_blank" rel="noopener noreferrer">` +
     `Amazon.co.jpで購入する` +
     `</a>` +
@@ -209,6 +196,26 @@ function amazonCardHtml(
     thumbHtml +
     `</div>`
   );
+}
+
+/**
+ * 記事本文に過去に焼き込まれた Amazon 商品カードの「価格・取得時点」表示を除去する。
+ *
+ * Amazon アソシエイト・プログラム運営規約では Amazon価格コンテンツを24時間を超えて
+ * 保存・表示できない。管理画面の「Amazonカード挿入」で本文に静的HTMLとして焼き込まれた
+ * 価格（例: <p class="amazon-card-price">¥16,280 <span class="amazon-card-timestamp">
+ * (2026年04月24日 15:31時点 …)</span></p>）は自動更新されず規約違反となるため、
+ * レンダリング時に価格ブロックだけを取り除く（商品名・画像・購入リンクは残す）。
+ *
+ * ※ ショートコード [amazonLink] 由来のカードは amazonCardHtml 側で価格を出力しないため
+ *   ここで対象になるのは主に過去の焼き込みカード。両方の構造を安全に除去する。
+ */
+export function stripAmazonCardPrice(html: string): string {
+  return html
+    // 焼き込み型: <p class="amazon-card-price">…</p>
+    .replace(/<p class="amazon-card-price">[\s\S]*?<\/p>/g, "")
+    // ショートコード型（旧レンダリング残存分）: <div class="amazon-card-price-row">…</div>
+    .replace(/<div class="amazon-card-price-row">[\s\S]*?<\/div>/g, "");
 }
 
 /**

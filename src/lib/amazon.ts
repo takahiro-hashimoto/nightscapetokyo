@@ -130,9 +130,9 @@ async function callGetItems(asins: string[]): Promise<AmazonProduct[]> {
         body: JSON.stringify({
           itemIds: chunk,
           ...(partnerTag && { partnerTag, partnerType: "Associates" }),
+          // 価格リソース（offersV2.listings.price）は規約対応のため取得しない
           resources: [
             "itemInfo.title",
-            "offersV2.listings.price",
             "images.primary.medium",
           ],
         }),
@@ -161,19 +161,10 @@ async function callGetItems(asins: string[]): Promise<AmazonProduct[]> {
             (item?.Images?.Primary?.Medium?.URL as string | undefined) ??
             "";
 
-          const listing = item?.offersV2?.listings?.[0] ?? item?.Offers?.Listings?.[0];
-          const amount: number =
-            listing?.price?.money?.amount ??
-            listing?.Price?.Amount ??
-            0;
-          const currency: string =
-            listing?.price?.money?.currency ??
-            listing?.Price?.Currency ??
-            "JPY";
-
-          const price = amount > 0
-            ? new Intl.NumberFormat("ja-JP", { style: "currency", currency }).format(amount)
-            : "";
+          // Amazon アソシエイト・プログラム運営規約対応：
+          // Amazon価格コンテンツは24時間を超えて保存・表示できないため、
+          // カードに価格を表示せず、DBキャッシュにも価格を保存しない。
+          const price = "";
 
           const detailUrl = partnerTag
             ? `https://www.amazon.co.jp/dp/${asin}/?tag=${partnerTag}`
