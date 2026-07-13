@@ -21,7 +21,7 @@ function buildCardHtml(product: ProductData): string {
   // 記事本文に焼き込むカードには価格・取得時点を含めない
   // （商品名・画像・購入リンクのみ）。
   const imageHtml = product.image
-    ? `<img src="${product.image}" alt="${(product.title ?? "").replace(/"/g, "&quot;")}" loading="lazy" class="amazon-card-image">`
+    ? `<a href="${product.url}" target="_blank" rel="nofollow noopener noreferrer"><img src="${product.image}" alt="${(product.title ?? "").replace(/"/g, "&quot;")}" loading="lazy" class="amazon-card-image"></a>`
     : "";
 
   return [
@@ -173,12 +173,18 @@ export default function AmazonCardInserter({ textareaRef }: Props) {
                   </div>
                   {product.image && (
                     <div className="amazon-card-image-wrap">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={product.image}
-                        alt={product.title ?? ""}
-                        className="amazon-card-image"
-                      />
+                      <a
+                        href={product.url}
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={product.image}
+                          alt={product.title ?? ""}
+                          className="amazon-card-image"
+                        />
+                      </a>
                     </div>
                   )}
                 </div>

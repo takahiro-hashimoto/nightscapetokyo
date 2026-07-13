@@ -2382,6 +2382,12 @@ main > .home-section:nth-child(even of .home-section) {
   background: var(--color-bg-subtle);
 }
 
+.amazon-card-image-wrap a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .amazon-card-image {
   width: 100%;
   height: 100%;

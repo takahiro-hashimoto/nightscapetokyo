@@ -182,7 +182,7 @@ function amazonCardHtml(
   const { title, imageUrl, detailUrl } = product;
 
   const thumbHtml = imageUrl
-    ? `<div class="amazon-card-thumb"><img src="${imageUrl}" alt="${title}" loading="lazy"></div>`
+    ? `<div class="amazon-card-thumb"><a href="${detailUrl}" target="_blank" rel="nofollow noopener noreferrer"><img src="${imageUrl}" alt="${title}" loading="lazy"></a></div>`
     : "";
 
   return (
