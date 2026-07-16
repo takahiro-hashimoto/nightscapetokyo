@@ -9,8 +9,12 @@ export interface SunData {
 
 const RAD_TO_DEG = 180 / Math.PI;
 
+// 表示・日付判定はJST固定。サーバー（Vercel=UTC）でも閲覧者のTZでも同じ結果になる
+const JST_OFFSET_MS = 9 * 60 * 60 * 1000;
+
 function formatTime(date: Date): string {
-  return `${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")}`;
+  const jst = new Date(date.getTime() + JST_OFFSET_MS);
+  return `${jst.getUTCHours()}:${String(jst.getUTCMinutes()).padStart(2, "0")}`;
 }
 
 export function calculateSunData(
@@ -18,8 +22,11 @@ export function calculateSunData(
   lat: number,
   lng: number
 ): SunData {
-  const noon = new Date(date);
-  noon.setHours(12, 0, 0, 0);
+  // 指定時刻が属するJSTの日の正午（= UTC 03:00）を基準に計算する
+  const jst = new Date(date.getTime() + JST_OFFSET_MS);
+  const noon = new Date(
+    Date.UTC(jst.getUTCFullYear(), jst.getUTCMonth(), jst.getUTCDate(), 3, 0, 0)
+  );
 
   const times = SunCalc.getTimes(noon, lat, lng);
 
