@@ -9,5 +9,11 @@ export async function GET(request: Request) {
   const spots = locale
     ? await getSpotsForMapTranslated(locale)
     : await getSpotsForMap();
-  return NextResponse.json(spots);
+  // CDN で配信して関数実行（= Data Cache の ISR Read）を減らす。
+  // スポット追加は最大1時間遅れでマップに反映される
+  return NextResponse.json(spots, {
+    headers: {
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+    },
+  });
 }

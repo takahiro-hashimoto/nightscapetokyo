@@ -263,6 +263,35 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // 天気APIは鮮度が重要なため catch-all の 86400 を上書き（同一キーは後勝ち）
+      {
+        source: "/api/weather/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=1800, stale-while-revalidate=3600",
+          },
+        ],
+      },
+      {
+        source: "/api/weather-hourly/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=1800, stale-while-revalidate=3600",
+          },
+        ],
+      },
+      // マップデータはスポット公開後1時間以内に反映させる
+      {
+        source: "/api/map-spots/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
     ];
   },
 };

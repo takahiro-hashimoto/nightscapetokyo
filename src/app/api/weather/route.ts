@@ -45,7 +45,9 @@ export async function GET(req: NextRequest) {
   const url = `https://api.weatherapi.com/v1/${endpoint}.json?key=${apiKey}&q=${latNum},${lngNum}&dt=${date}&lang=ja&aqi=no&alerts=no`;
 
   try {
-    const res = await fetch(url, { next: { revalidate: 1800 } });
+    // CDN (s-maxage) キャッシュのみ利用。Data Cache に入れると座標×日付ごとに
+    // ISR Read/Write が課金されるため no-store にする
+    const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) {
       return NextResponse.json({ error: "weather api error" }, { status: res.status });
     }
