@@ -153,6 +153,13 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   result.ja.push({ loc: `${SITE_URL}/simulator/`, changefreq: "weekly", priority: 0.9 });
   result.ja.push({ loc: `${SITE_URL}/moon/`, changefreq: "weekly", priority: 0.9 });
 
+  // 撮影依頼ページ（日本語のみ）
+  result.ja.push({
+    loc: `${SITE_URL}/photography/`,
+    changefreq: "monthly",
+    priority: 0.7,
+  });
+
   if (!db) return result;
 
   const { data: areaTranslationRows } = await db

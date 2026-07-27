@@ -1,0 +1,209 @@
+/* ==========================================================================
+   撮影依頼ページ（/photography/）専用スタイル
+   記事テンプレート（/article/）ベース。firstVisual / toc / article-body を活かし、
+   装飾は最小限。既存デザイントークン（globals.css）に準拠。
+   ========================================================================== */
+
+/* ---- CTA（フォームへスクロール。ソリッド・控えめ） ---- */
+.photo-cta-wrap {
+  text-align: center;
+  margin: 24px 0 4px;
+}
+.photo-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 28px;
+  background: var(--color-primary);
+  color: #fff !important;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: background 0.15s ease;
+}
+.photo-cta:hover {
+  background: var(--color-primary-dark);
+  color: #fff !important;
+}
+.photo-cta--lg {
+  padding: 14px 36px;
+  font-size: 16px;
+}
+.article-body .photo-cta-note {
+  margin: 8px 0 0 !important;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* ---- 3.2 クライアント実績 ---- */
+/* about ページの「活動実績」を流用（about-achievement-image / ref-card は
+   non-critical.css で全ページ共通スタイル。article-body h3 の余白をそのまま利用）。 */
+
+/* ---- 3.3 対応できる撮影 ---- */
+/* definition / definition-body（non-critical.css で全ページ共通スタイル）を流用 */
+
+/* ---- 3.4 料金（article-body の table スタイルを利用） ---- */
+.photo-price-unit {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.article-body .photo-notes {
+  list-style: none !important;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+}
+.article-body .photo-notes li {
+  list-style: none !important;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 2px !important;
+}
+
+/* ---- 3.5 依頼フロー ---- */
+.photo-flow {
+  list-style: none !important;
+  counter-reset: photo-flow;
+  padding: 0 !important;
+  margin: 16px 0 0 !important;
+}
+.photo-flow > li {
+  list-style: none !important;
+  counter-increment: photo-flow;
+  position: relative;
+  padding: 0 0 20px 44px;
+  margin: 0 !important;
+}
+.photo-flow > li::before {
+  content: counter(photo-flow);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+.photo-flow > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 32px;
+  bottom: 0;
+  width: 2px;
+  background: #e8ebef;
+}
+.photo-flow h3 {
+  margin: 4px 0 4px !important;
+  font-size: 15px !important;
+}
+.photo-flow p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px !important;
+}
+.photo-flow-days {
+  display: inline-block;
+  padding: 2px 10px;
+  background: #f0f6ff;
+  border-radius: 12px;
+  font-size: 12px !important;
+  color: var(--color-primary-dark) !important;
+  font-weight: 600;
+  margin: 0 !important;
+}
+
+/* ---- 3.6 撮影機材について ---- */
+/* about ページの about-equipment-list（non-critical.css で全ページ共通スタイル）を流用 */
+
+/* ---- 3.8 ギャラリー ---- */
+.photo-gallery-empty {
+  padding: 16px;
+  background: #f5f7fa;
+  border: 1px dashed #d2d7de;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+.photo-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.photo-gallery-grid figure {
+  margin: 0;
+}
+.photo-gallery-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.photo-gallery-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  grid-column: span 3;
+}
+.photo-gallery-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 8px;
+}
+
+/* ---- 3.9 FAQ ---- */
+/* home の faq-item / faq-q / faq-a（non-critical.css で全ページ共通スタイル）を流用 */
+
+/* ---- 3.10 フォーム（Google フォーム埋め込み） ---- */
+.photo-form-embed {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+.photo-form-embed iframe {
+  width: 100%;
+  max-width: 640px;
+  min-height: 900px;
+  border: 0;
+}
+.photo-form-fallback {
+  margin-top: 16px;
+  padding: 24px;
+  background: #f5f7fa;
+  border: 1px dashed #d2d7de;
+  border-radius: 8px;
+  text-align: center;
+}
+.photo-form-fallback p {
+  margin-bottom: 16px !important;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+/* ---- レスポンシブ ---- */
+@media (max-width: 900px) {
+  .photo-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .photo-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  .photo-gallery-video {
+    grid-column: span 1;
+  }
+  .photo-cta {
+    width: 100%;
+  }
+}

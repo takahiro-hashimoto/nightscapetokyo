@@ -13,16 +13,17 @@ export const NAV_STATIC_LABELS: Record<SiteLocale, {
   tag: string;
   about: string;
   contact: string;
+  photography: string;
   eventSearch: string;
   otherArea: string;
   openMenu: string;
   mobileMenu: string;
 }> = {
-  ja: { recommend: "おすすめ夜景スポット", area: "エリア別に探す", tag: "目的別に探す", about: "運営者情報", contact: "お問い合わせ", eventSearch: "イベント別に探す", otherArea: "その他エリア", openMenu: "メニューを開く", mobileMenu: "モバイルメニュー" },
-  en: { recommend: "Recommended Spots",    area: "Browse by Area", tag: "Browse by Purpose", about: "About", contact: "Contact", eventSearch: "Events", otherArea: "Other Areas", openMenu: "Open menu", mobileMenu: "Mobile menu" },
-  ko: { recommend: "추천 스폿",            area: "지역별 탐색",     tag: "목적별 탐색",        about: "소개",  contact: "문의",  eventSearch: "이벤트별로 찾기", otherArea: "기타 지역", openMenu: "메뉴 열기", mobileMenu: "모바일 메뉴" },
-  tw: { recommend: "推薦景點",             area: "依地區搜尋",     tag: "依目的搜尋",          about: "關於",  contact: "聯絡",  eventSearch: "依活動尋找", otherArea: "其他地區", openMenu: "開啟選單", mobileMenu: "行動版選單" },
-  cn: { recommend: "推荐景点",             area: "按地区浏览",     tag: "按目的浏览",          about: "关于",  contact: "联系",  eventSearch: "按活动查找", otherArea: "其他地区", openMenu: "打开菜单", mobileMenu: "移动菜单" },
+  ja: { recommend: "おすすめ夜景スポット", area: "エリア別に探す", tag: "目的別に探す", about: "運営者情報", contact: "お問い合わせ", photography: "撮影依頼", eventSearch: "イベント別に探す", otherArea: "その他エリア", openMenu: "メニューを開く", mobileMenu: "モバイルメニュー" },
+  en: { recommend: "Recommended Spots",    area: "Browse by Area", tag: "Browse by Purpose", about: "About", contact: "Contact", photography: "Photography", eventSearch: "Events", otherArea: "Other Areas", openMenu: "Open menu", mobileMenu: "Mobile menu" },
+  ko: { recommend: "추천 스폿",            area: "지역별 탐색",     tag: "목적별 탐색",        about: "소개",  contact: "문의",  photography: "촬영 의뢰", eventSearch: "이벤트별로 찾기", otherArea: "기타 지역", openMenu: "메뉴 열기", mobileMenu: "모바일 메뉴" },
+  tw: { recommend: "推薦景點",             area: "依地區搜尋",     tag: "依目的搜尋",          about: "關於",  contact: "聯絡",  photography: "攝影委託", eventSearch: "依活動尋找", otherArea: "其他地區", openMenu: "開啟選單", mobileMenu: "行動版選單" },
+  cn: { recommend: "推荐景点",             area: "按地区浏览",     tag: "按目的浏览",          about: "关于",  contact: "联系",  photography: "拍摄委托", eventSearch: "按活动查找", otherArea: "其他地区", openMenu: "打开菜单", mobileMenu: "移动菜单" },
 };
 
 /* ---- Header: プロフィールラベル ---- */

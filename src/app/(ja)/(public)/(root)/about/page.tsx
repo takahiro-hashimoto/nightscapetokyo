@@ -129,7 +129,12 @@ export default function AboutPage() {
           <span className="heading-icon"><Award size={18} /></span>
           {l.achievements}
         </h2>
-        <p style={{ marginBottom: 24 }}>{l.achievementsDesc}</p>
+        <p style={{ marginBottom: 24 }}>
+          {l.achievementsDesc}
+          {" "}撮影のご依頼を検討中の方は
+          <Link href="/photography/">夜景・眺望撮影のご依頼ページ</Link>
+          もご覧ください。
+        </p>
 
         {ACHIEVEMENTS_BASE.map((base, i) => (
           <div key={base.image}>

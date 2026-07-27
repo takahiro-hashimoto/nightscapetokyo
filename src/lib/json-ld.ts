@@ -318,6 +318,104 @@ export function buildTagItemListJsonLd(
   };
 }
 
+/** BreadcrumbList（パンくず構造化データ） */
+export function buildBreadcrumbJsonLd(
+  items: { name: string; url?: string }[]
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      ...(item.url ? { item: item.url } : {}),
+    })),
+  };
+}
+
+/** ProfessionalService（撮影サービス提供者・/photography/ 用） */
+export function buildPhotographyServiceJsonLd(options: {
+  name: string;
+  description: string;
+  url: string;
+  inLanguage?: string;
+  /** 料金プラン（hasOfferCatalog）。minPrice は円 */
+  offers?: { name: string; minPrice: number }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: options.name,
+    description: options.description,
+    url: options.url,
+    inLanguage: options.inLanguage ?? "ja",
+    image: `${SITE_URL}/logo.png`,
+    priceRange: "¥¥",
+    keywords:
+      "東京 夜景 カメラマン, 夜景 撮影 依頼, ホテル 客室 撮影, 眺望 撮影 依頼, タイムラプス 撮影, 夜景 映像 素材",
+    areaServed: [
+      { "@type": "AdministrativeArea", name: "東京都" },
+      { "@type": "Country", name: "日本" },
+    ],
+    serviceType: [
+      "夜景撮影",
+      "ホテル・施設撮影",
+      "不動産・眺望撮影",
+      "タイムラプス・映像制作",
+      "ストック素材ライセンス",
+    ],
+    provider: {
+      "@type": "Person",
+      name: "タカヒロ",
+      jobTitle: "夜景カメラマン",
+      url: `${SITE_URL}/about/`,
+    },
+    ...(options.offers && options.offers.length > 0
+      ? {
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "撮影メニュー",
+            itemListElement: options.offers.map((o) => ({
+              "@type": "Offer",
+              itemOffered: { "@type": "Service", name: o.name },
+              priceSpecification: {
+                "@type": "PriceSpecification",
+                minPrice: o.minPrice,
+                priceCurrency: "JPY",
+              },
+            })),
+          },
+        }
+      : {}),
+  };
+}
+
+/** Person（撮影者・受賞歴・SNS を sameAs で紐付け） */
+export function buildPhotographerPersonJsonLd(options: { url: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "タカヒロ",
+    jobTitle: "夜景カメラマン / Webディレクター",
+    knowsAbout: ["夜景撮影", "眺望撮影", "タイムラプス撮影", "ホテル撮影", "不動産撮影"],
+    url: options.url,
+    worksFor: {
+      "@type": "Organization",
+      name: "nightscape.tokyo",
+      url: SITE_URL,
+    },
+    award: "第8回東京大回廊写真コンテスト 出光美術館賞",
+    sameAs: [
+      "https://www.youtube.com/@nightscape-tokyo",
+      "https://twitter.com/takahiro__1202",
+      "https://www.instagram.com/nightscape.tokyo/",
+      "https://www.tiktok.com/@nightscape_tokyo",
+      "https://www.pinterest.jp/nightscape_tokyo/",
+    ],
+  };
+}
+
 /** CollectionPage（エリアページ用） */
 export function buildCollectionPageJsonLd(options: {
   name: string;

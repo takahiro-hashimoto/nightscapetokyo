@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
+import Link from "@/components/common/AppLink";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 
 export const dynamic = "force-static";
@@ -36,6 +37,11 @@ export default function ContactPage() {
         { label: "お問い合わせ" },
       ]}
     >
+      <p style={{ marginTop: 16 }}>
+        ホテル・施設・不動産・メディアなど、法人・団体からの撮影のご依頼は{" "}
+        <Link href="/photography/">夜景・眺望撮影のご依頼ページ</Link>
+        {" "}もあわせてご覧ください。料金の目安や実績をまとめています。
+      </p>
       <div style={{ marginTop: 24, display: "flex", justifyContent: "center" }}>
         <iframe
           src="https://docs.google.com/forms/d/e/1FAIpQLSdAJJ6IAIGZwsfc61lO2bz1UsvEsfBSGYhYSJfX1P-uyxYW_g/viewform?embedded=true"

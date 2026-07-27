@@ -41,6 +41,8 @@ export function buildTopNavItems(locale: string | null): SubNavItem[] {
   const labels = NAV_STATIC_LABELS[(locale ?? "ja") as SiteLocale] ?? NAV_STATIC_LABELS["ja"];
   return [
     { label: "運営者", href: `${prefix}/about/` },
+    // 撮影依頼ページは日本語のみ提供
+    ...(locale ? [] : [{ label: labels.photography, href: "/photography/" }]),
     { label: labels.contact, href: `${prefix}/contact/` },
     { label: "サイトマップ", href: `${prefix}/sitemap/` },
   ];
@@ -88,6 +90,7 @@ export function buildMainNavItems(
       { label: "おすすめ現像ソフト", href: "/luminar/" },
     );
   } else {
+    // 撮影依頼ページは日本語のみ提供のため、非 ja ロケールでは表示しない
     items.push(
       { label: labels.about, href: `${prefix}/about/` },
       { label: labels.contact, href: `${prefix}/contact/` },

@@ -5,3 +5,5 @@ export { PRIVACY_LABELS } from "./i18n-static/privacy";
 export { CAUTION_LABELS } from "./i18n-static/caution";
 export { LINKS_LABELS } from "./i18n-static/links";
 export { SITEMAP_LABELS } from "./i18n-static/sitemap";
+export { PHOTOGRAPHY_LABELS, getPhotographyLabels } from "./i18n-static/photography";
+export type { PhotographyLabels } from "./i18n-static/photography";
