@@ -67,7 +67,7 @@ export function buildMainNavItems(
 
   const areaChildren: SubNavItem[] = sortedAreas.map((a) => ({
     label: AREA_NAME[a.slug]?.[loc as SiteLocale] ?? a.name,
-    href: `${prefix}/${a.slug}`,
+    href: `${prefix}/${a.slug}/`,
     count: a.spot_count,
   }));
 

@@ -69,7 +69,7 @@ export default function SearchResults({
         {sorted.map((spot) => (
           <Link
             key={spot.id}
-            href={`${prefix}/${spot.category.slug}/${spot.slug}`}
+            href={`${prefix}/${spot.category.slug}/${spot.slug}/`}
             className="spot-card"
           >
             <div className="spot-card-image">

@@ -2,14 +2,33 @@ import type { Metadata } from "next";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import Link from "@/components/common/AppLink";
-import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
+import { SITE_URL, LOCALE_OG_ALTERNATES, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "お問い合わせ | 東京夜景ナビ",
+  title: "お問い合わせ",
   description:
     "東京夜景ナビへのお問い合わせページです。写真・映像の購入や撮影のご依頼等はこちらのフォームからお願いいたします。",
+  // Next.js は openGraph を浅くマージ（＝丸ごと置換）するため、定義しないと
+  // (ja)/layout.tsx のトップページ用 og:title / og:url をそのまま継承してしまう
+  openGraph: {
+    type: "website",
+    title: "お問い合わせ | 東京夜景ナビ",
+    description: "東京夜景ナビへのお問い合わせページです。写真・映像の購入や撮影のご依頼等はこちらのフォームからお願いいたします。",
+    url: `${SITE_URL}/contact/`,
+    siteName: "東京夜景ナビ",
+    locale: "ja_JP",
+    alternateLocale: LOCALE_OG_ALTERNATES as string[],
+    images: [
+      {
+        url: `${SITE_URL}/hero.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "お問い合わせ | 東京夜景ナビ",
+      },
+    ],
+  },
   alternates: {
     canonical: `${SITE_URL}/contact/`,
     languages: buildAreaHreflangAlternates(SITE_URL, "contact", ALL_LOCALE_SLUGS),
@@ -49,6 +68,8 @@ export default function ContactPage() {
           height="923"
           style={{ border: 0, maxWidth: 640 }}
           title="お問い合わせフォーム"
+          // 923px の埋め込みフォームが初期表示をブロックしないよう遅延読み込みする
+          loading="lazy"
         >
           読み込んでいます…
         </iframe>

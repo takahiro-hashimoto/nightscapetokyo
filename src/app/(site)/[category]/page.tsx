@@ -34,6 +34,7 @@ import HomeMapSection from "@/components/home/HomeMapSection";
 import DeferredRender from "@/components/layout/DeferredRender";
 import {
   SITE_URL,
+  SITE_NAMES,
   ALL_LOCALE_SLUGS,
   buildAreaHreflangAlternates,
   buildHomeHreflangAlternates,
@@ -46,6 +47,7 @@ import { getComponentLabels } from "@/lib/i18n-labels";
 import { calculateSunData } from "@/lib/sun-calc";
 import { buildFaqJsonLd, buildItemListJsonLd, buildAreaItemListJsonLd, buildCollectionPageJsonLd, localeToLanguage } from "@/lib/json-ld";
 import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 type Props = {
   params: Promise<{ category: string }>;
@@ -206,14 +208,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title,
         description,
         url: canonicalUrl,
-        siteName: "nightscape.tokyo",
+        // ロケールページはローカライズされたサイト名を使う（(i18n) 配下の固定ページと統一）
+        siteName: SITE_NAMES[categorySlug] ?? SITE_NAMES.en,
         locale: ogLocale,
         alternateLocale: ALL_OG_LOCALES.filter((l) => l !== ogLocale),
+        // Next.js は openGraph / twitter を浅くマージするため、
+        // ここで images を指定しないと各ロケールトップの共有画像が消える
+        images: [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630, alt: title }],
       },
       twitter: {
         card: "summary_large_image",
         title,
         description,
+        images: [`${SITE_URL}/hero.jpg`],
       },
       alternates: {
         canonical: canonicalUrl,
@@ -271,8 +278,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// 翻訳ホームのタイトル等に現在年 (new Date().getFullYear()) を含むため日次で再生成する
-export const revalidate = 86400;
+// エリアFAQの「現在の季節（N月）」と翻訳ホームの現在年・日没時刻が
+// 日付の進行で古くなる。日次 Cron から revalidatePath('/[category]') で再生成する
+export const revalidate = false;
 export const fetchCache = "force-cache";
 
 export default async function AreaPage({ params }: Props) {
@@ -347,7 +355,7 @@ export default async function AreaPage({ params }: Props) {
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(
+              __html: jsonLdHtml(
                 buildItemListJsonLd(spots, {
                   localePrefix: `/${localeSlug}`,
                   name: hp.spotRanking?.heading(currentYear),
@@ -361,7 +369,7 @@ export default async function AreaPage({ params }: Props) {
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(
+              __html: jsonLdHtml(
                 buildFaqJsonLd(faqItems, {
                   sunsetTime: sunData.sunsetTime,
                   inLanguage,
@@ -469,8 +477,10 @@ export default async function AreaPage({ params }: Props) {
           <DeferredRender as="section" className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
             <h2 className="area-section-heading" id="faq-heading">{cat.name}の夜景スポットに関するFAQ</h2>
             <dl className="area-faq-list">
+              {/* 個別の質問を #faq-1 形式で直接引用・共有できるようにするアンカー。
+                  日本語の質問文をスラッグ化すると URL エンコードで読めなくなるため連番で固定 */}
               {faqs.map((faq, i) => (
-                <div key={i} className="faq-item">
+                <div key={i} id={`faq-${i + 1}`} className="faq-item">
                   <dt className="faq-q">{faq.question}</dt>
                   <dd className="faq-a">{faq.answer}</dd>
                 </div>
@@ -508,7 +518,7 @@ export default async function AreaPage({ params }: Props) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
+            __html: jsonLdHtml(
               buildCollectionPageJsonLd({
                 name: `${displayName}の夜景スポット一覧`,
                 description: areaDescription,
@@ -524,7 +534,7 @@ export default async function AreaPage({ params }: Props) {
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(
+              __html: jsonLdHtml(
                 buildAreaItemListJsonLd(spots, categorySlug, { name: `${displayName}の夜景スポット一覧` })
               ),
             }}
@@ -536,7 +546,7 @@ export default async function AreaPage({ params }: Props) {
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(buildFaqJsonLd(faqs)),
+              __html: jsonLdHtml(buildFaqJsonLd(faqs)),
             }}
           />
         )}

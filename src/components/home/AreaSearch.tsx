@@ -34,7 +34,7 @@ export default function AreaSearch({ areas, labels, localeSlug }: Props) {
               return (
                 <li key={area.slug}>
                   <Link
-                    href={`${prefix}/${area.slug}`}
+                    href={`${prefix}/${area.slug}/`}
                     className="pill-tag"
                   >
                     {labels

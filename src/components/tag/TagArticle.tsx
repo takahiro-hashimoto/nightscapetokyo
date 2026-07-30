@@ -19,6 +19,7 @@ import { TAG_ARTICLE_LABELS, getComponentLabels } from "@/lib/i18n-labels";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
 import type { MapSpotItem } from "@/lib/supabase/queries";
 import { buildTagItemListJsonLd, buildFaqJsonLd } from "@/lib/json-ld";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 type Props = {
   tagName: string;
@@ -343,7 +344,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(buildTagItemListJsonLd(allResolvedSpots, { localePrefix: locale ? `/${locale}` : "", name: content.title, description: content.lead, inLanguage: bcp47Locale })),
+              __html: jsonLdHtml(buildTagItemListJsonLd(allResolvedSpots, { localePrefix: locale ? `/${locale}` : "", name: content.title, description: content.lead, inLanguage: bcp47Locale })),
             }}
           />
         )}
@@ -353,7 +354,7 @@ export default function TagArticle({ tagName, content, allSpots, otherSpots, map
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(buildFaqJsonLd(content.faqs, { inLanguage: bcp47Locale })),
+              __html: jsonLdHtml(buildFaqJsonLd(content.faqs, { inLanguage: bcp47Locale })),
             }}
           />
         )}

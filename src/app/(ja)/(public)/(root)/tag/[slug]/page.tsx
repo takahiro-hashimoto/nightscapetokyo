@@ -17,6 +17,7 @@ import { getComponentLabels } from "@/lib/i18n-labels";
 import type { SpotListItem, SpotWithRelations } from "@/lib/types";
 import { tagPageContents, dummyTagSpots } from "@/lib/dummy-tag-data";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 
 /** スラッグ別の関連外部リンク */
@@ -437,8 +438,10 @@ export default async function TagPage({ params }: Props) {
           <section className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
             <h2 className="area-section-heading" id="faq-heading">{tagName}の夜景スポットに関するFAQ</h2>
             <dl className="area-faq-list">
+              {/* 個別の質問を #faq-1 形式で直接引用・共有できるようにするアンカー。
+                  日本語の質問文をスラッグ化すると URL エンコードで読めなくなるため連番で固定 */}
               {faqs.map((faq, i) => (
-                <div key={i} className="faq-item">
+                <div key={i} id={`faq-${i + 1}`} className="faq-item">
                   <dt className="faq-q">{faq.question}</dt>
                   <dd className="faq-a">{faq.answer}</dd>
                 </div>
@@ -458,7 +461,7 @@ export default async function TagPage({ params }: Props) {
         {itemListJsonLd && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+            dangerouslySetInnerHTML={{ __html: jsonLdHtml(itemListJsonLd) }}
           />
         )}
 
@@ -466,7 +469,7 @@ export default async function TagPage({ params }: Props) {
         {faqJsonLd && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+            dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqJsonLd) }}
           />
         )}
       </div>

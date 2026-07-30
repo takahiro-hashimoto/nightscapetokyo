@@ -49,15 +49,59 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      // ── www → apex ──
+      // trailingSlash: true なので destination にも末尾スラッシュが必要。
+      // 付けないと www/foo/ → apex/foo → apex/foo/ と必ず2ホップになる。
+      // ファイルパス（robots.txt / sitemap.xml など）はスラッシュを付けてはいけないので先に処理する。
       {
-        source: "/:path*",
+        source: "/:file(.*\\..*)",
         has: [{ type: "host", value: "www.nightscape.tokyo" }],
-        destination: "https://nightscape.tokyo/:path*",
+        destination: "https://nightscape.tokyo/:file",
+        permanent: true,
+      },
+      {
+        source: "/",
+        has: [{ type: "host", value: "www.nightscape.tokyo" }],
+        destination: "https://nightscape.tokyo/",
+        permanent: true,
+      },
+      {
+        source: "/:path+",
+        has: [{ type: "host", value: "www.nightscape.tokyo" }],
+        destination: "https://nightscape.tokyo/:path+/",
         permanent: true,
       },
       {
         source: "/luminar/about/",
         destination: "/about/",
+        permanent: true,
+      },
+      // ── WordPress 遺産の /feed/ ──
+      // 汎用ルール /:path+/feed/ → /:path*/ だけだと、その飛び先がさらに
+      // リダイレクト対象で2ホップになるため、既知の組み合わせは直接最終URLへ送る。
+      {
+        source: "/recommend/feed/",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/pickup/:slug/feed/",
+        destination: "/article/:slug/",
+        permanent: true,
+      },
+      {
+        source: "/post/:slug*/feed/",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/luminar/category/:slug*/feed/",
+        destination: "/luminar/",
+        permanent: true,
+      },
+      {
+        source: "/page/:num/feed/",
+        destination: "/",
         permanent: true,
       },
       {
@@ -75,9 +119,11 @@ const nextConfig: NextConfig = {
         destination: "/article/",
         permanent: true,
       },
+      // /article/timelapse-calculator/ 自体がさらに転送されるため、
+      // 汎用の /pickup/:slug/ より前に最終URLへ直接送る
       {
-        source: "/pickup/sumida-river-bridge/",
-        destination: "/article/itabu-station-cherry-blossoms/",
+        source: "/pickup/timelapse-calculator/",
+        destination: "/article/create-timelapse/",
         permanent: true,
       },
       {
@@ -112,6 +158,9 @@ const nextConfig: NextConfig = {
         destination: "/:locale/",
         permanent: true,
       },
+      // 末尾スラッシュ無しの /post・/{locale}/post は Next の内部正規化
+      // (/:notfile → /:notfile/) が全ユーザールールより先に走るため到達しない。
+      // 記述しても2ホップになるだけなので、スラッシュ付きのみを残す。
       {
         source: "/post/",
         destination: "/",
@@ -119,11 +168,6 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/post/:slug*/",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/post",
         destination: "/",
         permanent: true,
       },
@@ -137,25 +181,11 @@ const nextConfig: NextConfig = {
         destination: "/:locale/",
         permanent: true,
       },
-      {
-        source: "/:locale(en|ko|tw|cn)/post",
-        destination: "/:locale/",
-        permanent: true,
-      },
     ];
   },
 
   async headers() {
     return [
-      {
-        source: "/admin/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "no-store",
-          },
-        ],
-      },
       {
         source: "/(.*)",
         headers: [
@@ -260,6 +290,18 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      // 管理画面は catch-all の public, s-maxage=86400 を打ち消す必要がある。
+      // 同一キーは後勝ちなので、必ず /(.*) より後ろに置くこと
+      // （以前は前に置いていたため no-store が無効化され、CDN に公開キャッシュされうる状態だった）
+      {
+        source: "/admin/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store",
           },
         ],
       },

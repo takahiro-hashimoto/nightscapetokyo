@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import Link from "@/components/common/AppLink";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { LOCALE_LABELS, ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
+import { LOCALE_LABELS, ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, SITE_NAMES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { CAUTION_LABELS } from "@/lib/i18n-static-pages";
 
 export const dynamic = "force-static";
+
+// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
+// これが無いと /chiyoda/caution/ 等が英語版を自己canonical付きで返し重複コンテンツになる
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((c) => ({ category: c }));
@@ -21,13 +25,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: l.title,
     description: l.description,
+    // Next.js は openGraph / twitter を浅くマージ（＝丸ごと置換）するため、
+    // layout 側の既定値には頼らず type / siteName / twitter をここで明示する
     openGraph: {
+      type: "website",
       title: l.title,
       description: l.description,
       url: canonicalUrl,
+      siteName: SITE_NAMES[locale] ?? SITE_NAMES.en,
       locale: ogLocale,
       alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
-      images: [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630 }],
+      images: [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630, alt: l.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: l.title,
+      description: l.description,
+      images: [`${SITE_URL}/hero.jpg`],
     },
     alternates: {
       canonical: canonicalUrl,

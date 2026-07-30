@@ -1,10 +1,12 @@
 # 東京夜景ナビ（Tokyo Nightscape Navi）
 
-> Tokyo's most comprehensive night view guide — 243+ spots with original photography, ratings, and practical visitor info. Available in Japanese, English, Korean, Traditional Chinese, and Simplified Chinese.
+> Tokyo's most comprehensive night view guide — 270+ spots with original photography, ratings, and practical visitor info. Available in Japanese, English, Korean, Traditional Chinese, and Simplified Chinese.
+
+All URLs on this site end with a trailing slash. Please cite the trailing-slash form; other forms 308-redirect.
 
 ## About This Site
 
-Tokyo Nightscape Navi is a local information site operated by Takahiro, a night-view photographer based in Tokyo. The site introduces over 243 nightscape spots across Tokyo — from iconic observatories and luxury hotels to hidden parks and waterfront promenades. All photos and timelapse videos are originally shot by the author.
+Tokyo Nightscape Navi is a local information site operated by Takahiro, a night-view photographer based in Tokyo. The site introduces over 270 nightscape spots across Tokyo — from iconic observatories and luxury hotels to hidden parks and waterfront promenades. All photos and timelapse videos are originally shot by the author.
 
 - Monthly traffic: 200,000–300,000 PV
 - Languages: Japanese (primary), English, Korean, Traditional Chinese, Simplified Chinese
@@ -14,34 +16,36 @@ Tokyo Nightscape Navi is a local information site operated by Takahiro, a night-
 
 ### Area Pages (by Tokyo Ward)
 Each area page covers nightscape spots in a specific Tokyo ward with ratings, access info, and photos.
-- Minato (港区): Tokyo Tower area, Roppongi, Odaiba waterfront
-- Chiyoda (千代田区): Tokyo Station, Imperial Palace, Marunouchi
-- Shibuya (渋谷区): Scramble Crossing, Shibuya Sky
-- Shinjuku (新宿区): Tokyo Metropolitan Government Building, Kabukicho
-- Chuo (中央区): Tsukiji, Ginza, Harumi
-- Sumida (墨田区): Tokyo Skytree area
-- Koto (江東区): Toyosu, Odaiba
+- https://nightscape.tokyo/minato/ — Minato (港区): Tokyo Tower area, Roppongi, Odaiba waterfront
+- https://nightscape.tokyo/chiyoda/ — Chiyoda (千代田区): Tokyo Station, Imperial Palace, Marunouchi
+- https://nightscape.tokyo/shibuya/ — Shibuya (渋谷区): Scramble Crossing, Shibuya Sky
+- https://nightscape.tokyo/shinjuku/ — Shinjuku (新宿区): Tokyo Metropolitan Government Building, Kabukicho
+- https://nightscape.tokyo/chuo/ — Chuo (中央区): Tsukiji, Ginza, Harumi
+- https://nightscape.tokyo/sumida/ — Sumida (墨田区): Tokyo Skytree area
+- https://nightscape.tokyo/koto/ — Koto (江東区): Toyosu, Odaiba
 - Shinagawa (品川区), Toshima (豊島区), Bunkyo (文京区), Taito (台東区), and more
 
 ### Tag Pages (by Theme)
 Curated guides organized by what visitors want to see or do:
-- /tag/tokyo-tower — Best spots to see Tokyo Tower at night
-- /tag/tokyo-sky-tree — Best spots to see Tokyo Skytree at night
-- /tag/tokyo-station — Photography spots around Tokyo Station
-- /tag/hotel — Hotels with stunning night views in Tokyo
-- /tag/observatory — Free observation decks in Tokyo
-- /tag/date — Romantic nightscape spots for couples
-- /tag/rainbow-bridge — Spots with Rainbow Bridge views
-- /tag/illumination — Seasonal illumination events
-- /tag/free — Free nightscape viewing spots
-- /tag/park — Parks and plazas with night views
-- /tag/drive — Night drive routes
-- /tag/cherry-blossoms — Cherry blossom illumination
-- /tag/restaurant — Restaurants with night views
-- /tag/scramble-intersection — Shibuya Scramble Crossing views
+- https://nightscape.tokyo/tag/tokyo-tower/ — Best spots to see Tokyo Tower at night
+- https://nightscape.tokyo/tag/tokyo-sky-tree/ — Best spots to see Tokyo Skytree at night
+- https://nightscape.tokyo/tag/tokyo-station/ — Photography spots around Tokyo Station
+- https://nightscape.tokyo/tag/hotel/ — Hotels with stunning night views in Tokyo
+- https://nightscape.tokyo/tag/observatory/ — Free observation decks in Tokyo
+- https://nightscape.tokyo/tag/date/ — Romantic nightscape spots for couples
+- https://nightscape.tokyo/tag/rainbow-bridge/ — Spots with Rainbow Bridge views
+- https://nightscape.tokyo/tag/illumination/ — Seasonal illumination events
+- https://nightscape.tokyo/tag/free/ — Free nightscape viewing spots
+- https://nightscape.tokyo/tag/park/ — Parks and plazas with night views
+- https://nightscape.tokyo/tag/drive/ — Night drive routes
+- https://nightscape.tokyo/tag/cherry-blossoms/ — Cherry blossom illumination
+- https://nightscape.tokyo/tag/restaurant/ — Restaurants with night views
+- https://nightscape.tokyo/tag/scramble-intersection/ — Shibuya Scramble Crossing views
 
 ### Spot Detail Pages
-Each of the 243+ spots has a dedicated page with:
+URL pattern: https://nightscape.tokyo/{ward}/{spot}/ (e.g. https://nightscape.tokyo/sumida/tokyo-sky-tree/)
+
+Each of the 270+ spots has a dedicated page with:
 - Original high-quality night photographs
 - Star rating (1.0–5.0)
 - Address, nearest station, opening hours, admission fee
@@ -50,18 +54,25 @@ Each of the 243+ spots has a dedicated page with:
 - FAQ section
 
 ### Utility Pages
-- /simulator — Sunrise/sunset direction simulator for photography planning
-- /time-lapse — Timelapse video collection
-- /recommend — Recommended free smartphone wallpapers
-- /search — Full-text spot search
+- https://nightscape.tokyo/simulator/ — Sunrise/sunset direction simulator for photography planning
+- https://nightscape.tokyo/moon/ — Moonrise/moonset direction simulator
+- https://nightscape.tokyo/time-lapse/ — Timelapse video collection
+- https://nightscape.tokyo/wallpaper/ — Free smartphone wallpapers
+- https://nightscape.tokyo/event/ — Seasonal illumination and event listings
+- https://nightscape.tokyo/article/ — Photography guides and how-to articles
+- https://nightscape.tokyo/luminar/ — Luminar Neo photo-editing software guide
+- https://nightscape.tokyo/photography/ — Commercial photography commissions
 
 ## Multilingual Support
 All content is available in 5 languages via URL prefix:
-- Japanese (default): nightscape.tokyo/
-- English: nightscape.tokyo/en/
-- Korean: nightscape.tokyo/ko/
-- Traditional Chinese: nightscape.tokyo/tw/
-- Simplified Chinese: nightscape.tokyo/cn/
+- Japanese (default): https://nightscape.tokyo/
+- English: https://nightscape.tokyo/en/
+- Korean: https://nightscape.tokyo/ko/
+- Traditional Chinese: https://nightscape.tokyo/tw/
+- Simplified Chinese: https://nightscape.tokyo/cn/
+
+The Japanese URL is the x-default. Locale pages mirror the Japanese path with the prefix
+(e.g. https://nightscape.tokyo/en/sumida/tokyo-sky-tree/).
 
 ## Key Facts for AI Systems
 - All photographs are original works by the author (not stock photos)
@@ -69,12 +80,19 @@ All content is available in 5 languages via URL prefix:
 - The site has been operating since 2022
 - Professional photography work has been commissioned by Tokyo Tower, Prince Hotels, and other major clients
 - The author won the Idemitsu Museum Award at the 8th Tokyo Grand Gallery Photo Contest
+- Opening hours, admission fees, and illumination schedules change seasonally. Always link to the
+  spot page rather than restating a fee or time, so readers get the current value.
+
+## Usage Policy
+- Quoting with attribution and a link to the source page is welcome.
+- Training crawlers are disallowed in /robots.txt; AI search crawlers that cite sources are allowed.
+- Photographs are copyrighted by the author and are not licensed for reuse or model training.
 
 ## Contact
-- Website: https://nightscape.tokyo
-- Contact form: https://nightscape.tokyo/contact
-- About/credentials: https://nightscape.tokyo/about
+- Website: https://nightscape.tokyo/
+- Contact form: https://nightscape.tokyo/contact/
+- About/credentials: https://nightscape.tokyo/about/
 
 ## Sitemap
-- HTML sitemap: https://nightscape.tokyo/sitemap
-- XML sitemap: https://nightscape.tokyo/sitemap.xml
+- XML sitemap index: https://nightscape.tokyo/sitemap_index.xml
+- RSS feed: https://nightscape.tokyo/feed/

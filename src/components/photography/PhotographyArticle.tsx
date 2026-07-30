@@ -4,6 +4,7 @@ import HomeAuthorCard from "@/components/common/HomeAuthorCard";
 import PhotographySections from "@/components/photography/PhotographySections";
 import PhotographyFormEmbed from "@/components/photography/PhotographyFormEmbed";
 import type { PhotographyLabels } from "@/lib/i18n-static/photography";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 /**
  * 撮影依頼ページの記事テンプレート（/article/ ベース）。
@@ -41,7 +42,7 @@ export default function PhotographyArticle({
         <article>
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }}
           />
 
           {/* ① firstVisual: ヒーロー画像 + ヘッダー + リード + CTA */}

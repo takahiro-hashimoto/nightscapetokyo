@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "@/components/common/AppLink";
 import SunCalc from "suncalc";
+import Breadcrumb from "@/components/layout/Breadcrumb";
 import MoonLoader from "./MoonLoader";
 import MoonInfoModal from "@/components/moon/MoonInfoModal";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
+import { jsonLdHtml } from "@/lib/json-ld-script";
+import { calculateMoonData } from "@/lib/moon-calc";
+import { getJstToday, formatAzimuth, TOKYO_POINT } from "@/lib/tokyo-today";
 
 // ============================================================
 // 満月日程の動的計算（サーバーサイド）
@@ -66,8 +70,10 @@ const OG_TITLE =
 const OG_DESC =
   "月の出・月の入りの方角（月出方位角）と時刻を地図上で無料確認できるWebアプリ。場所・日付を指定するだけで月の出る方向を即表示。満月・星景写真の撮影計画、天体観測の下見に。";
 
-// 満月FAQ・月齢カレンダーが現在日時に依存するため日次で再生成する
-export const revalidate = 86400;
+// 満月FAQ・月齢カレンダー・「当日の東京の月の出/月の入り」がいずれも日付依存。
+// 時間ベースだとトラフィックのある時間帯ごとに再生成されてしまうため、
+// 日次 Cron (/api/revalidate?mode=daily) からの明示的な再生成に一本化する
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: "月の出・月の入り方角シミュレーター【無料】｜月出方位角・月齢を地図で確認",
@@ -195,6 +201,15 @@ const STATIC_FAQ = [
 const FAQ = [...buildFullMoonFAQ(), ...STATIC_FAQ];
 
 export default function MoonPage() {
+  // ツール本体は ssr:false なので、既定地点（地図の初期位置＝東京都庁）の
+  // 当日の値だけはサーバー側で計算して HTML に出す。
+  // これが無いと「今夜の東京の月の出は何時・どの方角？」という、このページの
+  // 検索意図そのものに AI 検索・クローラーが一切答えられない
+  const today = getJstToday();
+  const moon = calculateMoonData(today.date, TOKYO_POINT.lat, TOKYO_POINT.lng);
+  const moonriseAz = formatAzimuth(moon.moonriseAzimuth);
+  const moonsetAz = formatAzimuth(moon.moonsetAzimuth);
+
   return (
     <>
       {/* OpenStreetMap タイル取得のため事前接続（このページ専用） */}
@@ -205,9 +220,14 @@ export default function MoonPage() {
       {/* SEOモーダル: PC初回訪問時に表示 */}
       <MoonInfoModal faq={FAQ} />
 
-      {/* SP専用コンテンツ: 地図下に常時表示（PCでは非表示） */}
+      {/* 通常コンテンツ: 地図（100vh）の下に常時表示。PCでも表示する
+          （唯一サーバーレンダリングされる本文なので隠しコンテンツにしない） */}
       <section className="moon-sp-content">
         <div className="moon-sp-content__inner">
+          {/* BreadcrumbList を JSON-LD で名乗る以上、DOM 側にも実物が要る。
+              地図本体は 100vh のツール UI なので、唯一の通常コンテンツである
+              このセクション先頭に他ページと同じ共通コンポーネントを置く */}
+          <Breadcrumb items={[{ label: "月の出・月の入り時刻方角ナビ" }]} />
           <h1 className="moon-sp-content__title">
             月の出・月の入り時刻方角ナビ
             <span className="moon-sp-content__subtitle">月出・月入の方角と時刻シミュレーター</span>
@@ -218,7 +238,37 @@ export default function MoonPage() {
             満月や新月の撮影スポットの下見・風景写真の構図検討・天体観測の計画などにご活用ください。
           </p>
 
-          <div className="moon-sp-content__section">
+          <div className="moon-sp-content__section" id="today">
+            <h2 className="moon-sp-content__section-title">
+              <time dateTime={today.iso}>{today.label}</time>の東京の月の出・月の入り
+            </h2>
+            <div className="moon-definition">
+              <dl className="moon-definition__body">
+                <dt>月の出</dt>
+                <dd>
+                  {moon.moonriseTime
+                    ? `${moon.moonriseTime}${moonriseAz ? ` ／ ${moonriseAz}の空から昇ります` : ""}`
+                    : "この日は月の出がありません"}
+                </dd>
+                <dt>月の入り</dt>
+                <dd>
+                  {moon.moonsetTime
+                    ? `${moon.moonsetTime}${moonsetAz ? ` ／ ${moonsetAz}の空に沈みます` : ""}`
+                    : "この日は月の入りがありません"}
+                </dd>
+                <dt>月相</dt>
+                <dd>
+                  {moon.phaseName}（輝面比 約{Math.round(moon.illumination * 100)}%）
+                </dd>
+              </dl>
+            </div>
+            <p className="moon-sp-content__lead">
+              上記は{TOKYO_POINT.label}を基準にした値です。地図上のマーカーを動かすと、その地点の
+              月の出・月の入りの時刻と方角に切り替わります。
+            </p>
+          </div>
+
+          <div className="moon-sp-content__section" id="how-to-use">
             <h2 className="moon-sp-content__section-title">シミュレーターの使い方</h2>
             <ol className="moon-info-modal__howto">
               <li>地図上をタップ、またはマーカーをドラッグして調べたい地点に移動する</li>
@@ -232,7 +282,7 @@ export default function MoonPage() {
 
           <AdSenseUnit {...ADS.MAP_SP} />
 
-          <div className="moon-sp-content__section">
+          <div className="moon-sp-content__section" id="use-cases">
             <h2 className="moon-sp-content__section-title">こんな時に役立ちます</h2>
             <div className="moon-definition">
               <dl className="moon-definition__body">
@@ -250,7 +300,7 @@ export default function MoonPage() {
             </div>
           </div>
 
-          <div className="moon-sp-content__section">
+          <div className="moon-sp-content__section" id="basics">
             <h2 className="moon-sp-content__section-title">月の出・月の入りの豆知識</h2>
             <div className="moon-definition">
               <dl className="moon-definition__body">
@@ -270,11 +320,13 @@ export default function MoonPage() {
 
           <AdSenseUnit {...ADS.MAP_SP} />
 
-          <div className="moon-sp-content__section">
+          <div className="moon-sp-content__section" id="faq">
             <h2 className="moon-sp-content__section-title">よくある質問</h2>
             <dl>
-              {FAQ.map(({ q, a }) => (
-                <div key={q} className="moon-faq-item">
+              {/* 個別の質問を #faq-1 形式で直接引用・共有できるようにする
+                  （セクション全体は #faq のまま）。モーダル側は faq-modal-N で衝突回避済み */}
+              {FAQ.map(({ q, a }, i) => (
+                <div key={q} id={`faq-${i + 1}`} className="moon-faq-item">
                   <dt className="moon-faq-q">{q}</dt>
                   <dd className="moon-faq-a">{a}</dd>
                 </div>
@@ -294,25 +346,8 @@ export default function MoonPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                {
-                  "@type": "ListItem",
-                  position: 1,
-                  name: "東京夜景ナビ",
-                  item: "https://nightscape.tokyo/",
-                },
-                {
-                  "@type": "ListItem",
-                  position: 2,
-                  name: "【月の出・月の入りナビ】月出・月入の方角と時刻がわかるシミュレーションアプリ",
-                  item: "https://nightscape.tokyo/moon/",
-                },
-              ],
-            },
+          // BreadcrumbList は <Breadcrumb> コンポーネント側で出力する
+          __html: jsonLdHtml([
             {
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",

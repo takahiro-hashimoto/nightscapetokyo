@@ -71,8 +71,8 @@ export default function AreaMap({ spots, areaName, localeSlug, countLabel, nameO
           <FitBounds spots={spots} />
           {spots.map((spot) => {
             const href = localeSlug
-              ? `/${localeSlug}/${spot.categorySlug}/${spot.slug}`
-              : `/${spot.categorySlug}/${spot.slug}`;
+              ? `/${localeSlug}/${spot.categorySlug}/${spot.slug}/`
+              : `/${spot.categorySlug}/${spot.slug}/`;
             const displayName = nameOverrides?.[spot.slug] ?? spot.name;
             return (
             <Marker

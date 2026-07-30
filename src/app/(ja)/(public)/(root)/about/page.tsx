@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildAreaHreflangAlternates } from "@/lib/types";
+import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, LOCALE_OG_ALTERNATES, buildAreaHreflangAlternates } from "@/lib/types";
 import { EQUIPMENT, ABOUT_SNS_LINKS, ACHIEVEMENTS_BASE } from "@/lib/about-content";
 import { ABOUT_LABELS } from "@/lib/about-labels";
 
@@ -20,10 +20,31 @@ export const dynamic = "force-static";
 const l = ABOUT_LABELS.ja;
 
 export async function generateMetadata(): Promise<Metadata> {
+  const canonicalUrl = `${SITE_URL}/about/`;
   return {
     title: l.title,
     description: l.summary,
+    // Next.js は openGraph を浅くマージ（＝丸ごと置換）するため、定義しないと
+    // (ja)/layout.tsx のトップページ用 og:title / og:url をそのまま継承してしまう
+    openGraph: {
+      type: "website",
+      title: `${l.title} | 東京夜景ナビ`,
+      description: l.summary,
+      url: canonicalUrl,
+      siteName: "東京夜景ナビ",
+      locale: "ja_JP",
+      alternateLocale: LOCALE_OG_ALTERNATES as string[],
+      images: [
+        {
+          url: `${SITE_URL}/hero.jpg`,
+          width: 1200,
+          height: 630,
+          alt: `${l.title} | 東京夜景ナビ`,
+        },
+      ],
+    },
     alternates: {
+      canonical: canonicalUrl,
       languages: buildAreaHreflangAlternates(SITE_URL, "about", ALL_LOCALE_SLUGS),
     },
   };

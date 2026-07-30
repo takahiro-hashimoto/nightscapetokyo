@@ -489,23 +489,25 @@ export default async function Page() {
       <section id="faq" className="content-card card-padding article-body">
         <h2>Luminar Neoの評判に関するよくある質問</h2>
         <dl>
-          <div className="faq-item">
+          {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
+              日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
+          <div id="faq-1" className="faq-item">
             <dt className="faq-q">Luminar Neoは「買い切り」なのに追加料金がかかるの？</dt>
             <dd className="faq-a">基本機能もProツール（ノイズ除去、HDR合成など）も買い切りで永続利用できます。追加料金が関係するのは<strong>生成AI機能（GenEraseなど）のみ</strong>で、購入から1年間は含まれ、継続にはパス（約¥7,400/年）の更新が必要です。パスが切れてもアプリとProツールはそのまま使えます。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-2" className="faq-item">
             <dt className="faq-q">Luminar Neoは本当に重いの？</dt>
             <dd className="faq-a">AI処理は負荷が高いため、<strong>低スペックPCでは重く感じる</strong>ことがあります。推奨スペック（メモリ16GB以上、GPU搭載）を満たしていれば、快適に動作します。購入前に体験版で確認するのがおすすめです。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-3" className="faq-item">
             <dt className="faq-q">LightroomとLuminar Neo、どっちがいい？</dt>
             <dd className="faq-a">用途によります。<strong>写真管理と細かい調整ならLightroom、AI編集と時短ならLuminar Neo</strong>。両方をプラグイン連携で使う方法もあります。得意分野が違うので、併用も選択肢の一つです。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-4" className="faq-item">
             <dt className="faq-q">サブスクは廃止されたって本当？</dt>
             <dd className="faq-a"><strong>はい、2026年現在サブスクプランは販売されていません</strong>。現在は買い切りプラン＋パス（任意）のみです。古いネット記事には「サブスク vs 買い切り」の比較が残っていますが、過去の情報です。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-5" className="faq-item">
             <dt className="faq-q">返金保証はある？</dt>
             <dd className="faq-a">はい、<strong>30日間の返金保証</strong>があります。体験版で試して購入したけど、やっぱり合わなかった…という場合でも安心です。</dd>
           </div>

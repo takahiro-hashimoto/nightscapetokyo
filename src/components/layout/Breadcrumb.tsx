@@ -1,6 +1,7 @@
 import Link from "@/components/common/AppLink";
 import { ChevronRight } from "lucide-react";
 import { SITE_URL, SITE_NAMES } from "@/lib/types";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 type BreadcrumbItem = {
   label: string;
@@ -14,8 +15,8 @@ type Props = {
 
 export default function Breadcrumb({ items, locale }: Props) {
   const homeLabel = (locale && SITE_NAMES[locale]) ? `${SITE_NAMES[locale]} TOP` : "東京夜景ナビTOP";
-  const homeHref = locale ? `/${locale}` : "/";
-  const homeUrl = locale ? `${SITE_URL}/${locale}` : SITE_URL;
+  const homeHref = locale ? `/${locale}/` : "/";
+  const homeUrl = locale ? `${SITE_URL}/${locale}/` : `${SITE_URL}/`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -44,7 +45,7 @@ export default function Breadcrumb({ items, locale }: Props) {
     <nav className="breadcrumb" aria-label={navAriaLabel}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }}
       />
       <ol className="flex items-center flex-wrap gap-1">
         <li>

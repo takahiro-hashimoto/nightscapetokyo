@@ -1,3 +1,4 @@
+import { jsonLdHtml } from "@/lib/json-ld-script";
 import type { Metadata } from 'next'
 import Link from '@/components/common/AppLink'
 import Image from 'next/image'
@@ -452,7 +453,9 @@ export default async function LuminarTopPage() {
               </p>
 
               <dl>
-                <div className="faq-item">
+                {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
+                    日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
+                <div id="faq-1" className="faq-item">
                   <dt className="faq-q">無料体験版はありますか？</dt>
                   <dd className="faq-a">
                     はい、7日間の無料体験版があります。詳細は「
@@ -460,7 +463,7 @@ export default async function LuminarTopPage() {
                     」で詳しく解説しています。
                   </dd>
                 </div>
-                <div className="faq-item">
+                <div id="faq-2" className="faq-item">
                   <dt className="faq-q">拡張機能（Proツール）は必須ですか？</dt>
                   <dd className="faq-a">
                     現在はProツール全8種（ノイズ除去、超解像、HDR合成など）がすべての買い切りライセンスに標準で含まれており、
@@ -468,22 +471,22 @@ export default async function LuminarTopPage() {
                     <Link href="/luminar/expand/">拡張機能でできることまとめ</Link>」で解説しています。
                   </dd>
                 </div>
-                <div className="faq-item">
+                <div id="faq-3" className="faq-item">
                   <dt className="faq-q">ルミナーネオの評判が知りたいです。</dt>
                   <dd className="faq-a">
                     「<Link href="/luminar/voice/">Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態</Link>
                     」で解説しています。
                   </dd>
                 </div>
-                <div className="faq-item">
+                <div id="faq-4" className="faq-item">
                   <dt className="faq-q">返金保証はありますか？</dt>
                   <dd className="faq-a">はい、購入から30日間は返金保証があります。安心して試せますね。</dd>
                 </div>
-                <div className="faq-item">
+                <div id="faq-5" className="faq-item">
                   <dt className="faq-q">WindowsとMac、両方で使えますか？</dt>
                   <dd className="faq-a">1ライセンスで2台のPCにインストール可能です。Windows・Mac混在でも問題ありません。</dd>
                 </div>
-                <div className="faq-item">
+                <div id="faq-6" className="faq-item">
                   <dt className="faq-q">動作が重いと聞きましたが？</dt>
                   <dd className="faq-a">
                     AI処理を多用するため、ある程度のPCスペックは必要です。推奨は16GB以上のRAMとSSD。
@@ -494,7 +497,7 @@ export default async function LuminarTopPage() {
                     で詳しく紹介しています。
                   </dd>
                 </div>
-                <div className="faq-item">
+                <div id="faq-7" className="faq-item">
                   <dt className="faq-q">アップデートは無料ですか？</dt>
                   <dd className="faq-a">
                     マイナーアップデート（バグ修正など）は無料です。メジャーアップデート（新機能追加）はパス加入者のみ。
@@ -592,7 +595,7 @@ export default async function LuminarTopPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLdHtml({
             '@context': 'https://schema.org',
             '@graph': [
               {
@@ -607,23 +610,8 @@ export default async function LuminarTopPage() {
                   name: LUMINAR_SITE_NAME,
                   url: `${LUMINAR_SITE_URL}/`,
                 },
-                breadcrumb: {
-                  '@type': 'BreadcrumbList',
-                  itemListElement: [
-                    {
-                      '@type': 'ListItem',
-                      position: 1,
-                      name: '東京夜景ナビ',
-                      item: 'https://nightscape.tokyo/',
-                    },
-                    {
-                      '@type': 'ListItem',
-                      position: 2,
-                      name: LUMINAR_SITE_NAME,
-                      item: `${LUMINAR_SITE_URL}/`,
-                    },
-                  ],
-                },
+                // breadcrumb はここに書かない。ページ上部の <Breadcrumb> が
+                // DOM と一致した BreadcrumbList を出力済みで、二重定義になるため
               },
               {
                 '@type': 'FAQPage',

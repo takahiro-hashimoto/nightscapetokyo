@@ -118,8 +118,9 @@ export default function SimulatorInfoModal({ faq }: Props) {
           <div className="sim-info-modal__section">
             <h2 className="sim-info-modal__section-title">よくある質問</h2>
             <dl>
-              {faq.map(({ q, a }) => (
-                <div key={q} className="faq-item">
+              {/* ページ本文側にも同じ FAQ が並ぶため、id が重複しないよう modal 用の接頭辞を付ける */}
+              {faq.map(({ q, a }, i) => (
+                <div key={q} id={`faq-modal-${i + 1}`} className="faq-item">
                   <dt className="faq-q">{q}</dt>
                   <dd className="faq-a">{a}</dd>
                 </div>

@@ -1,5 +1,5 @@
 import type { SpotWithRelations } from "@/lib/types";
-import { SITE_URL } from "@/lib/types";
+import { AUTHOR_PERSON_ID, ORGANIZATION_ID } from "@/lib/json-ld";
 
 /** ロケール別 VideoObject ラベル（キーは BCP 47: LOCALE_CONFIG.htmlLang に対応） */
 const VIDEO_LABELS: Record<string, { nameSuffix: string; fallbackDesc: string }> = {
@@ -20,6 +20,27 @@ function toIsoDate(value: string): string {
   return value;
 }
 
+/**
+ * DB の address は「東京都港区海岸1-7-1」のような1本のフリーテキスト。
+ * 以前はこれを丸ごと addressLocality に入れていたが、
+ * addressLocality は市区町村名を入れる欄なので値として不正だった。
+ *
+ * ここでは実データから確実に取れるものだけを埋める:
+ * - addressCountry: 掲載範囲は日本国内のみなので "JP" 固定
+ * - addressRegion:  先頭の「〜都/道/府/県」があればそれを使う
+ *                   （東京だけでなく横浜＝神奈川県のスポットもあるため決め打ちしない）
+ * - streetAddress:  住所文字列そのもの
+ */
+function buildPostalAddress(address: string) {
+  const region = address.match(/^(.+?[都道府県])/)?.[1];
+  return {
+    "@type": "PostalAddress",
+    addressCountry: "JP",
+    ...(region && { addressRegion: region }),
+    streetAddress: address,
+  };
+}
+
 /** YouTube embed HTML から動画IDを抽出 */
 export function extractYoutubeId(html: string): string | null {
   const match = html.match(/(?:youtube\.com\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/);
@@ -31,6 +52,11 @@ export function extractYoutubeId(html: string): string | null {
 export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, locale = "ja", categorySlug = ""): Record<string, any>[] {
   const name = spot.name || spot.title;
   const isEvent = categorySlug === "event";
+
+  // ページ内の各エンティティに @id を振り、どれが主役かを機械的に示す。
+  // 以前は Place / Article / VideoObject / FAQPage が全部同じ url を持つだけで
+  // @id が無く、Google からは「同じ URL の別物が4つある」ようにしか見えなかった
+  const mainId = `${canonicalUrl}#${isEvent ? "event" : "place"}`;
 
   const images = [
     spot.featured_image,
@@ -44,6 +70,7 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
     mainSchema = {
       "@context": "https://schema.org",
       "@type": "Event",
+      "@id": mainId,
       name,
       url: canonicalUrl,
       inLanguage: locale,
@@ -60,19 +87,26 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
       mainSchema.location = {
         "@type": "Place",
         name: locationName,
-        ...(spot.address && {
-          address: { "@type": "PostalAddress", addressLocality: spot.address },
-        }),
+        ...(spot.address && { address: buildPostalAddress(spot.address) }),
         ...(spot.latitude != null && spot.longitude != null && {
           geo: { "@type": "GeoCoordinates", latitude: spot.latitude, longitude: spot.longitude },
         }),
       };
     }
   } else {
-    const isHotel = spot.type === "hotel";
+    // @type は TouristAttraction 単独にする。
+    // 以前は LocalBusiness / LodgingBusiness を併記していたが、
+    // これらは「事業者」としての実体（正規化された住所・電話番号・
+    // 機械可読な営業時間・価格帯など）を前提にする型で、DB が持っているのは
+    // フリーテキストの住所と営業時間だけ。実体の伴わない事業者ノードに
+    // aggregateRating / review をぶら下げるのが GSC の指摘の原因なので、
+    // 「夜景を見る場所」として確実に説明できる TouristAttraction のみに絞る。
+    // ホテルも spot_hotels が持つのは checkin/checkout 程度で
+    // LodgingBusiness を名乗るには足りないため同じ扱いにする。
     mainSchema = {
       "@context": "https://schema.org",
-      "@type": isHotel ? "LodgingBusiness" : ["TouristAttraction", "LocalBusiness"],
+      "@type": "TouristAttraction",
+      "@id": mainId,
       name,
       url: canonicalUrl,
       inLanguage: locale,
@@ -83,7 +117,7 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
     };
 
     if (spot.address) {
-      mainSchema.address = { "@type": "PostalAddress", addressLocality: spot.address };
+      mainSchema.address = buildPostalAddress(spot.address);
     }
 
     if (spot.latitude != null && spot.longitude != null) {
@@ -95,9 +129,11 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
       mainSchema.hasMap = `https://www.google.com/maps?q=${spot.latitude},${spot.longitude}`;
     }
 
-    if (spot.hours) {
-      mainSchema.openingHours = spot.hours;
-    }
+    // openingHours は "Mo-Su 09:00-17:00" という決まった書式しか受け付けないが、
+    // spot.hours は「10:00〜22:00（最終入場21:30）<br>※季節により変動」のような
+    // HTML 混じりのフリーテキスト。営業日（曜日）の情報も別カラム(holiday)に
+    // 散っていて機械可読に復元できないため、構造化データには出力しない。
+    // 営業時間は SpotInfo の表示側（sanitizeHtml 経由）で人間向けに見せる。
 
     // AggregateRating はユーザーレビューの集計のみに使う。
     // 編集部評価（rating_beautiful 等）を集計として出すと
@@ -129,25 +165,22 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${canonicalUrl}#article`,
     headline: name,
     ...(spot.lead && { description: spot.lead }),
     url: canonicalUrl,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
-    ...(spot.featured_image && { image: spot.featured_image }),
+    // この記事が何について書かれたものかを @id で明示し、
+    // ページの主役が Place/Event 側であることを Google に伝える
+    about: { "@id": mainId },
+    ...(images.length > 0 && { image: images }),
     datePublished: spot.published_at ?? spot.created_at,
     dateModified: spot.updated_at,
     inLanguage: locale,
-    author: {
-      "@type": "Person",
-      name: "タカヒロ",
-      url: `${SITE_URL}/about/`,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "nightscape.tokyo",
-      url: SITE_URL,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
-    },
+    // 著者・発行元の実体は Organization / Organization.founder 側で
+    // 定義済み（レイアウトで全ページに出力）。ここは @id 参照 + 表示名のみ
+    author: { "@type": "Person", "@id": AUTHOR_PERSON_ID, name: "タカヒロ" },
+    publisher: { "@type": "Organization", "@id": ORGANIZATION_ID, name: "nightscape.tokyo" },
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -159,6 +192,7 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
       schemas.push({
         "@context": "https://schema.org",
         "@type": "VideoObject",
+        "@id": `${canonicalUrl}#video`,
         name: `${name}${(VIDEO_LABELS[locale] ?? VIDEO_LABELS.ja).nameSuffix}`,
         description: spot.lead ?? `${name}${(VIDEO_LABELS[locale] ?? VIDEO_LABELS.ja).fallbackDesc}`,
         thumbnailUrl: `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`,
@@ -174,6 +208,7 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
     schemas.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
+      "@id": `${canonicalUrl}#faq`,
       inLanguage: locale,
       mainEntity: spot.faqs.map((faq) => ({
         "@type": "Question",

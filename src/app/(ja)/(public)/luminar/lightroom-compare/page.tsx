@@ -407,27 +407,29 @@ export default async function Page() {
       <section id="faq" className="content-card card-padding article-body">
         <h2>よくある質問（FAQ）</h2>
         <dl>
-          <div className="faq-item">
+          {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
+              日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
+          <div id="faq-1" className="faq-item">
             <dt className="faq-q">Lightroomの完全な代わりになる？</dt>
             <dd className="faq-a">カタログ管理とPhotoshop連携は代替できません。RAW現像と写真の仕上げという点では十分に対応できるので、管理機能が不要で現像を効率化したい方には実質的な代替になり得ます。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-2" className="faq-item">
             <dt className="faq-q">プロでも使える？</dt>
             <dd className="faq-a">使えます。風景写真家やポートレート写真家でLuminar Neoをメインツールにしている方は多数います。ただし大量納品の商業撮影では、Lightroomのカタログ管理の方が効率的な場合もあります。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-3" className="faq-item">
             <dt className="faq-q">RAW現像の品質は？</dt>
             <dd className="faq-a">基本品質に大きな差はありません。主要カメラメーカーのRAWに対応し、16bit処理にも対応しています。仕上がりの差は、どのツールを使ってどう仕上げるかという部分で出ます。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-4" className="faq-item">
             <dt className="faq-q">Lightroomのフォトプラン20GBはもう契約できない？</dt>
             <dd className="faq-a">2025年1月15日以降、新規受付は終了しました。既存ユーザーは継続利用可能ですが、月額1,780円に値上げされています。新規の方はフォトプラン（1TB）月額2,380円、またはLightroomプラン（1TB）月額1,480円から選ぶことになります。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-5" className="faq-item">
             <dt className="faq-q">Luminar Neoの買い切りプランでProツールは使える？</dt>
             <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Upgrade Pass / Ecosystem Passが必要なのは、生成AIの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-6" className="faq-item">
             <dt className="faq-q">Luminar Neoで1年で使えなくなる機能はある？</dt>
             <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの<strong>生成AI機能のみ</strong>で、継続利用にはパスの更新が必要です。なお、<strong>Proツールも買い切りに含まれており永続的に使えます</strong>。</dd>
           </div>

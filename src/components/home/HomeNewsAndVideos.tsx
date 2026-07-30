@@ -31,7 +31,7 @@ export default async function HomeNewsAndVideos() {
               <ul className="news-list">
                 {recentSpots.map((spot) => (
                   <li key={spot.slug} className="news-item">
-                    <Link href={`/${spot.categorySlug}/${spot.slug}`} className="news-link">
+                    <Link href={`/${spot.categorySlug}/${spot.slug}/`} className="news-link">
                       <span className="news-name">{spot.name}</span>
                       <span className="news-date">{spot.updatedAt}</span>
                     </Link>

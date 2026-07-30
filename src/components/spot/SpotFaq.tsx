@@ -29,8 +29,10 @@ export default function SpotFaq({ faqs, heading, labels }: Props) {
         {displayHeading}
       </h2>
       <dl>
+        {/* id は個別の質問を #faq-1 形式で直接引用・共有できるようにするアンカー。
+            faq.id は DB 由来で不安定なため、アンカーには表示順の連番を使う */}
         {faqs.map((faq, i) => (
-          <div key={faq.id ?? i} className="faq-item">
+          <div key={faq.id ?? i} id={`faq-${i + 1}`} className="faq-item">
             <dt className="faq-q">{faq.question}</dt>
             <dd
               className="faq-a"

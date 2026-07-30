@@ -24,6 +24,7 @@ import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
 import LuminarBridge from "@/components/luminar/LuminarBridge";
 import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -187,7 +188,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             <script
               type="application/ld+json"
               dangerouslySetInnerHTML={{
-                __html: JSON.stringify({
+                __html: jsonLdHtml({
                   "@context": "https://schema.org",
                   "@type": "Article",
                   headline: article.title,

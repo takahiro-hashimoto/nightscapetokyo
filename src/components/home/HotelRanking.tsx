@@ -32,7 +32,7 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
             return (
             <li key={hotel.id}>
             <Link
-              href={`${prefix}/${hotel.category.slug}/${hotel.slug}`}
+              href={`${prefix}/${hotel.category.slug}/${hotel.slug}/`}
               className="spot-card"
             >
               <div className="spot-card-image">
@@ -75,7 +75,7 @@ export default function HotelRanking({ hotels, labels, localeSlug }: Props) {
           })}
         </ol>
         <div className="home-section-more">
-          <Link href={`${prefix}/tag/hotel`} className="home-more-link">
+          <Link href={`${prefix}/tag/hotel/`} className="home-more-link">
             {labels?.moreLink ?? "東京の夜景が綺麗なおすすめホテル"}
             <ChevronRight size={16} />
           </Link>

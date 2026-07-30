@@ -157,8 +157,10 @@ export default function MobileMenu({
               items={
                 item.dropdownClass === "site-header-dropdown--area"
                   ? [
+                      // 「その他エリア」は item.children（Header の areaChildren）に
+                      // slug="other" として既に含まれているため、ここでは足さない。
+                      // 足すと同じ href の項目が二重に並ぶ（React の key 重複警告の原因）。
                       ...item.children,
-                      { label: navLabels.otherArea, href: `${locale ? `/${locale}` : ""}/other/` },
                       { label: navLabels.eventSearch, href: `${locale ? `/${locale}` : ""}/event/` },
                     ]
                   : item.children

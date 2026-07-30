@@ -1212,9 +1212,17 @@
   color: #374151;
 }
 
+/* PCでも表示する。地図本体は 100vh なので、このセクションはスクロールした
+   先に自然に続く。以前は min-width:768px で display:none にしていたが、
+   ページ内で唯一サーバーレンダリングされている本文（h1・本日の月の出/月の入り・
+   FAQ）がPCでは隠しコンテンツ扱いになってしまうため解除した。
+   PC初回訪問時の MoonInfoModal は open になるまで null を返すので HTML 上の重複は無い */
 @media (min-width: 768px) {
   .moon-sp-content {
-    display: none;
+    padding: 32px 24px 64px;
+  }
+  .moon-sp-content__inner {
+    max-width: 760px;
   }
 }
 

@@ -2,6 +2,7 @@ import { getSiteChromeData } from "@/lib/supabase/queries";
 import Header from "./Header";
 import { buildMainNavItems, buildTopNavItems, flattenNavToLinks } from "./Header";
 import { buildSiteNavigationJsonLd } from "@/lib/json-ld";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 export default async function HeaderWrapper({
   locale,
@@ -23,7 +24,7 @@ export default async function HeaderWrapper({
       {navJsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(navJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdHtml(navJsonLd) }}
         />
       )}
       <Header areaData={areas} tagData={tags} spotCount={spotCount} locale={locale ?? null} />

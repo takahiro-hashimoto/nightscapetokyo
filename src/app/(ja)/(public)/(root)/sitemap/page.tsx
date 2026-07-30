@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "@/components/common/AppLink";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, LOCALE_OG_ALTERNATES, buildAreaHreflangAlternates } from "@/lib/types";
 import { supabase } from "@/lib/supabase/client";
 import { getArticles } from "@/lib/supabase/queries";
 import { getAllPostsSummary } from '@/lib/luminar/articles-meta';
@@ -10,9 +10,28 @@ import { getAllPostsSummary } from '@/lib/luminar/articles-meta';
 export const revalidate = false;
 
 export const metadata: Metadata = {
-  title: "サイトマップ | 東京夜景ナビ",
+  title: "サイトマップ",
   description:
     "東京夜景ナビのサイトマップです。エリア別・目的別の夜景スポット一覧をご確認いただけます。",
+  // Next.js は openGraph を浅くマージ（＝丸ごと置換）するため、定義しないと
+  // (ja)/layout.tsx のトップページ用 og:title / og:url をそのまま継承してしまう
+  openGraph: {
+    type: "website",
+    title: "サイトマップ | 東京夜景ナビ",
+    description: "東京夜景ナビのサイトマップです。エリア別・目的別の夜景スポット一覧をご確認いただけます。",
+    url: `${SITE_URL}/sitemap/`,
+    siteName: "東京夜景ナビ",
+    locale: "ja_JP",
+    alternateLocale: LOCALE_OG_ALTERNATES as string[],
+    images: [
+      {
+        url: `${SITE_URL}/hero.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "サイトマップ | 東京夜景ナビ",
+      },
+    ],
+  },
   alternates: {
     canonical: `${SITE_URL}/sitemap/`,
     languages: buildAreaHreflangAlternates(SITE_URL, "sitemap", ALL_LOCALE_SLUGS),
@@ -79,13 +98,13 @@ export default async function SitemapPage() {
         {categories.map((cat) => (
           <div key={cat.slug} style={{ marginBottom: 24 }}>
             <h3>
-              <Link href={`/${cat.slug}`}>{cat.name}</Link>
+              <Link href={`/${cat.slug}/`}>{cat.name}</Link>
             </h3>
             {cat.spots.length > 0 && (
               <ul>
                 {cat.spots.map((spot) => (
                   <li key={spot.slug}>
-                    <Link href={`/${cat.slug}/${spot.slug}`}>
+                    <Link href={`/${cat.slug}/${spot.slug}/`}>
                       {spot.title}
                     </Link>
                   </li>
@@ -103,7 +122,7 @@ export default async function SitemapPage() {
         <ul>
           {tags.map((tag) => (
             <li key={tag.slug}>
-              <Link href={`/tag/${tag.slug}`}>{tag.name}</Link>
+              <Link href={`/tag/${tag.slug}/`}>{tag.name}</Link>
             </li>
           ))}
         </ul>
@@ -114,10 +133,10 @@ export default async function SitemapPage() {
         <div className="content-card card-padding article-body">
           <h2>ブログ記事</h2>
           <ul>
-            <li><Link href="/article">記事一覧</Link></li>
+            <li><Link href="/article/">記事一覧</Link></li>
             {articles.map((article) => (
               <li key={article.slug}>
-                <Link href={`/article/${article.slug}`}>{article.title}</Link>
+                <Link href={`/article/${article.slug}/`}>{article.title}</Link>
               </li>
             ))}
           </ul>
@@ -128,10 +147,10 @@ export default async function SitemapPage() {
       <div className="content-card card-padding article-body">
         <h2>Luminar Neo 関連記事</h2>
         <ul>
-          <li><Link href="/luminar">Luminar Neo トップ</Link></li>
+          <li><Link href="/luminar/">Luminar Neo トップ</Link></li>
           {luminarPosts.map((post) => (
             <li key={post.slug}>
-              <Link href={`/luminar/${post.slug}`}>{post.title}</Link>
+              <Link href={`/luminar/${post.slug}/`}>{post.title}</Link>
             </li>
           ))}
         </ul>
@@ -143,15 +162,15 @@ export default async function SitemapPage() {
         <h2>その他</h2>
         <ul>
           <li><Link href="/">ホーム</Link></li>
-          <li><Link href="/time-lapse">タイムラプス映像集</Link></li>
-          <li><Link href="/wallpaper">スマホ壁紙</Link></li>
-          <li><Link href="/simulator">日の出・日の入り方角シミュレーター</Link></li>
-          <li><Link href="/about">運営者情報</Link></li>
-          <li><Link href="/contact">お問い合わせ</Link></li>
-          <li><Link href="/guidelines">コンテンツ制作ポリシー</Link></li>
-          <li><Link href="/caution">利用規約</Link></li>
-          <li><Link href="/links">リンク集</Link></li>
-          <li><Link href="/privacy-policy">プライバシーポリシー</Link></li>
+          <li><Link href="/time-lapse/">タイムラプス映像集</Link></li>
+          <li><Link href="/wallpaper/">スマホ壁紙</Link></li>
+          <li><Link href="/simulator/">日の出・日の入り方角シミュレーター</Link></li>
+          <li><Link href="/about/">運営者情報</Link></li>
+          <li><Link href="/contact/">お問い合わせ</Link></li>
+          <li><Link href="/guidelines/">コンテンツ制作ポリシー</Link></li>
+          <li><Link href="/caution/">利用規約</Link></li>
+          <li><Link href="/links/">リンク集</Link></li>
+          <li><Link href="/privacy-policy/">プライバシーポリシー</Link></li>
         </ul>
       </div>
     </ArticleLayout>

@@ -1,3 +1,4 @@
+import { jsonLdHtml } from "@/lib/json-ld-script";
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from '@/components/common/AppLink'
@@ -612,35 +613,37 @@ export default async function Page() {
       <section id="faq" className="content-card card-padding article-body">
         <h2>よくある質問（FAQ）</h2>
         <dl>
-          <div className="faq-item">
+          {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
+              日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
+          <div id="faq-1" className="faq-item">
             <dt className="faq-q">サブスクプランはもうないの？</dt>
             <dd className="faq-a"><strong>公式ストアでは現在、新規販売されていません。</strong>以前は月額・年額のサブスクリプションプランも存在しましたが、2026年現在、日本の公式ストアで販売されているのは買い切りプラン＋パス（任意）のみとなっています。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-2" className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
             <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切りプランに標準で含まれており、<strong>永続的に利用できます</strong>。パスの購入は不要です。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-3" className="faq-item">
             <dt className="faq-q">パスを買うと何が変わる？</dt>
             <dd className="faq-a">パスの有効期間中、<strong>生成AI機能（GenErase・GenSwap・GenExpand）の無制限利用と、最新機能へのアップデート</strong>が手に入ります。エコシステムパスならモバイルアプリ・クロスデバイス編集・Spacesも使えます。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-4" className="faq-item">
             <dt className="faq-q">途中でパスをやめたらどうなる？</dt>
             <dd className="faq-a">生成AI機能と最新アップデートが使えなくなりますが、<strong>基本機能とProツールはそのまま使い続けられます</strong>。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-5" className="faq-item">
             <dt className="faq-q">パスは毎年買わないといけない？</dt>
             <dd className="faq-a">必要な年だけ購入すればOKです。<strong>基本機能とProツールだけ使えればいい場合は、パスなしの買い切りのみが最もコスパ◎</strong>です。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-6" className="faq-item">
             <dt className="faq-q">1つのライセンスで何台のPCにインストールできる？</dt>
             <dd className="faq-a">デスクトップライセンスは<strong>2台のPC</strong>にインストール可能です。Windows・Mac問わず、どの組み合わせでもOK。クロスデバイス・Maxライセンスならさらにモバイル3台でも使えます。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-7" className="faq-item">
             <dt className="faq-q">セールはいつある？</dt>
             <dd className="faq-a">Skylumはほぼ通年で何らかのセールを実施しています。特にブラックフライデー（11月下旬）は割引率が大きく狙い目です。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-8" className="faq-item">
             <dt className="faq-q">返金保証はある？</dt>
             <dd className="faq-a">はい、公式ストアで購入した場合は<strong>30日間の返金保証</strong>があります。「思っていたのと違った…」という場合でも安心です。</dd>
           </div>
@@ -670,7 +673,7 @@ export default async function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLdHtml({
             '@context': 'https://schema.org',
             '@type': 'FAQPage',
             mainEntity: [

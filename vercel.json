@@ -3,5 +3,11 @@
   "github": {
     "silent": true
   },
-  "ignoreCommand": "node scripts/vercel-ignore-build.mjs"
+  "ignoreCommand": "node scripts/vercel-ignore-build.mjs",
+  "crons": [
+    {
+      "path": "/api/revalidate?mode=daily",
+      "schedule": "10 15 * * *"
+    }
+  ]
 }

@@ -57,6 +57,10 @@ const EVENT_LABELS: Record<string, EventLabels> = {
 };
 
 /* ─── Static params ─── */
+// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
+// これが無いと /chiyoda/event/ 等が英語版を自己canonical付きで返し重複コンテンツになる
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((lang) => ({ category: lang }));
 }

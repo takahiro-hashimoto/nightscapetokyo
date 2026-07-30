@@ -41,7 +41,7 @@ export default function PurposeSearch({ tags, labels, localeSlug }: Props) {
             return (
               <li key={p.slug}>
               <Link
-                href={`${prefix}/tag/${p.slug}`}
+                href={`${prefix}/tag/${p.slug}/`}
                 className="tag-card"
               >
                 <span className="tag-card-thumb">

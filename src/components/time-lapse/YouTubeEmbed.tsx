@@ -20,6 +20,9 @@ export function YouTubeEmbed({ video, captionSuffix }: { video: Video; captionSu
         <iframe
           src={`https://www.youtube.com/embed/${video.id}`}
           title={video.title}
+          // /time-lapse/ は動画数だけ iframe が並ぶ。lazy にしないと
+          // 表示範囲外の YouTube を全件即時読み込みしてしまう
+          loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         />

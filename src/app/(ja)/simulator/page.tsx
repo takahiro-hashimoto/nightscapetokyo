@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import Link from "@/components/common/AppLink";
+import Breadcrumb from "@/components/layout/Breadcrumb";
 import SimulatorLoader from "./SimulatorLoader";
 import SimulatorInfoModal from "@/components/simulator/SimulatorInfoModal";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
+import { jsonLdHtml } from "@/lib/json-ld-script";
+import { calculateSunData } from "@/lib/sun-calc";
+import { getJstToday, formatAzimuth, TOKYO_POINT } from "@/lib/tokyo-today";
 
 const SITE_URL = "https://nightscape.tokyo";
 
@@ -11,6 +15,10 @@ const OG_TITLE =
   "日の出・日の入り方角シミュレーター【無料】｜時刻・方位角を地図で確認";
 const OG_DESC =
   "日の出・日の入りの方角（方位角）と時刻を地図上で無料確認できるWebアプリ。場所・日付を指定するだけで朝日・夕日の方向を即表示。初日の出・ダイヤモンド富士の下見、撮影構図の検討、建物の日当たり確認に。";
+
+// 「当日の東京の日の出・日の入り」が日付依存。moon と同じく日次 Cron から
+// 明示的に再生成する（時間ベースの再生成は使わない）
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: "日の出・日の入り方角シミュレーター【無料】｜時刻・方位角を地図で確認",
@@ -132,6 +140,15 @@ const FAQ = [
 ];
 
 export default function SimulatorPage() {
+  // ツール本体は ssr:false なので、既定地点（地図の初期位置）の当日の値だけは
+  // サーバー側で計算して HTML に出す。これが無いと「今日の東京の日の入りは
+  // 何時・どの方角？」という、このページの検索意図そのものに
+  // AI 検索・クローラーが一切答えられない
+  const today = getJstToday();
+  const sun = calculateSunData(today.date, TOKYO_POINT.lat, TOKYO_POINT.lng);
+  const sunriseAz = formatAzimuth(sun.sunriseAzimuth);
+  const sunsetAz = formatAzimuth(sun.sunsetAzimuth);
+
   return (
     <>
       {/* OpenStreetMap タイル取得のため事前接続（このページ専用） */}
@@ -142,9 +159,14 @@ export default function SimulatorPage() {
       {/* SEOモーダル: PC初回訪問時に表示 */}
       <SimulatorInfoModal faq={FAQ} />
 
-      {/* SP専用コンテンツ: 地図下に常時表示（PCでは非表示） */}
+      {/* 通常コンテンツ: 地図（100vh）の下に常時表示。PCでも表示する
+          （唯一サーバーレンダリングされる本文なので隠しコンテンツにしない） */}
       <section className="sim-sp-content">
         <div className="sim-sp-content__inner">
+          {/* BreadcrumbList を JSON-LD で名乗る以上、DOM 側にも実物が要る。
+              地図本体は 100vh のツール UI なので、唯一の通常コンテンツである
+              このセクション先頭に他ページと同じ共通コンポーネントを置く */}
+          <Breadcrumb items={[{ label: "日の出・日の入り方角ナビ" }]} />
           <h1 className="sim-sp-content__title">
             日の出・日の入り方角ナビ
             <span className="sim-sp-content__subtitle">朝日と夕日の方角・時刻シミュレーター</span>
@@ -155,7 +177,33 @@ export default function SimulatorPage() {
             初日の出スポットの下見・風景写真の撮影構図の検討・マンションや建物の日当たり確認などにご活用ください。
           </p>
 
-          <div className="sim-sp-content__section">
+          <div className="sim-sp-content__section" id="today">
+            <h2 className="sim-sp-content__section-title">
+              <time dateTime={today.iso}>{today.label}</time>の東京の日の出・日の入り
+            </h2>
+            <div className="sim-definition">
+              <dl className="sim-definition__body">
+                <dt>日の出</dt>
+                <dd>
+                  {sun.sunriseTime
+                    ? `${sun.sunriseTime}${sunriseAz ? ` ／ ${sunriseAz}の空から昇ります` : ""}`
+                    : "この日は日の出がありません"}
+                </dd>
+                <dt>日の入り</dt>
+                <dd>
+                  {sun.sunsetTime
+                    ? `${sun.sunsetTime}${sunsetAz ? ` ／ ${sunsetAz}の空に沈みます` : ""}`
+                    : "この日は日の入りがありません"}
+                </dd>
+              </dl>
+            </div>
+            <p className="sim-sp-content__lead">
+              上記は{TOKYO_POINT.label}を基準にした値です。地図上のマーカーを動かすと、その地点の
+              日の出・日の入りの時刻と方角に切り替わります。
+            </p>
+          </div>
+
+          <div className="sim-sp-content__section" id="how-to-use">
             <h2 className="sim-sp-content__section-title">シミュレーターの使い方</h2>
             <ol className="sim-info-modal__howto">
               <li>地図上をタップ、またはマーカーをドラッグして調べたい地点に移動する</li>
@@ -169,7 +217,7 @@ export default function SimulatorPage() {
 
           <AdSenseUnit {...ADS.MAP_SP} />
 
-          <div className="sim-sp-content__section">
+          <div className="sim-sp-content__section" id="use-cases">
             <h2 className="sim-sp-content__section-title">こんな時に役立ちます</h2>
             <div className="sim-definition">
               <dl className="sim-definition__body">
@@ -187,7 +235,7 @@ export default function SimulatorPage() {
             </div>
           </div>
 
-          <div className="sim-sp-content__section">
+          <div className="sim-sp-content__section" id="basics">
             <h2 className="sim-sp-content__section-title">日の出・日の入りの豆知識</h2>
             <div className="sim-definition">
               <dl className="sim-definition__body">
@@ -207,11 +255,13 @@ export default function SimulatorPage() {
 
           <AdSenseUnit {...ADS.MAP_SP} />
 
-          <div className="sim-sp-content__section">
+          <div className="sim-sp-content__section" id="faq">
             <h2 className="sim-sp-content__section-title">よくある質問</h2>
             <dl>
-              {FAQ.map(({ q, a }) => (
-                <div key={q} className="faq-item">
+              {/* 個別の質問を #faq-1 形式で直接引用・共有できるようにする
+                  （セクション全体は #faq のまま）。モーダル側は faq-modal-N で衝突回避済み */}
+              {FAQ.map(({ q, a }, i) => (
+                <div key={q} id={`faq-${i + 1}`} className="faq-item">
                   <dt className="faq-q">{q}</dt>
                   <dd className="faq-a">{a}</dd>
                 </div>
@@ -231,25 +281,8 @@ export default function SimulatorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                {
-                  "@type": "ListItem",
-                  position: 1,
-                  name: "東京夜景ナビ",
-                  item: "https://nightscape.tokyo/",
-                },
-                {
-                  "@type": "ListItem",
-                  position: 2,
-                  name: "【日の出・日の入りナビ】朝日と夕日の方角と時刻がわかるシミュレーションアプリ",
-                  item: "https://nightscape.tokyo/simulator/",
-                },
-              ],
-            },
+          // BreadcrumbList は <Breadcrumb> コンポーネント側で出力する
+          __html: jsonLdHtml([
             {
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",

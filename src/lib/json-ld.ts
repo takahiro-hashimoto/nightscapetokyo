@@ -11,6 +11,41 @@ export function localeToLanguage(locale: string): string {
   return LOCALE_LANGUAGE_MAP[locale] ?? locale;
 }
 
+/**
+ * サイト全体で共有するエンティティの @id。
+ *
+ * 同じ実体（サイト・運営組織・著者）を各ページで別々に定義すると、
+ * Google からは「url は同じだが別物のエンティティ」に見えてしまい、
+ * ナレッジグラフの紐付けが効かない。@id を固定して他所からは参照だけを
+ * 書くことで、1エンティティ = 1定義に揃える。
+ */
+export const WEBSITE_ID = `${SITE_URL}/#website`;
+export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+export const AUTHOR_PERSON_ID = `${SITE_URL}/about/#person`;
+
+/** 運営者「タカヒロ」の唯一の Person 定義（@graph 埋め込み用・@context なし） */
+export function buildAuthorPersonJsonLd() {
+  return {
+    "@type": "Person",
+    "@id": AUTHOR_PERSON_ID,
+    name: "タカヒロ",
+    // jobTitle は以前 Organization.founder と /photography/ で別々の値を持っていた。
+    // 同一人物なので値は1つに統一する
+    jobTitle: "夜景カメラマン / Webディレクター",
+    url: `${SITE_URL}/about/`,
+    knowsAbout: ["夜景撮影", "眺望撮影", "タイムラプス撮影", "ホテル撮影", "不動産撮影"],
+    award: "第8回東京大回廊写真コンテスト 出光美術館賞",
+    worksFor: { "@id": ORGANIZATION_ID },
+    sameAs: [
+      "https://www.youtube.com/@nightscape-tokyo",
+      "https://twitter.com/takahiro__1202",
+      "https://www.instagram.com/nightscape.tokyo/",
+      "https://www.tiktok.com/@nightscape_tokyo",
+      "https://www.pinterest.jp/nightscape_tokyo/",
+    ],
+  };
+}
+
 /** FAQ answer の動的プレースホルダーをプレーンテキストに解決 */
 function addMinutes(time: string, minutes: number): string {
   const [h, m] = time.split(":").map(Number);
@@ -32,7 +67,9 @@ export function resolveFaqAnswerText(
     return "日の出・日の入り方角シミュレーターを利用すると簡単に夕日が沈む方向をチェックすることができます。";
   }
   if (answer === "__TWILIGHT_LINK__") {
-    return "日没とともに点灯を始めるライトアップが多く、空に夕焼け色が残る「マジックアワー」から深い青に染まる「ブルーアワー」にかけてが夜景鑑賞・撮影の黄金時間です。詳しくはマジックアワーとは？夜景鑑賞・撮影の黄金時間を解説（/article/twilight/）をご覧ください。";
+    // リッチリザルトには生テキストがそのまま出るため、パス文字列
+    // （/article/twilight/）は載せない。誘導は本文リンク側で行う
+    return "日没とともに点灯を始めるライトアップが多く、空に夕焼け色が残る「マジックアワー」から深い青に染まる「ブルーアワー」にかけてが夜景鑑賞・撮影の黄金時間です。詳しくは「マジックアワーとは？夜景鑑賞・撮影の黄金時間を解説」をご覧ください。";
   }
   return answer;
 }
@@ -42,8 +79,12 @@ export function buildWebSiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": WEBSITE_ID,
     name: "nightscape.tokyo",
-    url: SITE_URL,
+    // trailingSlash: true のため SITE_URL 単体（末尾スラッシュなし）は
+    // 308 リダイレクトになる。構造化データには実体 URL を書く
+    url: `${SITE_URL}/`,
+    publisher: { "@id": ORGANIZATION_ID },
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -60,8 +101,9 @@ export function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": ORGANIZATION_ID,
     name: "nightscape.tokyo",
-    url: SITE_URL,
+    url: `${SITE_URL}/`,
     description:
       "Tokyo night view spot guide operated by a night view photographer. 200,000–300,000 monthly visitors.",
     logo: {
@@ -70,18 +112,9 @@ export function buildOrganizationJsonLd() {
       width: 556,
       height: 115,
     },
-    founder: {
-      "@type": "Person",
-      name: "タカヒロ",
-      jobTitle: "Web Director / Blogger / Photographer",
-      url: `${SITE_URL}/about/`,
-      sameAs: [
-        "https://www.youtube.com/@nightscape-tokyo",
-        "https://twitter.com/takahiro__1202",
-        "https://www.instagram.com/nightscape.tokyo/",
-        "https://www.tiktok.com/@nightscape_tokyo",
-      ],
-    },
+    // Organization は全ページのレイアウトで出力されるため、
+    // 運営者 Person の唯一の実体定義もここに置く（他所は @id 参照のみ）
+    founder: buildAuthorPersonJsonLd(),
     sameAs: [
       "https://www.youtube.com/@nightscape-tokyo",
       "https://twitter.com/takahiro__1202",
@@ -365,12 +398,8 @@ export function buildPhotographyServiceJsonLd(options: {
       "タイムラプス・映像制作",
       "ストック素材ライセンス",
     ],
-    provider: {
-      "@type": "Person",
-      name: "タカヒロ",
-      jobTitle: "夜景カメラマン",
-      url: `${SITE_URL}/about/`,
-    },
+    // Person の実体は Organization.founder 側で定義済み。ここは参照のみ
+    provider: { "@id": AUTHOR_PERSON_ID },
     ...(options.offers && options.offers.length > 0
       ? {
           hasOfferCatalog: {
@@ -391,30 +420,9 @@ export function buildPhotographyServiceJsonLd(options: {
   };
 }
 
-/** Person（撮影者・受賞歴・SNS を sameAs で紐付け） */
-export function buildPhotographerPersonJsonLd(options: { url: string }) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: "タカヒロ",
-    jobTitle: "夜景カメラマン / Webディレクター",
-    knowsAbout: ["夜景撮影", "眺望撮影", "タイムラプス撮影", "ホテル撮影", "不動産撮影"],
-    url: options.url,
-    worksFor: {
-      "@type": "Organization",
-      name: "nightscape.tokyo",
-      url: SITE_URL,
-    },
-    award: "第8回東京大回廊写真コンテスト 出光美術館賞",
-    sameAs: [
-      "https://www.youtube.com/@nightscape-tokyo",
-      "https://twitter.com/takahiro__1202",
-      "https://www.instagram.com/nightscape.tokyo/",
-      "https://www.tiktok.com/@nightscape_tokyo",
-      "https://www.pinterest.jp/nightscape_tokyo/",
-    ],
-  };
-}
+// buildPhotographerPersonJsonLd は削除。受賞歴・knowsAbout・sameAs は
+// buildAuthorPersonJsonLd() に統合し、Organization.founder として
+// 全ページで1回だけ出力される（/photography/ も同レイアウト配下）。
 
 /** CollectionPage（エリアページ用） */
 export function buildCollectionPageJsonLd(options: {

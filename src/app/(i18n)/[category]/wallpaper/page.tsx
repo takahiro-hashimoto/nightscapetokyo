@@ -5,12 +5,16 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 import RecommendCta from "@/components/common/RecommendCta";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import SpotShare from "@/components/spot/SpotShare";
-import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALES, SITE_NAMES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { WALLPAPER_LABELS, WALLPAPERS } from "@/lib/wallpaper-content";
 
 /* ─── Static params ─── */
+// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
+// これが無いと /chiyoda/wallpaper/ 等が英語版を自己canonical付きで返し重複コンテンツになる
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((lang) => ({ category: lang }));
 }
@@ -25,13 +29,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: labels.title,
     description: labels.description,
+    // Next.js は openGraph / twitter を浅くマージ（＝丸ごと置換）するため、
+    // layout 側の既定値には頼らず type / siteName / twitter をここで明示する
     openGraph: {
+      type: "website",
       title: labels.title,
       description: labels.description,
       url: canonicalUrl,
+      siteName: SITE_NAMES[locale] ?? SITE_NAMES.en,
       locale: ogLocale,
       alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
-      images: [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630 }],
+      images: [{ url: `${SITE_URL}/hero.jpg`, width: 1200, height: 630, alt: labels.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: labels.title,
+      description: labels.description,
+      images: [`${SITE_URL}/hero.jpg`],
     },
     alternates: {
       canonical: canonicalUrl,

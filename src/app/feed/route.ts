@@ -15,9 +15,17 @@ function escapeXml(str: string): string {
 export async function GET() {
   const articles = await getArticles();
 
+  // getArticles は published_at DESC 順なので articles[0] は「最新公開」であって
+  // 「最終更新」ではない。古い記事を直しても lastBuildDate が動かないため最大値を取る。
   const lastBuildDate =
     articles.length > 0
-      ? new Date(articles[0].updated_at ?? articles[0].created_at ?? Date.now()).toUTCString()
+      ? new Date(
+          Math.max(
+            ...articles.map((a) =>
+              new Date(a.updated_at ?? a.created_at ?? 0).getTime()
+            )
+          )
+        ).toUTCString()
       : new Date().toUTCString();
 
   const items = articles
@@ -28,14 +36,17 @@ export async function GET() {
         ? new Date(article.published_at).toUTCString()
         : new Date(article.created_at).toUTCString();
       const title = escapeXml(article.title ?? "");
-      const description = escapeXml(article.description ?? "");
+      // description が空の記事で <description></description> を出すと、
+      // リーダー側は「本文なし」として扱う。無い場合は要素ごと省く。
+      const descriptionXml = article.description
+        ? `\n      <description>${escapeXml(article.description)}</description>`
+        : "";
 
       return `    <item>
       <title>${title}</title>
       <link>${link}</link>
       <guid isPermaLink="true">${link}</guid>
-      <pubDate>${pubDate}</pubDate>
-      <description>${description}</description>
+      <pubDate>${pubDate}</pubDate>${descriptionXml}
     </item>`;
     })
     .join("\n");

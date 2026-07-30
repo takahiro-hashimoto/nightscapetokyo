@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
-import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_CONFIG, LOCALE_TO_SLUG } from "@/lib/types";
+import { SITE_URL, ALL_LOCALE_SLUGS, HREFLANG_LANG_MAP, LOCALE_TO_SLUG } from "@/lib/types";
 import { getAllPostsSummary } from "@/lib/luminar/articles-meta";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -13,9 +13,32 @@ async function getDb() {
 
 type Row = Record<string, any>;
 
-const LOCALE_HREFLANG: Record<string, string> = Object.fromEntries(
-  Object.entries(LOCALE_CONFIG).map(([slug, c]) => [slug, c.htmlLang])
-);
+/**
+ * PostgREST のデフォルト上限（1000行）を超えて全件取得する。
+ * spot_translations は spots × locales なのでスポット250件で既に上限間近になり、
+ * .range() なしだと無警告でロケールURL・hreflang が欠落する。
+ */
+const PAGE_SIZE = 1000;
+async function fetchAllRows(
+  build: () => { range: (from: number, to: number) => PromiseLike<{ data: Row[] | null; error: unknown }> }
+): Promise<Row[]> {
+  const out: Row[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await build().range(from, from + PAGE_SIZE - 1);
+    if (error || !data) break;
+    out.push(...data);
+    if (data.length < PAGE_SIZE) break;
+  }
+  return out;
+}
+
+/** エリアではないカテゴリ行（記事系）。サイトマップのエリアループから除外する */
+const NON_AREA_SLUGS = new Set(["article", "pickup", "event"]);
+
+// ページ HTML 側の alternates.languages と同じ表（HREFLANG_LANG_MAP）を使うこと。
+// 以前は LOCALE_CONFIG.htmlLang を流用していたため、サイトマップだけ zh-Hant/zh-Hans、
+// HTML は zh-TW/zh-CN となり、手法間で食い違ったクラスタが Google に破棄されていた。
+const LOCALE_HREFLANG: Record<string, string> = HREFLANG_LANG_MAP;
 
 export type SitemapUrl = {
   loc: string;
@@ -128,8 +151,12 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   }
 
   // ── 固定ページ（集客に貢献するページのみ） ──
+  // canonical と 5言語 hreflang を宣言している固定ページはすべて載せる。
+  // 以前は about/time-lapse/wallpaper だけで、残り5ページ×5言語=25URLが
+  // どのサイトマップにも存在しなかった。
   const staticPages = [
-    "/about", "/time-lapse", "/wallpaper",
+    "/about", "/time-lapse", "/wallpaper", "/event",
+    "/contact", "/guidelines", "/caution", "/links", "/privacy-policy",
   ];
   for (const page of staticPages) {
     const alts = buildAlternates(page);
@@ -162,13 +189,17 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
 
   if (!db) return result;
 
-  const { data: areaTranslationRows } = await db
-    .from("spot_translations")
-    .select("locale, spot:spots(category:categories(slug))")
-    .not("spot", "is", null) as { data: Row[] | null };
+  // published=true で絞る。ページ側の getAvailableAreaLocales も published で
+  // 絞っており、絞らないと未公開スポットしか翻訳が無いエリアの 404 URL を吐く。
+  const areaTranslationRows = await fetchAllRows(() =>
+    db
+      .from("spot_translations")
+      .select("locale, spot:spots!inner(published, category:categories(slug))")
+      .eq("spot.published", true) as any
+  );
 
   const areaLocaleMap = new Map<string, Set<string>>();
-  for (const row of areaTranslationRows ?? []) {
+  for (const row of areaTranslationRows) {
     const spot = Array.isArray(row.spot) ? row.spot[0] : row.spot;
     const category = Array.isArray(spot?.category) ? spot.category[0] : spot?.category;
     const categorySlug = category?.slug as string | undefined;
@@ -197,6 +228,9 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   }
 
   for (const cat of categories ?? []) {
+    // article / pickup / event は記事系のカテゴリ行。エリアURLとして出すと
+    // /pickup/ のようなリダイレクト先や /article/ の重複が混ざる。
+    if (NON_AREA_SLUGS.has(cat.slug as string)) continue;
     const jaPath = `/${cat.slug}`;
     const availableLocales = areaLocaleMap.get(cat.slug as string) ?? new Set<string>();
     const alts = availableLocales.size > 0
@@ -222,19 +256,23 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   }
 
   // ── スポット詳細ページ ──
-  const { data: spots } = await db
-    .from("spots")
-    .select("slug, updated_at, category:categories(slug)")
-    .eq("published", true) as { data: Row[] | null };
+  const spots = await fetchAllRows(() =>
+    db
+      .from("spots")
+      .select("slug, updated_at, category:categories(slug)")
+      .eq("published", true) as any
+  );
 
   // locale 単位で取得し、スポットごとに「実在するロケール集合」を構築する
-  const { data: spotTranslationRows } = await db
-    .from("spot_translations")
-    .select("spot:spots(slug), locale")
-    .not("spot", "is", null) as { data: Row[] | null };
+  const spotTranslationRows = await fetchAllRows(() =>
+    db
+      .from("spot_translations")
+      .select("locale, spot:spots!inner(slug, published)")
+      .eq("spot.published", true) as any
+  );
 
   const spotLocaleMap = new Map<string, Set<string>>();
-  for (const row of spotTranslationRows ?? []) {
+  for (const row of spotTranslationRows) {
     const s = Array.isArray(row.spot) ? row.spot[0] : row.spot;
     const spotSlug = s?.slug as string | undefined;
     const urlSlug = LOCALE_TO_SLUG[row.locale as string];
@@ -244,7 +282,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     }
   }
 
-  for (const spot of spots ?? []) {
+  for (const spot of spots) {
     const catSlug = Array.isArray(spot.category) ? spot.category[0]?.slug : spot.category?.slug;
     if (!catSlug) continue;
     const jaPath = `/${catSlug}/${spot.slug}`;
@@ -274,25 +312,27 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   }
 
   // ── タグページ ──
-  const { data: tagPages } = await db
-    .from("tag_pages")
-    .select("id, updated_at, tag:tags(slug)")
-    .eq("published", true) as { data: Row[] | null };
+  const tagPages = await fetchAllRows(() =>
+    db
+      .from("tag_pages")
+      .select("id, updated_at, tag:tags(slug)")
+      .eq("published", true) as any
+  );
 
   // tag_page_translations から locale 単位でタグごとのロケール集合を構築する
-  const { data: tagTranslationRows } = await db
-    .from("tag_page_translations")
-    .select("tag_page_id, locale") as { data: Row[] | null };
+  const tagTranslationRows = await fetchAllRows(() =>
+    db.from("tag_page_translations").select("tag_page_id, locale") as any
+  );
 
   // tag_page.id → tag slug のマッピングを作成
   const tagPageIdToSlug = new Map<string, string>();
-  for (const tp of tagPages ?? []) {
+  for (const tp of tagPages) {
     const tagSlug = Array.isArray(tp.tag) ? tp.tag[0]?.slug : tp.tag?.slug;
     if (tp.id && tagSlug) tagPageIdToSlug.set(String(tp.id), tagSlug as string);
   }
 
   const tagLocaleMap = new Map<string, Set<string>>();
-  for (const row of tagTranslationRows ?? []) {
+  for (const row of tagTranslationRows) {
     const tagSlug = tagPageIdToSlug.get(String(row.tag_page_id));
     const urlSlug = LOCALE_TO_SLUG[row.locale as string];
     if (tagSlug && urlSlug) {
@@ -301,7 +341,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
     }
   }
 
-  for (const tp of tagPages ?? []) {
+  for (const tp of tagPages) {
     const tagSlug = Array.isArray(tp.tag) ? tp.tag[0]?.slug : tp.tag?.slug;
     if (!tagSlug) continue;
     const jaPath = `/tag/${tagSlug}`;
@@ -330,10 +370,9 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   }
 
   // ── 記事ページ ──
-  const { data: articles } = await db
-    .from("articles")
-    .select("slug, updated_at")
-    .eq("published", true) as { data: Row[] | null };
+  const articles = await fetchAllRows(() =>
+    db.from("articles").select("slug, updated_at").eq("published", true) as any
+  );
 
   result.ja.push({
     loc: `${SITE_URL}/article/`,
@@ -351,7 +390,6 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   }
 
   // ── Luminar Neo ──
-  const LUMINAR_NOINDEX = new Set(['privacy-policy', 'about']);
   const luminarPosts = await getAllPostsSummary();
 
   result.ja.push({
@@ -361,7 +399,6 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   });
 
   for (const post of luminarPosts) {
-    if (LUMINAR_NOINDEX.has(post.slug)) continue;
     result.ja.push({
       loc: `${SITE_URL}/luminar/${post.slug}/`,
       lastmod: new Date(post.updatedAt).toISOString(),
@@ -372,14 +409,14 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
 
   // ── タグ一覧（タグページがないタグ） ──
   const tagPageSlugs = new Set(
-    (tagPages ?? []).map((tp) => {
+    tagPages.map((tp) => {
       const tag = Array.isArray(tp.tag) ? tp.tag[0] : tp.tag;
       return tag?.slug;
     }).filter(Boolean)
   );
 
-  const { data: tags } = await db.from("tags").select("slug") as { data: Row[] | null };
-  for (const tag of tags ?? []) {
+  const tags = await fetchAllRows(() => db.from("tags").select("slug") as any);
+  for (const tag of tags) {
     if (tagPageSlugs.has(tag.slug)) continue;
     const simpleAlts = buildAlternates(`/tag/${tag.slug}`);
     result.ja.push({
@@ -400,7 +437,7 @@ export const buildAllEntries = unstable_cache(async (): Promise<AllEntries> => {
   }
 
   // ── タグページがあるが翻訳がないロケール向けシンプル一覧 ──
-  for (const tp of tagPages ?? []) {
+  for (const tp of tagPages) {
     const tagSlug = Array.isArray(tp.tag) ? tp.tag[0]?.slug : tp.tag?.slug;
     if (!tagSlug) continue;
     const availableLocales = tagLocaleMap.get(tagSlug as string) ?? new Set<string>();

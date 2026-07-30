@@ -32,6 +32,7 @@ import { buildSpotJsonLd } from "@/lib/spot-json-ld";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
 import { ADS } from "@/lib/ads";
 import YouTubeFacade from "@/components/home/YouTubeFacade";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 type Props = {
   spot: SpotWithRelations;
@@ -110,7 +111,7 @@ export default function SpotArticle({
             <script
               key={i}
               type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+              dangerouslySetInnerHTML={{ __html: jsonLdHtml(schema) }}
             />
           ))}
           <SpotHero

@@ -15,6 +15,7 @@ import {
   buildSiteNavigationJsonLdForLocale,
   buildWebSiteJsonLd,
 } from "@/lib/json-ld";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 import "../../globals.css";
 
 const JA_SITE_NAME = "東京夜景ナビ";
@@ -62,24 +63,24 @@ export default async function CategoryLayout({
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(buildSiteNavigationJsonLdForLocale(localeSlug)),
+        __html: jsonLdHtml(buildSiteNavigationJsonLdForLocale(localeSlug)),
       }}
     />
   ) : (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdHtml(buildWebSiteJsonLd()) }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(buildOrganizationJsonLd()),
+          __html: jsonLdHtml(buildOrganizationJsonLd()),
         }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSiteNavigationJsonLd()) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdHtml(buildSiteNavigationJsonLd()) }}
       />
     </>
   );

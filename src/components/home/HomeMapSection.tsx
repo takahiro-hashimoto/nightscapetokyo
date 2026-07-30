@@ -5,6 +5,7 @@ import { getSpotsForMap } from "@/lib/supabase/queries";
 
 const SpotMapLoader = dynamic(() => import("@/components/map/SpotMapLoader"));
 import { SITE_URL } from "@/lib/types";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 type Category = { slug: string; name: string };
 
@@ -43,6 +44,10 @@ export default function HomeMapSection({
 }: Props) {
   if (spots.length === 0) return null;
 
+  // Google の ItemList は「サマリー形式（url のみ）」と
+  // 「オールインワン形式（item に実体を埋め込む）」の併用を認めておらず、
+  // 混在するとリスト自体が無効になる。他のビルダー（lib/json-ld.ts）に
+  // 合わせてサマリー形式に統一する（座標は各スポットページ側の Place が持つ）
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -52,16 +57,6 @@ export default function HomeMapSection({
       position: i + 1,
       name: spot.name,
       url: `${SITE_URL}/${spot.categorySlug}/${spot.slug}/`,
-      item: {
-        "@type": "TouristAttraction",
-        name: spot.name,
-        url: `${SITE_URL}/${spot.categorySlug}/${spot.slug}/`,
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: spot.latitude,
-          longitude: spot.longitude,
-        },
-      },
     })),
   };
 
@@ -69,7 +64,7 @@ export default function HomeMapSection({
     <section className="home-section" id="map" itemScope itemType="https://schema.org/Map">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdHtml(itemListJsonLd) }}
       />
       <div className="home-container">
         <h2 className="home-section-heading" itemProp="name">
@@ -95,7 +90,7 @@ export default function HomeMapSection({
           <ul>
             {spots.slice(0, 50).map((spot) => (
               <li key={spot.id}>
-                <Link href={`${localePrefix ?? ""}/${spot.categorySlug}/${spot.slug}`} tabIndex={-1}>{spot.name}</Link>
+                <Link href={`${localePrefix ?? ""}/${spot.categorySlug}/${spot.slug}/`} tabIndex={-1}>{spot.name}</Link>
               </li>
             ))}
           </ul>

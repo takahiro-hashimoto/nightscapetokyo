@@ -12,8 +12,13 @@ export interface MoonData {
 
 const RAD_TO_DEG = 180 / Math.PI;
 
+// 表示・日付判定はJST固定。sun-calc.ts と同じ方針（コミット 79fab8c）。
+// ローカル時刻依存のままサーバーで実行すると Vercel(UTC) で9時間ずれる
+const JST_OFFSET_MS = 9 * 60 * 60 * 1000;
+
 function formatTime(date: Date): string {
-  return `${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")}`;
+  const jst = new Date(date.getTime() + JST_OFFSET_MS);
+  return `${jst.getUTCHours()}:${String(jst.getUTCMinutes()).padStart(2, "0")}`;
 }
 
 function getPhaseName(phase: number): string {
@@ -33,8 +38,11 @@ export function calculateMoonData(
   lat: number,
   lng: number
 ): MoonData {
-  const noon = new Date(date);
-  noon.setHours(12, 0, 0, 0);
+  // 指定時刻が属するJSTの日の正午（= UTC 03:00）を基準に計算する
+  const jst = new Date(date.getTime() + JST_OFFSET_MS);
+  const noon = new Date(
+    Date.UTC(jst.getUTCFullYear(), jst.getUTCMonth(), jst.getUTCDate(), 3, 0, 0)
+  );
 
   const times = SunCalc.getMoonTimes(noon, lat, lng);
   const illuminationData = SunCalc.getMoonIllumination(noon);

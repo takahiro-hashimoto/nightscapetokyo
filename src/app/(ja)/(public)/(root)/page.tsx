@@ -18,6 +18,7 @@ import { getComponentLabels } from "@/lib/i18n-labels";
 import { SITE_URL, ALL_LOCALE_SLUGS, LOCALE_LABELS, buildHomeHreflangAlternates } from "@/lib/types";
 import { buildFaqJsonLd, buildItemListJsonLd } from "@/lib/json-ld";
 import SpotShare from "@/components/spot/SpotShareLazy";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 export async function generateMetadata(): Promise<Metadata> {
   const hp = getComponentLabels("ja").homePage;
@@ -43,8 +44,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// タイトル等に現在年 (new Date().getFullYear()) を含むため日次で再生成する
-export const revalidate = 86400;
+// タイトルの現在年と HomeFaq / FAQPage の日没時刻が「日付が進むこと」で古くなる。
+// 時間ベースの再生成は使わず、日次 Cron (/api/revalidate?mode=daily) から
+// revalidatePath で明示的に再生成する（ISR Write をトラフィック非依存にするため）
+export const revalidate = false;
 export const fetchCache = "force-cache";
 
 export default async function Home() {
@@ -100,7 +103,7 @@ export default async function Home() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
+            __html: jsonLdHtml(
               buildItemListJsonLd(spots, {
                 name: `東京の夜景スポット一覧【${currentYear}年最新】`,
               })
@@ -112,7 +115,7 @@ export default async function Home() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
+            __html: jsonLdHtml(
               buildFaqJsonLd(faqItems, { sunsetTime: sunData.sunsetTime })
             ),
           }}

@@ -38,7 +38,7 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
             return (
             <li key={spot.id}>
             <Link
-              href={`${prefix}/${spot.category.slug}/${spot.slug}`}
+              href={`${prefix}/${spot.category.slug}/${spot.slug}/`}
               className="spot-card"
               prefetch={false}
             >
@@ -48,7 +48,9 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
                   alt={spot.name}
                   fill
                   sizes="(max-width: 768px) 50vw, 300px"
-                  priority={i === 0}
+                  // priority は付けない。ランキングはヒーロー(min-height:420px)より下で
+                  // LCP候補になり得ず、preload するとヒーロー画像とLCP枠を奪い合う。
+                  // 先頭2枚の eager だけ残して遅延を避ける。
                   loading={i < 2 ? "eager" : "lazy"}
                 />
                 <span

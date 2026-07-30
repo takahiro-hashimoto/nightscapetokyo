@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import LoginForm from "./LoginForm";
 
 export const metadata: Metadata = {
-  title: "ログイン | 管理画面",
+  // admin/layout.tsx の template が " | 管理画面" を付与するのでここでは付けない
+  title: "ログイン",
 };
 
 export default function AdminLoginPage() {

@@ -25,7 +25,9 @@ export default function HeaderLogo({ locale }: Props) {
         width={556}
         height={115}
         className="header-logo-img"
-        priority
+        // priority（preload）にすると全ページでヒーロー画像とLCP枠を奪い合う。
+        // ロゴは常にファーストビューにあるので eager だけで十分。
+        loading="eager"
       />
     </Link>
   );

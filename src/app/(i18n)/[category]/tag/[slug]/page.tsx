@@ -22,6 +22,7 @@ import {
 import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 import {
   SITE_URL,
+  SITE_NAMES,
   ALL_LOCALE_SLUGS,
   LOCALE_LABELS,
   OG_LOCALE_MAP,
@@ -163,16 +164,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const title = labels.simplePageTitle(displayName);
     const canonicalUrl = `${SITE_URL}/${localeSlug}/tag/${tagSlug}/`;
     const topSpot = [...spots].sort((a, b) => b.rating_avg - a.rating_avg)[0];
+    const simpleDescription = labels.simplePageLead(displayName, spots.length);
     return {
       title,
-      description: labels.simplePageLead(displayName, spots.length),
+      description: simpleDescription,
       openGraph: {
         type: "website",
         title,
+        description: simpleDescription,
         url: canonicalUrl,
-        siteName: "nightscape.tokyo",
+        siteName: SITE_NAMES[localeSlug] ?? SITE_NAMES.en,
         locale: OG_LOCALE_MAP[localeSlug] ?? "en_US",
         images: topSpot?.featured_image ? [{ url: topSpot.featured_image, width: 1200, height: 630, alt: title }] : undefined,
+      },
+      // Next.js は twitter を浅くマージ（＝丸ごと置換）するため、
+      // layout 側の card 指定は届かない。ここで明示する
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description: simpleDescription,
+        images: topSpot?.featured_image ? [topSpot.featured_image] : undefined,
       },
       alternates: {
         canonical: canonicalUrl,
@@ -216,7 +227,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       url: canonicalUrl,
-      siteName: "nightscape.tokyo",
+      siteName: SITE_NAMES[localeSlug] ?? SITE_NAMES.en,
       locale: ogLocale,
       alternateLocale: alternateOgLocales,
       images: heroImage

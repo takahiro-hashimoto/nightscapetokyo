@@ -4,9 +4,7 @@ import "@/components/photography/photography.css";
 import { SITE_URL } from "@/lib/types";
 import { getPhotographyLabels } from "@/lib/i18n-static/photography";
 import {
-  buildBreadcrumbJsonLd,
   buildPhotographyServiceJsonLd,
-  buildPhotographerPersonJsonLd,
   buildFaqJsonLd,
 } from "@/lib/json-ld";
 import { PHOTOGRAPHY_HERO_IMAGE, PHOTOGRAPHY_OG_IMAGE, PHOTOGRAPHY_OFFERS } from "@/data/photography";
@@ -43,15 +41,13 @@ export default function PhotographyPage() {
         inLanguage: "ja",
         offers: PHOTOGRAPHY_OFFERS,
       }),
-      buildPhotographerPersonJsonLd({ url: `${SITE_URL}/about/` }),
       buildFaqJsonLd(
         l.faq.items.map((f) => ({ question: f.q, answer: f.a })),
         { inLanguage: "ja" },
       ),
-      buildBreadcrumbJsonLd([
-        { name: "東京夜景ナビ", url: `${SITE_URL}/` },
-        { name: l.hero.h1, url: canonicalUrl },
-      ]),
+      // BreadcrumbList はここには書かない。PhotographyArticle 内の
+      // <Breadcrumb> が DOM と一致したものを出力しており、二重定義になるため。
+      // 運営者 Person はレイアウトの Organization.founder として出力済み
     ],
   };
 

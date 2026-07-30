@@ -236,23 +236,25 @@ export default async function Page() {
         <h2>よくある質問（FAQ）</h2>
         <p>Luminar Neoの無料体験版に関してよく寄せられる質問にお答えします。</p>
         <dl>
-          <div className="faq-item">
+          {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
+              日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
+          <div id="faq-1" className="faq-item">
             <dt className="faq-q">体験版で編集した写真は商用利用できますか？</dt>
             <dd className="faq-a">体験版で書き出した写真ファイル自体に利用制限はありません。透かしも入らないため、技術的には商用利用も可能です。ただし、本格的な商用利用を予定している場合は、製品版を購入した上で使用することをおすすめします。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-2" className="faq-item">
             <dt className="faq-q">日本語に対応していますか？</dt>
             <dd className="faq-a">はい、Luminar Neoは日本語表示に対応しています。インストール後、設定画面から言語を日本語に切り替えることができます。メニューやツール名が日本語で表示されるため、英語が苦手な方でも問題なく操作できます。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-3" className="faq-item">
             <dt className="faq-q">体験期間が終了したらどうなりますか？</dt>
             <dd className="faq-a">7日間の体験期間が終了すると、ソフトを起動しても編集機能が使えなくなります。ただし、体験版で作成・編集した写真ファイルが消えることはありません。製品版を購入すれば、そのまま継続して使用できます。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-4" className="faq-item">
             <dt className="faq-q">体験版から製品版への移行は簡単ですか？</dt>
             <dd className="faq-a">はい、とても簡単です。製品版を購入すると、同じSkylumアカウントにライセンスが紐づきます。体験版と同じアカウントでログインし直すだけで、自動的に製品版として認識されます。再インストールなどの手間はかかりません。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-5" className="faq-item">
             <dt className="faq-q">WindowsとMac、両方で使えますか？</dt>
             <dd className="faq-a">体験版は、WindowsとMacそれぞれ別のインストーラーが用意されています。同じSkylumアカウントでログインすれば両方で使えますが、体験期間はアカウント単位で管理されているため、合計7日間という制限は変わりません。</dd>
           </div>

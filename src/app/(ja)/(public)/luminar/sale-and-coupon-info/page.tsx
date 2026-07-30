@@ -1,3 +1,4 @@
+import { jsonLdHtml } from "@/lib/json-ld-script";
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from '@/components/common/AppLink'
@@ -298,27 +299,29 @@ export default async function Page() {
       <section id="faq" className="content-card card-padding article-body">
         <h2>よくある質問（FAQ）</h2>
         <dl>
-          <div className="faq-item">
+          {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
+              日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
+          <div id="faq-1" className="faq-item">
             <dt className="faq-q">購入後に気に入らなかった場合は？</dt>
             <dd className="faq-a">Luminar Neoには<strong>購入後30日間の返金保証</strong>があります。実際に使ってみて自分に合わないと感じた場合でも、リスクなく試すことができます。返金手続きはサポートに連絡するだけで簡単に行えます。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-2" className="faq-item">
             <dt className="faq-q">無料体験版はある？</dt>
             <dd className="faq-a">はい、<strong>7日間の無料体験版</strong>があります。ただし、セール期間中は体験版を試している間にセールが終わってしまうリスクがあります。返金保証が30日間あるため、セール中であれば先に購入してしまうのがおすすめです。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-3" className="faq-item">
             <dt className="faq-q">クーポンはセール価格と併用できる？</dt>
             <dd className="faq-a">公式の規約上は割引の併用は不可とされており、<strong>併用できるかどうかは時期やキャンペーンによって異なります</strong>。購入画面でプロモーションコードを入力し、割引が適用されるかを確認してから決済してください。なお、クーポン同士（複数のプロモーションコード）の併用はできません。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-4" className="faq-item">
             <dt className="faq-q">何台のPCで使える？</dt>
             <dd className="faq-a">買い切りの永久ライセンス デスクトップ版は<strong>2台のパソコン</strong>でアクティベートできます。クロスデバイス版はさらに3台のモバイルデバイスでも利用可能です。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-5" className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
             <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Upgrade PassやEcosystem Passが必要なのは、生成AIの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-6" className="faq-item">
             <dt className="faq-q">1年で使えなくなる機能があるの？</dt>
             <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は<strong>永久に使えます</strong>。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの<strong>生成AI機能のみ</strong>です。これらはサーバー側で処理が必要なため、継続利用には別途パスの購入が必要になります。なお、<strong>Proツールも買い切りに含まれており永続的に使えます</strong>。</dd>
           </div>
@@ -348,7 +351,7 @@ export default async function Page() {
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
+        __html: jsonLdHtml({
           '@context': 'https://schema.org',
           '@type': 'FAQPage',
           mainEntity: FAQ_JSON_LD,

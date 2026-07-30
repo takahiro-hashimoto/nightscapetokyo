@@ -78,7 +78,7 @@ export default function SpotMap({ spots, categories, labels = DEFAULT_LABELS, lo
               <Popup>
                 <div className="spot-map-popup">
                   {spot.featured_image && (
-                    <a href={`${localePrefix}/${spot.categorySlug}/${spot.slug}`}>
+                    <a href={`${localePrefix}/${spot.categorySlug}/${spot.slug}/`}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={spot.featured_image}
@@ -89,7 +89,7 @@ export default function SpotMap({ spots, categories, labels = DEFAULT_LABELS, lo
                   )}
                   <div className="spot-map-popup-body">
                     <a
-                      href={`${localePrefix}/${spot.categorySlug}/${spot.slug}`}
+                      href={`${localePrefix}/${spot.categorySlug}/${spot.slug}/`}
                       className="spot-map-popup-name"
                     >
                       {spot.name}

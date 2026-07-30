@@ -1,3 +1,4 @@
+import { jsonLdHtml } from "@/lib/json-ld-script";
 import type { Metadata } from 'next'
 import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
@@ -72,7 +73,9 @@ export default async function Page() {
 
       <section id="faq-purchase" className="content-card card-padding article-body">
         <h2>Luminar Neoの購入・料金に関する質問</h2>
-        <div className="faq-item">
+        {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
+            日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
+        <div id="faq-1" className="faq-item">
           <dt className="faq-q">Luminar Neoの価格はいくら？</dt>
           <dd className="faq-a">
             Luminar Neoの価格は、選ぶプランによって変わります。現在は「永久ライセンス デスクトップ版」「クロスデバイス 永続ライセンス」「永久 Maxライセンス」の3種類が用意されていて、モバイルアプリやCreative Libraryへのアクセスが含まれるかどうかで価格が異なります。2026年7月時点のセール価格は、デスクトップ版¥15,980（通常¥29,960）、クロスデバイス¥17,980（通常¥44,990）、Max¥21,480（通常¥69,999）です。セール価格は時期により変動します。
@@ -80,14 +83,14 @@ export default async function Page() {
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">Luminar Neoの料金プラン詳細はこちら</Link>
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-2" className="faq-item">
           <dt className="faq-q">Luminar Neoを安く買う方法はある？</dt>
           <dd className="faq-a">
             公式サイトでは定期的にクーポンコードが発行されています。また、年に数回開催されるセール時にはさらに割引率が高くなることもあるので、急ぎでなければセール情報もチェックしてみてください。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/sale-and-coupon-info/">セール・クーポン情報をチェックする</Link>
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-3" className="faq-item">
           <dt className="faq-q">買い切りとパスの違いは？</dt>
           <dd className="faq-a">
             Luminar Neoは買い切り（永久ライセンス）プランのみの販売となっています。一度購入すれば、Proツール（8種）を含む編集機能はずっと使い続けられます。
@@ -112,7 +115,7 @@ export default async function Page() {
 
       <section id="faq-trial" className="content-card card-padding article-body">
         <h2>体験版・導入前の不安</h2>
-        <div className="faq-item">
+        <div id="faq-4" className="faq-item">
           <dt className="faq-q">無料体験版はある？</dt>
           <dd className="faq-a">
             あります。公式サイトから7日間の無料トライアルをダウンロードできます。クレジットカードの登録も不要で、メールアドレスだけでOK。
@@ -133,28 +136,28 @@ export default async function Page() {
 
       <section id="faq-features" className="content-card card-padding article-body">
         <h2>機能・他ソフトとの違い</h2>
-        <div className="faq-item">
+        <div id="faq-5" className="faq-item">
           <dt className="faq-q">Luminar Neoでは何ができる？</dt>
           <dd className="faq-a">
             Luminar Neoが得意なのは、AIを活用した写真編集です。空の置き換え、人物の肌補正、背景のぼかしなど、従来は手間がかかっていた作業をワンクリックでこなせます。
             一方で、写真の管理機能は最小限なので、大量の写真をカタログ的に整理したい方には向いていません。
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-6" className="faq-item">
           <dt className="faq-q">Lightroomと何が違う？</dt>
           <dd className="faq-a">
             ざっくり言うと、Lightroomは「写真を管理しながら現像するソフト」、Luminar Neoは「編集に特化したソフト」です。日常的に大量の写真を扱うならLightroom、1枚1枚をしっかり仕上げたいならLuminar Neoという棲み分けになります。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/lightroom-compare/">Lightroomとの詳細比較はこちら</Link>
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-7" className="faq-item">
           <dt className="faq-q">Lightroomと併用できる？</dt>
           <dd className="faq-a">
             できます。Luminar NeoはLightroom Classicのプラグインとして使えるので、Lightroomで管理している写真をLuminar Neoで編集し、また戻すという使い方が可能です。
             「どちらか一方」ではなく「いいとこ取り」したい方には、この併用スタイルがおすすめです。
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-8" className="faq-item">
           <dt className="faq-q">Photoshopプラグインとして使える？</dt>
           <dd className="faq-a">
             はい、使えます。PhotoshopからLuminar Neoを呼び出して編集し、結果をPhotoshopに戻すことができます。
@@ -184,7 +187,7 @@ export default async function Page() {
 
       <section id="faq-files" className="content-card card-padding article-body">
         <h2>対応ファイル・出力形式</h2>
-        <div className="faq-item">
+        <div id="faq-9" className="faq-item">
           <dt className="faq-q">対応しているカメラは？</dt>
           <dd className="faq-a">
             Canon、Nikon、Sony、Fujifilmなど、主要カメラメーカーに幅広く対応しています。対応カメラのライブラリは定期的に更新されていますが、発売されたばかりの最新機種については対応が少し遅れることがあります。
@@ -192,14 +195,14 @@ export default async function Page() {
             <i className="fa-solid fa-arrow-right"></i> <a href="https://media.macphun.com/uploads/uploads/LuminarNeo/Luminar_Neo_1150_Supported_Cameras.pdf" target="_blank" rel="noopener">対応カメラ一覧（公式PDF）</a>
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-10" className="faq-item">
           <dt className="faq-q">RAW現像もできる？</dt>
           <dd className="faq-a">
             はい、できます。Luminar Neoは独自の強力なRAWエンジンを搭載していて、RAW現像ソフトとしても十分に使えます。
             露出やホワイトバランスの調整はもちろん、AI機能と組み合わせた編集も可能です。
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-11" className="faq-item">
           <dt className="faq-q">RAW以外（JPEG/HEIF/TIFF）も扱える？</dt>
           <dd className="faq-a">
             はい、扱えます。JPEG、TIFF、PNGはもちろん、iPhoneで撮影したHEIF形式にも対応しています。
@@ -217,7 +220,7 @@ export default async function Page() {
 
       <section id="faq-performance" className="content-card card-padding article-body">
         <h2>動作環境・パフォーマンス</h2>
-        <div className="faq-item">
+        <div id="faq-12" className="faq-item">
           <dt className="faq-q">対応OS・推奨スペックは？</dt>
           <dd className="faq-a">
             WindowsとMacの両方に対応しています。Macの場合はmacOS 12以降（macOS 10.13〜10.15は非対応）、Windowsの場合はWindows 10（バージョン1909以降、64bitのみ）が必要です。
@@ -225,7 +228,7 @@ export default async function Page() {
             ストレージは10GBの空き容量が必要で、SSDだとより快適に動作します。Macは2010年初頭以降のモデルに対応しています。
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-13" className="faq-item">
           <dt className="faq-q">動作が重いことはある？</dt>
           <dd className="faq-a">
             正直に言うと、あります。特にAI機能を使った処理は負荷が高いので、PCのスペックによっては待ち時間が発生します。
@@ -233,7 +236,7 @@ export default async function Page() {
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/merit-demerit/">動作の重さ含め、デメリットを正直に解説</Link>
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-14" className="faq-item">
           <dt className="faq-q">起動しない／落ちることはある？</dt>
           <dd className="faq-a">
             環境によっては起こり得ます。グラフィックドライバが古い、メモリが不足している、他のソフトと競合しているなど、原因はさまざまです。
@@ -252,28 +255,28 @@ export default async function Page() {
 
       <section id="faq-license" className="content-card card-padding article-body">
         <h2>購入後・ライセンス関連</h2>
-        <div className="faq-item">
+        <div id="faq-15" className="faq-item">
           <dt className="faq-q">何台のPCにインストールできる？</dt>
           <dd className="faq-a">
             永久ライセンス デスクトップ版の場合、2台のPCにインストールできます。自宅のデスクトップと持ち運び用のノートPCなど、使い分けている方でも1ライセンスでカバーできるのは嬉しいポイントです。
             クロスデバイス版を選ぶと、さらに3台のモバイルデバイスでも使用できます。
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-16" className="faq-item">
           <dt className="faq-q">機種変更したら再インストールできる？</dt>
           <dd className="faq-a">
             できます。PCを買い替えた場合でも、新しいデバイスにアプリをダウンロードしてSkylumアカウントでログインすれば使えるようになります。
             すでにすべてのライセンス席が使用中の場合は、古いデバイスのアプリを非アクティブ化してから新しいデバイスでアクティブ化する形になります。アカウント管理画面から簡単に操作できますよ。
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-17" className="faq-item">
           <dt className="faq-q">オフライン環境でも使える？</dt>
           <dd className="faq-a">
             基本的には使えます。常時インターネット接続が必要なわけではないので、オフラインの環境でも編集作業は可能です。
             ただし、ライセンス認証や一部のAI機能、アップデートの確認にはインターネット接続が必要になります。完全オフラインで使い続けるのは難しいですが、一時的にネットがない環境でも作業は止まりません。
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-18" className="faq-item">
           <dt className="faq-q">Upgrade Pass・Ecosystem Passはどこで買える？</dt>
           <dd className="faq-a">
             Skylum公式サイトから購入できます。すでに買い切りライセンスを持っている方は、Skylumアカウント（<a href="https://skylum.evyy.net/7a3mLg" target="_blank" rel="noopener nofollow">https://skylum.com/account/my-software</a>）にログインすると、パスのみを追加購入するオファーが表示されることがあります。
@@ -291,14 +294,14 @@ export default async function Page() {
 
       <section id="faq-pro" className="content-card card-padding article-body">
         <h2>Proツール・パスに関する質問</h2>
-        <div className="faq-item">
+        <div id="faq-19" className="faq-item">
           <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
           <dd className="faq-a">
             <strong>はい、使えます。</strong>現在は、Proツール（旧：拡張機能・エクステンション）8種すべてが買い切りプランに標準で含まれています。
             パスなどの追加購入は不要で、どの買い切りライセンスでも永続的に利用できます。
           </dd>
         </div>
-        <div className="faq-item">
+        <div id="faq-20" className="faq-item">
           <dt className="faq-q">一度パスを買ったらProツールはずっと使える？</dt>
           <dd className="faq-a">
             そもそも<strong>Proツールはパスの有無に関係なく、買い切りライセンスで永続的に使えます</strong>。パスを購入・更新しなくても、Proツールが消えることはありません。
@@ -320,7 +323,7 @@ export default async function Page() {
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
+        __html: jsonLdHtml({
           '@context': 'https://schema.org',
           '@type': 'FAQPage',
           mainEntity: FAQ_JSON_LD,

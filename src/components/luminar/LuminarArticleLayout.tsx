@@ -1,3 +1,4 @@
+import { jsonLdHtml } from "@/lib/json-ld-script";
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Footer from '@/components/layout/Footer'
@@ -11,6 +12,7 @@ import HomeAuthorCard from '@/components/common/HomeAuthorCard'
 import { getRelatedPosts, normalizePostSummary } from '@/lib/luminar/articles-meta'
 import type { TocItem } from '@/lib/luminar/toc'
 import { LUMINAR_SITE_NAME, LUMINAR_SITE_URL } from '@/lib/luminar/config'
+import { SITE_URL } from '@/lib/types'
 import { getSaleSettings } from '@/lib/luminar/getSaleSettings'
 import { SaleSettingsProvider } from '@/contexts/SaleSettingsContext'
 
@@ -49,6 +51,8 @@ export function buildArticleMetadata({
 }): Metadata {
   const url = `${LUMINAR_SITE_URL}/${slug}/`
 
+  // Next.js は openGraph / twitter を浅くマージ（＝丸ごと置換）するため、
+  // luminar/layout.tsx の siteName / locale / card は継承されない。ここで明示する
   return {
     title,
     description,
@@ -57,6 +61,8 @@ export function buildArticleMetadata({
       url,
       title,
       description,
+      siteName: LUMINAR_SITE_NAME,
+      locale: 'ja_JP',
       ...(featuredImage && {
         images: [{
           url: featuredImage.src,
@@ -69,6 +75,9 @@ export function buildArticleMetadata({
       modifiedTime: updatedAt,
     },
     twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
       images: featuredImage ? [featuredImage.src] : [],
     },
     alternates: { canonical: url },
@@ -225,7 +234,7 @@ export default async function LuminarArticleLayout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLdHtml({
             '@context': 'https://schema.org',
             '@type': 'Article',
             headline: title,
@@ -233,8 +242,14 @@ export default async function LuminarArticleLayout({
             url: articleUrl,
             datePublished: publishedAt,
             dateModified: updatedAt,
-            author: { '@type': 'Person', name: 'タカヒロ', url: 'https://nightscape.tokyo/' },
-            publisher: { '@type': 'Organization', name: LUMINAR_SITE_NAME, url: `${LUMINAR_SITE_URL}/` },
+            // 著者は運営者情報ページを指す（トップページだと著者の同一性が示せない）
+            author: { '@type': 'Person', name: 'タカヒロ', url: `${SITE_URL}/about/` },
+            publisher: {
+              '@type': 'Organization',
+              name: LUMINAR_SITE_NAME,
+              url: `${LUMINAR_SITE_URL}/`,
+              logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
+            },
             ...(featuredImage && {
               image: {
                 '@type': 'ImageObject',

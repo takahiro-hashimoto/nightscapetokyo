@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Breadcrumb from "./Breadcrumb";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 type BreadcrumbItem = { label: string; href?: string };
 
@@ -86,7 +87,7 @@ export default function ArticleLayout({
         {jsonLd && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }}
           />
         )}
       </div>

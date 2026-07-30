@@ -122,8 +122,9 @@ export default function MoonInfoModal({ faq }: Props) {
           <div className="moon-info-modal__section">
             <h2 className="moon-info-modal__section-title">よくある質問</h2>
             <dl>
-              {faq.map(({ q, a }) => (
-                <div key={q} className="moon-faq-item">
+              {/* ページ本文側にも同じ FAQ が並ぶため、id が重複しないよう modal 用の接頭辞を付ける */}
+              {faq.map(({ q, a }, i) => (
+                <div key={q} id={`faq-modal-${i + 1}`} className="moon-faq-item">
                   <dt className="moon-faq-q">{q}</dt>
                   <dd className="moon-faq-a">{a}</dd>
                 </div>

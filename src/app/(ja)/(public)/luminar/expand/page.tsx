@@ -542,23 +542,25 @@ export default function Page() {
       <section id="faq" className="content-card card-padding article-body">
         <h2>よくある質問（FAQ）</h2>
         <dl>
-          <div className="faq-item">
+          {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
+              日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
+          <div id="faq-1" className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使えますか？</dt>
             <dd className="faq-a"><strong>はい、使えます。</strong>現在はProツール8種すべてが、どの買い切りライセンスにも標準搭載されています。パスなどの追加購入は不要です。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-2" className="faq-item">
             <dt className="faq-q">パスを更新しないとProツールは使えなくなりますか？</dt>
             <dd className="faq-a"><strong>いいえ、使えなくなりません。</strong>パスが失効しても、アプリ本体・基本機能・Proツールはそのまま永続で使えます。使えなくなるのは生成AIツール（GenErase・GenSwap・GenExpand）と、以後の新機能アップデートだけです。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-3" className="faq-item">
             <dt className="faq-q">無料体験版でProツールは試せますか？</dt>
             <dd className="faq-a"><strong>はい、試せます。</strong>7日間の無料体験版はクレジットカード不要で、Proツールを含む全機能にフルアクセスできます。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-4" className="faq-item">
             <dt className="faq-q">返金保証はありますか？</dt>
             <dd className="faq-a">はい、公式ストアからの直接購入なら<strong>30日間の全額返金保証</strong>があります。</dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-5" className="faq-item">
             <dt className="faq-q">LightroomやPhotoshopと併用できますか？</dt>
             <dd className="faq-a">はい、プラグインとして使用できます。既存のワークフローを変えずにLuminar NeoのAI機能だけを活用することも可能です。</dd>
           </div>

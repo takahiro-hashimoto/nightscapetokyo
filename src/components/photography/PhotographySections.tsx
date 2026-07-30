@@ -190,8 +190,10 @@ export default function PhotographySections({ l }: { l: PhotographyLabels }) {
       <section id="photo-faq" className="content-card card-padding article-body">
         <h2>{l.faq.heading}</h2>
         <dl style={{ margin: 0 }}>
+          {/* 個別の質問を #faq-1 形式で直接引用・共有できるようにするアンカー
+              （セクション全体は #photo-faq のまま） */}
           {l.faq.items.map((item, i) => (
-            <div key={i} className="faq-item">
+            <div key={i} id={`faq-${i + 1}`} className="faq-item">
               <dt className="faq-q">{item.q}</dt>
               <dd className="faq-a">{item.a}</dd>
             </div>

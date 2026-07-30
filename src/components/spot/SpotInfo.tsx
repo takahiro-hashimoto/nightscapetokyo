@@ -96,7 +96,7 @@ export default function SpotInfo({
 
   const categoryHref =
     categorySlug
-      ? `${tagPrefix}/${categorySlug}`
+      ? `${tagPrefix}/${categorySlug}/`
       : null;
 
   const isEvent = categorySlug === "event";
@@ -206,7 +206,7 @@ export default function SpotInfo({
             {tags.map((tag) => (
               <li key={tag.id}>
               <Link
-                href={`${tagPrefix}/tag/${tag.slug}`}
+                href={`${tagPrefix}/tag/${tag.slug}/`}
                 className="tag-card"
               >
                 <span className="tag-card-thumb">

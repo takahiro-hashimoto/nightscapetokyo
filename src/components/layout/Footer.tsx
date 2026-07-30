@@ -5,10 +5,10 @@ import type { SiteLocale } from "@/lib/types";
 
 const LOCALE_LINKS: { locale: string | null; label: string; href: string }[] = [
   { locale: null, label: "日本語", href: "/" },
-  { locale: "en",  label: "English",  href: "/en" },
-  { locale: "ko",  label: "한국어",   href: "/ko" },
-  { locale: "tw",  label: "繁體中文", href: "/tw" },
-  { locale: "cn",  label: "简体中文", href: "/cn" },
+  { locale: "en",  label: "English",  href: "/en/" },
+  { locale: "ko",  label: "한국어",   href: "/ko/" },
+  { locale: "tw",  label: "繁體中文", href: "/tw/" },
+  { locale: "cn",  label: "简体中文", href: "/cn/" },
 ];
 import { getSiteChromeData } from "@/lib/supabase/queries";
 import { getComponentLabels } from "@/lib/i18n-labels";
@@ -31,22 +31,22 @@ const FOOTER_LABELS = {
     tagHeading: "タグページ",
     contentHeading: "コンテンツ",
     contentLinks: [
-      { label: "無料壁紙", href: "/wallpaper" },
-      { label: "タイムラプス動画", href: "/time-lapse" },
-      { label: "日の出・日の入りシミュレーター", href: "/simulator" },
-      { label: "月の出・月の入りシミュレーター", href: "/moon" },
-      { label: "Luminar Neo ガイド", href: "/luminar" },
-      { label: "ブログ", href: "/article" },
+      { label: "無料壁紙", href: "/wallpaper/" },
+      { label: "タイムラプス動画", href: "/time-lapse/" },
+      { label: "日の出・日の入りシミュレーター", href: "/simulator/" },
+      { label: "月の出・月の入りシミュレーター", href: "/moon/" },
+      { label: "Luminar Neo ガイド", href: "/luminar/" },
+      { label: "ブログ", href: "/article/" },
     ],
     siteHeading: "サイト情報",
     siteLinks: [
-      { label: "運営者について", href: "/about" },
-      { label: "お問い合わせ", href: "/contact" },
-      { label: "コンテンツ制作ポリシー", href: "/guidelines" },
-      { label: "プライバシーポリシー", href: "/privacy-policy" },
-      { label: "利用規約", href: "/caution" },
-      { label: "リンク集", href: "/links" },
-      { label: "サイトマップ", href: "/sitemap" },
+      { label: "運営者について", href: "/about/" },
+      { label: "お問い合わせ", href: "/contact/" },
+      { label: "コンテンツ制作ポリシー", href: "/guidelines/" },
+      { label: "プライバシーポリシー", href: "/privacy-policy/" },
+      { label: "利用規約", href: "/caution/" },
+      { label: "リンク集", href: "/links/" },
+      { label: "サイトマップ", href: "/sitemap/" },
     ],
   },
   en: {
@@ -55,17 +55,17 @@ const FOOTER_LABELS = {
     tagHeading: "Tag Pages",
     contentHeading: "Content",
     contentLinks: [
-      { label: "Free Wallpapers", href: "/wallpaper" },
-      { label: "Time-lapse Videos", href: "/time-lapse" },
+      { label: "Free Wallpapers", href: "/wallpaper/" },
+      { label: "Time-lapse Videos", href: "/time-lapse/" },
     ],
     siteHeading: "Site Info",
     siteLinks: [
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-      { label: "Content Policy", href: "/guidelines" },
-      { label: "Privacy Policy", href: "/privacy-policy" },
-      { label: "Terms of Use", href: "/caution" },
-      { label: "Sitemap", href: "/sitemap" },
+      { label: "About", href: "/about/" },
+      { label: "Contact", href: "/contact/" },
+      { label: "Content Policy", href: "/guidelines/" },
+      { label: "Privacy Policy", href: "/privacy-policy/" },
+      { label: "Terms of Use", href: "/caution/" },
+      { label: "Sitemap", href: "/sitemap/" },
     ],
   },
   ko: {
@@ -74,17 +74,17 @@ const FOOTER_LABELS = {
     tagHeading: "태그 페이지",
     contentHeading: "콘텐츠",
     contentLinks: [
-      { label: "무료 배경화면", href: "/wallpaper" },
-      { label: "타임랩스 영상", href: "/time-lapse" },
+      { label: "무료 배경화면", href: "/wallpaper/" },
+      { label: "타임랩스 영상", href: "/time-lapse/" },
     ],
     siteHeading: "사이트 정보",
     siteLinks: [
-      { label: "사이트 소개", href: "/about" },
-      { label: "문의하기", href: "/contact" },
-      { label: "콘텐츠 제작 정책", href: "/guidelines" },
-      { label: "개인정보 처리방침", href: "/privacy-policy" },
-      { label: "이용약관", href: "/caution" },
-      { label: "사이트맵", href: "/sitemap" },
+      { label: "사이트 소개", href: "/about/" },
+      { label: "문의하기", href: "/contact/" },
+      { label: "콘텐츠 제작 정책", href: "/guidelines/" },
+      { label: "개인정보 처리방침", href: "/privacy-policy/" },
+      { label: "이용약관", href: "/caution/" },
+      { label: "사이트맵", href: "/sitemap/" },
     ],
   },
   tw: {
@@ -93,17 +93,17 @@ const FOOTER_LABELS = {
     tagHeading: "標籤頁面",
     contentHeading: "內容",
     contentLinks: [
-      { label: "免費桌布", href: "/wallpaper" },
-      { label: "縮時攝影影片", href: "/time-lapse" },
+      { label: "免費桌布", href: "/wallpaper/" },
+      { label: "縮時攝影影片", href: "/time-lapse/" },
     ],
     siteHeading: "網站資訊",
     siteLinks: [
-      { label: "關於本站", href: "/about" },
-      { label: "聯絡我們", href: "/contact" },
-      { label: "內容製作政策", href: "/guidelines" },
-      { label: "隱私權政策", href: "/privacy-policy" },
-      { label: "使用條款", href: "/caution" },
-      { label: "網站地圖", href: "/sitemap" },
+      { label: "關於本站", href: "/about/" },
+      { label: "聯絡我們", href: "/contact/" },
+      { label: "內容製作政策", href: "/guidelines/" },
+      { label: "隱私權政策", href: "/privacy-policy/" },
+      { label: "使用條款", href: "/caution/" },
+      { label: "網站地圖", href: "/sitemap/" },
     ],
   },
   cn: {
@@ -112,24 +112,24 @@ const FOOTER_LABELS = {
     tagHeading: "标签页面",
     contentHeading: "内容",
     contentLinks: [
-      { label: "免费壁纸", href: "/wallpaper" },
-      { label: "延时摄影视频", href: "/time-lapse" },
+      { label: "免费壁纸", href: "/wallpaper/" },
+      { label: "延时摄影视频", href: "/time-lapse/" },
     ],
     siteHeading: "网站信息",
     siteLinks: [
-      { label: "关于本站", href: "/about" },
-      { label: "联系我们", href: "/contact" },
-      { label: "内容制作政策", href: "/guidelines" },
-      { label: "隐私政策", href: "/privacy-policy" },
-      { label: "使用条款", href: "/caution" },
-      { label: "网站地图", href: "/sitemap" },
+      { label: "关于本站", href: "/about/" },
+      { label: "联系我们", href: "/contact/" },
+      { label: "内容制作政策", href: "/guidelines/" },
+      { label: "隐私政策", href: "/privacy-policy/" },
+      { label: "使用条款", href: "/caution/" },
+      { label: "网站地图", href: "/sitemap/" },
     ],
   },
 } satisfies Record<SiteLocale, FooterLabels>;
 
 export default async function Footer({ locale }: { locale: string | null }) {
   const labels = FOOTER_LABELS[(locale ?? "ja") as SiteLocale] ?? FOOTER_LABELS.ja;
-  const homeHref = locale ? `/${locale}` : "/";
+  const homeHref = locale ? `/${locale}/` : "/";
   const prefix = locale ? `/${locale}` : "";
 
   const siteLocale = (locale ?? "ja") as SiteLocale;
@@ -180,7 +180,7 @@ export default async function Footer({ locale }: { locale: string | null }) {
               <ul className="footer-nav-list">
                 {areas.map((area) => (
                   <li key={area.slug}>
-                    <Link href={`${prefix}/${area.slug}`} className="footer-nav-link">
+                    <Link href={`${prefix}/${area.slug}/`} className="footer-nav-link">
                       {area.name}
                     </Link>
                   </li>
@@ -195,7 +195,7 @@ export default async function Footer({ locale }: { locale: string | null }) {
               <ul className="footer-nav-list">
                 {tags.map((tag) => (
                   <li key={tag.slug}>
-                    <Link href={`${prefix}/tag/${tag.slug}`} className="footer-nav-link">
+                    <Link href={`${prefix}/tag/${tag.slug}/`} className="footer-nav-link">
                       {tagNames?.[tag.name] ?? tag.name}
                     </Link>
                   </li>

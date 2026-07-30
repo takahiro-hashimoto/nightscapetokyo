@@ -14,6 +14,7 @@ import type { AreaPageLabels } from "@/lib/i18n-labels";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import type { MapSpotItem } from "@/lib/supabase/queries";
 import SpotBestTime from "@/components/spot/SpotBestTime";
+import { jsonLdHtml } from "@/lib/json-ld-script";
 
 type Props = {
   localeSlug: string;
@@ -196,8 +197,10 @@ export default function TranslatedAreaContent({
           <DeferredRender as="section" className="content-card card-padding area-faq" id="faq" aria-labelledby="faq-heading">
             <h2 className="area-section-heading" id="faq-heading">{al.faqHeading(areaName)}</h2>
             <dl className="area-faq-list">
+              {/* 個別の質問を #faq-1 形式で直接引用・共有できるようにするアンカー。
+                  質問文（多言語）をスラッグ化するとリンクが読めなくなり文言修正で壊れるため連番で固定 */}
               {faqs.map((faq, i) => (
-                <div key={i} className="faq-item">
+                <div key={i} id={`faq-${i + 1}`} className="faq-item">
                   <dt className="faq-q">{faq.question}</dt>
                   <dd className="faq-a">{faq.answer}</dd>
                 </div>
@@ -219,14 +222,14 @@ export default function TranslatedAreaContent({
         {itemListJsonLd && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+            dangerouslySetInnerHTML={{ __html: jsonLdHtml(itemListJsonLd) }}
           />
         )}
 
         {faqJsonLd && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+            dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqJsonLd) }}
           />
         )}
       </div>

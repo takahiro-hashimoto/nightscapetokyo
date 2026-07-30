@@ -6,7 +6,7 @@ import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import RecommendCta from "@/components/common/RecommendCta";
 import SpotShare from "@/components/spot/SpotShare";
 import { YouTubeEmbed, extractYouTubeIds, type Video } from "@/components/time-lapse/YouTubeEmbed";
-import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, buildAreaHreflangAlternates } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, SITE_NAMES, buildAreaHreflangAlternates } from "@/lib/types";
 import { getTimeLapseSpots } from "@/lib/supabase/queries";
 import { getComponentLabels } from "@/lib/i18n-labels";
 
@@ -292,10 +292,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: { absolute: l.seoTitle },
     description: l.description,
+    // Next.js は openGraph / twitter を浅くマージ（＝丸ごと置換）するため、
+    // layout 側の既定値には頼らず type / siteName をここで明示する
     openGraph: {
+      type: "website",
       title: l.title,
       description: l.description,
       url: canonicalUrl,
+      siteName: SITE_NAMES[locale] ?? SITE_NAMES.en,
       locale: ogLocale,
       alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
       images: [
@@ -319,6 +323,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
   };
 }
+
+// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
+// これが無いと /chiyoda/time-lapse/ 等が英語版を自己canonical付きで返し重複コンテンツになる
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((locale) => ({ category: locale }));

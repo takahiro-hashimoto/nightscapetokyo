@@ -2,14 +2,33 @@ import type { Metadata } from "next";
 import Link from "@/components/common/AppLink";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, LOCALE_OG_ALTERNATES, buildAreaHreflangAlternates } from "@/lib/types";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "利用規約 | 東京夜景ナビ",
+  title: "利用規約",
   description:
     "東京夜景ナビの利用規約です。著作権・免責事項・Cookie・広告・アクセス解析・リンクに関するルールを記載しています。",
+  // Next.js は openGraph を浅くマージ（＝丸ごと置換）するため、定義しないと
+  // (ja)/layout.tsx のトップページ用 og:title / og:url をそのまま継承してしまう
+  openGraph: {
+    type: "website",
+    title: "利用規約 | 東京夜景ナビ",
+    description: "東京夜景ナビの利用規約です。著作権・免責事項・Cookie・広告・アクセス解析・リンクに関するルールを記載しています。",
+    url: `${SITE_URL}/caution/`,
+    siteName: "東京夜景ナビ",
+    locale: "ja_JP",
+    alternateLocale: LOCALE_OG_ALTERNATES as string[],
+    images: [
+      {
+        url: `${SITE_URL}/hero.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "利用規約 | 東京夜景ナビ",
+      },
+    ],
+  },
   alternates: {
     canonical: `${SITE_URL}/caution/`,
     languages: buildAreaHreflangAlternates(SITE_URL, "caution", ALL_LOCALE_SLUGS),

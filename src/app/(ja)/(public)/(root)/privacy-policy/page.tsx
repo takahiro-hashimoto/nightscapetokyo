@@ -1,14 +1,33 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/layout/ArticleLayout";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
-import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, buildAreaHreflangAlternates } from "@/lib/types";
+import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, LOCALE_OG_ALTERNATES, buildAreaHreflangAlternates } from "@/lib/types";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "プライバシーポリシー | 東京夜景ナビ",
+  title: "プライバシーポリシー",
   description:
     "東京夜景ナビのプライバシーポリシーです。個人情報の利用目的、Cookie・広告配信・アクセス解析ツールの取り扱い、免責事項について記載しています。",
+  // Next.js は openGraph を浅くマージ（＝丸ごと置換）するため、定義しないと
+  // (ja)/layout.tsx のトップページ用 og:title / og:url をそのまま継承してしまう
+  openGraph: {
+    type: "website",
+    title: "プライバシーポリシー | 東京夜景ナビ",
+    description: "東京夜景ナビのプライバシーポリシーです。個人情報の利用目的、Cookie・広告配信・アクセス解析ツールの取り扱い、免責事項について記載しています。",
+    url: `${SITE_URL}/privacy-policy/`,
+    siteName: "東京夜景ナビ",
+    locale: "ja_JP",
+    alternateLocale: LOCALE_OG_ALTERNATES as string[],
+    images: [
+      {
+        url: `${SITE_URL}/hero.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "プライバシーポリシー | 東京夜景ナビ",
+      },
+    ],
+  },
   alternates: {
     canonical: `${SITE_URL}/privacy-policy/`,
     languages: buildAreaHreflangAlternates(SITE_URL, "privacy-policy", ALL_LOCALE_SLUGS),

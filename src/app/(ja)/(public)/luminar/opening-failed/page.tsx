@@ -398,35 +398,37 @@ export default function Page() {
       <section id="heading-19" className="content-card card-padding article-body">
         <h2>Luminar Neoが重い・落ちる時のよくある質問</h2>
         <dl>
-          <div className="faq-item">
+          {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
+              日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
+          <div id="faq-1" className="faq-item">
             <dt className="faq-q">再インストールすれば直りますか？</dt>
             <dd className="faq-a">
               多くの場合、再インストールでは直りません。カタログデータは残るため、
               <strong>カタログの初期化が先</strong>です。再インストールは最終手段と考えてください。
             </dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-2" className="faq-item">
             <dt className="faq-q">メモリ8GBでは使えませんか？</dt>
             <dd className="faq-a">
               基本補正程度なら使えますが、AI機能（ノイズ除去、空の置き換えなど）を使うと重くなりやすいです。
               <strong>16GB以上を強く推奨</strong>します。
             </dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-3" className="faq-item">
             <dt className="faq-q">MacとWindows、どちらが快適ですか？</dt>
             <dd className="faq-a">
               同スペックなら大差ありません。ただし<strong>M1/M2 Macは非常に快適</strong>という声が多いです。
               Apple SiliconはCPUとGPUの連携が優秀なため、Luminar Neoと相性が良いようです。
             </dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-4" className="faq-item">
             <dt className="faq-q">サポートに問い合わせるべきですか？</dt>
             <dd className="faq-a">
               この記事の対処法で解決しない場合は、Skylum公式サポートに問い合わせてみてください。
               具体的な症状（エラーメッセージ、発生タイミングなど）とPCスペックを伝えると、適切な回答を得やすいです。
             </dd>
           </div>
-          <div className="faq-item">
+          <div id="faq-5" className="faq-item">
             <dt className="faq-q">体験版で重いなら、製品版でも重いですか？</dt>
             <dd className="faq-a">
               はい、<strong>体験版と製品版の動作は同じ</strong>です。体験版で重いと感じたら、製品版でも同じです。
