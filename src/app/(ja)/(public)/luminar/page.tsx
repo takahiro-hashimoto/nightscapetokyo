@@ -15,6 +15,10 @@ import {
   LUMINAR_SITE_DESCRIPTION,
   LUMINAR_SITE_URL,
 } from '@/lib/luminar/config'
+import { PLANS, PRIME, LIGHTROOM, yen, approxYen } from '@/lib/luminar/pricing'
+
+/** このページの最終更新日。dateTime 属性と表示テキストの両方に使う */
+const LAST_UPDATED = '2026-08-12'
 
 const OG_IMAGE = 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/main-after.jpg'
 
@@ -35,7 +39,7 @@ const FAQ_JSON_LD = [
     name: '拡張機能（Proツール）は必須ですか？',
     acceptedAnswer: {
       '@type': 'Answer',
-      text: '現在はProツール全8種（ノイズ除去、超解像、HDR合成など）がすべての買い切りライセンスに標準で含まれており、追加購入なしで永続利用できます。パスの購入は生成AIの継続利用や新機能アップデートが欲しい場合のみ検討すればOKです。',
+      text: '現在はProツール全8種（ノイズ除去、超解像、HDR合成など）がすべての買い切りライセンスに標準で含まれており、追加購入なしで永続利用できます。Luminar Primeの契約は生成AIの継続利用や新機能アップデートが欲しい場合のみ検討すればOKです。',
     },
   },
   {
@@ -75,7 +79,7 @@ const FAQ_JSON_LD = [
     name: 'アップデートは無料ですか？',
     acceptedAnswer: {
       '@type': 'Answer',
-      text: 'マイナーアップデート（バグ修正など）は無料です。メジャーアップデート（新機能追加）はパス加入者のみ。パス未加入でも購入時のバージョンは永続利用できます。',
+      text: 'マイナーアップデート（バグ修正など）は無料です。メジャーアップデート（新機能追加）はPrime契約者のみ。Prime未契約でも購入時のバージョンは永続利用できます。',
     },
   },
 ]
@@ -143,17 +147,18 @@ export default async function LuminarTopPage() {
                   Luminar Neo 完全購入ガイド｜ ルミナーネオの特徴・料金・安く買う方法を解説
                 </h1>
                 <div className="firstVisual-meta">
-                  <time className="firstVisual-date" dateTime="2026-07-05">
-                    最終更新: 2026年7月5日
+                  <time className="firstVisual-date" dateTime={LAST_UPDATED}>
+                    最終更新: {new Date(LAST_UPDATED).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
                   </time>
                   <span className="firstVisual-badge">一部広告を含みます</span>
                 </div>
               </header>
               <div className="firstVisual-body article-body">
                 <p>
-                  <strong>「Luminar Neoって実際どうなの？」</strong>——そんな疑問を抱えたまま購入を迷っていませんか？
-                  動作の重さや、Lightroomとの違い、買い切りかサブスクかの選択など、
-                  気になるポイントはたくさんありますよね。
+                  Luminar Neoを買うかどうかの判断は、意外と面倒です。
+                  動作が重いという評判は本当なのか、Lightroomから乗り換える価値があるのか、
+                  買い切りと書いてあるのに追加料金が出てくるのはなぜか。
+                  調べるほど書いてあることがバラバラで、かえって決めきれなくなります。
                 </p>
                 <p>
                   このページは、<strong>Luminar Neoを2年以上使い続けてきた現役フォトグラファー</strong>が
@@ -220,7 +225,7 @@ export default async function LuminarTopPage() {
                   <dt>柔軟なライセンス</dt>
                   <dd>
                     買い切り版なら基本機能もProツールも永続利用可能。サブスク疲れしている方にも選ばれています。
-                    生成AIや新機能を使い続けたい場合だけパスを追加する形式です。
+                    生成AIや新機能を使い続けたい場合だけLuminar Primeを追加する形式です。
                   </dd>
                 </dl>
               </div>
@@ -245,19 +250,19 @@ export default async function LuminarTopPage() {
                   style={{ width: '100%', height: 'auto' }}
                 />
                 <figcaption style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-text-light)', marginTop: '0.5rem' }}>
-                  ルミナーネオは買い切り＋任意のパスの料金体系を採用
+                  ルミナーネオは買い切り＋任意のLuminar Primeの料金体系を採用
                 </figcaption>
               </figure>
 
               <p>
                 Luminar Neoの料金体系は「
-                <strong>買い切り＋任意のパス（年額オプション）</strong>
+                <strong>買い切り＋任意のLuminar Prime（年額サブスク）</strong>
                 」という構造になっています。
               </p>
               <p>
-                買い切りには3つのグレード（デスクトップ/クロスデバイス/Max）があり、
+                買い切りには3つのグレード（デスクトップ専用／全プラットフォーム＝旧クロスデバイス／Max）があり、
                 Proツール全8種はどのグレードにも標準で含まれ、永続的に使えます。
-                パスは生成AIの継続利用や新機能アップデートが欲しい人向けのオプション。
+                Luminar Primeは生成AIの継続利用や新機能アップデートが欲しい人向けのオプション。
                 正解は使用頻度や予算によって変わるので、自分に合ったプランを見つけることが大切です。
               </p>
 
@@ -268,26 +273,27 @@ export default async function LuminarTopPage() {
                   <dt>買い切りライセンス</dt>
                   <dd>
                     基本機能（RAW現像、Sky AI、補正AIなど）に加え、Proツール全8種（ノイズ除去、超解像、HDR合成など）も永続的に使えます。
-                    デスクトップ版 ¥15,980、クロスデバイス版 ¥17,980、Max版 ¥21,480の3グレード展開（セール価格・時期により変動）。
+                    デスクトップ専用 {yen(PLANS.desktop.sale)}、全プラットフォーム {yen(PLANS.allPlatforms.sale)}、Max {yen(PLANS.max.sale)}の3グレード展開（セール価格・時期により変動）。
                   </dd>
-                  <dt>パス（年額オプション）</dt>
+                  <dt>Luminar Prime（年額サブスク・任意）</dt>
                   <dd>
-                    有効期間中の新機能アップデートと生成AIの無制限利用ができます。
-                    Ecosystem PassならさらにLuminar Mobileやクロスデバイス編集、Spaces（Webギャラリー）も利用可能。
-                    Upgrade Pass 年額約¥7,400、Ecosystem Pass 年額約¥10,400（為替により変動）。
-                    パスが切れてもアプリ本体・基本機能・Proツールは永続で使えます。
+                    契約期間中の新機能アップデートとAIツールの無制限利用ができます。
+                    プリセット等のアセットライブラリやSpaces（Webギャラリー）も利用可能。
+                    初年度{approxYen(PRIME.firstYear)}、2年目以降{approxYen(PRIME.renewal)}が目安です。
+                    以前あったUpgrade Pass／Ecosystem Passは廃止され、Primeに一本化されています。
+                    Primeが切れてもアプリ本体・基本機能・Proツールは永続で使えます。
                   </dd>
                 </dl>
               </div>
 
               <h3>AI機能は更新しないとどうなる？</h3>
               <p>
-                生成AIは買い切りの購入日から1年間利用でき、以後はパス等での更新が必要です。
+                生成AIは買い切りの購入日から1年間利用でき、以後はLuminar Primeでの更新が必要です。
                 更新しないと生成AIと新機能アップデートは止まりますが、
                 アプリ本体・基本機能・Proツールは手元に残ります。生成AIが不要なら更新しないという選択もアリです。
               </p>
 
-              <h3>パスは1年だけでも問題ない？</h3>
+              <h3>Luminar Primeは1年だけでも問題ない？</h3>
               <p>
                 「結局どれを選べばいいの？」という方のために、簡単なシミュレーターを用意しました。
                 詳細ページでご確認ください。
@@ -373,8 +379,8 @@ export default async function LuminarTopPage() {
 
               <h3>何年使うとどちらが得か？</h3>
               <p>
-                たとえば3年間のコストで比較すると、Luminar Neo（買い切りのみ）は約¥16,000、
-                Lightroomプラン（1TB・年間一括）は約¥42,240。コスト面ではLuminar Neoが有利です。
+                たとえば3年間のコストで比較すると、Luminar Neo（買い切りのみ）は{approxYen(PLANS.desktop.sale)}、
+                Lightroomプラン（1TB・年間一括）は{approxYen(LIGHTROOM.annualPrepay * 3)}。コスト面ではLuminar Neoが有利です。
               </p>
               <p>
                 ただし、両方を併用している方も実は多くいます。LightroomからLuminar Neoをプラグインとして
@@ -500,8 +506,8 @@ export default async function LuminarTopPage() {
                 <div id="faq-7" className="faq-item">
                   <dt className="faq-q">アップデートは無料ですか？</dt>
                   <dd className="faq-a">
-                    マイナーアップデート（バグ修正など）は無料です。メジャーアップデート（新機能追加）はパス加入者のみ。
-                    パス未加入でも購入時のバージョンは永続利用できます。
+                    マイナーアップデート（バグ修正など）は無料です。メジャーアップデート（新機能追加）はPrime契約者のみ。
+                    Prime未契約でも購入時のバージョンは永続利用できます。
                   </dd>
                 </div>
               </dl>

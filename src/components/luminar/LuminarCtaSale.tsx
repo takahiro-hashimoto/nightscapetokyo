@@ -20,7 +20,6 @@ export default function LuminarCtaSale() {
   }
 
   const isActive = settings?.isActive ?? false
-  const saleName = settings?.saleName ?? 'セール'
   const hasCoupon = settings?.hasCoupon ?? true
 
   return (
@@ -32,7 +31,7 @@ export default function LuminarCtaSale() {
         <h2 className="m-cta-sale__title" id="cta-title">
           <i className="fa fa-bolt" aria-hidden="true"></i>{' '}
           {isActive ? (
-            <>Luminar Neoの<br className="sp-only" />{saleName}実施中！</>
+            <>Luminar Neo<br className="sp-only" />セール実施中！</>
           ) : (
             <>Luminar Neoを<br className="sp-only" />お得に購入する</>
           )}
@@ -41,7 +40,7 @@ export default function LuminarCtaSale() {
         <div className="m-cta-sale__desc">
           {isActive ? (
             <>
-              <p>ただいまLuminar Neoの{saleName}開催中！お得に買い切り版を購入できるチャンスです。</p>
+              <p>ただいまLuminar Neoはセール開催中！お得に買い切り版を購入できるチャンスです。</p>
               {hasCoupon && (
                 <p>
                   さらにセールと併用できる当サイト経由で使える限定クーポンを用意。

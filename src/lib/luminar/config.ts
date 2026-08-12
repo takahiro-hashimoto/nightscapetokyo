@@ -28,11 +28,9 @@ export const AUTHOR_HOMEPAGE1 = 'https://nightscape.tokyo/' as const
 export const AUTHOR_HOMEPAGE2 = 'https://digital-style.jp/' as const
 export const AUTHOR_YOUTUBE = 'https://www.youtube.com/@nightscape-tokyo' as const
 
-// Sale settings (update these for each sale)
-export const SALE_NAME = 'スプリングセール' as const
-// ISO 8601 (JST) — change these to activate/deactivate the sale banner
-export const SALE_START = '2026-04-08T00:00:00+09:00' as const
-export const SALE_END = '2026-04-13T23:59:59+09:00' as const
+// セール期間はここではなく DB（luminar_sale_settings）で一元管理する。
+// 以前ここに SALE_NAME / SALE_START / SALE_END を置いていたが、
+// DB と二重管理になり「管理画面で更新しても表示が変わらない」不具合の原因になった。
 export const HAS_COUPON = true as const
 
 // Navigation

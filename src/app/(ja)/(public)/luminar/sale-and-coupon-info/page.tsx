@@ -5,7 +5,8 @@ import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
-import { SALE_NAME, SALE_START, SALE_END } from '@/lib/luminar/config'
+import { PRICING_CONFIRMED_AT, PLANS, yen, approxYen, totalWithPrime } from '@/lib/luminar/pricing'
+import { getSaleSettings } from '@/lib/luminar/getSaleSettings'
 
 
 const META = {
@@ -13,7 +14,7 @@ const META = {
   title: 'Luminar Neoを安く買う方法｜セール時期・クーポンコードまとめ【2026年】',
   description: '「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」Luminar Neoは定価だと3〜7万円ほどする写真編集ソフトですが、実は購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能です。',
   publishedAt: '2026-01-18T10:36:49',
-  updatedAt: '2026-07-05T00:00:00',
+  updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/how-to-buy.jpg',
     alt: 'Luminar Neoのセール時期はいつ？クーポンコードと安く買う方法について徹底解説【2026年最新】',
@@ -35,25 +36,36 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildArticleMetadata(META)
 }
 
-function buildLead(isSaleActive: boolean, saleName: string) {
+/** セール終了までの残り日数（JST基準・当日は1日と数える） */
+function daysUntil(endIso: string, now: Date): number {
+  return Math.max(0, Math.ceil((new Date(endIso).getTime() - now.getTime()) / 86_400_000))
+}
+
+function buildLead(isSaleActive: boolean, saleEnd: string | null, now: Date) {
+  const daysLeft = isSaleActive && saleEnd ? daysUntil(saleEnd, now) : null
+  const endLabel = saleEnd
+    ? new Date(saleEnd).toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', timeZone: 'Asia/Tokyo' })
+    : null
   return (
     <>
       <div className="m-notice m-notice--warn">
         <div className="m-notice__head">
           <span className="m-notice__badge">現在のセール状況</span>
           <span className="m-notice__title">
-            {isSaleActive ? `${saleName} 開催中！` : 'セールは開催されていません'}
+            {isSaleActive
+              ? `セール開催中！${daysLeft != null ? `（残り${daysLeft}日）` : ''}`
+              : 'セールは開催されていません'}
           </span>
         </div>
         <p>
           {isSaleActive
-            ? `当サイト限定クーポンコード「nightscape10」（10%OFF）もご用意しています。セール価格との併用可否は購入画面でご確認ください。`
+            ? `${endLabel ? `${endLabel}までの開催です。` : ''}当サイト限定クーポンコード「nightscape10」（10%OFF）もご用意しています。セール価格との併用可否は購入画面でご確認ください。`
             : `現在セールは開催されていません。クーポンコード「nightscape10」で10%OFFは常時ご利用いただけます。次の大型セールはブラックフライデー（11月）やサマーセール（6〜8月）が狙い目です。`}
         </p>
       </div>
       <p>「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」</p>
       <p>Luminar Neoは定価だと3〜7万円ほどする写真編集ソフトですが、実は<strong>購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能</strong>です。</p>
-      <p>ただし、セールの開催時期はバラバラで、「いつ買えばいいの？」と迷っている方も多いのではないでしょうか。</p>
+      <p>ただしセールの開催時期は年によってずれるので、今買うべきか次を待つべきかの判断が難しいところです。</p>
       <p>そこで本記事では、現在使えるクーポンコード、過去のセール傾向から読み解く次回セールの予想、そしてお得に購入するための具体的な方法を詳しく解説します。「今買うべきか、セールを待つべきか」の判断材料にしてください。</p>
       <div className="m-point-box">
         <div className="m-point-box__bg">!</div>
@@ -73,18 +85,21 @@ function buildLead(isSaleActive: boolean, saleName: string) {
 }
 
 const FAQ_JSON_LD = [
-  { '@type': 'Question', name: '購入後に気に入らなかった場合は？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoには購入後30日間の返金保証があります。実際に使ってみて自分に合わないと感じた場合でも、リスクなく試すことができます。返金手続きはサポートに連絡するだけで簡単に行えます。' } },
+  { '@type': 'Question', name: '購入後に気に入らなかった場合は？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoには購入後30日間の返金保証があります。実際に使ってみて合わないと感じた場合でも、リスクなく試せる仕組みです。返金手続きはサポートに連絡するだけで完了します。' } },
   { '@type': 'Question', name: '無料体験版はある？', acceptedAnswer: { '@type': 'Answer', text: 'はい、7日間の無料体験版があります。ただし、セール期間中は体験版を試している間にセールが終わってしまうリスクがあります。返金保証が30日間あるため、セール中であれば先に購入してしまうのがおすすめです。' } },
   { '@type': 'Question', name: 'クーポンはセール価格と併用できる？', acceptedAnswer: { '@type': 'Answer', text: '公式の規約上は割引の併用は不可とされており、併用できるかどうかは時期やキャンペーンによって異なります。購入画面でプロモーションコードを入力し、割引が適用されるかを確認してから決済してください。クーポン同士（複数のプロモーションコード）の併用はできません。' } },
   { '@type': 'Question', name: '何台のPCで使える？', acceptedAnswer: { '@type': 'Answer', text: '買い切りの永久ライセンス デスクトップ版は2台のパソコンでアクティベートできます。クロスデバイス版はさらに3台のモバイルデバイスでも利用可能です。' } },
-  { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Upgrade PassやEcosystem Passが必要なのは、生成AIの継続利用や新機能アップデートを受け取りたい場合のみです。' } },
-  { '@type': 'Question', name: '1年で使えなくなる機能があるの？', acceptedAnswer: { '@type': 'Answer', text: '基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのはGenErase・GenSwap・GenExpandという3つの生成AI機能のみで、継続利用にはパスの更新が必要です。Proツールも買い切りに含まれており永続的に使えます。' } },
+  { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Luminar Primeが必要なのは、AIツールの継続利用や新機能アップデートを受け取りたい場合のみです。' } },
+  { '@type': 'Question', name: '1年で使えなくなる機能があるの？', acceptedAnswer: { '@type': 'Answer', text: '基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのはGenErase・GenSwap・GenExpandという3つの生成AI機能のみで、継続利用にはLuminar Primeの契約が必要です。Proツールも買い切りに含まれており永続的に使えます。' } },
 ]
 
 export default async function Page() {
+  // セール状況は config.ts のハードコード値ではなく DB（管理画面／日次同期）を参照する。
+  // 以前は config の SALE_START/SALE_END を見ていたため、DB を更新しても
+  // このページの表示だけ変わらないという不整合が起きていた。
   const now = new Date()
-  const isSaleActive = now >= new Date(SALE_START) && now <= new Date(SALE_END)
-  const lead = buildLead(isSaleActive, SALE_NAME)
+  const { isActive: isSaleActive, saleEnd } = await getSaleSettings()
+  const lead = buildLead(isSaleActive, saleEnd, now)
 
   return (
     <>
@@ -171,8 +186,9 @@ export default async function Page() {
             <div className="m-step__content">
               <p className="m-step__title">プランを選択</p>
               <p className="m-step__desc">まずはLuminar Neo公式サイト（<a href="https://skylum.evyy.net/mO9BEa" target="_blank" rel="noopener nofollow">skylum.com</a>）にアクセス。</p>
-              <p className="m-step__desc">「永久ライセンス デスクトップ版」「クロスデバイス永続ライセンス」「永久Maxライセンス」の3つから選択し、「今すぐ購入する」ボタンをクリック。迷ったら、コスパの良い<strong>クロスデバイス版</strong>がおすすめです。</p>
-              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-01.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ1" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+              <p className="m-step__desc">「デスクトップ専用ライセンス」「全プラットフォームライセンス」「Maxライセンス」の3つから選択し、購入ボタンをクリック。迷ったら、スマホで編集しないかぎり<strong>デスクトップ専用ライセンス</strong>で十分です（旧称はそれぞれ「永久ライセンス デスクトップ版」「クロスデバイス永続ライセンス」「永久Maxライセンス」）。</p>
+              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-01.jpg" alt="Luminarの買い切り3プラン（デスクトップ専用・全プラットフォーム・Max）の価格と違いを比較した図" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+              <p className="m-step__desc text-xsmall">※上図は通常価格です。実際の購入画面では、開催中のセールに応じて割引後の価格が表示されます。</p>
             </div>
           </div>
           <div className="m-step">
@@ -212,29 +228,29 @@ export default async function Page() {
             <tbody>
               <tr>
                 <td><strong>デスクトップライセンス</strong></td>
-                <td>¥15,980<br /><small>（通常¥29,960）</small></td>
+                <td>{yen(PLANS.desktop.sale)}</td>
                 <td>PC2台で使用。最もシンプルでお手頃。</td>
               </tr>
               <tr>
-                <td><strong>クロスデバイスライセンス</strong></td>
-                <td>¥17,980<br /><small>（通常¥44,990）</small></td>
+                <td><strong>全プラットフォームライセンス</strong><br /><small>（旧クロスデバイスライセンス）</small></td>
+                <td>{yen(PLANS.allPlatforms.sale)}<br /><small>（通常{yen(PLANS.allPlatforms.regular!)}）</small></td>
                 <td>PC2台＋モバイル3台対応。デバイス間でデータ同期可能。</td>
               </tr>
               <tr>
                 <td><strong>Maxライセンス</strong></td>
-                <td>¥21,480<br /><small>（通常¥69,999）</small></td>
+                <td>{yen(PLANS.max.sale)}<br /><small>（通常{yen(PLANS.max.regular!)}）</small></td>
                 <td>全部入り。100個以上のプリセット、クリエイティブライブラリ付き。</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p>※価格は2026年7月5日確認時点の日本公式ストアのセール価格です。セールや為替レートにより変動するため、最新価格は公式サイトでご確認ください。</p>
+        <p>※価格は{new Date(PRICING_CONFIRMED_AT).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}に日本公式ストアで確認した時点のセール価格です。セールや為替レートにより変動するため、最新価格は公式サイトでご確認ください。</p>
         <h3>【重要】機能は3種類に分かれている</h3>
         <p>ここがLuminar Neoの料金体系で<span className="m-mark-yellow">最もわかりにくいポイント</span>です。機能は大きく3種類に分かれています。</p>
         <div className="m-notice m-notice--warn">
           <div className="m-notice__head"><span className="m-notice__badge">重要</span><span className="m-notice__title">Proツールは買い切りプランに標準で含まれています</span></div>
           <p>現在は、<strong>Proツール（Noiseless AI、HDR Mergeなど8種）はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます</strong>。</p>
-          <p><strong>Upgrade Pass（年額約¥7,400）</strong>や<strong>Ecosystem Pass（年額約¥10,400）</strong>は、有効期間中の新機能アップデートや生成AIの無制限利用（Ecosystem PassはさらにLuminar Mobile・クロスデバイス編集・Spaces）のためのオプションです。パスが失効してもアプリとProツールはそのまま使い続けられます。</p>
+          <p>以前あったUpgrade Pass／Ecosystem Passは廃止され、現在は年額サブスクの<strong>Luminar Prime</strong>に一本化されています。Primeは契約期間中の新機能アップデートやAIツールの無制限利用、アセットライブラリ・Spaces（Webギャラリー）のためのオプションです。Primeが失効してもアプリとProツールはそのまま使い続けられます。</p>
         </div>
         <div className="m-table-wrap l-bottom-large">
           <table className="m-table">
@@ -259,13 +275,13 @@ export default async function Page() {
               <tr>
                 <td><strong>生成AI機能</strong></td>
                 <td>GenErase（生成AI削除）、GenSwap（生成AI置換）、GenExpand（生成AI拡張）</td>
-                <td><span className="text-false">期限あり</span><br />買い切り購入から1年間<br />以後はパス有効期間中は利用可</td>
+                <td><span className="text-false">期限あり</span><br />買い切り購入から1年間<br />以後はPrime契約期間中は利用可</td>
               </tr>
             </tbody>
           </table>
         </div>
         <h3>コスパ最強の買い方</h3>
-        <p>Proツールを含む編集機能は買い切りだけで永続的に使えるので、基本は<strong>買い切りプランのみ</strong>で十分です。「生成AI機能を1年以降も使いたい」「新機能アップデートも受け取りたい」という方は、<strong>買い切りプラン＋Upgrade Pass 1年</strong>を目安にしましょう。</p>
+        <p>Proツールを含む編集機能は買い切りだけで永続的に使えるので、基本は<strong>買い切りプランのみ</strong>で十分です。「AIツールを1年以降も使いたい」「新機能アップデートも受け取りたい」という方は、<strong>買い切りプラン＋Luminar Prime 1年</strong>を目安にしましょう。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -279,21 +295,21 @@ export default async function Page() {
             <tbody>
               <tr>
                 <td>買い切りのみ</td>
-                <td>¥15,980〜</td>
+                <td>{yen(PLANS.desktop.sale)}〜</td>
                 <td><span className="text-true">◯永続利用可</span></td>
                 <td><span className="text-warn">生成AIは1年間<br />アップデートなし</span></td>
               </tr>
               <tr>
-                <td><strong>買い切り＋Upgrade Pass 1年</strong></td>
-                <td>約¥23,400〜</td>
+                <td><strong>買い切り＋Luminar Prime 1年</strong></td>
+                <td>{approxYen(totalWithPrime('desktop', 1))}〜</td>
                 <td><span className="text-true">◯永続利用可</span></td>
-                <td><span className="text-true">パス有効期間中は<br />生成AI無制限＋アップデート</span></td>
+                <td><span className="text-true">Prime契約期間中は<br />AIツール無制限＋アップデート</span></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p>パスが失効してもアプリとProツールはそのまま永続的に使えます。生成AI機能や最新アップデートを継続して受け取りたい場合のみ、毎年パスを更新する形になります。</p>
-        <p>「アップグレードパス」「エコシステムパス」の違いや、Luminarの長期利用のコストについては<Link href="/luminar/luminar-plan/">Luminar Neoの料金体系を徹底解説</Link>で詳しく解説しています。</p>
+        <p>Primeが失効してもアプリとProツールはそのまま永続的に使えます。生成AI機能や最新アップデートを継続して受け取りたい場合のみ、毎年Luminar Primeを更新する形になります。</p>
+        <p>廃止された「アップグレードパス」「エコシステムパス」とLuminar Primeの関係や、Luminarの長期利用のコストについては<Link href="/luminar/luminar-plan/">Luminar Neoの料金体系を徹底解説</Link>で詳しく解説しています。</p>
       </section>
 
       <section id="faq" className="content-card card-padding article-body">
@@ -303,7 +319,7 @@ export default async function Page() {
               日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
           <div id="faq-1" className="faq-item">
             <dt className="faq-q">購入後に気に入らなかった場合は？</dt>
-            <dd className="faq-a">Luminar Neoには<strong>購入後30日間の返金保証</strong>があります。実際に使ってみて自分に合わないと感じた場合でも、リスクなく試すことができます。返金手続きはサポートに連絡するだけで簡単に行えます。</dd>
+            <dd className="faq-a">Luminar Neoには<strong>購入後30日間の返金保証</strong>があります。実際に使ってみて合わないと感じた場合でも、リスクなく試せる仕組みです。返金手続きはサポートに連絡するだけで完了します。</dd>
           </div>
           <div id="faq-2" className="faq-item">
             <dt className="faq-q">無料体験版はある？</dt>
@@ -319,11 +335,11 @@ export default async function Page() {
           </div>
           <div id="faq-5" className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
-            <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Upgrade PassやEcosystem Passが必要なのは、生成AIの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
+            <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Luminar Primeが必要なのは、AIツールの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
           </div>
           <div id="faq-6" className="faq-item">
             <dt className="faq-q">1年で使えなくなる機能があるの？</dt>
-            <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は<strong>永久に使えます</strong>。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの<strong>生成AI機能のみ</strong>です。これらはサーバー側で処理が必要なため、継続利用には別途パスの購入が必要になります。なお、<strong>Proツールも買い切りに含まれており永続的に使えます</strong>。</dd>
+            <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は<strong>永久に使えます</strong>。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの<strong>生成AI機能のみ</strong>です。これらはサーバー側で処理が必要なため、継続利用には別途Luminar Primeの契約が必要になります。なお、<strong>Proツールも買い切りに含まれており永続的に使えます</strong>。</dd>
           </div>
         </dl>
       </section>
@@ -343,7 +359,7 @@ export default async function Page() {
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>30日間の返金保証</strong>があるため、セールを逃すリスクを避けて先に購入するのもあり</li>
           </ul>
         </div>
-        <p>Luminar NeoはAI機能を活用した直感的な操作が魅力の写真編集ソフトです。料金体系は一見複雑に見えますが、<strong>Proツールを含む編集機能は買い切りで永久に使えます</strong>。生成AI機能の継続利用や新機能アップデートが欲しい場合のみ、パスを追加する形なのでコスパは良好です。</p>
+        <p>Luminar NeoはAI機能を活用した直感的な操作が魅力の写真編集ソフトです。料金体系は一見複雑に見えますが、<strong>Proツールを含む編集機能は買い切りで永久に使えます</strong>。生成AI機能の継続利用や新機能アップデートが欲しい場合のみ、Luminar Primeを追加する形なのでコスパは良好です。</p>
         <p>この記事を参考に、ぜひお得にLuminar Neoを手に入れてください。</p>
       </section>
 

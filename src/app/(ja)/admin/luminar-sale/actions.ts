@@ -1,7 +1,9 @@
 'use server'
 
+import { revalidateTag } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/server';
 import { requireAdmin } from '@/lib/admin/auth'
+import { SALE_SETTINGS_TAG } from '@/lib/luminar/getSaleSettings'
 
 export async function updateSaleSettings(
   _prev: { error?: string; success?: boolean } | null,
@@ -10,12 +12,11 @@ export async function updateSaleSettings(
   if (!(await requireAdmin())) return { error: "Unauthorized" }
   const admin = createAdminClient()
 
-  const saleName = (formData.get('sale_name') as string)?.trim()
   const saleStartRaw = formData.get('sale_start') as string
   const saleEndRaw = formData.get('sale_end') as string
   const hasCoupon = formData.get('has_coupon') === 'on'
 
-  if (!saleName || !saleStartRaw || !saleEndRaw) {
+  if (!saleStartRaw || !saleEndRaw) {
     return { error: '全ての項目を入力してください' }
   }
 
@@ -25,7 +26,6 @@ export async function updateSaleSettings(
 
   const { error } = await admin.from('luminar_sale_settings').upsert({
     id: 1,
-    sale_name: saleName,
     sale_start: saleStart,
     sale_end: saleEnd,
     has_coupon: hasCoupon,
@@ -33,5 +33,8 @@ export async function updateSaleSettings(
   })
 
   if (error) return { error: error.message }
+
+  // これが無いと保存してもキャッシュが残り、次のデプロイまで表示が変わらない
+  revalidateTag(SALE_SETTINGS_TAG, 'max')
   return { success: true }
 }

@@ -7,12 +7,12 @@ export async function GET() {
   const admin = createAdminClient()
   const { data, error } = await admin
     .from('luminar_sale_settings')
-    .select('sale_name, sale_start, sale_end, has_coupon')
+    .select('sale_start, sale_end, has_coupon')
     .eq('id', 1)
     .single()
 
   if (error || !data) {
-    return NextResponse.json({ isActive: false, saleName: 'セール', hasCoupon: true })
+    return NextResponse.json({ isActive: false, hasCoupon: true })
   }
 
   const now = Date.now()
@@ -23,7 +23,6 @@ export async function GET() {
 
   return NextResponse.json({
     isActive,
-    saleName: data.sale_name,
     hasCoupon: data.has_coupon,
     saleStart: data.sale_start,
     saleEnd: data.sale_end,

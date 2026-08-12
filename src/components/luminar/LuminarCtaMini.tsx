@@ -23,7 +23,7 @@ export default function LuminarCtaMini() {
     <aside className="m-cta-mini" aria-label="Luminar Neo 購入案内">
       <div className="m-cta-mini__header">
         <span className="m-cta-mini__title">
-          {sale?.isActive ? `${sale.saleName}開催中！今がお得に購入するチャンス` : 'Luminar Neo を一番お得に購入する'}
+          {sale?.isActive ? 'セール開催中！今がお得に購入するチャンス' : 'Luminar Neo を一番お得に購入する'}
         </span>
       </div>
       <div className="m-cta-mini__inner">

@@ -10,7 +10,7 @@ export default function LuminarSaleStatusNote() {
   if (settings.isActive) {
     return (
       <p className="m-on-sale">
-        <strong>現在、Luminar Neoの{settings.saleName}を開催中です！</strong>
+        <strong>現在、Luminar Neoはセールを開催中です！</strong>
         セール価格でお得に購入できるチャンスです。
         {settings.hasCoupon && 'さらに下記クーポンコードを併用するとさらにお得です。'}
       </p>

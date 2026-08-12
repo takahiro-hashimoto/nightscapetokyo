@@ -14,12 +14,11 @@ export default async function LuminarSalePage() {
   const admin = createAdminClient()
   const { data } = await admin
     .from('luminar_sale_settings')
-    .select('sale_name, sale_start, sale_end, has_coupon, updated_at')
+    .select('sale_start, sale_end, has_coupon, updated_at')
     .eq('id', 1)
     .single()
 
   const initialValues = {
-    sale_name: data?.sale_name ?? 'スプリングセール',
     sale_start: toJstDatetimeLocal(data?.sale_start ?? null),
     sale_end: toJstDatetimeLocal(data?.sale_end ?? null),
     has_coupon: data?.has_coupon ?? true,

@@ -5,7 +5,6 @@ import { Save, Loader2 } from 'lucide-react'
 import { updateSaleSettings } from '@/app/(ja)/admin/luminar-sale/actions'
 
 type InitialValues = {
-  sale_name: string
   sale_start: string
   sale_end: string
   has_coupon: boolean
@@ -33,21 +32,6 @@ export default function LuminarSaleForm({ initialValues }: Props) {
       )}
 
       <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-5">
-        {/* セール名 */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="sale_name">
-            セール名
-          </label>
-          <input
-            id="sale_name"
-            name="sale_name"
-            type="text"
-            defaultValue={initialValues.sale_name}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="スプリングセール"
-          />
-        </div>
-
         {/* セール開始日時 (JST) */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="sale_start">
