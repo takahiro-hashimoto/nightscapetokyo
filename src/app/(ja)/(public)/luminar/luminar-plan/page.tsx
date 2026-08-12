@@ -5,6 +5,7 @@ import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
+import { PLANS, PRIME, PRICING_CONFIRMED_AT, LIGHTROOM_ANNUAL, yen, approxYen, totalWithPrime, lightroomTotal, priceWithRegular } from '@/lib/luminar/pricing'
 
 
 const META = {
@@ -12,7 +13,7 @@ const META = {
   title: 'Luminar Neoの後悔しない選び方｜サブスク廃止後の買い切り版ライセンスを賢く購入【2026年】',
   description: '突然ですが、Luminar Neoの料金体系、正直ちょっとわかりにくいですよね。買い切りって書いてあるのに、なんか追加料金がかかるの？アップグレードパス？エコシステムパス？何が違うの？',
   publishedAt: '2026-01-18T10:38:20',
-  updatedAt: '2026-07-05T00:00:00',
+  updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/plan.jpg',
     alt: 'Luminar Neoの後悔しない選び方｜サブスク廃止後の買い切り版ライセンスを賢く購入【2026年】',
@@ -26,8 +27,8 @@ const TOC: TocItem[] = [
   { id: 'two-steps', level: 2, text: '購入は2ステップで考えよう' },
   { id: 'features-overview', level: 2, text: '【前提知識】機能ごとに利用条件が違う' },
   { id: 'step1', level: 2, text: 'ステップ1：買い切りプランを選ぶ（3種類）' },
-  { id: 'step2', level: 2, text: 'ステップ2：パスを追加するか決める' },
-  { id: 'after-year2', level: 2, text: '2年目以降の選択肢｜パスを継続するか、しないか' },
+  { id: 'step2', level: 2, text: 'ステップ2：Luminar Primeを追加するか決める' },
+  { id: 'after-year2', level: 2, text: '2年目以降の選択肢｜Luminar Primeを継続するか、しないか' },
   { id: 'best-value', level: 2, text: 'コスパ最強は「買い切りのみ」' },
   { id: 'simulations', level: 2, text: 'その他のシミュレーション' },
   { id: 'faq', level: 2, text: 'よくある質問（FAQ）' },
@@ -43,7 +44,7 @@ const lead = (
     <p>突然ですが、Luminar Neoの料金体系、正直ちょっとわかりにくいですよね。</p>
     <ul>
       <li>買い切りって書いてあるのに、なんか追加料金がかかるの？</li>
-      <li>アップグレードパス？エコシステムパス？何が違うの？</li>
+      <li>アップグレードパス？エコシステムパス？Luminar Prime？何が違うの？</li>
       <li>Proツールって何？買い切りに含まれてるの？</li>
       <li>サブスクってもうないの？</li>
     </ul>
@@ -56,16 +57,16 @@ const lead = (
         <span className="m-point-box__title">この記事のまとめ</span>
       </div>
       <ul className="m-point-box__list">
-        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>サブスクプランは廃止</strong>：現在は買い切り＋パス（任意）のみ</li>
-        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>購入は2ステップ</strong>：①買い切りプランを選ぶ → ②パスを追加するか決める</li>
+        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>旧サブスク・旧パスは廃止</strong>：現在は買い切り＋Luminar Prime（任意）のみ</li>
+        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>購入は2ステップ</strong>：①買い切りプランを選ぶ → ②Luminar Primeを追加するか決める</li>
         <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Proツール8種は全買い切りプランに標準搭載（永続利用可）</strong></li>
-        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>パスが必要なのは「生成AI」と「新機能アップデート」を使い続けたい場合のみ</strong></li>
-        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>コスパ最強は「買い切りのみ」</strong>（セール時 約¥15,980で永続利用）</li>
+        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Luminar Primeが必要なのは「AIツール」と「新機能アップデート」を使い続けたい場合のみ</strong></li>
+        <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>コスパ最強は「買い切りのみ」</strong>（セール時 {approxYen(PLANS.desktop.sale)}で永続利用）</li>
       </ul>
     </div>
     <p style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginTop: '0.5rem' }}>
       <i className="fa-solid fa-calendar-check" style={{ marginRight: '0.3rem' }}></i>
-      料金・プラン情報確認日: {new Date(META.updatedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+      料金・プラン情報確認日: {new Date(PRICING_CONFIRMED_AT).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
     </p>
     <LuminarCtaMini />
   </>
@@ -82,7 +83,7 @@ export default async function Page() {
         <p>現在の選択肢は以下のみです。</p>
         <ul className="m-list-ul">
           <li><span className="m-list-ul__icon">•</span> <strong>買い切りプラン</strong>（3種類）</li>
-          <li><span className="m-list-ul__icon">•</span> <strong>＋パス</strong>（任意で追加）</li>
+          <li><span className="m-list-ul__icon">•</span> <strong>＋Luminar Prime</strong>（年額サブスク・任意で追加）</li>
         </ul>
         <p>では、具体的にどう選べばいいのか見ていきましょう。</p>
       </section>
@@ -93,7 +94,7 @@ export default async function Page() {
         <p>Luminar Neoの購入は、たった2ステップで考えればOKです。</p>
         <ol>
           <li><strong>土台となる「買い切りプラン」を選ぶ</strong>：PCだけで使うか、スマホでも使うかで選択</li>
-          <li><strong>必要なら「パス」を追加する</strong>：生成AI機能を2年目以降も使いたい・常に最新機能が欲しいなら追加</li>
+          <li><strong>必要なら「Luminar Prime」を追加する</strong>：AIツールを2年目以降も使いたい・常に最新機能が欲しいなら追加</li>
         </ol>
         <p>この2つを決めるだけ。シンプルですよね。</p>
         <h3>【早見表】結局いくら？何が使える？</h3>
@@ -111,26 +112,26 @@ export default async function Page() {
             <tbody>
               <tr style={{ backgroundColor: '#fffde7' }}>
                 <td><strong>買い切りのみ</strong> <span className="m-badge m-badge--amber m-badge--round">コスパ最強</span></td>
-                <td><strong>約¥15,980〜</strong></td>
+                <td><strong>{approxYen(PLANS.desktop.sale)}〜</strong></td>
                 <td>基本機能＋<strong>Proツール永続</strong>＋生成AI（1年）</td>
                 <td>多くの方はこれでOK</td>
               </tr>
               <tr>
-                <td>＋パス1年だけ</td>
-                <td>約¥23,400</td>
+                <td>＋Luminar Prime 1年だけ</td>
+                <td>{approxYen(totalWithPrime('desktop', 1))}</td>
                 <td>上記＋生成AI・新機能アップデートを延長</td>
                 <td>生成AIをもう1年使いたい</td>
               </tr>
               <tr>
-                <td>＋パス毎年継続</td>
-                <td>約¥23,400〜/初年、以後 年約¥7,400</td>
+                <td>＋Luminar Prime 毎年継続</td>
+                <td>{approxYen(totalWithPrime('desktop', 1))}〜/初年、以後 年{approxYen(PRIME.renewal)}</td>
                 <td>全機能フル＋常に最新アップデート</td>
                 <td>常に最新がいい</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p><span className="m-mark-yellow">多くの方には「買い切りのみ」がおすすめ</span>です。ノイズ除去（Noiseless AI）やHDR合成などの<strong>Proツール8種は、現在はすべての買い切りプランに標準で含まれており、永続的に使えます</strong>。パスを買わないと使えないのは、生成AI機能（2年目以降）と新機能アップデートだけです。</p>
+        <p><span className="m-mark-yellow">多くの方には「買い切りのみ」がおすすめ</span>です。ノイズ除去（Noiseless AI）やHDR合成などの<strong>Proツール8種は、現在はすべての買い切りプランに標準で含まれており、永続的に使えます</strong>。Luminar Primeがないと使えないのは、AIツール（2年目以降）と新機能アップデートだけです。</p>
         <p>では、詳しく見ていきましょう。</p>
       </section>
 
@@ -160,14 +161,14 @@ export default async function Page() {
               <tr>
                 <td><strong>生成AI機能</strong></td>
                 <td>GenErase、GenSwap、GenExpand</td>
-                <td>購入から<strong>1年間</strong>（パスで延長可）</td>
+                <td>購入から<strong>1年間</strong>（Luminar Primeで延長可）</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p>ポイントは2つあります。</p>
         <p>1つ目は、<strong>Proツール8種が買い切りプランに標準で含まれている</strong>こと。以前は「拡張機能（Extensions）」として別売りだった時期がありましたが、現在はどの買い切りプランを選んでもProツールを永続的に使えます（公式ヘルプセンターにも「ライフタイムプランにはProツールを含む全編集ツールが含まれる」と明記されています）。</p>
-        <p>2つ目は、<strong>生成AI機能だけは期間限定</strong>であること。買い切りプランに含まれる生成AIの利用権は購入日から1年間で、2年目以降も使いたい場合は「パス」での更新が必要になります。生成AIはクラウド処理のため、利用にはインターネット接続も必要です。</p>
+        <p>2つ目は、<strong>生成AI機能だけは期間限定</strong>であること。買い切りプランに含まれる生成AIの利用権は購入日から1年間で、2年目以降も使いたい場合は「Luminar Prime」での更新が必要になります。生成AIはクラウド処理のため、利用にはインターネット接続も必要です。</p>
         <p>それでは、ステップ1から見ていきましょう。</p>
       </section>
 
@@ -175,12 +176,13 @@ export default async function Page() {
         <h2>ステップ1：買い切りプランを選ぶ（3種類）</h2>
         <p>まずは土台となる「買い切りプラン」を選びます。一度購入すれば<span className="m-mark-yellow">ずっと使い続けられる</span>ライセンス形式です。</p>
         <p>現在、買い切りプランは以下の3種類が用意されています。価格は日本向け公式ストアの2026年7月時点のセール価格です（Skylumはほぼ通年でセールを実施しており、価格は時期により変動します）。</p>
-        <p>スマホで編集する予定がなければ、<strong>デスクトップライセンス（セール時 約¥15,980）</strong>で十分です。</p>
-        <h3>デスクトップライセンス（PCのみ・2台）</h3>
+        <p>スマホで編集する予定がなければ、<strong>{PLANS.desktop.name}（セール時 {approxYen(PLANS.desktop.sale)}）</strong>で十分です。</p>
+        <h3>デスクトップ専用ライセンス（PCのみ・2台）</h3>
+        <p className="text-xsmall">※以前は「永久ライセンス デスクトップ版」「デスクトップライセンス」と表記されていたプランです。</p>
         <div className="definition l-bottom-large">
           <dl className="definition-body">
             <dt>価格</dt>
-            <dd>¥15,980（2026年7月時点のセール価格。通常価格 ¥29,960）</dd>
+            <dd>{priceWithRegular('desktop')}（セール価格。時期により変動します）</dd>
             <dt>特徴</dt>
             <dd>
               <ul>
@@ -193,11 +195,12 @@ export default async function Page() {
             <dd>PCでの編集がメインで、スマホでは編集しない方。<strong>多くの方はこれでOK。</strong></dd>
           </dl>
         </div>
-        <h3>クロスデバイスライセンス（PC＋スマホ）</h3>
+        <h3>全プラットフォームライセンス（PC＋スマホ）</h3>
+        <p className="text-xsmall">※以前は「クロスデバイス永続ライセンス」「クロスデバイスライセンス」と呼ばれていたプランです。名称が変わっただけで、PC＋モバイルで使える系統は同じです。</p>
         <div className="definition l-bottom-large">
           <dl className="definition-body">
             <dt>価格</dt>
-            <dd>¥17,980（2026年7月時点のセール価格。通常価格 ¥44,990）</dd>
+            <dd>{priceWithRegular('allPlatforms')}（セール価格。時期により変動します）</dd>
             <dt>特徴</dt>
             <dd>
               <ul>
@@ -212,14 +215,15 @@ export default async function Page() {
           </dl>
         </div>
         <h3>Maxライセンス（PC＋スマホ＋プリセット）</h3>
+        <p className="text-xsmall">※以前は「永久 Maxライセンス」と表記されていたプランです。</p>
         <div className="definition l-bottom-large">
           <dl className="definition-body">
             <dt>価格</dt>
-            <dd>¥21,480（2026年7月時点のセール価格。通常価格 ¥69,999）</dd>
+            <dd>{priceWithRegular('max')}（セール価格。時期により変動します）</dd>
             <dt>特徴</dt>
             <dd>
               <ul>
-                <li>クロスデバイスライセンスの全内容</li>
+                <li>全プラットフォームライセンスの全内容</li>
                 <li>1,000点以上のクリエイティブアセット（プリセット・テンプレート等のCreative Library・1年間）</li>
                 <li>公式ビデオコース</li>
               </ul>
@@ -277,59 +281,52 @@ export default async function Page() {
       </section>
 
       <section id="step2" className="content-card card-padding article-body">
-        <h2>ステップ2：パスを追加するか決める</h2>
-        <p>ステップ1で土台を選んだら、次は<strong>「パス」を追加するかどうか</strong>を決めます。</p>
-        <p>パスを追加すると、パスの有効期間中、以下が手に入ります。</p>
-        <ul className="m-list-ul">
-          <li><span className="m-list-ul__icon">•</span> <strong>生成AI機能（GenErase・GenSwap・GenExpand）の無制限利用</strong></li>
-          <li><span className="m-list-ul__icon">•</span> 最新機能へのアップデート（年2回の大型アップデートなど）</li>
-        </ul>
-        <p>逆に言えば、<strong>Proツールはパスを買わなくても最初から永続で使える</strong>ので、「生成AIを2年目以降も使いたい」「常に最新機能が欲しい」という方だけがパスを検討すればOKです。</p>
-        <h3>アップグレードパス（PCのみ）</h3>
-        <div className="definition l-bottom-large">
-          <dl className="definition-body">
-            <dt>価格</dt>
-            <dd>年額 $49（税込約¥7,400 ※為替により変動。日本円の正確な金額は購入画面でご確認ください）</dd>
-            <dt>含まれる内容</dt>
-            <dd>
-              <ul>
-                <li>生成AI機能の無制限利用（パス有効期間中）</li>
-                <li>最新機能へのアップデート</li>
-              </ul>
-            </dd>
-            <dt>こんな人向け</dt>
-            <dd>生成AIや新機能を使い続けたいけど、スマホでは編集しない方。</dd>
-          </dl>
+        <h2>ステップ2：Luminar Primeを追加するか決める</h2>
+        <div className="m-notice m-notice--warn">
+          <div className="m-notice__head"><span className="m-notice__badge">更新</span><span className="m-notice__title">アップグレードパス／エコシステムパスは廃止されました</span></div>
+          <p>以前は「アップグレードLuminar Prime（年額$49）」「エコシステムLuminar Prime（年額$69）」という2種類の年額オプションがありましたが、<strong>現在この2つは公式ストアで販売されておらず、年額サブスクの「Luminar Prime」に一本化されています</strong>。シーズンごとにパスを買い足していく方式が、Prime 1本にまとまった形です。他サイトに旧パスの解説が残っていますが、それらは過去の情報です。</p>
         </div>
-        <h3>エコシステムパス（PC＋スマホ）</h3>
+        <p>ステップ1で土台を選んだら、次は<strong>Luminar Primeを追加するかどうか</strong>を決めます。</p>
+        <p>Primeを契約すると、契約期間中、以下が手に入ります。</p>
+        <ul className="m-list-ul">
+          <li><span className="m-list-ul__icon">•</span> <strong>AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）の無制限利用</strong></li>
+          <li><span className="m-list-ul__icon">•</span> 契約期間中にリリースされる新機能へのアップデート</li>
+          <li><span className="m-list-ul__icon">•</span> プリセット・LUT・オーバーレイ・空素材などのアセットライブラリ、Spaces（Webギャラリー）</li>
+        </ul>
+        <p>逆に言えば、<strong>ProツールはPrimeを契約しなくても最初から永続で使える</strong>ので、「AIツールを2年目以降も使いたい」「常に最新機能が欲しい」という方だけがPrimeを検討すればOKです。</p>
+        <h3>Luminar Prime（年額サブスク・任意）｜旧アップグレードパス／エコシステムパスの後継</h3>
         <div className="definition l-bottom-large">
           <dl className="definition-body">
             <dt>価格</dt>
-            <dd>年額 $69（税込約¥10,400 ※為替により変動。日本円の正確な金額は購入画面でご確認ください）</dd>
+            <dd>初年度が年額{approxYen(PRIME.firstYear)}、2年目以降は継続割引が入って年額{approxYen(PRIME.renewal)}が目安です。為替と時期で変動するため、正確な金額は購入画面でご確認ください。</dd>
             <dt>含まれる内容</dt>
             <dd>
               <ul>
-                <li>アップグレードパスの全内容</li>
-                <li>モバイルアプリのライセンス</li>
-                <li>クロスデバイス編集</li>
+                <li>AIツールの無制限利用（契約期間中）</li>
+                <li>契約期間中にリリースされる新機能へのアップデート</li>
+                <li>プリセット・LUT・オーバーレイ・空素材などのアセットライブラリ</li>
                 <li>Spaces（Webギャラリー機能）</li>
               </ul>
             </dd>
             <dt>こんな人向け</dt>
-            <dd>生成AI・新機能＋外出先でもスマホ・タブレットから編集したい方。</dd>
+            <dd>生成AIや新機能を2年目以降も使い続けたい方。いつでも解約できます。</dd>
           </dl>
         </div>
         <div className="m-notice m-notice--warn">
-          <div className="m-notice__head"><span className="m-notice__badge">重要</span><span className="m-notice__title">パスが切れてもアプリとProツールはそのまま使える</span></div>
-          <p>公式ヘルプセンターによると、<strong>パスの有効期限が切れても、インストール済みのLuminar Neo本体・基本機能・Proツールはそのまま使い続けられます</strong>。使えなくなるのは生成AI機能と、それ以降の新機能アップデートだけです。</p>
+          <div className="m-notice__head"><span className="m-notice__badge">重要</span><span className="m-notice__title">Maxライセンスは2年目から自動更新の請求が発生します</span></div>
+          <p>Maxライセンスには<strong>Luminar Prime が1年分同梱されています</strong>。ここが見落としやすいポイントで、<strong>1年経過後はPrimeが自動更新となり、年額の請求が発生します</strong>。「買い切りのつもりだったのに翌年請求が来た」となりやすいのはこのプランです。継続する意思がない場合は、更新日より前に解約しておいてください。デスクトップ専用ライセンス・全プラットフォームライセンスにはPrimeは同梱されないため、放置しても自動請求は発生しません。</p>
+        </div>
+        <div className="m-notice m-notice--warn">
+          <div className="m-notice__head"><span className="m-notice__badge">重要</span><span className="m-notice__title">Primeが切れてもアプリとProツールはそのまま使える</span></div>
+          <p><strong>Primeを解約・失効しても、インストール済みのLuminar Neo本体・基本機能・Proツールはそのまま使い続けられます</strong>。さらに、契約期間中に解放された新機能は解約後も手元に残ります。使えなくなるのはAIツール（生成AI）と、それ以降の新機能アップデート、アセットライブラリへのアクセスだけです。</p>
         </div>
       </section>
 
       <section id="after-year2" className="content-card card-padding article-body">
-        <h2>2年目以降の選択肢｜パスを継続するか、しないか</h2>
-        <p>買い切りプラン＋パスを購入して1年が経過すると、ある選択を迫られます。</p>
-        <p><strong>「パスを継続するか、しないか」</strong></p>
-        <h3>パスを継続しないとどうなる？</h3>
+        <h2>2年目以降の選択肢｜Luminar Primeを継続するか、しないか</h2>
+        <p>買い切りプラン＋Luminar Primeを購入して1年が経過すると、ある選択を迫られます。</p>
+        <p><strong>「Luminar Primeを継続するか、しないか」</strong></p>
+        <h3>Luminar Primeを継続しないとどうなる？</h3>
         <div className="l-grid-2 l-bottom-large">
           <div className="m-pc-box m-pc-box--pros">
             <div className="m-pc-head"><i className="fa-solid fa-circle-check"></i> 引き続き使えるもの</div>
@@ -349,7 +346,7 @@ export default async function Page() {
           </div>
         </div>
         <p><span className="m-mark-yellow">基本機能とProツールは永続的に使い続けられます</span>。生成AI機能と最新アップデートが使えなくなるだけです。</p>
-        <h3>パスを一度も買わないとどうなる？</h3>
+        <h3>Luminar Primeを一度も契約しないとどうなる？</h3>
         <div className="l-grid-2 l-bottom-large">
           <div className="m-pc-box m-pc-box--pros">
             <div className="m-pc-head"><i className="fa-solid fa-circle-check"></i> 使えるもの</div>
@@ -375,8 +372,8 @@ export default async function Page() {
               <tr>
                 <th>機能</th>
                 <th>買い切りのみ</th>
-                <th>＋パス1回</th>
-                <th>＋パス毎年</th>
+                <th>＋Prime 1回</th>
+                <th>＋Prime 毎年</th>
               </tr>
             </thead>
             <tbody>
@@ -395,13 +392,13 @@ export default async function Page() {
               <tr>
                 <td>生成AI機能</td>
                 <td>購入から1年間のみ</td>
-                <td>パス有効期間中</td>
+                <td>Prime契約期間中</td>
                 <td><span className="text-true">◯ 継続</span></td>
               </tr>
               <tr>
                 <td>最新アップデート</td>
                 <td><span className="text-false">×</span></td>
-                <td>パス有効期間中のみ</td>
+                <td>Prime契約期間中のみ</td>
                 <td><span className="text-true">◯ 継続</span></td>
               </tr>
             </tbody>
@@ -418,14 +415,14 @@ export default async function Page() {
                 <li>とにかくコストを抑えたい</li>
               </ul>
             </dd>
-            <dt>＋パス1年だけ</dt>
+            <dt>＋Luminar Prime 1年だけ</dt>
             <dd>
               <ul>
                 <li>生成AI機能をもう1年使い続けたい</li>
                 <li>直近の新機能アップデートも取り込みたい</li>
               </ul>
             </dd>
-            <dt>＋パス毎年継続</dt>
+            <dt>＋Prime 毎年継続</dt>
             <dd>
               <ul>
                 <li>常に最新機能を使いたい</li>
@@ -455,24 +452,24 @@ export default async function Page() {
             <tbody>
               <tr>
                 <td>1年目</td>
-                <td>デスクトップライセンス（セール時）</td>
-                <td><strong>約¥15,980</strong></td>
+                <td>{PLANS.desktop.name}（セール時）</td>
+                <td><strong>{approxYen(PLANS.desktop.sale)}</strong></td>
               </tr>
               <tr>
                 <td>3年間</td>
                 <td>2年目以降は追加費用なし</td>
-                <td><strong>約¥15,980</strong></td>
+                <td><strong>{approxYen(PLANS.desktop.sale)}</strong></td>
               </tr>
               <tr>
                 <td>5年間</td>
                 <td>追加費用なし</td>
-                <td><strong>約¥15,980</strong></td>
+                <td><strong>{approxYen(PLANS.desktop.sale)}</strong></td>
               </tr>
             </tbody>
           </table>
         </div>
         <p>ポイントは<span className="m-mark-yellow">Proツール8種が最初から買い切りに含まれていて、永続的に使える</span>ということ。</p>
-        <p>つまり、<strong>約¥15,980の初期投資だけで、基本機能もProツール（ノイズ除去、HDR合成など）も何年でも使い続けられる</strong>のです。生成AI機能にこだわりがなければ、これが最も賢い選択です。</p>
+        <p>つまり、<strong>{approxYen(PLANS.desktop.sale)}の初期投資だけで、基本機能もProツール（ノイズ除去、HDR合成など）も何年でも使い続けられる</strong>のです。生成AI機能にこだわりがなければ、これが最も賢い選択です。</p>
         <h3>Lightroomと比較するとどうか？</h3>
         <div className="m-table-wrap l-bottom-large">
           <table className="m-table">
@@ -480,44 +477,44 @@ export default async function Page() {
               <tr>
                 <th>期間</th>
                 <th>Luminar Neo<br />（買い切りのみ）</th>
-                <th>Luminar Neo<br />（パス毎年継続）</th>
+                <th>Luminar Neo<br />（Luminar Prime 毎年継続）</th>
                 <th>Lightroomプラン<br />（1TB・年間一括）</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>1年</td>
-                <td><strong>約¥15,980</strong></td>
-                <td>約¥23,400</td>
-                <td>約¥14,080</td>
+                <td><strong>{approxYen(PLANS.desktop.sale)}</strong></td>
+                <td>{approxYen(totalWithPrime('desktop', 1))}</td>
+                <td>{approxYen(lightroomTotal(1))}</td>
               </tr>
               <tr>
                 <td>3年</td>
-                <td><strong>約¥15,980</strong></td>
-                <td>約¥38,200</td>
-                <td>約¥42,240</td>
+                <td><strong>{approxYen(PLANS.desktop.sale)}</strong></td>
+                <td>{approxYen(totalWithPrime('desktop', 3))}</td>
+                <td>{approxYen(lightroomTotal(3))}</td>
               </tr>
               <tr>
                 <td>5年</td>
-                <td><strong>約¥15,980</strong></td>
-                <td>約¥53,000</td>
-                <td>約¥70,400</td>
+                <td><strong>{approxYen(PLANS.desktop.sale)}</strong></td>
+                <td>{approxYen(totalWithPrime('desktop', 5))}</td>
+                <td>{approxYen(lightroomTotal(5))}</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p>買い切りのみなら、3年目以降は<strong>Lightroomの半額以下</strong>になります。</p>
+        <p>買い切りのみなら追加費用が発生しないため、<strong>使う年数が延びるほど差が開きます</strong>。上表のとおり3年でLightroomとほぼ並び、5年では{Math.round((1 - PLANS.desktop.sale / lightroomTotal(5)) * 100)}%ほど安くなる計算です。</p>
         <p>もちろん、LightroomとLuminar Neoでは機能や使い勝手が異なるので単純比較はできません。詳しくは「<Link href="/luminar/merit-demerit/">LightroomとLuminar Neoの違いまとめ</Link>」をご覧ください。</p>
         <div className="m-notice m-notice--warn">
           <div className="m-notice__head"><span className="m-notice__badge">注意</span><span className="m-notice__title">Lightroomの価格改定について</span></div>
-          <p>Adobe フォトプラン（20GB）は<strong>2025年1月15日で新規受付が終了</strong>しました。上記は現行の「Lightroomプラン（1TB）」の年間一括払い（¥14,080/年）を基準にした比較です。</p>
+          <p>Adobe フォトプラン（20GB）は<strong>2025年1月15日で新規受付が終了</strong>しました。上記は現行の「Lightroomプラン（1TB）」の年間一括払い（{yen(LIGHTROOM_ANNUAL)}/年）を基準にした比較です。</p>
         </div>
       </section>
 
       <section id="simulations" className="content-card card-padding article-body">
         <h2>その他のシミュレーション</h2>
-        <p>「コスパ最強」以外のパターンも見ておきましょう。金額はデスクトップライセンスのセール価格（約¥15,980）とパスの為替目安（約¥7,400/年）で計算しています。</p>
-        <h3>パターン①：パス毎年継続</h3>
+        <p>「コスパ最強」以外のパターンも見ておきましょう。金額は{PLANS.desktop.name}のセール価格（{approxYen(PLANS.desktop.sale)}）と、Luminar Primeの初年度{approxYen(PRIME.firstYear)}／2年目以降{approxYen(PRIME.renewal)}で計算しています。</p>
+        <h3>パターン①：Luminar Prime 毎年継続</h3>
         <p>常に最新機能＋生成AIをフル活用したい方向け。</p>
         <div className="m-table-wrap">
           <table className="m-table">
@@ -531,23 +528,23 @@ export default async function Page() {
             <tbody>
               <tr>
                 <td>1年目</td>
-                <td>デスクトップ ¥15,980 + パス 約¥7,400</td>
-                <td><strong>約¥23,400</strong></td>
+                <td>デスクトップ {yen(PLANS.desktop.sale)} + Prime {approxYen(PRIME.firstYear)}</td>
+                <td><strong>{approxYen(totalWithPrime('desktop', 1))}</strong></td>
               </tr>
               <tr>
                 <td>3年間</td>
-                <td>¥15,980 + 約¥7,400×3年</td>
-                <td><strong>約¥38,200</strong></td>
+                <td>{yen(PLANS.desktop.sale)} + Prime 3年分</td>
+                <td><strong>{approxYen(totalWithPrime('desktop', 3))}</strong></td>
               </tr>
               <tr>
                 <td>5年間</td>
-                <td>¥15,980 + 約¥7,400×5年</td>
-                <td><strong>約¥53,000</strong></td>
+                <td>{yen(PLANS.desktop.sale)} + Prime 5年分</td>
+                <td><strong>{approxYen(totalWithPrime('desktop', 5))}</strong></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <h3>パターン②：クロスデバイス＋エコシステムパス</h3>
+        <h3>パターン②：全プラットフォーム＋Luminar Prime</h3>
         <p>スマホ・タブレットでも編集したい方向け。</p>
         <div className="m-table-wrap">
           <table className="m-table">
@@ -561,23 +558,23 @@ export default async function Page() {
             <tbody>
               <tr>
                 <td>1年目</td>
-                <td>クロスデバイス ¥17,980 + エコシステムパス 約¥10,400</td>
-                <td><strong>約¥28,400</strong></td>
+                <td>全プラットフォーム {yen(PLANS.allPlatforms.sale)} + Prime {approxYen(PRIME.firstYear)}</td>
+                <td><strong>{approxYen(totalWithPrime('allPlatforms', 1))}</strong></td>
               </tr>
               <tr>
                 <td>3年間</td>
-                <td>¥17,980 + 約¥10,400×3年</td>
-                <td><strong>約¥49,200</strong></td>
+                <td>{yen(PLANS.allPlatforms.sale)} + Prime 3年分</td>
+                <td><strong>{approxYen(totalWithPrime('allPlatforms', 3))}</strong></td>
               </tr>
               <tr>
                 <td>5年間</td>
-                <td>¥17,980 + 約¥10,400×5年</td>
-                <td><strong>約¥70,000</strong></td>
+                <td>{yen(PLANS.allPlatforms.sale)} + Prime 5年分</td>
+                <td><strong>{approxYen(totalWithPrime('allPlatforms', 5))}</strong></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <h3>パターン③：＋パス1年だけ</h3>
+        <h3>パターン③：＋Luminar Prime 1年だけ</h3>
         <p>生成AI・新機能アップデートを2年目もキープしたい方向け。それ以降は更新しなくても基本機能とProツールは使い続けられます。</p>
         <div className="m-table-wrap">
           <table className="m-table">
@@ -591,18 +588,18 @@ export default async function Page() {
             <tbody>
               <tr>
                 <td>1年目</td>
-                <td>デスクトップ ¥15,980 + パス 約¥7,400</td>
-                <td><strong>約¥23,400</strong></td>
+                <td>デスクトップ {yen(PLANS.desktop.sale)} + Prime {approxYen(PRIME.firstYear)}</td>
+                <td><strong>{approxYen(totalWithPrime('desktop', 1))}</strong></td>
               </tr>
               <tr>
                 <td>3年間</td>
                 <td>2年目以降は追加費用なし</td>
-                <td><strong>約¥23,400</strong></td>
+                <td><strong>{approxYen(totalWithPrime('desktop', 1))}</strong></td>
               </tr>
               <tr>
                 <td>5年間</td>
                 <td>追加費用なし</td>
-                <td><strong>約¥23,400</strong></td>
+                <td><strong>{approxYen(totalWithPrime('desktop', 1))}</strong></td>
               </tr>
             </tbody>
           </table>
@@ -617,27 +614,27 @@ export default async function Page() {
               日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
           <div id="faq-1" className="faq-item">
             <dt className="faq-q">サブスクプランはもうないの？</dt>
-            <dd className="faq-a"><strong>公式ストアでは現在、新規販売されていません。</strong>以前は月額・年額のサブスクリプションプランも存在しましたが、2026年現在、日本の公式ストアで販売されているのは買い切りプラン＋パス（任意）のみとなっています。</dd>
+            <dd className="faq-a"><strong>公式ストアでは現在、新規販売されていません。</strong>以前は月額・年額のサブスクリプションプランも存在しましたが、2026年現在、日本の公式ストアで販売されているのは買い切りプラン＋Luminar Prime（任意）のみとなっています。</dd>
           </div>
           <div id="faq-2" className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
-            <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切りプランに標準で含まれており、<strong>永続的に利用できます</strong>。パスの購入は不要です。</dd>
+            <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切りプランに標準で含まれており、<strong>永続的に利用できます</strong>。Luminar Primeの契約は不要です。</dd>
           </div>
           <div id="faq-3" className="faq-item">
-            <dt className="faq-q">パスを買うと何が変わる？</dt>
-            <dd className="faq-a">パスの有効期間中、<strong>生成AI機能（GenErase・GenSwap・GenExpand）の無制限利用と、最新機能へのアップデート</strong>が手に入ります。エコシステムパスならモバイルアプリ・クロスデバイス編集・Spacesも使えます。</dd>
+            <dt className="faq-q">Luminar Primeを契約すると何が変わる？</dt>
+            <dd className="faq-a">Luminar Primeの契約期間中、<strong>AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）の無制限利用と、その期間中にリリースされる新機能へのアップデート</strong>が手に入ります。プリセット等のアセットライブラリとSpaces（Webギャラリー）も利用可能。なお以前あったアップグレードパス／エコシステムパスは廃止され、現在はPrimeに一本化されています。</dd>
           </div>
           <div id="faq-4" className="faq-item">
-            <dt className="faq-q">途中でパスをやめたらどうなる？</dt>
+            <dt className="faq-q">途中でLuminar Primeをやめたらどうなる？</dt>
             <dd className="faq-a">生成AI機能と最新アップデートが使えなくなりますが、<strong>基本機能とProツールはそのまま使い続けられます</strong>。</dd>
           </div>
           <div id="faq-5" className="faq-item">
-            <dt className="faq-q">パスは毎年買わないといけない？</dt>
-            <dd className="faq-a">必要な年だけ購入すればOKです。<strong>基本機能とProツールだけ使えればいい場合は、パスなしの買い切りのみが最もコスパ◎</strong>です。</dd>
+            <dt className="faq-q">Luminar Primeは毎年契約しないといけない？</dt>
+            <dd className="faq-a">必要な年だけ購入すればOKです。<strong>基本機能とProツールだけ使えればいい場合は、Luminar Primeなしの買い切りのみが最もコスパ◎</strong>です。</dd>
           </div>
           <div id="faq-6" className="faq-item">
             <dt className="faq-q">1つのライセンスで何台のPCにインストールできる？</dt>
-            <dd className="faq-a">デスクトップライセンスは<strong>2台のPC</strong>にインストール可能です。Windows・Mac問わず、どの組み合わせでもOK。クロスデバイス・Maxライセンスならさらにモバイル3台でも使えます。</dd>
+            <dd className="faq-a">デスクトップ専用ライセンスは<strong>2台のPC</strong>にインストール可能です。Windows・Mac問わず、どの組み合わせでもOK。クロスデバイス・Maxライセンスならさらにモバイル3台でも使えます。</dd>
           </div>
           <div id="faq-7" className="faq-item">
             <dt className="faq-q">セールはいつある？</dt>
@@ -660,11 +657,11 @@ export default async function Page() {
             <span className="m-point-box__title">この記事のまとめ</span>
           </div>
           <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>サブスクプランは廃止</strong>：現在は買い切り＋パス（任意）のみ</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>購入は2ステップ</strong>：①買い切りプランを選ぶ → ②パスを追加するか決める</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>旧サブスク・旧パスは廃止</strong>：現在は買い切り＋Luminar Prime（任意）のみ</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>購入は2ステップ</strong>：①買い切りプランを選ぶ → ②Luminar Primeを追加するか決める</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Proツール8種は全買い切りプランに標準搭載（永続利用可）</strong></li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>パスが必要なのは「生成AI」と「新機能アップデート」を使い続けたい場合のみ</strong></li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>コスパ最強は「買い切りのみ」</strong>（セール時 約¥15,980で永続利用）</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Luminar Primeが必要なのは「AIツール」と「新機能アップデート」を使い続けたい場合のみ</strong></li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>コスパ最強は「買い切りのみ」</strong>（セール時 {approxYen(PLANS.desktop.sale)}で永続利用）</li>
           </ul>
         </div>
         <p>ぜひ、ご自身に合った料金プランでLuminar Neoを導入してみてくださいね。</p>
@@ -677,12 +674,12 @@ export default async function Page() {
             '@context': 'https://schema.org',
             '@type': 'FAQPage',
             mainEntity: [
-              { '@type': 'Question', name: 'サブスクプランはもうないの？', acceptedAnswer: { '@type': 'Answer', text: '公式ストアでは現在、新規販売されていません。以前は月額・年額のサブスクリプションプランも存在しましたが、2026年現在、日本の公式ストアで販売されているのは買い切りプラン＋パス（任意）のみとなっています。' } },
-              { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切りプランに標準で含まれており、永続的に利用できます。パスの購入は不要です。' } },
-              { '@type': 'Question', name: 'パスを買うと何が変わる？', acceptedAnswer: { '@type': 'Answer', text: 'パスの有効期間中、生成AI機能（GenErase・GenSwap・GenExpand）の無制限利用と、最新機能へのアップデートが手に入ります。エコシステムパスならモバイルアプリ・クロスデバイス編集・Spacesも使えます。' } },
-              { '@type': 'Question', name: '途中でパスをやめたらどうなる？', acceptedAnswer: { '@type': 'Answer', text: '生成AI機能と最新アップデートが使えなくなりますが、基本機能とProツールはそのまま使い続けられます。' } },
-              { '@type': 'Question', name: 'パスは毎年買わないといけない？', acceptedAnswer: { '@type': 'Answer', text: '必要な年だけ購入すればOKです。基本機能とProツールだけ使えればいい場合は、パスなしの買い切りのみが最もコスパが良いです。' } },
-              { '@type': 'Question', name: '1つのライセンスで何台のPCにインストールできる？', acceptedAnswer: { '@type': 'Answer', text: 'デスクトップライセンスは2台のPCにインストール可能です。Windows・Mac問わず、どの組み合わせでもOK。クロスデバイス・Maxライセンスならさらにモバイル3台でも使えます。' } },
+              { '@type': 'Question', name: 'サブスクプランはもうないの？', acceptedAnswer: { '@type': 'Answer', text: '公式ストアでは現在、新規販売されていません。以前は月額・年額のサブスクリプションプランも存在しましたが、2026年現在、日本の公式ストアで販売されているのは買い切りプラン＋Luminar Prime（任意）のみとなっています。' } },
+              { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切りプランに標準で含まれており、永続的に利用できます。Luminar Primeの契約は不要です。' } },
+              { '@type': 'Question', name: 'Luminar Primeを契約すると何が変わる？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Primeの契約期間中、AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）の無制限利用と、その期間中にリリースされる新機能へのアップデートが手に入ります。プリセット等のアセットライブラリとSpaces（Webギャラリー）も利用可能。なお以前あったアップグレードパス／エコシステムパスは廃止され、現在はPrimeに一本化されています。' } },
+              { '@type': 'Question', name: '途中でLuminar Primeをやめたらどうなる？', acceptedAnswer: { '@type': 'Answer', text: '生成AI機能と最新アップデートが使えなくなりますが、基本機能とProツールはそのまま使い続けられます。' } },
+              { '@type': 'Question', name: 'Luminar Primeは毎年契約しないといけない？', acceptedAnswer: { '@type': 'Answer', text: '必要な年だけ購入すればOKです。基本機能とProツールだけ使えればいい場合は、Luminar Primeなしの買い切りのみが最もコスパが良いです。' } },
+              { '@type': 'Question', name: '1つのライセンスで何台のPCにインストールできる？', acceptedAnswer: { '@type': 'Answer', text: 'デスクトップ専用ライセンスは2台のPCにインストール可能です。Windows・Mac問わず、どの組み合わせでもOK。クロスデバイス・Maxライセンスならさらにモバイル3台でも使えます。' } },
               { '@type': 'Question', name: 'セールはいつある？', acceptedAnswer: { '@type': 'Answer', text: 'Skylumはほぼ通年で何らかのセールを実施しています。特にブラックフライデー（11月下旬）は割引率が大きく狙い目です。' } },
               { '@type': 'Question', name: '返金保証はある？', acceptedAnswer: { '@type': 'Answer', text: 'はい、公式ストアで購入した場合は30日間の返金保証があります。「思っていたのと違った…」という場合でも安心です。' } },
             ],

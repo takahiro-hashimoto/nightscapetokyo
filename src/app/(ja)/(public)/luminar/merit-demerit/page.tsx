@@ -4,6 +4,7 @@ import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
+import { PLANS, PRIME, yen, approxYen, totalWithPrime } from '@/lib/luminar/pricing'
 
 
 const META = {
@@ -11,7 +12,7 @@ const META = {
   title: 'Luminar Neoのメリット・デメリット｜1年以上使ったリアルな評価【2026年】',
   description: '「Luminar Neo（ルミナーネオ）」って実際どうなの？Adobeから乗り換える価値はある？LightroomとPhotoshopのサブスクは年間3万円近く。1年以上使い込んで感じたリアルな良い点・イマイチな点を包み隠さずお伝えします。',
   publishedAt: '2026-01-18T10:37:52',
-  updatedAt: '2026-07-05T10:00:00',
+  updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/review.jpg',
     alt: 'Luminar Neoの良い点・イマイチな点を夜景フォトグラファーが徹底解説【長期使用レビュー】',
@@ -42,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const lead = (
   <>
     <p>「Luminar Neo（ルミナーネオ）」って実際どうなの？Adobeから乗り換える価値はある？</p>
-    <p>LightroomとPhotoshopのサブスクは年間3万円近く。決して安くはない出費ですよね。最近はAI搭載の編集ソフトも増えてきて、「もっとコスパの良い選択肢があるのでは？」と気になっている方も多いのではないでしょうか。</p>
+    <p>LightroomとPhotoshopのサブスクは年間3万円近く。決して安くはない出費ですよね。5年使えば15万円近くになり、レンズが1本買える金額です。AI搭載の編集ソフトが増えた今、その支出を続ける前に他の選択肢を見ておく価値はあります。</p>
     <p>そこでこの記事では、LightroomもPhotoshopも使っているフォトグラファーが、Luminar Neoを<strong>1年以上使い込んで</strong>感じた<strong>リアルな良い点・イマイチな点</strong>を包み隠さずお伝えします。</p>
     <p>実際の作例もたっぷり載せているので、ぜひ参考にしてください。</p>
     <LuminarCtaMini />
@@ -99,7 +100,7 @@ export default async function Page() {
           <ul className="m-point-box__list">
             <li><strong>基本機能</strong>：買い切りプランで永続利用可</li>
             <li><strong>Proツール（8種）</strong>：すべての買い切りプランに標準で含まれ、永続利用可</li>
-            <li><strong>生成AI機能（3種）</strong>：購入から1年間利用可（継続利用にはパス更新が必要）</li>
+            <li><strong>生成AI機能（3種）</strong>：購入から1年間利用可（継続利用にはLuminar Primeの更新が必要）</li>
           </ul>
         </div>
 
@@ -327,11 +328,11 @@ export default async function Page() {
         <div className="m-notice m-notice--warn">
           <div className="m-notice__head"><span className="m-notice__badge">ポイント</span><span className="m-notice__title">買い切りプランに含まれるもの・含まれないもの</span></div>
           <p><strong>含まれる：</strong>基本的なAI編集機能（スカイAI、補正AI、電線除去など）、RAW現像機能、Proツール全8種（Noiseless AI、HDR Mergeなど）、生成AI機能（購入から1年間）</p>
-          <p><strong>含まれない：</strong>2年目以降の生成AIの継続利用と新機能アップデート → Upgrade PassまたはEcosystem Passが必要</p>
+          <p><strong>含まれない：</strong>2年目以降のAIツールの継続利用と新機能アップデート → 年額サブスクのLuminar Primeが必要（旧Upgrade Pass／Ecosystem Passは廃止）</p>
           <p>生成AIの継続が不要という方は、買い切りプランのみで<strong>ランニングコストゼロ</strong>で使い続けられます。</p>
         </div>
         <p>「料金体系がちょっと分かりづらい…」という声もありますが、実は<strong>やりたいことのほとんどは買い切りライセンスの中で実現可能</strong>です。Proツール全8種も買い切りに標準で含まれており、永続的に使えます。</p>
-        <p>生成AIを2年目以降も使い続けたい、常に新機能を取り込みたいという場合は、パス（Upgrade Pass 年額約¥7,400）を追加する形になります。<strong>買い切り（セール時 ¥15,980）＋パス1年（約¥7,400）＝約¥23,400</strong>が目安ですが、生成AI不要なら買い切りのみでOKなのでコスパは非常に良好です。</p>
+        <p>AIツールを2年目以降も使い続けたい、常に新機能を取り込みたいという場合は、Luminar Prime（初年度{approxYen(PRIME.firstYear)}／2年目以降{approxYen(PRIME.renewal)}）を追加する形になります。<strong>買い切り（セール時 {yen(PLANS.desktop.sale)}）＋Luminar Prime 1年（{approxYen(PRIME.firstYear)}）＝{approxYen(totalWithPrime('desktop', 1))}</strong>が目安ですが、生成AI不要なら買い切りのみでOKなのでコスパは非常に良好です。</p>
         <p><i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">料金プランの詳細とコストシミュレーション</Link></p>
       </section>
 
@@ -365,7 +366,7 @@ export default async function Page() {
         <p>AI機能は素晴らしいのですが、<strong>ピクセル単位での精密な作業には向きません</strong>。</p>
         <p>例えば、複雑な形状のオブジェクトを完璧に切り抜きたい場合。Photoshopならペンツールで丁寧にパスを描いて、1ピクセル単位でマスクを調整できます。</p>
         <p>Luminar NeoのAI選択は「だいたい」は上手くやってくれますが、髪の毛の細かい部分や、複雑に入り組んだ輪郭などは<strong>完璧とは言えない</strong>ことも。</p>
-        <p>また、高度な合成作業——例えば複数の写真を違和感なく1枚に合成するような作業は、やはりPhotoshopの方が優れています。</p>
+        <p>また、複数の写真を違和感なく1枚に合成するような高度な作業は、やはりPhotoshopの方が優れています。</p>
         <div className="m-icon-box m-icon-box--memo">
           <i className="fa-solid fa-pencil"></i>
           <p><strong>「簡単に、速く、それなりのクオリティで」がLuminar Neoの得意領域</strong>。<strong>「時間をかけてでも、完璧なクオリティで」はPhotoshopの領域</strong>。この棲み分けを理解しておくと、ストレスなく使えます。</p>

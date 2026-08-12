@@ -4,6 +4,7 @@ import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
+import { PRICING_CONFIRMED_AT, PLANS, PRIME, LIGHTROOM_ANNUAL, yen, approxYen, lightroomTotal } from '@/lib/luminar/pricing'
 
 
 // ── メタデータ ────────────────────────────────────────────────────────────────
@@ -12,9 +13,9 @@ const META = {
   slug: 'expand',
   title: 'Luminar NeoのProツール8種を徹底解説｜買い切り版に標準搭載【2026年】',
   description:
-    'Luminar NeoのProツール8種（Noiseless AI・Upscale AI・HDR Mergeなど）でできることを解説。現在はすべての買い切りライセンスに標準搭載で、追加購入は不要です。各ツールの活用例と、パス（生成AI・アップデート）との関係もまとめました。',
+    'Luminar NeoのProツール8種（Noiseless AI・Upscale AI・HDR Mergeなど）でできることを解説。現在はすべての買い切りライセンスに標準搭載で、追加購入は不要です。各ツールの活用例と、Luminar Prime（生成AI・アップデート）との関係もまとめました。',
   publishedAt: '2026-01-19T09:32:32',
-  updatedAt: '2026-07-05T00:00:00',
+  updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/expand.jpg',
     alt: 'Luminar NeoのProツール8種を徹底解説｜買い切り版に標準搭載【2026年】',
@@ -43,7 +44,7 @@ const TOC: TocItem[] = [
   { id: 'panorama', level: 3, text: '⑧パノラマスティッチング（Panorama Stitching）' },
   { id: 'purpose', level: 2, text: 'Proツール（拡張機能）があると何が変わる？（目的別）' },
   { id: 'compare-adobe', level: 2, text: 'Adobe Lightroom / Photoshopとの比較' },
-  { id: 'price', level: 2, text: 'Luminar Neoの価格プランとパスの役割' },
+  { id: 'price', level: 2, text: 'Luminar Neoの価格プランとLuminar Primeの役割' },
   { id: 'faq', level: 2, text: 'よくある質問（FAQ）' },
   { id: 'summary', level: 2, text: 'まとめ｜Proツールはどんな人に向いているか？' },
 ]
@@ -68,7 +69,7 @@ export default function Page() {
               <li><strong>Proツールとは？</strong>→ 高度な補正・特殊編集機能（全8種）</li>
               <li><strong>買い切りに含まれる？</strong>→ 含まれる。現在はすべての買い切りライセンスに標準搭載</li>
               <li><strong>追加費用は？</strong>→ 不要。Proツールは永続で使い続けられる</li>
-              <li><strong>パスが必要なのは？</strong>→ 生成AIツールと最新アップデートを使い続けたい場合のみ</li>
+              <li><strong>Luminar Primeが必要なのは？</strong>→ AIツールと最新アップデートを使い続けたい場合のみ</li>
             </ul>
           </div>
           <LuminarCtaMini />
@@ -81,7 +82,7 @@ export default function Page() {
         <p>Luminar NeoのProツール（旧称：拡張機能・エクステンション）は、標準のソフトウェアに追加できる<strong>「高度な補正機能」や「特殊な編集機能」</strong>のことです。Photoshopでいうところの「専用プラグイン」や「複雑な合成作業」を、ワンクリック〜数回の操作で実現できます。</p>
         <p>僕がProツールを使い始めて感じたのは、「これ、Photoshopでやろうとしたら何時間かかるんだろう」という作業が、本当に数クリックで終わる快適さでした。特に時間のない中で大量の写真を処理しなければならないときには、この差は想像以上に大きいです。</p>
         <h3 id="pro-included">【重要】Proツールはすべての買い切りプランに標準搭載</h3>
-        <p>以前は「拡張機能（エクステンション）」として別売りされていた時期もありましたが、<strong>現在はProツール8種すべてが、どの買い切り（永久）ライセンスにも標準で含まれています</strong>。追加購入やパスの契約は不要で、そのまま永続的に使えます。</p>
+        <p>以前は「拡張機能（エクステンション）」として別売りされていた時期もありましたが、<strong>現在はProツール8種すべてが、どの買い切り（永久）ライセンスにも標準で含まれています</strong>。追加購入やLuminar Primeの契約は不要で、そのまま永続的に使えます。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -98,19 +99,14 @@ export default function Page() {
                 <td>全編集機能＋Proツール8種が使える</td>
               </tr>
               <tr>
-                <td>買い切り＋Upgrade Pass</td>
+                <td>買い切り＋Luminar Prime</td>
                 <td><span className="text-true">◯標準搭載・永続利用可</span></td>
-                <td>さらに生成AI＋最新アップデートが継続</td>
-              </tr>
-              <tr>
-                <td>買い切り＋Ecosystem Pass</td>
-                <td><span className="text-true">◯標準搭載・永続利用可</span></td>
-                <td>さらにモバイルアプリ・クロスデバイス編集も</td>
+                <td>さらにAIツール＋最新アップデート＋アセットライブラリが継続</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p>嬉しいポイントは、<strong>パスを買わなくてもProツールは永続的に使える</strong>ということ。パスが必要になるのは、生成AIツール（GenErase・GenSwap・GenExpand）や最新機能アップデートを使い続けたい場合だけです。パスが失効しても、アプリ本体・基本機能・Proツールはそのまま使えます。</p>
+        <p>嬉しいポイントは、<strong>Luminar Primeを契約しなくてもProツールは永続的に使える</strong>ということ。Primeが必要になるのは、AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）や最新機能アップデートを使い続けたい場合だけです。Primeが失効しても、アプリ本体・基本機能・Proツールはそのまま使えます。</p>
       </section>
 
       {/* セクション2: Proツール全8種 */}
@@ -312,7 +308,7 @@ export default function Page() {
         <h3 id="panorama">⑧パノラマスティッチング（Panorama Stitching）</h3>
         <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/unit-scaled.jpg" alt="パノラマスティッチングで複数カットを合成した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>複数カットの写真をつなげて、ワイドなパノラマ写真を作成する機能です。普通のレンズでは収まりきらない広大な風景も、複数枚に分けて撮影してから合成すればダイナミックな1枚に仕上げられます。</p>
-        <p>風景写真や建築写真で「もっと広い範囲を1枚に収めたい」というときに活躍します。解像度も高くなるので、大きく引き伸ばして印刷したい場合にも向いています。撮影時は露出をマニュアルで固定して、同じ条件で撮ることをおすすめします。</p>
+        <p>風景写真や建築写真で「もっと広い範囲を1枚に収めたい」というときに活躍します。解像度も高くなるため、大きく引き伸ばして印刷したい場合にも向いた機能です。撮影時は露出をマニュアルで固定し、同じ条件で撮っておくと合成がきれいに決まります。</p>
         <div className="m-point-box">
           <div className="m-point-box__bg">!</div>
           <div className="m-point-box__header">
@@ -403,12 +399,12 @@ export default function Page() {
               </tr>
               <tr>
                 <td><strong>価格（3年間）</strong></td>
-                <td><strong>¥15,980</strong>（買い切りのみ・Proツール込み）</td>
-                <td>約¥42,240（Lightroomプラン1TB・月1,480円）</td>
+                <td><strong>{yen(PLANS.desktop.sale)}</strong>（買い切りのみ・Proツール込み）</td>
+                <td>{approxYen(lightroomTotal(3))}（Lightroomプラン1TB・年間一括 {yen(LIGHTROOM_ANNUAL)}/年）</td>
               </tr>
               <tr>
                 <td><strong>料金体系</strong></td>
-                <td>買い切り＋パス（任意）</td>
+                <td>買い切り＋Luminar Prime（任意）</td>
                 <td>サブスクのみ</td>
               </tr>
             </tbody>
@@ -425,7 +421,7 @@ export default function Page() {
 
       {/* セクション5: 価格と購入方法 */}
       <section id="price" className="content-card card-padding article-body">
-        <h2>Luminar Neoの価格プランとパスの役割</h2>
+        <h2>Luminar Neoの価格プランとLuminar Primeの役割</h2>
         <h3>Proツールは買い切りに標準搭載（追加購入は不要）</h3>
         <p>繰り返しになりますが、<strong>Proツール8種はすべての買い切りライセンスに標準で含まれています</strong>。日本公式ストアの買い切りプランは以下の3種類です。</p>
         <div className="m-table-wrap">
@@ -439,52 +435,47 @@ export default function Page() {
             </thead>
             <tbody>
               <tr>
-                <td><strong>デスクトップ</strong></td>
-                <td>¥15,980</td>
-                <td>¥29,960</td>
+                <td><strong>デスクトップ専用</strong><br /><small>（旧デスクトップ版）</small></td>
+                <td>{yen(PLANS.desktop.sale)}</td>
+                <td>{PLANS.desktop.regular ? yen(PLANS.desktop.regular) : '—'}</td>
               </tr>
               <tr>
-                <td><strong>クロスデバイス</strong></td>
-                <td>¥17,980</td>
-                <td>¥44,990</td>
+                <td><strong>全プラットフォーム</strong><br /><small>（旧クロスデバイス）</small></td>
+                <td>{yen(PLANS.allPlatforms.sale)}</td>
+                <td>{PLANS.allPlatforms.regular ? yen(PLANS.allPlatforms.regular) : '—'}</td>
               </tr>
               <tr>
                 <td><strong>Max</strong></td>
-                <td>¥21,480</td>
-                <td>¥69,999</td>
+                <td>{yen(PLANS.max.sale)}</td>
+                <td>{PLANS.max.regular ? yen(PLANS.max.regular) : '—'}</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p>※価格・プラン情報は2026年7月5日確認時点（サマーセール価格）。セール価格は時期により変動しますが、ほぼ通年何らかのセールが実施されています。</p>
-        <h3>パスの役割は「生成AI」と「最新アップデート」</h3>
-        <p>では、UpgradeパスやEcosystemパスは何のためにあるのか？というと、<strong>生成AIツール（GenErase・GenSwap・GenExpand）の無制限利用と、新機能アップデートを受け取り続けるため</strong>のものです。</p>
+        <p>※価格・プラン情報は{new Date(PRICING_CONFIRMED_AT).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}に日本公式ストアで確認した時点のセール価格です。セール価格は時期により変動しますが、ほぼ通年何らかのセールが実施されています。</p>
+        <h3>Luminar Primeの役割は「AIツール」と「最新アップデート」</h3>
+        <p>では、Luminar Primeは何のためにあるのか？というと、以前あった「アップグレードパス」「エコシステムパス」を置き換える形で登場した年額サブスクで、<strong>生成AIツール（GenErase・GenSwap・GenExpand）の無制限利用と、新機能アップデートを受け取り続けるため</strong>のものです。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
               <tr>
-                <th>パスの種類</th>
+                <th>サブスクの種類</th>
                 <th>価格（税込目安）</th>
                 <th>含まれる内容</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>Upgrade Pass</strong></td>
-                <td>年額$49（約¥7,400・為替により変動）</td>
-                <td>パス有効期間中の新機能アップデート＋生成AIツール無制限</td>
-              </tr>
-              <tr>
-                <td><strong>Ecosystem Pass</strong></td>
-                <td>年額$69（約¥10,400）</td>
-                <td>上記＋Luminar Mobile＋クロスデバイス編集＋Spaces（Webギャラリー）</td>
+                <td><strong>Luminar Prime</strong></td>
+                <td>初年度{approxYen(PRIME.firstYear)}、2年目以降{approxYen(PRIME.renewal)}（為替・時期で変動）</td>
+                <td>契約期間中の新機能アップデート＋AIツール（生成AI・Restoration・AI Assistant）無制限＋アセットライブラリ＋Spaces（Webギャラリー）</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p>なお、生成AIツールは買い切りの購入日から1年間は追加費用なしで使えます（クラウド処理のためネット接続必須）。<strong>パスが失効しても、アプリ本体・基本機能・Proツールはそのまま永続で使えます</strong>。使えなくなるのは「生成AIツール」と「以後の新機能アップデート」だけです。</p>
+        <p>なお、生成AIツールは買い切りの購入日から1年間は追加費用なしで使えます（クラウド処理のためネット接続必須）。<strong>Primeが失効しても、アプリ本体・基本機能・Proツールはそのまま永続で使えます</strong>。使えなくなるのは「AIツール」と「以後の新機能アップデート」、アセットライブラリだけです。</p>
         <h3>購入パターン別の費用目安</h3>
-        <p>Proツール目的なら<strong>買い切りだけでOK</strong>。生成AIやアップデートを継続したい場合のみパスを検討しましょう。</p>
+        <p>Proツール目的なら<strong>買い切りだけでOK</strong>。AIツールやアップデートを継続したい場合のみLuminar Primeを検討しましょう。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -497,27 +488,22 @@ export default function Page() {
             <tbody>
               <tr style={{ backgroundColor: '#fffde7' }}>
                 <td><strong>買い切りのみ</strong></td>
-                <td><strong>¥15,980〜</strong></td>
+                <td><strong>{yen(PLANS.desktop.sale)}〜</strong></td>
                 <td><strong>全編集機能＋Proツール8種を永続利用</strong>（生成AIは購入から1年間）</td>
               </tr>
               <tr>
-                <td>買い切り＋Upgrade Pass 1年</td>
-                <td>約¥23,400</td>
-                <td>上記＋生成AI無制限＋最新アップデート</td>
-              </tr>
-              <tr>
-                <td>買い切り＋Ecosystem Pass 1年</td>
-                <td>約¥26,400</td>
-                <td>上記＋モバイルアプリ・クロスデバイス編集・Spaces</td>
+                <td>買い切り＋Luminar Prime 1年</td>
+                <td>買い切り価格＋初年度{approxYen(PRIME.firstYear)}</td>
+                <td>上記＋AIツール無制限＋最新アップデート＋アセットライブラリ・Spaces</td>
               </tr>
             </tbody>
           </table>
         </div>
         <h3>購入方法</h3>
-        <p>買い切りライセンスも各パスも<strong>Skylum公式サイト</strong>から購入できます。</p>
+        <p>買い切りライセンスもLuminar Primeも<strong>Skylum公式サイト</strong>から購入できます。</p>
         <ol>
           <li>公式サイトにアクセス</li>
-          <li>希望するプラン（買い切り、必要ならパスも）を選択</li>
+          <li>希望するプラン（買い切り、必要ならLuminar Primeも）を選択</li>
           <li>カートに追加して決済</li>
           <li>メールでライセンスキーが届く</li>
         </ol>
@@ -546,11 +532,11 @@ export default function Page() {
               日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
           <div id="faq-1" className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使えますか？</dt>
-            <dd className="faq-a"><strong>はい、使えます。</strong>現在はProツール8種すべてが、どの買い切りライセンスにも標準搭載されています。パスなどの追加購入は不要です。</dd>
+            <dd className="faq-a"><strong>はい、使えます。</strong>現在はProツール8種すべてが、どの買い切りライセンスにも標準搭載されています。Luminar Primeなどの追加購入は不要です。</dd>
           </div>
           <div id="faq-2" className="faq-item">
-            <dt className="faq-q">パスを更新しないとProツールは使えなくなりますか？</dt>
-            <dd className="faq-a"><strong>いいえ、使えなくなりません。</strong>パスが失効しても、アプリ本体・基本機能・Proツールはそのまま永続で使えます。使えなくなるのは生成AIツール（GenErase・GenSwap・GenExpand）と、以後の新機能アップデートだけです。</dd>
+            <dt className="faq-q">Luminar Primeを更新しないとProツールは使えなくなりますか？</dt>
+            <dd className="faq-a"><strong>いいえ、使えなくなりません。</strong>Primeが失効しても、アプリ本体・基本機能・Proツールはそのまま永続で使えます。使えなくなるのはAIツール（GenErase・GenSwap・GenExpandなど）と、以後の新機能アップデートだけです。</dd>
           </div>
           <div id="faq-3" className="faq-item">
             <dt className="faq-q">無料体験版でProツールは試せますか？</dt>
@@ -599,8 +585,8 @@ export default function Page() {
           <ul className="m-point-box__list">
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Proツールは全8種類</strong>：高度な補正・特殊編集機能</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>すべての買い切りライセンスに標準搭載</strong>→追加購入は不要</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>パスを更新しなくてもProツールは永続利用可</strong></li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>パスが必要なのは生成AIと最新アップデートを続けたい場合のみ</strong>（Upgrade Pass 年額$49・約¥7,400）</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Luminar Primeを契約しなくてもProツールは永続利用可</strong></li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Primeが必要なのはAIツールと最新アップデートを続けたい場合のみ</strong>（旧アップグレードパス／エコシステムパスは廃止）</li>
           </ul>
         </div>
       </section>

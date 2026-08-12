@@ -12,7 +12,7 @@ const META = {
   title: 'Luminar Neo体験版のダウンロード方法・製品版との違いを紹介',
   description: '「気になるけど、いきなり買うのはちょっと…」写真編集ソフトを検討しているとき、こんな気持ちになったことはありませんか？特にLuminar Neoのように機能が豊富なソフトだと、自分のPCでちゃんと動くのか、本当に使いこなせるのか、不安になりますよね。',
   publishedAt: '2026-01-18T20:45:12',
-  updatedAt: '2026-07-05T00:00:00',
+  updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/trial.jpg',
     alt: 'Luminar Neo体験版のダウンロード方法・製品版との違いを紹介',
@@ -90,7 +90,7 @@ export default async function Page() {
       <section id="why-safe" className="content-card card-padding article-body">
         <h2>無料体験版が安心して使える3つの理由</h2>
         <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-plan-trial.jpg" alt="Luminar Neoの無料体験版が安心して使える3つの理由" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
-        <p>「無料体験版」と聞くと、どこか警戒してしまう方も多いのではないでしょうか。海外のソフトウェアだと特に、解約し忘れて課金されていた…なんて話も聞きますよね。</p>
+        <p>「無料体験版」と聞くと身構える人もいると思います。海外のソフトだと、解約し忘れて課金されていたという話もよく聞きます。</p>
         <p>でも、Luminar Neoの体験版はそういった心配がありません。その理由を3つ説明します。</p>
         <h3>1. クレジットカード登録が不要</h3>
         <p>Luminar Neoの体験版をダウンロードする際、<strong>クレジットカード情報の入力は一切求められません</strong>。</p>
@@ -244,7 +244,7 @@ export default async function Page() {
           </div>
           <div id="faq-2" className="faq-item">
             <dt className="faq-q">日本語に対応していますか？</dt>
-            <dd className="faq-a">はい、Luminar Neoは日本語表示に対応しています。インストール後、設定画面から言語を日本語に切り替えることができます。メニューやツール名が日本語で表示されるため、英語が苦手な方でも問題なく操作できます。</dd>
+            <dd className="faq-a">はい、Luminar Neoは日本語表示に対応しています。インストール後、設定画面から言語を日本語に切り替えるだけ。メニューやツール名も日本語になるため、英語が苦手な方でも問題なく操作できます。</dd>
           </div>
           <div id="faq-3" className="faq-item">
             <dt className="faq-q">体験期間が終了したらどうなりますか？</dt>

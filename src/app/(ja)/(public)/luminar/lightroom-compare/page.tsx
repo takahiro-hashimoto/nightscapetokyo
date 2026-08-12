@@ -3,6 +3,7 @@ import Image from 'next/image'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
+import { PLANS, PRIME, LIGHTROOM, yen, approxYen, totalWithPrime } from '@/lib/luminar/pricing'
 
 
 const META = {
@@ -10,7 +11,7 @@ const META = {
   title: 'Luminar NeoとLightroom徹底比較｜料金・機能・使いやすさの違いを結論から解説',
   description: '写真の現像ソフト選びで、LightroomとLuminar Neoのどちらにするか迷っていませんか？どちらも人気のRAW現像ソフトですが、料金体系も操作感も設計思想がまったく違います。',
   publishedAt: '2026-01-18T10:36:17',
-  updatedAt: '2026-07-05T00:00:00',
+  updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom.jpg',
     alt: 'Luminar NeoとLightroom徹底比較｜料金・機能・使いやすさの違いを結論から解説',
@@ -143,7 +144,7 @@ export default async function Page() {
         <p>この料金体系の特徴は、<strong>使用頻度に関係なく毎月支払いが発生する</strong>こと。また、解約するとソフトが起動できなくなり、カタログにもアクセスできなくなります（RAWファイル自体は手元に残ります）。</p>
         <h3>Luminar Neoの料金体系</h3>
         <p>Luminar Neoは<strong>買い切りライセンスが基本</strong>です。一度購入すれば、追加料金なしでソフトを永続的に使用できます。</p>
-        <p><strong>※Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。</strong>Upgrade Pass / Ecosystem Passは、有効期間中の新機能アップデートや生成AIの継続利用のためのオプションです。</p>
+        <p><strong>※Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。</strong>以前あったUpgrade Pass／Ecosystem Passは廃止され、現在は年額サブスクのLuminar Primeに一本化されています。Primeは契約期間中の新機能アップデートやAIツールの継続利用のためのオプションです。</p>
         <div className="m-table-wrap l-bottom-medium">
           <table className="m-table">
             <thead>
@@ -156,23 +157,18 @@ export default async function Page() {
             <tbody>
               <tr>
                 <td><strong>永久ライセンス<br />デスクトップ版</strong></td>
-                <td>¥15,980<br /><small>（通常¥29,960）</small></td>
+                <td>{yen(PLANS.desktop.sale)}</td>
                 <td>PC2台で使用可。Proツール8種込み。生成AIツールは購入から1年間利用可能。</td>
               </tr>
               <tr>
-                <td><strong>クロスデバイス<br />永続ライセンス</strong></td>
-                <td>¥17,980<br /><small>（通常¥44,990）</small></td>
+                <td><strong>全プラットフォーム<br />ライセンス</strong><br /><small>（旧クロスデバイス永続ライセンス）</small></td>
+                <td>{yen(PLANS.allPlatforms.sale)}<br /><small>（通常{yen(PLANS.allPlatforms.regular!)}）</small></td>
                 <td>PC2台＋モバイル3台。スマホアプリ（Luminar Mobile）が使用可。</td>
               </tr>
               <tr>
-                <td><strong>Upgrade Pass</strong></td>
-                <td>約¥7,400/年</td>
-                <td>有効期間中の新機能アップデート＋生成AI無制限。</td>
-              </tr>
-              <tr>
-                <td><strong>Ecosystem Pass</strong></td>
-                <td>約¥10,400/年</td>
-                <td>Upgrade Passの内容＋Luminar Mobile＋クロスデバイス編集＋Spaces。</td>
+                <td><strong>Luminar Prime</strong></td>
+                <td>初年度{approxYen(PRIME.firstYear)}／以降{approxYen(PRIME.renewal)}</td>
+                <td>契約期間中の新機能アップデート＋AIツール無制限＋アセットライブラリ＋Spaces。旧Upgrade Pass／Ecosystem Passの後継。</td>
               </tr>
             </tbody>
           </table>
@@ -201,7 +197,7 @@ export default async function Page() {
               <tr>
                 <td><strong>生成AI機能</strong></td>
                 <td>GenErase（生成AI削除）、GenSwap（生成AI置換）、GenExpand（生成AI拡張）</td>
-                <td><span className="text-false">期限あり</span><br />買い切り購入から1年間<br />以後はパス有効期間中は利用可</td>
+                <td><span className="text-false">期限あり</span><br />買い切り購入から1年間<br />以後はPrime契約期間中は利用可</td>
               </tr>
             </tbody>
           </table>
@@ -211,14 +207,14 @@ export default async function Page() {
           <dl className="definition-body">
             <dt>選択肢1：そのまま使い続ける（追加費用なし）</dt>
             <dd>生成AIツールの使用期限は切れますが、Proツールを含む購入時点の編集機能はそのまま永続的に使えます。</dd>
-            <dt>選択肢2：パスを更新する</dt>
-            <dd>生成AI機能を引き続き使いたい場合や、最新アップデートを受け取りたい場合は、Upgrade Pass（約¥7,400/年）またはEcosystem Pass（約¥10,400/年）を購入します。</dd>
+            <dt>選択肢2：Luminar Primeを更新する</dt>
+            <dd>AIツールを引き続き使いたい場合や、最新アップデートを受け取りたい場合は、Luminar Prime（初年度{approxYen(PRIME.firstYear)}／2年目以降{approxYen(PRIME.renewal)}）を契約します。</dd>
           </dl>
         </div>
-        <p>※Luminar Neoの価格はセールや為替レートにより変動します（上記は2026年7月5日確認時点のセール価格）。最新価格は公式サイトでご確認ください。</p>
+        <p>※Luminar Neoの価格はセールや為替レートにより変動します（上記は公式ストアで確認した時点のセール価格）。最新価格は公式サイトでご確認ください。</p>
         <h3>5年間使い続けた場合の総支払額を比較</h3>
-        <p>長期で見ると、買い切りのLuminar Neoのコスト優位性は明らかです。<strong>Proツールを含む編集機能は買い切りだけで永続的に使えます。</strong>生成AIの継続利用や新機能アップデートも欲しい場合は「買い切り＋パス1年」（合計約¥23,400）を目安にするとよいでしょう。</p>
-        <p>「払い続けなければ使えなくなる」という構造と「払わなくても使い続けられる」という構造の違いは、金額以上に心理的な安心感に影響するのではないでしょうか。</p>
+        <p>長期で見ると、買い切りのLuminar Neoのコスト優位性は明らかです。<strong>Proツールを含む編集機能は買い切りだけで永続的に使えます。</strong>生成AIの継続利用や新機能アップデートも欲しい場合は「買い切り＋Luminar Prime 1年」（合計{approxYen(totalWithPrime('desktop', 1))}）を目安にするとよいでしょう。</p>
+        <p>「払い続けなければ使えなくなる」のと「払わなくても使い続けられる」のとでは、同じ金額でも受け止め方が違います。撮影の頻度が落ちた時期にサブスクの請求だけ続くのは、地味に効いてきます。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -227,37 +223,37 @@ export default async function Page() {
                 <th>Lightroom<br />フォトプラン(1TB)</th>
                 <th>Lightroom<br />単体プラン(1TB)</th>
                 <th>Luminar Neo<br />（買い切りのみ）</th>
-                <th>Luminar Neo<br />（買い切り＋パス1年）</th>
+                <th>Luminar Neo<br />（買い切り＋Luminar Prime 1年）</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>1年目</td>
-                <td>約¥28,560</td>
-                <td>約¥17,760</td>
-                <td>約¥15,980</td>
-                <td>約¥23,400</td>
+                <td>{approxYen(LIGHTROOM.photoPlan1TB * 1)}</td>
+                <td>{approxYen(LIGHTROOM.annualMonthly * 1)}</td>
+                <td>{approxYen(PLANS.desktop.sale)}</td>
+                <td>{approxYen(totalWithPrime('desktop', 1))}</td>
               </tr>
               <tr>
                 <td>3年間</td>
-                <td>約¥85,680</td>
-                <td>約¥53,280</td>
-                <td>約¥15,980</td>
-                <td>約¥23,400</td>
+                <td>{approxYen(LIGHTROOM.photoPlan1TB * 3)}</td>
+                <td>{approxYen(LIGHTROOM.annualMonthly * 3)}</td>
+                <td>{approxYen(PLANS.desktop.sale)}</td>
+                <td>{approxYen(totalWithPrime('desktop', 1))}</td>
               </tr>
               <tr>
                 <td>5年間</td>
-                <td>約¥142,800</td>
-                <td>約¥88,800</td>
-                <td>約¥15,980</td>
-                <td>約¥23,400</td>
+                <td>{approxYen(LIGHTROOM.photoPlan1TB * 5)}</td>
+                <td>{approxYen(LIGHTROOM.annualMonthly * 5)}</td>
+                <td>{approxYen(PLANS.desktop.sale)}</td>
+                <td>{approxYen(totalWithPrime('desktop', 1))}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p>※Lightroomフォトプラン(1TB)：月額2,380円×12ヶ月で計算<br />
         ※Lightroom単体プラン(1TB)：月額1,480円×12ヶ月で計算<br />
-        ※Luminar Neo「買い切り＋パス1年」：生成AI無制限＋1年間の新機能アップデートが付くパターン（Proツールは買い切りのみでも永続利用可）</p>
+        ※Luminar Neo「買い切り＋Luminar Prime 1年」：生成AI無制限＋1年間の新機能アップデートが付くパターン（Proツールは買い切りのみでも永続利用可）</p>
       </section>
 
       <section id="features" className="content-card card-padding article-body">
@@ -415,7 +411,7 @@ export default async function Page() {
           </div>
           <div id="faq-2" className="faq-item">
             <dt className="faq-q">プロでも使える？</dt>
-            <dd className="faq-a">使えます。風景写真家やポートレート写真家でLuminar Neoをメインツールにしている方は多数います。ただし大量納品の商業撮影では、Lightroomのカタログ管理の方が効率的な場合もあります。</dd>
+            <dd className="faq-a">使えます。風景写真家やポートレート写真家には、Luminar Neoをメインツールにしている方も多数。ただし大量納品の商業撮影では、Lightroomのカタログ管理に軍配が上がる場面もあります。</dd>
           </div>
           <div id="faq-3" className="faq-item">
             <dt className="faq-q">RAW現像の品質は？</dt>
@@ -427,11 +423,11 @@ export default async function Page() {
           </div>
           <div id="faq-5" className="faq-item">
             <dt className="faq-q">Luminar Neoの買い切りプランでProツールは使える？</dt>
-            <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Upgrade Pass / Ecosystem Passが必要なのは、生成AIの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
+            <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Luminar Primeが必要なのは、AIツールの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
           </div>
           <div id="faq-6" className="faq-item">
             <dt className="faq-q">Luminar Neoで1年で使えなくなる機能はある？</dt>
-            <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの<strong>生成AI機能のみ</strong>で、継続利用にはパスの更新が必要です。なお、<strong>Proツールも買い切りに含まれており永続的に使えます</strong>。</dd>
+            <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの<strong>生成AI機能のみ</strong>で、継続利用にはLuminar Primeの契約が必要です。なお、<strong>Proツールも買い切りに含まれており永続的に使えます</strong>。</dd>
           </div>
         </dl>
       </section>
@@ -450,7 +446,7 @@ export default async function Page() {
           <ul className="m-point-box__list">
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Lightroom</strong>：月額1,480円〜2,380円のサブスク。5年で約9〜14万円</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Luminar Neo（買い切りのみ）</strong>：15,980円（セール時）でProツール含む編集機能を永続利用可</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Luminar Neo（買い切り＋パス1年）</strong>：約23,400円で生成AI無制限＋新機能アップデートも1年分付く</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Luminar Neo（買い切り＋Luminar Prime 1年）</strong>：約23,400円で生成AI無制限＋新機能アップデートも1年分付く</li>
           </ul>
         </div>
       </section>
