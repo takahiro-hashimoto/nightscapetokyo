@@ -7,10 +7,8 @@ export const revalidate = false;
 export async function GET() {
   const xml = toSitemapIndexXml();
 
+  // Cache-Control は next.config.ts の headers() が一括で付ける（ここに書いても上書きされる）
   return new Response(xml, {
-    headers: {
-      "Content-Type": "application/xml",
-      "Cache-Control": "public, max-age=3600, s-maxage=3600",
-    },
+    headers: { "Content-Type": "application/xml" },
   });
 }

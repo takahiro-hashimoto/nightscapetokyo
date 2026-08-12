@@ -507,10 +507,10 @@ export function toSitemapIndexXml(): string {
 export async function makeSitemapResponse(locale: keyof Awaited<ReturnType<typeof buildAllEntries>>) {
   const entries = await buildAllEntries();
   const xml = toSitemapXml(entries[locale]);
+  // Cache-Control はここでは指定しない。next.config.ts の headers() が
+  // /:path(sitemap[^/]*\.xml) で上書きするため、ここに書いても効かず
+  // 「コードは3600なのに配信は86400」という食い違いになる。
   return new Response(xml, {
-    headers: {
-      "Content-Type": "application/xml",
-      "Cache-Control": "public, max-age=3600, s-maxage=3600",
-    },
+    headers: { "Content-Type": "application/xml" },
   });
 }

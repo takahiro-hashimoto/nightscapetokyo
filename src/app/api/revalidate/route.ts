@@ -1,12 +1,14 @@
 import { timingSafeEqual } from "crypto";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 
 /**
  * 再検証エンドポイント。2系統の呼び出しを受ける。
  *
  * 1. コンテンツ更新時（?secret=... / REVALIDATE_SECRET）
- *    spots / areas / articles タグを一括で無効化する。従来どおり。
+ *    全タグを一括で無効化する。管理画面外からの手動・外部トリガー用なので、
+ *    何が変わったか分からない前提で全部倒す。
  *
  * 2. 日次 Cron（?mode=daily / Authorization: Bearer <CRON_SECRET>）
  *    「日付が進んだこと」でしか古くならないページを再生成する。
@@ -69,8 +71,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  revalidateTag("spots", "max");
-  revalidateTag("areas", "max");
-  revalidateTag("articles", "max");
-  return NextResponse.json({ revalidated: true, at: new Date().toISOString() });
+  // サイトマップ（buildAllEntries）は tags / tag-pages / translations にも
+  // ぶら下がっている。以前は spots / areas / articles だけを倒していたため、
+  // このエンドポイント経由ではタグページや翻訳の更新がサイトマップに載らなかった。
+  const tags = Object.values(CACHE_TAGS);
+  for (const tag of tags) revalidateTag(tag, "max");
+  return NextResponse.json({ revalidated: tags, at: new Date().toISOString() });
 }

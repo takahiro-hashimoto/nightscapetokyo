@@ -334,6 +334,19 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // サイトマップXMLのキャッシュはここが唯一の定義（route.ts 側で
+      // Cache-Control を書いても catch-all の /(.*) 共々このルールに上書きされる）。
+      // catch-all の s-maxage=86400 + SWR 7日 のままだと、実測で age が6日に達し
+      // 更新後1週間ちかく古いXMLをGoogleに返しうる。SWRは短くして鮮度を優先する。
+      {
+        source: "/:path(sitemap[^/]*\\.xml)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=3600, stale-while-revalidate=600",
+          },
+        ],
+      },
     ];
   },
 };
