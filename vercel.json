@@ -6,8 +6,12 @@
   "ignoreCommand": "node scripts/vercel-ignore-build.mjs",
   "crons": [
     {
-      "path": "/api/revalidate?mode=daily",
+      "path": "/api/revalidate/?mode=daily",
       "schedule": "10 15 * * *"
+    },
+    {
+      "path": "/api/luminar/sale-sync/",
+      "schedule": "0 22 * * *"
     }
   ]
 }
