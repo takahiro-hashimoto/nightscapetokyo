@@ -22,13 +22,13 @@ const META = {
 
 const TOC: TocItem[] = [
   { id: 'faq-purchase', level: 2, text: 'Luminar Neoの購入・料金に関する質問' },
-  { id: 'faq-trial', level: 2, text: '体験版・導入前の不安' },
-  { id: 'faq-features', level: 2, text: '機能・他ソフトとの違い' },
-  { id: 'faq-files', level: 2, text: '対応ファイル・出力形式' },
-  { id: 'faq-performance', level: 2, text: '動作環境・パフォーマンス' },
-  { id: 'faq-license', level: 2, text: '購入後・ライセンス関連' },
+  { id: 'faq-trial', level: 2, text: 'Luminar Neoの体験版・導入前の不安' },
+  { id: 'faq-features', level: 2, text: 'Luminar Neoの機能・他ソフトとの違い' },
+  { id: 'faq-files', level: 2, text: 'Luminar Neoの対応ファイル・出力形式' },
+  { id: 'faq-performance', level: 2, text: 'Luminar Neoの動作環境・パフォーマンス' },
+  { id: 'faq-license', level: 2, text: 'Luminar Neo購入後・ライセンス関連' },
   { id: 'faq-pro', level: 2, text: 'Proツール・Luminar Primeに関する質問' },
-  { id: 'faq-legacy', level: 2, text: '旧プラン名・旧パスとの対応（名称変更まとめ）' },
+  { id: 'faq-legacy', level: 2, text: 'Luminar Neoの旧プラン名・旧パスとの対応' },
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -92,7 +92,7 @@ export default async function Page() {
           <dt className="faq-q">Luminar Neoの価格はいくら？</dt>
           <dd className="faq-a">
             Luminar Neoの価格は、選ぶプランによって変わります。現在は「デスクトップ専用ライセンス」「全プラットフォームライセンス」「Maxライセンス」の3種類が用意されていて（それぞれ旧称は「永久ライセンス デスクトップ版」「クロスデバイス永続ライセンス」「永久 Maxライセンス」）、モバイルアプリやCreative Libraryへのアクセスが含まれるかどうかで価格が異なります。現在のセール価格は、デスクトップ専用{priceWithRegular('desktop')}、全プラットフォーム{priceWithRegular('allPlatforms')}、Max{priceWithRegular('max')}です。セール価格は時期により変動します。
-            <strong>重要：</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在すべての買い切りライセンスに標準搭載。追加購入なしで永続的に使えます。
+            重要：Proツール（Noiseless AI、HDR Mergeなど8種）は、現在すべての買い切りライセンスに標準搭載。追加購入なしで永続的に使えます。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">Luminar Neoの料金プラン詳細はこちら</Link>
           </dd>
         </div>
@@ -106,14 +106,9 @@ export default async function Page() {
         <div id="faq-3" className="faq-item">
           <dt className="faq-q">買い切りとLuminar Primeの違いは？</dt>
           <dd className="faq-a">
-            Luminar Neoは買い切り（永久ライセンス）プランのみの販売となっています。一度購入すれば、Proツール（8種）を含む編集機能はずっと使い続けられます。
-            年額サブスクのLuminar Prime（初年度{approxYen(PRIME.firstYear)}／2年目以降{approxYen(PRIME.renewal)}）は、以下を追加するオプションです。なお以前あったUpgrade Pass／Ecosystem Passは廃止され、Primeに一本化されています：
-            <ul>
-              <li><strong>新機能アップデート</strong>：Primeの契約期間中にリリースされる新機能・アップデートを受け取れます</li>
-              <li><strong>生成AI機能の無制限利用</strong>：GenErase、GenSwap、GenExpand → 買い切りのみの場合は購入日から1年間利用可、以後はPrimeで更新</li>
-              <li><strong>アセットライブラリとSpaces</strong>：プリセット・LUT・オーバーレイ・空素材、Webギャラリー</li>
-            </ul>
-            Primeが失効しても、アプリ本体とProツールはそのまま永続的に使えます。失効で止まるのは生成AIと以後のアップデートのみです。
+            Luminar Neoは買い切り（永久ライセンス）のみの販売です。一度購入すれば、Proツール8種を含む編集機能はずっと使い続けられます。
+            年額のLuminar Prime（初年度{approxYen(PRIME.firstYear)}／2年目以降{approxYen(PRIME.renewal)}）は、契約期間中の新機能アップデート、生成AI（GenErase・GenSwapなど）の無制限利用、アセットライブラリとSpacesを追加するオプションです。生成AIは買い切りだけでも購入日から1年間は使えます。
+            Primeが失効しても、アプリ本体とProツールは永続的に使えます。止まるのは生成AIと以後のアップデートだけです。なお旧Upgrade Pass／Ecosystem Passは廃止され、Primeに一本化されました。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">プラン形式の詳細を確認する</Link>
           </dd>
         </div>
@@ -139,7 +134,8 @@ export default async function Page() {
       </section>
 
       <section id="faq-trial" className="content-card card-padding article-body">
-        <h2>体験版・導入前の不安</h2>
+        <h2>Luminar Neoの体験版・導入前の不安</h2>
+        <p>買う前に確かめておきたいこと、体験版の制限についての質問です。</p>
         <div id="faq-4" className="faq-item">
           <dt className="faq-q">無料体験版はある？</dt>
           <dd className="faq-a">
@@ -160,7 +156,8 @@ export default async function Page() {
       </section>
 
       <section id="faq-features" className="content-card card-padding article-body">
-        <h2>機能・他ソフトとの違い</h2>
+        <h2>Luminar Neoの機能・他ソフトとの違い</h2>
+        <p>LightroomやPhotoshopと比べてどうか、何ができて何ができないかの質問です。</p>
         <div id="faq-5" className="faq-item">
           <dt className="faq-q">Luminar Neoでは何ができる？</dt>
           <dd className="faq-a">
@@ -192,19 +189,9 @@ export default async function Page() {
         <div className="faq-item faq-item-last">
           <dt className="faq-q">Proツール（拡張機能）は必要？</dt>
           <dd className="faq-a">
-            <strong>用途によります。</strong>Proツール（旧称：拡張機能・エクステンション）は、高度なノイズ除去やHDR合成など、より専門的な編集機能です。
-            嬉しいのは、<strong>現在はProツール8種すべてが買い切り（永久）ライセンスに標準で含まれている</strong>こと。Luminar Primeなどの追加購入は不要で、どの買い切りプランでも永続的に使えます。
-            Proツール全8種：
-            <ul>
-              <li>Supersharp AI（シャープネス強化）</li>
-              <li>Noiseless AI（ノイズ除去）</li>
-              <li>Upscale AI（解像度アップ）</li>
-              <li>Focus Stacking（深度合成）</li>
-              <li>Background Removal AI（背景除去）</li>
-              <li>HDR Merge（HDR合成）</li>
-              <li>Magic Light AI（光の演出）</li>
-              <li>Panorama Stitching（パノラマ合成）</li>
-            </ul>
+            用途によります。Proツール（旧称：拡張機能・エクステンション）は、高度なノイズ除去やHDR合成といった専門的な編集機能をまとめた8種です。
+            重要なのは、現在は8種すべてが買い切り（永久）ライセンスに標準で含まれていること。Luminar Primeなどの追加購入は不要で、どの買い切りプランでも永続的に使えます。
+            夜景や高感度撮影をするならノイズ除去（Noiseless AI）と手ブレ補正（Supersharp AI）が効きますが、基本補正しかしないなら意識する必要はありません。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/expand/">Proツール（拡張機能）の詳細と選び方</Link>
           </dd>
         </div>
@@ -218,7 +205,8 @@ export default async function Page() {
       </section>
 
       <section id="faq-files" className="content-card card-padding article-body">
-        <h2>対応ファイル・出力形式</h2>
+        <h2>Luminar Neoの対応ファイル・出力形式</h2>
+        <p>手持ちのカメラやファイル形式が使えるかどうかの質問です。</p>
         <div id="faq-9" className="faq-item">
           <dt className="faq-q">対応しているカメラは？</dt>
           <dd className="faq-a">
@@ -251,7 +239,8 @@ export default async function Page() {
       </section>
 
       <section id="faq-performance" className="content-card card-padding article-body">
-        <h2>動作環境・パフォーマンス</h2>
+        <h2>Luminar Neoの動作環境・パフォーマンス</h2>
+        <p>自分のPCで動くか、重くならないかについての質問です。</p>
         <div id="faq-12" className="faq-item">
           <dt className="faq-q">対応OS・推奨スペックは？</dt>
           <dd className="faq-a">
@@ -299,7 +288,8 @@ export default async function Page() {
       </section>
 
       <section id="faq-license" className="content-card card-padding article-body">
-        <h2>購入後・ライセンス関連</h2>
+        <h2>Luminar Neo購入後・ライセンス関連</h2>
+        <p>購入したあとの手続きや、複数台での利用についての質問です。</p>
         <div id="faq-15" className="faq-item">
           <dt className="faq-q">何台のPCにインストールできる？</dt>
           <dd className="faq-a">
@@ -346,24 +336,25 @@ export default async function Page() {
 
       <section id="faq-pro" className="content-card card-padding article-body">
         <h2>Proツール・Luminar Primeに関する質問</h2>
+        <p>何が買い切りに含まれ、何に期限があるのかについての質問です。</p>
         <div id="faq-19" className="faq-item">
           <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
           <dd className="faq-a">
-            <strong>はい、使えます。</strong>現在は、Proツール（旧：拡張機能・エクステンション）8種すべてが買い切りプランに標準搭載。
+            はい、使えます。現在は、Proツール（旧：拡張機能・エクステンション）8種すべてが買い切りプランに標準搭載。
             Luminar Primeなどの追加購入は不要で、どの買い切りライセンスでも永続的に利用できます。
           </dd>
         </div>
         <div id="faq-20" className="faq-item">
           <dt className="faq-q">一度Luminar Primeを契約したらProツールはずっと使える？</dt>
           <dd className="faq-a">
-            そもそも<strong>ProツールはLuminar Primeの有無に関係なく、買い切りライセンスで永続的に使えます</strong>。Luminar Primeを契約・更新しなくても、Proツールが消えることはありません。
+            そもそもProツールはLuminar Primeの有無に関係なく、買い切りライセンスで永続的に使えます。Luminar Primeを契約・更新しなくても、Proツールが消えることはありません。
             Luminar Primeが担うのは、契約期間中の新機能アップデートとAIツール（GenErase、GenSwap、GenExpand、Restoration、AI Assistant）の無制限利用です。Primeが失効すると、これらのみ使えなくなります。
           </dd>
         </div>
         <div className="faq-item faq-item-last">
           <dt className="faq-q">コスパの良い買い方は？</dt>
           <dd className="faq-a">
-            「Proツールを含む編集機能だけ使えればいい」という方は、<strong>デスクトップ専用ライセンス（旧・永久ライセンス デスクトップ版）だけ</strong>を購入するのが最もコスパの良い選択です。
+            「Proツールを含む編集機能だけ使えればいい」という方は、デスクトップ専用ライセンス（旧・永久ライセンス デスクトップ版）だけを購入するのが最もコスパの良い選択です。
             セール時なら{priceWithRegular('desktop')}で、Proツール8種も標準で含まれて永続的に使えます。5年使っても追加費用はかかりません。
             AIツールを継続して使いたい場合や、新機能アップデートを受け取りたい場合のみ、Luminar Primeを追加・更新する形になります。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">料金プランの詳細とコストシミュレーション</Link>
@@ -372,7 +363,7 @@ export default async function Page() {
       </section>
 
       <section id="faq-legacy" className="content-card card-padding article-body">
-        <h2>旧プラン名・旧パスとの対応（名称変更まとめ）</h2>
+        <h2>Luminar Neoの旧プラン名・旧パスとの対応</h2>
         <p>Luminar Neoはプラン名とオプションの体系が過去に何度か変わっています。検索して出てくる解説記事には旧名称のまま書かれているものが多いので、対応関係をここで整理しておきます。</p>
         <div className="m-table-wrap">
           <table className="m-table">
@@ -417,7 +408,7 @@ export default async function Page() {
         <div id="faq-21" className="faq-item">
           <dt className="faq-q">アップグレードパス（Upgrade Pass）はどこに行った？</dt>
           <dd className="faq-a">
-            アップグレードパスは現在、公式ストアで販売されていません。シーズンごとにパスを買い足していく方式そのものが廃止され、年額サブスクの<strong>Luminar Prime</strong>に一本化されました。
+            アップグレードパスは現在、公式ストアで販売されていません。シーズンごとにパスを買い足していく方式そのものが廃止され、年額サブスクのLuminar Primeに一本化されました。
             アップグレードパスが担っていた「新機能アップデート」と「生成AIの継続利用」は、現在はPrimeが担当します。すでに購入済みの方は、その内容が失われることはありません。
           </dd>
         </div>
@@ -431,20 +422,20 @@ export default async function Page() {
         <div id="faq-23" className="faq-item">
           <dt className="faq-q">クロスデバイスライセンスという名前が見当たりません</dt>
           <dd className="faq-a">
-            「クロスデバイス永続ライセンス」は名称が変わり、現在は<strong>全プラットフォームライセンス</strong>として販売されています。
+            「クロスデバイス永続ライセンス」は名称が変わり、現在は全プラットフォームライセンスとして販売されています。
             中身はPC2台＋モバイル3台で、Web版への対応も加わりました。旧名称で検索した場合も、指しているのは同じ系統のプランです。
           </dd>
         </div>
         <div id="faq-24" className="faq-item">
           <dt className="faq-q">永久ライセンス デスクトップ版とデスクトップ専用ライセンスは同じ？</dt>
           <dd className="faq-a">
-            はい、同じプランです。以前は「永久ライセンス デスクトップ版」と表記されていましたが、現在の公式ストアでは<strong>デスクトップ専用ライセンス</strong>という名称になっています。PC2台で使える買い切りプランという内容は変わっていません。
+            はい、同じプランです。以前は「永久ライセンス デスクトップ版」と表記されていましたが、現在の公式ストアではデスクトップ専用ライセンスという名称になっています。PC2台で使える買い切りプランという内容は変わっていません。
           </dd>
         </div>
         <div className="faq-item faq-item-last">
           <dt className="faq-q">Luminar Primeとは？</dt>
           <dd className="faq-a">
-            旧アップグレードパス・旧エコシステムパスを置き換える形で登場した<strong>年額サブスク</strong>です。契約期間中の新機能アップデート、AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）の無制限利用、プリセットなどのアセットライブラリ、Spacesが含まれます。
+            旧アップグレードパス・旧エコシステムパスを置き換える形で登場した年額サブスクです。契約期間中の新機能アップデート、AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）の無制限利用、プリセットなどのアセットライブラリ、Spacesが含まれます。
             任意のオプションなので、契約しなくても買い切りの基本機能とProツール8種は永続的に使えます。
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">Luminar Primeを含む料金体系の詳細はこちら</Link>
           </dd>

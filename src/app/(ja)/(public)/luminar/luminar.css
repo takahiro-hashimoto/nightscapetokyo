@@ -269,7 +269,8 @@
     border-radius: 12px;
     width: 100%;
     max-width: 960px;
-    margin-bottom: 16px;
+    /* .m-figure と同じ値にすること（片方だけ変えると作例の並びのリズムが崩れる） */
+    margin-bottom: var(--space-xl);
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 15px #0000000d;
@@ -843,7 +844,9 @@ img {
 /* Before/After 素材がないツール（⑦アップスケール・⑧パノラマ）の単体画像。
    comparison-container と同じ角丸・影・下余白に揃え、8本並ぶリズムを崩さない。 */
 .m-figure {
-    margin-bottom: 16px;
+    /* 段落の下余白（1em = 16px）と同じだと、面積の大きい画像が本文に貼り付いて見える。
+       比較スライダー（.comparison-container）と同じ値で揃えること。 */
+    margin-bottom: var(--space-xl);
 }
 /* 後から読まれる non-critical.css の .article-body img（角丸8px）に
    同点で負けるため、.article-body を足して詳細度を上げる。 */
@@ -852,4 +855,27 @@ img {
     height: auto;
     border-radius: 12px;
     box-shadow: 0 4px 15px #0000000d;
+}
+
+@media (min-width: 768px) {
+    .m-cta-sale {
+        padding: 1.7rem;
+    }
+}
+
+/* SP ではクーポンとCTAボタンが縦に並ぶ。
+   どちらも内容幅（inline-block）で .m-cta-bottom の align-items:center に
+   中央寄せされるため、幅が食い違って左右端が段違いに見えていた。
+   横並びになる 768px 以上は現状のままにし、SP だけ親いっぱいに広げて端を揃える。 */
+@media (max-width: 767px) {
+    .m-cta-coupon-area,
+    .m-cta-actions {
+        width: 100%;
+    }
+    .m-cta-coupon-btn,
+    .m-cta-actions .m-btn {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
 }

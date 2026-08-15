@@ -93,28 +93,28 @@ export default async function LuminarTopPage() {
                 <h1 className="m-hero-feature__title">
                   Luminar Neo（ルミナーネオ）とは？<br className="sp-only" />特徴・できること・購入方法
                 </h1>
-                {/* リードとメタは1枚のパネルにまとめる。背景写真の上に直接
-                    文字を置くと、写真の明暗によって読みにくい箇所が出るため */}
-                <div className="m-hero-feature__panel">
-                <div className="m-hero-feature__lead">
-                  <p>
-                    Luminar（ルミナー）は、ウクライナのSkylum社が開発する写真編集ソフトです。
-                    AIを用いて撮影した写真を簡単に高いクオリティに現像できる点や、
-                    サブスクではなく買い切りで購入できるのが魅力。
-                  </p>
-                  <p>
-                    本ページではそんなLuminar Neoを2年以上使ってきた現役フォトグラファーが、
-                    Luminarの購入から利用までに必要な情報を体系的に整理しました。
-                  </p>
-                </div>
+                {/* 日付とバッジはそれぞれ枠線付きなので、背景写真の上でも輪郭が出る。
+                    可読性のために敷いていたパネル（m-hero-feature__panel）は不要になり削除した。 */}
                 <p className="m-hero-feature__meta">
                   <time className="m-hero-feature__date" dateTime={LAST_UPDATED}>
                     更新日：{new Date(LAST_UPDATED).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
                   </time>
                   <span className="m-hero-feature__badge">一部広告を含みます</span>
                 </p>
-                </div>
               </div>
+            </div>
+
+            {/* ② リード（ヒーローの下） */}
+            <div className="m-page-lead">
+              <p>
+                Luminar（ルミナー）は、ウクライナのSkylum社が開発する写真編集ソフトです。
+                AIを用いて撮影した写真を簡単に高いクオリティに現像できる点や、
+                サブスクではなく買い切りで購入できるのが魅力。
+              </p>
+              <p>
+                本ページではそんなLuminar Neoを2年以上使ってきた現役フォトグラファーが、
+                Luminarの購入から利用までに必要な情報を体系的に整理しました。
+              </p>
             </div>
 
             {/*

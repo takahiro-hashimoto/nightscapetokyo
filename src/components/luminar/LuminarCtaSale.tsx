@@ -1,6 +1,6 @@
 'use client'
 
-import { useId, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import Link from '@/components/common/AppLink'
 import { AFFILIATE_URL, COUPON_CODE } from '@/lib/luminar/config'
 import { useSaleSettings } from '@/hooks/useSaleSettings'
@@ -25,6 +25,20 @@ export default function LuminarCtaSale() {
   const isActive = settings?.isActive ?? false
   const hasCoupon = settings?.hasCoupon ?? true
 
+  // 残り日数はマウント後に出す。レンダー中に Date.now() を読むと、
+  // 生成済みHTML（別の日に作られている可能性がある）と閲覧時点で値がずれ、
+  // ハイドレーションの不一致になる。
+  const [daysLeft, setDaysLeft] = useState<number | null>(null)
+  const saleEnd = settings?.saleEnd ?? null
+  useEffect(() => {
+    if (!isActive || !saleEnd) {
+      setDaysLeft(null)
+      return
+    }
+    const ms = new Date(saleEnd).getTime() - Date.now()
+    setDaysLeft(Math.max(0, Math.ceil(ms / 86_400_000)))
+  }, [isActive, saleEnd])
+
   return (
     <aside className="m-cta-sale" aria-labelledby={titleId}>
       <div className="m-cta-sale__bg m-cta-sale__bg--1" aria-hidden="true"></div>
@@ -37,7 +51,7 @@ export default function LuminarCtaSale() {
         <p className="m-cta-sale__title" id={titleId}>
           <i className="fa fa-bolt" aria-hidden="true"></i>{' '}
           {isActive ? (
-            <>Luminar Neo<br className="sp-only" />セール実施中！</>
+            <>Luminar Neo<br className="sp-only" />セール実施中{daysLeft != null && `（残り${daysLeft}日）`}</>
           ) : (
             <>Luminar Neoを<br className="sp-only" />お得に購入する</>
           )}

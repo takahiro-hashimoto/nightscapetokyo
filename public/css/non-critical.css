@@ -2032,7 +2032,9 @@
 
 .toc-sublist a {
   font-size: 14px;
-  color: #64748b;
+  /* 親（h2）は #1d1d1f・16px・600。サイズと太さで階層が付いているので、
+     色は slate-500(#64748b) より一段濃くして読みやすさを優先する。 */
+  color: #475569;
   text-decoration: none;
 }
 

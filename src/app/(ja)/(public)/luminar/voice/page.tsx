@@ -9,14 +9,14 @@ import TwitterEmbed from '@/components/luminar/TwitterEmbed'
 
 const META = {
   slug: 'voice',
-  title: 'Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態',
+  title: 'Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態を解説',
   description:
     '「Luminar Neoって実際どうなの？」「買って後悔しない？」という疑問を持っている方も多いはず。 ネットで評判を調べると、「AIがすごい！」という絶賛から…',
   publishedAt: '2026-01-22T23:14:58',
   updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-voice.jpg',
-    alt: 'Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態',
+    alt: 'Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態を解説',
     width: 1920,
     height: 1080,
   },
@@ -81,7 +81,7 @@ export default async function Page() {
 
       <section id="summary" className="content-card card-padding article-body">
         <h2>Luminar Neoの評判まとめ</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/about-luminar-neo.jpg" alt="Luminar Neoの管理画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/about-luminar-neo.jpg" alt="Luminar Neoの管理画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>まず全体像から。</p>
         <p><strong>良い評判で多いのは</strong>、AI編集の手軽さと仕上がりの速さです。「Lightroomで1時間かかっていた作業が10分で終わった」「初心者の自分でもプロっぽい写真が作れた」という声が目立ちます。特に、空の置き換え（Sky AI）やノイズ除去（Noiseless AI）の評価は高く、「これだけでも買う価値がある」という意見も少なくありません。</p>
         <p><strong>不満として挙がりやすいのは</strong>、動作の重さと料金体系のわかりにくさ。「古いノートPCだとカクカクする」「生成AI機能の継続にはLuminar Primeの契約が必要だと知らなかった」という声です。ただ、どちらも買う前に知っていれば避けられます。</p>
@@ -337,23 +337,23 @@ export default async function Page() {
               日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
           <div id="faq-1" className="faq-item">
             <dt className="faq-q">Luminar Neoは「買い切り」なのに追加料金がかかるの？</dt>
-            <dd className="faq-a">基本機能もProツール（ノイズ除去、HDR合成など）も買い切りで永続利用できます。追加料金が関係するのは<strong>生成AI機能（GenEraseなど）のみ</strong>で、購入から1年間は含まれ、継続にはLuminar Prime（2年目以降{approxYen(PRIME.renewal)}/年）の契約が必要です。Primeが切れてもアプリとProツールはそのまま使えます。</dd>
+            <dd className="faq-a">基本機能もProツール（ノイズ除去、HDR合成など）も買い切りで永続利用できます。追加料金が関係するのは生成AI機能（GenEraseなど）のみで、購入から1年間は含まれ、継続にはLuminar Prime（2年目以降{approxYen(PRIME.renewal)}/年）の契約が必要です。Primeが切れてもアプリとProツールはそのまま使えます。</dd>
           </div>
           <div id="faq-2" className="faq-item">
             <dt className="faq-q">Luminar Neoは本当に重いの？</dt>
-            <dd className="faq-a">AI処理は負荷が高いため、<strong>低スペックPCでは重く感じる</strong>ことがあります。推奨スペック（メモリ16GB以上、GPU搭載）を満たしていれば、快適に動作します。購入前に体験版で確認するのがおすすめです。</dd>
+            <dd className="faq-a">AI処理は負荷が高いため、低スペックPCでは重く感じることがあります。推奨スペック（メモリ16GB以上、GPU搭載）を満たしていれば、快適に動作します。購入前に体験版で確認するのがおすすめです。</dd>
           </div>
           <div id="faq-3" className="faq-item">
             <dt className="faq-q">LightroomとLuminar Neo、どっちがいい？</dt>
-            <dd className="faq-a">用途によります。<strong>写真管理と細かい調整ならLightroom、AI編集と時短ならLuminar Neo</strong>。両方をプラグイン連携で使う方法もあります。得意分野が違うので、併用も選択肢の一つです。</dd>
+            <dd className="faq-a">用途によります。写真管理と細かい調整ならLightroom、AI編集と時短ならLuminar Neo。両方をプラグイン連携で使う方法もあります。得意分野が違うので、併用も選択肢の一つです。</dd>
           </div>
           <div id="faq-4" className="faq-item">
             <dt className="faq-q">サブスクは廃止されたって本当？</dt>
-            <dd className="faq-a"><strong>はい、2026年現在サブスクプランは販売されていません</strong>。現在は買い切りプラン＋Luminar Prime（任意）のみです。古いネット記事には「サブスク vs 買い切り」の比較が残っていますが、過去の情報です。</dd>
+            <dd className="faq-a">はい、2026年現在サブスクプランは販売されていません。現在は買い切りプラン＋Luminar Prime（任意）のみです。古いネット記事には「サブスク vs 買い切り」の比較が残っていますが、過去の情報です。</dd>
           </div>
           <div id="faq-5" className="faq-item">
             <dt className="faq-q">返金保証はある？</dt>
-            <dd className="faq-a">はい、<strong>30日間の返金保証</strong>があります。体験版で試して購入したけど、やっぱり合わなかった…という場合でも安心です。</dd>
+            <dd className="faq-a">はい、30日間の返金保証があります。体験版で試して購入したけど、やっぱり合わなかった…という場合でも安心です。</dd>
           </div>
         </dl>
         <div className="m-link-box">

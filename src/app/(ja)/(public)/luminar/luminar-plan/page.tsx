@@ -12,15 +12,17 @@ const META = {
   // タイトルの語は Search Console の実績で決めている。
   // 「買い切り」「サブスク」はタイトルに入っており CTR 20〜37%／掲載順位1.6位。
   // 一方「価格」「値段」は入っておらず、順位4〜5位・約600表示に対し CTR 1〜5% だった。
-  // 順位ではなくタイトルの語が原因と判断し、勝っている語を残したまま価格系を足している。
-  title: 'Luminar Neo 買い切りの価格｜いくら？サブスク廃止後の料金体系を解説【2026年】',
+  // 勝っている語（買い切り・サブスク）は必ず残すこと。
+  // 以前は「価格｜いくら？…料金体系」と同義語が3つ並んで46字を使っていたため、
+  // 重複を1つに絞り、空いた分に記事の中身である「3プラン」を入れている。
+  title: 'Luminar Neoの買い切りはいくら？3プランの価格とサブスクとの違い【2026年】',
   description:
     'Luminar Neoの買い切り版はいくら？デスクトップ専用・全プラットフォーム・Maxの3プランの価格と値段を比較。サブスク廃止後の料金体系と、Luminar Primeが必要かどうかまで解説します。',
   publishedAt: '2026-01-18T10:38:20',
   updatedAt: '2026-08-13T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/plan.jpg',
-    alt: 'Luminar Neo 買い切りの価格｜いくら？サブスク廃止後の料金体系を解説【2026年】',
+    alt: 'Luminar Neoの買い切りはいくら？3プランの価格とサブスクとの違い【2026年】',
     width: 1920,
     height: 1080,
   },
@@ -158,9 +160,13 @@ export default async function Page() {
 
       <section id="step2" className="content-card card-padding article-body">
         <h2>Luminar Primeを追加するか決める</h2>
-        <p>以前は「アップグレードLuminar Prime（年額$49）」「エコシステムLuminar Prime（年額$69）」という2種類の年額オプションがありましたが、<strong>現在は年額サブスクの「Luminar Prime」1本に統合されています</strong>。他サイトに旧パスの解説が残っていますが、それらは過去の情報です。</p>
-        <p>Primeを契約すると、契約期間中はAIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）が無制限に使え、その間にリリースされた新機能を受け取れます。プリセットや空素材のアセットライブラリ、Spaces（Webギャラリー）も付きます。価格は初年度が年額{approxYen(PRIME.firstYear)}、2年目以降は継続割引が入って年額{approxYen(PRIME.renewal)}が目安です（為替と時期で変動します）。</p>
-        <p>逆に言えば、<strong>ProツールはPrimeを契約しなくても最初から永続で使えます</strong>。考えるべきは「生成AIを2年目以降も使うか」「常に最新機能が欲しいか」の2点だけです。</p>
+        {/*
+          もとは冒頭に旧パス（アップグレード／エコシステム）の統合を説明する段落があったが、
+          faq に専用の h2「旧プラン名・旧パスとの対応」と設問2つがあり、
+          このページ自身の FAQ でも触れていて3重だった。過去の話から始まる構成でもあったため削除。
+        */}
+        <p>Primeは年額のサブスクです。契約期間中はAIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）が無制限に使え、その間の新機能アップデートとアセットライブラリ、Spaces（Webギャラリー）も付きます。価格は初年度が{approxYen(PRIME.firstYear)}、2年目以降は継続割引で{approxYen(PRIME.renewal)}が目安です。</p>
+        <p>ただし<strong>ProツールはPrimeを契約しなくても最初から永続で使えます</strong>。判断すべきは「生成AIを2年目以降も使うか」「常に最新機能が欲しいか」の2点だけです。</p>
         {/*
           もとはここに「継続しない場合」「一度も契約しない場合」の2カラム箱が
           並んでいたが、どちらも下の表と同じことを言っていたため表に一本化した。
@@ -269,27 +275,27 @@ export default async function Page() {
               日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
           <div id="faq-1" className="faq-item">
             <dt className="faq-q">サブスクプランはもうないの？</dt>
-            <dd className="faq-a"><strong>公式ストアでは現在、新規販売されていません。</strong>以前は月額・年額のサブスクリプションプランも存在しましたが、2026年現在、日本の公式ストアで販売されているのは買い切りプラン＋Luminar Prime（任意）のみとなっています。</dd>
+            <dd className="faq-a">公式ストアでは現在、新規販売されていません。以前は月額・年額のサブスクリプションプランも存在しましたが、2026年現在、日本の公式ストアで販売されているのは買い切りプラン＋Luminar Prime（任意）のみとなっています。</dd>
           </div>
           <div id="faq-2" className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
-            <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切りプランに標準で含まれており、<strong>永続的に利用できます</strong>。Luminar Primeの契約は不要です。</dd>
+            <dd className="faq-a">はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切りプランに標準で含まれており、永続的に利用できます。Luminar Primeの契約は不要です。</dd>
           </div>
           <div id="faq-3" className="faq-item">
             <dt className="faq-q">Luminar Primeを契約すると何が変わる？</dt>
-            <dd className="faq-a">Luminar Primeの契約期間中、<strong>AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）の無制限利用と、その期間中にリリースされる新機能へのアップデート</strong>が手に入ります。プリセット等のアセットライブラリとSpaces（Webギャラリー）も利用可能。なお以前あったアップグレードパス／エコシステムパスは廃止され、現在はPrimeに一本化されています。</dd>
+            <dd className="faq-a">Luminar Primeの契約期間中、AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）の無制限利用と、その期間中にリリースされる新機能へのアップデートが手に入ります。プリセット等のアセットライブラリとSpaces（Webギャラリー）も利用可能。なお以前あったアップグレードパス／エコシステムパスは廃止され、現在はPrimeに一本化されています。</dd>
           </div>
           <div id="faq-4" className="faq-item">
             <dt className="faq-q">途中でLuminar Primeをやめたらどうなる？</dt>
-            <dd className="faq-a">生成AI機能と最新アップデートが使えなくなりますが、<strong>基本機能とProツールはそのまま使い続けられます</strong>。</dd>
+            <dd className="faq-a">生成AI機能と最新アップデートが使えなくなりますが、基本機能とProツールはそのまま使い続けられます。</dd>
           </div>
           <div id="faq-5" className="faq-item">
             <dt className="faq-q">Luminar Primeは毎年契約しないといけない？</dt>
-            <dd className="faq-a">必要な年だけ購入すればOKです。<strong>基本機能とProツールだけ使えればいい場合は、Luminar Primeなしの買い切りのみが最もコスパ◎</strong>です。</dd>
+            <dd className="faq-a">必要な年だけ購入すればOKです。基本機能とProツールだけ使えればいい場合は、Luminar Primeなしの買い切りのみが最もコスパ◎です。</dd>
           </div>
           <div id="faq-6" className="faq-item">
             <dt className="faq-q">1つのライセンスで何台のPCにインストールできる？</dt>
-            <dd className="faq-a">デスクトップ専用ライセンスは<strong>2台のPC</strong>にインストール可能です。Windows・Mac問わず、どの組み合わせでもOK。クロスデバイス・Maxライセンスならさらにモバイル3台でも使えます。</dd>
+            <dd className="faq-a">デスクトップ専用ライセンスは2台のPCにインストール可能です。Windows・Mac問わず、どの組み合わせでもOK。クロスデバイス・Maxライセンスならさらにモバイル3台でも使えます。</dd>
           </div>
           <div id="faq-7" className="faq-item">
             <dt className="faq-q">セールはいつある？</dt>
@@ -297,7 +303,7 @@ export default async function Page() {
           </div>
           <div id="faq-8" className="faq-item">
             <dt className="faq-q">返金保証はある？</dt>
-            <dd className="faq-a">はい、公式ストアで購入した場合は<strong>30日間の返金保証</strong>があります。「思っていたのと違った…」という場合でも安心です。</dd>
+            <dd className="faq-a">はい、公式ストアで購入した場合は30日間の返金保証があります。「思っていたのと違った…」という場合でも安心です。</dd>
           </div>
           {/*
             以下は Search Console で表示はあるのにクリックがほぼ取れていなかったクエリを
@@ -306,48 +312,41 @@ export default async function Page() {
           */}
           <div id="faq-9" className="faq-item">
             <dt className="faq-q">Luminar Neoの値段は結局いくら？</dt>
-            <dd className="faq-a">買い切りプランは3種類で、値段は{PLANS.desktop.name}が{approxYen(PLANS.desktop.sale)}、{PLANS.allPlatforms.name}が{approxYen(PLANS.allPlatforms.sale)}、{PLANS.max.name}が{approxYen(PLANS.max.sale)}です（セール時の価格）。<strong>これ以外に必須の費用はなく、Luminar Primeは必要な年だけ追加するオプション</strong>です。セール時期によって価格は変動するため、最新の金額は<Link href="/luminar/sale-and-coupon-info/">セール・クーポン情報</Link>で確認してください。</dd>
+            <dd className="faq-a">買い切りプランは3種類で、値段は{PLANS.desktop.name}が{approxYen(PLANS.desktop.sale)}、{PLANS.allPlatforms.name}が{approxYen(PLANS.allPlatforms.sale)}、{PLANS.max.name}が{approxYen(PLANS.max.sale)}です（セール時の価格）。これ以外に必須の費用はなく、Luminar Primeは必要な年だけ追加するオプションです。セール時期によって価格は変動するため、最新の金額は<Link href="/luminar/sale-and-coupon-info/">セール・クーポン情報</Link>で確認してください。</dd>
           </div>
           <div id="faq-10" className="faq-item">
             <dt className="faq-q">モバイルアプリだけを買い切りで購入できる？</dt>
-            <dd className="faq-a">できません。公式ストアの買い切りプランは上記3種類で、<strong>モバイル単体のライセンスは用意されていません</strong>。スマホやタブレットで使いたい場合は、モバイル3台まで含まれる{PLANS.allPlatforms.name}以上を選ぶことになります。</dd>
+            <dd className="faq-a">できません。公式ストアの買い切りプランは上記3種類で、モバイル単体のライセンスは用意されていません。スマホやタブレットで使いたい場合は、モバイル3台まで含まれる{PLANS.allPlatforms.name}以上を選ぶことになります。</dd>
           </div>
           <div id="faq-11" className="faq-item">
             <dt className="faq-q">買い切り後のアップデートは無料？</dt>
-            <dd className="faq-a">不具合修正やカメラ対応の更新は買い切りのまま受け取れますが、<strong>購入後に追加された新機能は対象外</strong>です。新機能まで継続的に受け取りたい場合はLuminar Primeを契約します。逆に言えば、今ある機能で足りているなら追加費用は発生しません。</dd>
+            <dd className="faq-a">不具合修正やカメラ対応の更新は買い切りのまま受け取れますが、購入後に追加された新機能は対象外です。新機能まで継続的に受け取りたい場合はLuminar Primeを契約します。逆に言えば、今ある機能で足りているなら追加費用は発生しません。</dd>
           </div>
           <div id="faq-12" className="faq-item">
             <dt className="faq-q">Spaces（スペース）とは何ができる機能？</dt>
-            <dd className="faq-a">写真をWeb上のギャラリーとしてまとめ、共有できる機能です。<strong>{PLANS.allPlatforms.name}と{PLANS.max.name}に含まれ</strong>、{PLANS.desktop.name}では使えません。PCとスマホで同じ写真を扱いたい人向けの機能です。</dd>
+            <dd className="faq-a">写真をWeb上のギャラリーとしてまとめ、共有できる機能です。{PLANS.allPlatforms.name}と{PLANS.max.name}に含まれ、{PLANS.desktop.name}では使えません。PCとスマホで同じ写真を扱いたい人向けの機能です。</dd>
           </div>
           <div id="faq-13" className="faq-item">
             <dt className="faq-q">Creative Libraryとは？</dt>
-            <dd className="faq-a">プリセットやテンプレート、オーバーレイなどのクリエイティブアセットをまとめたもので、1,000点以上が収録されています。<strong>{PLANS.max.name}にのみ含まれます</strong>。自分で一から調整するより、完成された雰囲気を当てて時短したい人向けです。</dd>
+            <dd className="faq-a">プリセットやテンプレート、オーバーレイなどのクリエイティブアセットをまとめたもので、1,000点以上が収録されています。{PLANS.max.name}にのみ含まれます。自分で一から調整するより、完成された雰囲気を当てて時短したい人向けです。</dd>
           </div>
           <div id="faq-14" className="faq-item">
             <dt className="faq-q">Lightroomに買い切り版はある？</dt>
-            <dd className="faq-a">ありません。Adobe Lightroomは<strong>サブスクリプションのみ</strong>で、買い切りでの購入はできません。「買い切りで使える現像ソフトが欲しい」という理由でLuminar Neoを検討する人が多いのはこのためです。両者の違いは<Link href="/luminar/lightroom-compare/">LightroomとLuminar Neoの比較</Link>で詳しく解説しています。</dd>
+            <dd className="faq-a">ありません。Adobe Lightroomはサブスクリプションのみで、買い切りでの購入はできません。「買い切りで使える現像ソフトが欲しい」という理由でLuminar Neoを検討する人が多いのはこのためです。両者の違いは<Link href="/luminar/lightroom-compare/">LightroomとLuminar Neoの比較</Link>で詳しく解説しています。</dd>
           </div>
         </dl>
       </section>
 
       <section id="summary" className="content-card card-padding article-body">
         <h2>まとめ：どのプランを選ぶか</h2>
-        <p>最後に、この記事のポイントをまとめます。</p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span><br />
-            <span className="m-point-box__title">この記事のまとめ</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>旧サブスク・旧パスは廃止</strong>：現在は買い切り＋Luminar Prime（任意）のみ</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>購入は2ステップ</strong>：①買い切りプランを選ぶ → ②Luminar Primeを追加するか決める</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Proツール8種は全買い切りプランに標準搭載（永続利用可）</strong></li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Luminar Primeが必要なのは「AIツール」と「新機能アップデート」を使い続けたい場合のみ</strong></li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>コスパ最強は「買い切りのみ」</strong>（セール時 {approxYen(PLANS.desktop.sale)}で永続利用）</li>
-          </ul>
-        </div>
+        {/*
+          もとはここに m-point-box「この記事のまとめ」があったが、
+          リードの Point ボックスとタイトル・5項目すべてが同一で、
+          記事の最初と最後で同じ箱を読ませていたため文章に置き換えた。
+        */}
+        <p>選び方はシンプルです。<strong>まず買い切り3プランから1つ選び、そのうえでLuminar Primeを足すかどうかを決める。</strong>この2ステップだけです。旧サブスクと旧パスは廃止されているので、他の選択肢はありません。</p>
+        <p>プランはスマホで編集するかどうかで決まります。PCだけで完結するなら{PLANS.desktop.name}（{approxYen(PLANS.desktop.sale)}）で足ります。スマホでも編集するなら全プラットフォーム、プリセットと学習コンテンツまで欲しいならMaxです。</p>
+        <p>Primeを足すかどうかは、<strong>生成AIを2年目以降も使いたいか、常に最新機能を追いたいか</strong>の2点だけで判断できます。どちらも当てはまらないなら不要です。基本機能とProツール8種は買い切りだけで永続的に使えるので、多くの人は買い切りのみで完結します。</p>
         <p><i className="fa-solid fa-arrow-right"></i> プランが決まったら、次は買うタイミングです。<Link href="/luminar/sale-and-coupon-info/">セール時期とクーポンで安く買う方法</Link>にまとめています。</p>
       </section>
 

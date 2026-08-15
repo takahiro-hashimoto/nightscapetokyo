@@ -4,7 +4,6 @@ import Image from 'next/image'
 import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import type { TocItem } from '@/lib/luminar/toc'
-import { getSaleSettings } from '@/lib/luminar/getSaleSettings'
 
 
 const META = {
@@ -23,6 +22,9 @@ const META = {
 
 const TOC: TocItem[] = [
   { id: 'how-to-save', level: 2, text: 'Luminar Neoを安く買う3つの方法' },
+  { id: 'save-coupon', level: 3, text: 'プロモーションコード（クーポン）を利用する' },
+  { id: 'save-sale', level: 3, text: '公式キャンペーン・大型セールを狙う' },
+  { id: 'save-loyalty', level: 3, text: '過去にSkylum製品を持っていれば「特別価格」' },
   { id: 'timing', level: 2, text: '次回のセールはいつ？' },
   { id: 'coupon-how-to', level: 2, text: 'クーポンコードの使い方' },
   { id: 'faq', level: 2, text: 'よくある質問（FAQ）' },
@@ -33,33 +35,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildArticleMetadata(META)
 }
 
-/** セール終了までの残り日数（JST基準・当日は1日と数える） */
-function daysUntil(endIso: string, now: Date): number {
-  return Math.max(0, Math.ceil((new Date(endIso).getTime() - now.getTime()) / 86_400_000))
-}
-
-function buildLead(isSaleActive: boolean, saleEnd: string | null, now: Date) {
-  const daysLeft = isSaleActive && saleEnd ? daysUntil(saleEnd, now) : null
-  const endLabel = saleEnd
-    ? new Date(saleEnd).toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', timeZone: 'Asia/Tokyo' })
-    : null
-  return (
+// もとはリード冒頭に「現在のセール状況」の m-notice があったが、開催状況と残り日数は
+// すぐ下の CTA（LuminarCtaSale）が同じことを表示しており二重だった。
+// CTA のタイトルに残り日数を出す形へ一本化したので、ここは静的なリードでよい。
+const lead = (
     <>
-      <div className="m-notice m-notice--warn">
-        <div className="m-notice__head">
-          <span className="m-notice__badge">現在のセール状況</span>
-          <span className="m-notice__title">
-            {isSaleActive
-              ? `セール開催中！${daysLeft != null ? `（残り${daysLeft}日）` : ''}`
-              : 'セールは開催されていません'}
-          </span>
-        </div>
-        <p>
-          {isSaleActive
-            ? `${endLabel ? `${endLabel}までの開催です。` : ''}当サイト限定クーポンコード「nightscape10」（10%OFF）もご用意しています。セール価格との併用可否は購入画面でご確認ください。`
-            : `現在セールは開催されていません。クーポンコード「nightscape10」で10%OFFは常時ご利用いただけます。次の大型セールはブラックフライデー（11月）やサマーセール（6〜8月）が狙い目です。`}
-        </p>
-      </div>
       <p>「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」</p>
       <p>Luminar Neoは定価だと3〜7万円ほどする写真編集ソフトですが、実は<strong>購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能</strong>です。</p>
       <p>ただしセールの開催時期は年によってずれるので、今買うべきか次を待つべきかの判断が難しいところです。</p>
@@ -77,8 +57,7 @@ function buildLead(isSaleActive: boolean, saleEnd: string | null, now: Date) {
         </ul>
       </div>
     </>
-  )
-}
+)
 
 const FAQ_JSON_LD = [
   { '@type': 'Question', name: '購入後に気に入らなかった場合は？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoには購入後30日間の返金保証があります。実際に使ってみて合わないと感じた場合でも、リスクなく試せる仕組みです。返金手続きはサポートに連絡するだけで完了します。' } },
@@ -90,12 +69,8 @@ const FAQ_JSON_LD = [
 ]
 
 export default async function Page() {
-  // セール状況は config.ts のハードコード値ではなく DB（管理画面／日次同期）を参照する。
-  // 以前は config の SALE_START/SALE_END を見ていたため、DB を更新しても
-  // このページの表示だけ変わらないという不整合が起きていた。
-  const now = new Date()
-  const { isActive: isSaleActive, saleEnd } = await getSaleSettings()
-  const lead = buildLead(isSaleActive, saleEnd, now)
+  // セール状況（開催中かどうか・残り日数）は LuminarArticleLayout が DB から取得して
+  // SaleSettingsProvider に流し、CTA 側が表示する。このページ側での取得は不要。
 
   return (
     <>
@@ -103,18 +78,18 @@ export default async function Page() {
 
       <section id="how-to-save" className="content-card card-padding article-body">
         <h2>Luminar Neoを安く買う3つの方法</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-sale.jpg" alt="Luminar Neoを安く買う3つの方法" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-sale.jpg" alt="Luminar Neoを安く買う3つの方法" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>そもそもLuminar Neoがどんなソフトなのかは<Link href="/luminar/">Luminar Neoの完全ガイド</Link>で解説しています。ここでは価格を下げる方法に絞ります。</p>
         <p>セールがない時期でも、安く買う手はあります。僕が実際に使っているのは次の3つです。</p>
-        <h3>プロモーションコード（クーポン）を利用する</h3>
+        <h3 id="save-coupon">プロモーションコード（クーポン）を利用する</h3>
         <p>セール開催の有無にかかわらず、当サイト限定のクーポンコード「nightscape10」が使えます。購入画面でコードを入力するだけで10%OFFになります。</p>
         <p>なお公式の規約上、割引の併用は不可となっています。<strong>セール価格と併用できるかどうかは購入画面で確認してください。</strong>カートでクーポンを入れてみて、金額が下がるのを見てから決済すれば確実です。</p>
 
-        <h3>公式キャンペーン・大型セールを狙う</h3>
+        <h3 id="save-sale">公式キャンペーン・大型セールを狙う</h3>
         <p>Skylum公式サイトでは、季節ごとにキャンペーンやセールを実施しています。通常価格から<strong>50%〜75%近い割引</strong>になることもあり、値引きの幅はクーポンの10%OFFとは桁が違います。</p>
         <p>年に5〜6回は何らかのセールが走っているので、次を待つ期間もそう長くはなりません。どの月に何が来るかは「<a href="#timing">次回のセールはいつ？</a>」にまとめました。</p>
 
-        <h3>過去にSkylum製品を持っていれば「特別価格」</h3>
+        <h3 id="save-loyalty">過去にSkylum製品を持っていれば「特別価格」</h3>
         <p>過去にLuminar AIやLuminar 4などSkylum製品を買ったことがあるなら、<strong>「お得意様割引（ロイヤルティ割引）」</strong>が使える場合があります。</p>
         <p>確認は公式サイト下部の「お得意様割引をご利用ください」から行います。購入時のメールアドレスかシリアル番号を入れると、対象かどうかが表示されます。対象なら通常価格より下がった金額が提示されます。</p>
 
@@ -187,7 +162,7 @@ export default async function Page() {
               <p className="m-step__title">プランを選択</p>
               <p className="m-step__desc">まずはLuminar Neo公式サイト（<a href="https://skylum.evyy.net/mO9BEa" target="_blank" rel="noopener nofollow">skylum.com</a>）にアクセス。</p>
               <p className="m-step__desc">「デスクトップ専用ライセンス」「全プラットフォームライセンス」「Maxライセンス」の3つから選択し、購入ボタンをクリック。迷ったら、スマホで編集しないかぎり<strong>デスクトップ専用ライセンス</strong>で十分です。</p>
-              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-01.jpg" alt="Luminarの買い切り3プラン（デスクトップ専用・全プラットフォーム・Max）の価格と違いを比較した図" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+              <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-01.jpg" alt="Luminarの買い切り3プラン（デスクトップ専用・全プラットフォーム・Max）の価格と違いを比較した図" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
               <p className="m-step__desc text-xsmall">※上図は通常価格です。実際の購入画面では、開催中のセールに応じて割引後の価格が表示されます。</p>
             </div>
           </div>
@@ -197,7 +172,7 @@ export default async function Page() {
             <div className="m-step__content">
               <p className="m-step__title">プロモーションコードを入力</p>
               <p className="m-step__desc">カート画面の「プロモーションコードを入力」をクリックすると入力欄が開くので、コードを入れて「適用」を押します。全角になっていると弾かれるので、半角で入っているかだけ見てください。</p>
-              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-02.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ2" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+              <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-02.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ2" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
             </div>
           </div>
           <div className="m-step">
@@ -205,7 +180,7 @@ export default async function Page() {
             <div className="m-step__content">
               <p className="m-step__title">割引を確認して決済</p>
               <p className="m-step__desc">合計金額が<strong>10%OFF</strong>になっていれば成功です。あとはメールアドレスと決済情報を入れれば購入完了。登録したアドレスにダウンロードリンクが届きます。</p>
-              <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-03.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ3" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+              <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-03.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ3" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
             </div>
           </div>
         </div>
@@ -218,27 +193,27 @@ export default async function Page() {
               日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
           <div id="faq-1" className="faq-item">
             <dt className="faq-q">購入後に気に入らなかった場合は？</dt>
-            <dd className="faq-a">Luminar Neoには<strong>購入後30日間の返金保証</strong>があります。実際に使ってみて合わないと感じた場合でも、リスクなく試せる仕組みです。返金手続きはサポートに連絡するだけで完了します。</dd>
+            <dd className="faq-a">Luminar Neoには購入後30日間の返金保証があります。実際に使ってみて合わないと感じた場合でも、リスクなく試せる仕組みです。返金手続きはサポートに連絡するだけで完了します。</dd>
           </div>
           <div id="faq-2" className="faq-item">
             <dt className="faq-q">無料体験版はある？</dt>
-            <dd className="faq-a">はい、<strong>7日間の無料体験版</strong>があります。ただし、セール期間中は体験版を試している間にセールが終わってしまうリスクがあります。返金保証が30日間あるため、セール中であれば先に購入してしまうのがおすすめです。</dd>
+            <dd className="faq-a">はい、7日間の無料体験版があります。ただし、セール期間中は体験版を試している間にセールが終わってしまうリスクがあります。返金保証が30日間あるため、セール中であれば先に購入してしまうのがおすすめです。</dd>
           </div>
           <div id="faq-3" className="faq-item">
             <dt className="faq-q">クーポンはセール価格と併用できる？</dt>
-            <dd className="faq-a">公式の規約上は割引の併用は不可とされており、<strong>併用できるかどうかは時期やキャンペーンによって異なります</strong>。購入画面でプロモーションコードを入力し、割引が適用されるかを確認してから決済してください。なお、クーポン同士（複数のプロモーションコード）の併用はできません。</dd>
+            <dd className="faq-a">公式の規約上は割引の併用は不可とされており、併用できるかどうかは時期やキャンペーンによって異なります。購入画面でプロモーションコードを入力し、割引が適用されるかを確認してから決済してください。なお、クーポン同士（複数のプロモーションコード）の併用はできません。</dd>
           </div>
           <div id="faq-4" className="faq-item">
             <dt className="faq-q">何台のPCで使える？</dt>
-            <dd className="faq-a">買い切りのデスクトップ専用ライセンスは<strong>2台のパソコン</strong>でアクティベートできます。全プラットフォームライセンスはさらに3台のモバイルデバイスでも利用可能です。</dd>
+            <dd className="faq-a">買い切りのデスクトップ専用ライセンスは2台のパソコンでアクティベートできます。全プラットフォームライセンスはさらに3台のモバイルデバイスでも利用可能です。</dd>
           </div>
           <div id="faq-5" className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
-            <dd className="faq-a"><strong>はい、使えます。</strong>Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Luminar Primeが必要なのは、AIツールの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
+            <dd className="faq-a">はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Luminar Primeが必要なのは、AIツールの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
           </div>
           <div id="faq-6" className="faq-item">
             <dt className="faq-q">1年で使えなくなる機能があるの？</dt>
-            <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は<strong>永久に使えます</strong>。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの<strong>生成AI機能のみ</strong>です。これらはサーバー側で処理が必要なため、継続利用には別途Luminar Primeの契約が必要になります。なお、<strong>Proツールも買い切りに含まれており永続的に使えます</strong>。</dd>
+            <dd className="faq-a">基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのは「GenErase」「GenSwap」「GenExpand」という3つの生成AI機能のみです。これらはサーバー側で処理が必要なため、継続利用には別途Luminar Primeの契約が必要になります。なお、Proツールも買い切りに含まれており永続的に使えます。</dd>
           </div>
         </dl>
       </section>

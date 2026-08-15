@@ -28,11 +28,11 @@ export async function generateMetadata(): Promise<Metadata> {
 // ── TOC ───────────────────────────────────────────────────────────────────────
 
 const TOC: TocItem[] = [
-  { id: 'heading-1', level: 2, text: 'まず症状を切り分ける' },
+  { id: 'heading-1', level: 2, text: 'Luminar Neoの症状をまず切り分ける' },
   { id: 'heading-2', level: 3, text: 'Q1：起動直後〜編集中に突然落ちる？' },
   { id: 'heading-3', level: 3, text: 'Q2：RAWを開いた瞬間・AI処理中に重くなる？' },
   { id: 'heading-4', level: 3, text: 'Q3：エラーメッセージが出る？' },
-  { id: 'catalog', level: 2, text: '原因①：カタログ（最も多い）' },
+  { id: 'catalog', level: 2, text: '原因①：Luminar Neoのカタログ（最も多い）' },
   { id: 'heading-6', level: 3, text: 'なぜカタログが原因になるのか' },
   { id: 'heading-7', level: 3, text: 'カタログ問題の対処法' },
   { id: 'spec', level: 2, text: '原因②：PCスペック・GPUの問題' },
@@ -41,13 +41,12 @@ const TOC: TocItem[] = [
   { id: 'neo', level: 2, text: '原因③：Luminar Neo側の問題' },
   { id: 'heading-12', level: 3, text: 'よくあるパターン' },
   { id: 'heading-13', level: 3, text: 'Neo側の問題への対処法' },
-  { id: 'heading-14', level: 3, text: '「重い」は欠陥ではなく仕様の一部' },
-  { id: 'heading-15', level: 2, text: '直らない場合はどうするか' },
+  { id: 'heading-15', level: 2, text: 'それでも直らない場合はどうするか' },
   { id: 'heading-16', level: 3, text: '選択肢①：PCを変える' },
   { id: 'heading-17', level: 3, text: '選択肢②：ソフトを変える' },
   { id: 'heading-18', level: 3, text: '選択肢③：Luminar Neoの使い方を変える' },
-  { id: 'heading-19', level: 2, text: 'よくある質問' },
-  { id: 'heading-20', level: 2, text: 'まとめ：原因別の対処' },
+  { id: 'heading-19', level: 2, text: 'Luminar Neoが重い・落ちるときのよくある質問' },
+  { id: 'heading-20', level: 2, text: 'まとめ：Luminar Neoが重いときの原因別対処' },
 ]
 
 // ── リード文（最初の h2 より前）────────────────────────────────────────────────
@@ -59,80 +58,19 @@ const lead = (
       ネットで「再起動してください」「アップデートしてください」という対処法を見かけますが、正直それで解決するケースは少ないです。なぜなら、
       <strong>重い・落ちる原因は複数あり、原因によって対処法が全く異なる</strong>からです。
     </p>
-    <p>まず自分の症状を選んで、該当セクションに直接飛んでください。</p>
-    <p>
-      この記事では、まず「自分がどの原因に該当するか」を切り分け、
-      <strong>その原因に対して今すぐできる対処法</strong>を解説します。闇雲に全部試す必要はありません。
-    </p>
-    <div className="m-table-wrap">
-      <table className="m-table">
-        <thead>
-          <tr>
-            <th>症状</th>
-            <th>主な原因</th>
-            <th>対処法へ</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>起動しない・突然落ちる</td>
-            <td>カタログの不具合</td>
-            <td><a href="#catalog">カタログ初期化</a></td>
-          </tr>
-          <tr>
-            <td>「Database opening failed」エラー</td>
-            <td>カタログ破損</td>
-            <td><a href="#catalog">カタログ初期化</a></td>
-          </tr>
-          <tr>
-            <td>RAWを開くと重くなる</td>
-            <td>PCスペック・GPU不足</td>
-            <td><a href="#spec">スペック対策</a></td>
-          </tr>
-          <tr>
-            <td>AI処理中に固まる・落ちる</td>
-            <td>メモリ・GPU不足</td>
-            <td><a href="#spec">スペック対策</a></td>
-          </tr>
-          <tr>
-            <td>特定の操作だけ不安定（M1/M2 Macを含む）</td>
-            <td>Neo側の仕様・不具合</td>
-            <td><a href="#neo">Neo側の対処法</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    {/*
+      もとはここに症状別の表（症状／主な原因／対処法へのアンカー）があったが、
+      セクション1「Luminar Neoの症状をまず切り分ける」の Q1〜Q3 が同じ切り分けを
+      していて、飛び先も #catalog / #spec / #neo の3つで一致していた。
+      切り分けはセクション1に一本化し、リードは問題提起だけにする。
+      表を指していた「まず自分の症状を選んで…」の一文も、次の段落と内容が重なるため削除。
+    */}
+    {/*
+      結論の要約リストもここにあったが、内容は目次と本文の見出し
+      （切り分け → 原因①②③ → 直らない場合）がそのまま示している。
+      リードは問題提起だけに絞る。
+    */}
     <p>起動しない・重いで困っている方は、ぜひチェックしてみてください。</p>
-    <div className="m-point-box">
-      <div className="m-point-box__bg">!</div>
-      <div className="m-point-box__header">
-        <span className="m-point-box__label">Point</span>
-        <br />
-        <span className="m-point-box__title">この記事の結論</span>
-      </div>
-      <ul className="m-point-box__list">
-        <li>
-          <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-          <strong>原因は3つ</strong>：カタログの不具合 / PCスペック・GPU / Neo側の仕様・不具合
-        </li>
-        <li>
-          <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-          <strong>最初にやること</strong>：症状から原因を切り分ける（この記事のフローチャートを使う）
-        </li>
-        <li>
-          <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-          <strong>カタログ原因</strong>：再インストールより「カタログ初期化」が優先
-        </li>
-        <li>
-          <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-          <strong>スペック原因</strong>：メモリ16GB以上・SSD・GPU搭載が推奨ライン
-        </li>
-        <li>
-          <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-          <strong>直らない場合</strong>：無理に使い続けず、環境を見直す判断も必要
-        </li>
-      </ul>
-    </div>
   </>
 )
 
@@ -148,9 +86,10 @@ export default function Page() {
     >
       {/* セクション1: まず切り分け */}
       <section id="heading-1" className="content-card card-padding article-body">
-        <h2>まず症状を切り分ける</h2>
+        <h2>Luminar Neoの症状をまず切り分ける</h2>
         <p>「重い」「落ちる」と一口に言っても、症状によって原因が異なります。以下の質問に答えて、自分がどこを見るべきか確認してください。</p>
         <h3 id="heading-2">Q1：起動直後〜編集中に突然落ちる？</h3>
+        <p>操作の内容に関係なく、時間や枚数を問わず落ちるかどうかで見分けます。</p>
         <div className="definition">
           <dl className="definition-body">
             <dt>YESの場合</dt>
@@ -163,6 +102,7 @@ export default function Page() {
           </dl>
         </div>
         <h3 id="heading-3">Q2：RAWを開いた瞬間・AI処理中に重くなる？</h3>
+        <p>落ちるのではなく「待たされる」場合や、特定の重い処理でだけ固まる場合はこちらです。</p>
         <div className="definition">
           <dl className="definition-body">
             <dt>YESの場合</dt>
@@ -175,6 +115,7 @@ export default function Page() {
           </dl>
         </div>
         <h3 id="heading-4">Q3：エラーメッセージが出る？</h3>
+        <p>文言まで出ていれば原因はほぼ特定できます。出ていない場合も下の項目で切り分けられます。</p>
         <div className="definition">
           <dl className="definition-body">
             <dt>「Database opening failed」と表示される</dt>
@@ -197,7 +138,7 @@ export default function Page() {
 
       {/* セクション2: 原因① カタログ */}
       <section id="catalog" className="content-card card-padding article-body">
-        <h2>原因①：カタログ（最も多い）</h2>
+        <h2>原因①：Luminar Neoのカタログ（最も多い）</h2>
         <p>
           Luminar Neoが「突然落ちる」「起動しない」場合、
           <strong>カタログの不具合が原因であることが非常に多い</strong>です。
@@ -220,23 +161,25 @@ export default function Page() {
           <strong>再インストールよりも、カタログの初期化が優先</strong>です。
           再インストールしてもカタログは残るため、根本解決にならないケースが多いです。
         </p>
-        <h4>手順①：カタログフォルダの名前を変更する</h4>
-        <ol>
-          <li>Luminar Neoが閉じていることを確認</li>
-          <li>カタログフォルダを見つける（デフォルトは「ピクチャ」内の「Luminar Neo」フォルダ）</li>
-          <li>フォルダ名を任意の名前に変更する（例：Luminar Neo_old）</li>
-        </ol>
-        <p className="m-note">※フォルダは削除しないでください。編集履歴が必要な場合に備えてバックアップとして残します。</p>
-        <h4>手順②：AppDataフォルダの内容を削除する（Windows）</h4>
-        <ol>
-          <li>「Windowsキー + R」を押す</li>
-          <li>「%appdata%\Luminar Neo」と入力してEnter</li>
-          <li>開いたフォルダ内のすべてのファイルをバックアップ後、削除</li>
-        </ol>
-        <p>
-          この手順でカタログが初期化され、Luminar Neoを起動すると新しいカタログが作成されます。
-          これで「Database opening failed」エラーは解決するケースがほとんどです。
-        </p>
+        <div style={{ position: 'relative' }}>
+          <div className="m-step">
+            <div className="m-step__line"></div>
+            <div className="m-step__num">1</div>
+            <div className="m-step__content">
+              <p className="m-step__title">カタログフォルダの名前を変更する</p>
+              <p className="m-step__desc">Luminar Neoが閉じていることを確認します。カタログフォルダはデフォルトで「ピクチャ」内の「Luminar Neo」フォルダです。</p>
+              <p className="m-step__desc">このフォルダ名を任意の名前（例：Luminar Neo_old）に変更します。<strong>削除はしないでください。</strong>編集履歴が必要になったときのバックアップとして残します。</p>
+            </div>
+          </div>
+          <div className="m-step">
+            <div className="m-step__num">2</div>
+            <div className="m-step__content">
+              <p className="m-step__title">AppDataフォルダの内容を削除する（Windows）</p>
+              <p className="m-step__desc">「Windowsキー + R」を押し、「%appdata%\Luminar Neo」と入力してEnterを押します。</p>
+              <p className="m-step__desc">開いたフォルダ内のファイルを、バックアップを取ったうえで削除します。この2手順でカタログが初期化され、次回起動時に新しいカタログが作られます。「Database opening failed」はこれで解決するケースがほとんどです。</p>
+            </div>
+          </div>
+        </div>
         <div className="m-notice m-notice--warn">
           <div className="m-notice__head">
             <span className="m-notice__badge">WARNING</span>
@@ -274,31 +217,48 @@ export default function Page() {
           </dl>
         </div>
         <h3 id="heading-10">スペック問題の対処法【優先度順】</h3>
-        <h4>対処法①：他のアプリを閉じる・再起動する（無料・今すぐ）</h4>
-        <p>
-          最も手軽な方法です。特にWebブラウザはメモリを大量に消費するため、Chrome等を閉じるだけで改善することがあります。
-          タスクマネージャー（Windows）やアクティビティモニタ（Mac）でメモリ消費の多いアプリを特定して閉じましょう。
-        </p>
-        <h4>対処法②：GPUを使用する設定に変更する（無料・今すぐ）</h4>
-        <p>
-          Luminar Neoの「環境設定」で「GPUを使用」がオンになっているか確認してください。
-          オフになっていると、AI処理がCPUのみで行われ、極端に遅くなります。
-        </p>
-        <h4>対処法③：カタログをSSDに移動する（環境による）</h4>
-        <p>
-          カタログがHDDに保存されている場合、SSDに移動するだけでレスポンスが大幅に改善します。
-          外付けSSDでも効果があります。
-        </p>
-        <h4>対処法④：メモリを増設する（費用あり）</h4>
-        <p>
-          8GB→16GBへの増設は、Luminar Neoの快適性を大きく向上させます。費用は5,000〜15,000円程度。
-          デスクトップPCなら自分で増設可能なケースが多いです。
-        </p>
-        <h4>対処法⑤：PCを買い替える（最終手段）</h4>
-        <p>
-          上記をすべて試しても改善しない場合、PC自体のスペックが根本的に不足しています。
-          Luminar Neoを快適に使うなら、2020年以降のミドルスペック以上のPCが目安です。
-        </p>
+        <p>費用のかからないものから順に並べています。上から試して、改善した時点で止めて構いません。</p>
+        <div style={{ position: 'relative' }}>
+          <div className="m-step">
+            <div className="m-step__line"></div>
+            <div className="m-step__num">1</div>
+            <div className="m-step__content">
+              <p className="m-step__title">他のアプリを閉じる・再起動する（無料・今すぐ）</p>
+              <p className="m-step__desc">いちばん手軽な方法です。特にWebブラウザはメモリを大量に消費するため、Chromeを閉じるだけで改善することがあります。タスクマネージャー（Windows）やアクティビティモニタ（Mac）で消費の多いアプリを特定して閉じてください。</p>
+            </div>
+          </div>
+          <div className="m-step">
+            <div className="m-step__line"></div>
+            <div className="m-step__num">2</div>
+            <div className="m-step__content">
+              <p className="m-step__title">GPUを使用する設定に変更する（無料・今すぐ）</p>
+              <p className="m-step__desc">Luminar Neoの「環境設定」で「GPUを使用」がオンになっているか確認します。オフだとAI処理がCPUだけで行われ、極端に遅くなります。</p>
+            </div>
+          </div>
+          <div className="m-step">
+            <div className="m-step__line"></div>
+            <div className="m-step__num">3</div>
+            <div className="m-step__content">
+              <p className="m-step__title">カタログをSSDに移動する（環境による）</p>
+              <p className="m-step__desc">カタログがHDDにある場合、SSDへ移すだけでレスポンスが大きく変わります。外付けSSDでも効果があります。</p>
+            </div>
+          </div>
+          <div className="m-step">
+            <div className="m-step__line"></div>
+            <div className="m-step__num">4</div>
+            <div className="m-step__content">
+              <p className="m-step__title">メモリを増設する（費用あり）</p>
+              <p className="m-step__desc">8GBから16GBへの増設は体感が大きく変わります。費用は5,000〜15,000円程度で、デスクトップPCなら自分で交換できるケースが多いです。</p>
+            </div>
+          </div>
+          <div className="m-step">
+            <div className="m-step__num">5</div>
+            <div className="m-step__content">
+              <p className="m-step__title">PCを買い替える（最終手段）</p>
+              <p className="m-step__desc">ここまで試しても改善しないなら、PC自体のスペックが足りていません。快適に使うなら2020年以降のミドルスペック以上が目安です。</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* セクション4: 原因③ Neo側の仕様 */}
@@ -309,33 +269,54 @@ export default function Page() {
           <strong>Luminar Neo側の仕様や一時的な不具合</strong>が原因かもしれません。
         </p>
         <h3 id="heading-12">よくあるパターン</h3>
+        {/*
+          もとはここに「AIによる自動編集」「生成AI機能」「柔軟なライセンス」という
+          定義リストが入っていたが、これは Neo 側の不具合パターンではなく製品の機能紹介で、
+          別記事の内容が混入していた。下の対処法①〜③に対応する実際のパターンに置き換えた。
+        */}
+        <p>Neo側が原因のときは、症状の出方に決まった傾向があります。</p>
         <div className="definition l-bottom-large">
           <dl className="definition-body">
-            <dt>AIによる自動編集</dt>
-            <dd>露出・コントラスト・カラーをAIが分析し、ワンクリックで補正。 被写体や空の自動認識により、面倒なマスク作成も不要です。</dd>
-            <dt>生成AI機能</dt>
-            <dd>GenErase（不要物削除）、GenSwap（オブジェクト置換）、GenExpand（画像拡張）など、 Adobeの生成塗りつぶしに近い機能を搭載しています。</dd>
-            <dt>柔軟なライセンス</dt>
-            <dd>買い切り版なら基本機能もProツール（拡張機能）も永続利用可能。サブスク疲れしている方にも選ばれています。 生成AI機能の継続利用のみ、年額サブスク（Luminar Prime）で更新する形式です。</dd>
+            <dt>アップデート直後から不安定になった</dt>
+            <dd>新機能が入った直後は動作が荒れることがあり、次のマイナーアップデートで収まるケースが多い</dd>
+            <dt>大量に読み込むと落ちる</dt>
+            <dd>一度に数百枚を読み込むとカタログの生成が追いつかず、読み込み中や書き出し中に固まりやすい</dd>
+            <dt>特定の機能だけ極端に重い</dt>
+            <dd>ノイズ除去（Noiseless AI）と超解像（SuperSharp AI）は処理負荷が突出して高く、他が快適でもここだけ止まることがある</dd>
           </dl>
         </div>
         <h3 id="heading-13">Neo側の問題への対処法</h3>
-        <h4>対処法①：最新バージョンにアップデートする</h4>
-        <p>
-          Luminar Neoは頻繁にアップデートされており、パフォーマンス改善も含まれます。
-          古いバージョンを使っている場合は、まずアップデートしてみてください。
-        </p>
-        <h4>対処法②：処理枚数を減らす</h4>
-        <p>
-          一度に大量の写真を読み込まず、10〜20枚程度に抑えると安定します。
-          特にAI機能を使う場合は、1枚ずつ処理→書き出し→次の写真、という流れが安全です。
-        </p>
-        <h4>対処法③：重い機能を避ける</h4>
-        <p>
-          ノイズ除去（Noiseless AI）や超解像（SuperSharp AI）は非常に負荷が高いです。
-          PCスペックに余裕がない場合は、これらの機能を使わない、または適用強度を下げることで安定します。
-        </p>
-        <h3 id="heading-14">「重い」は欠陥ではなく仕様の一部</h3>
+        <p>いずれもPCを買い替えずに済む方法です。上のパターンに心当たりがある順に試してください。</p>
+        <div style={{ position: 'relative' }}>
+          <div className="m-step">
+            <div className="m-step__line"></div>
+            <div className="m-step__num">1</div>
+            <div className="m-step__content">
+              <p className="m-step__title">最新バージョンにアップデートする</p>
+              <p className="m-step__desc">Luminar Neoは頻繁に更新されており、パフォーマンス改善も含まれます。古いバージョンのままなら、まずここからです。</p>
+            </div>
+          </div>
+          <div className="m-step">
+            <div className="m-step__line"></div>
+            <div className="m-step__num">2</div>
+            <div className="m-step__content">
+              <p className="m-step__title">処理枚数を減らす</p>
+              <p className="m-step__desc">一度に大量の写真を読み込まず、10〜20枚程度に抑えると安定します。AI機能を使う場合は、1枚ずつ処理して書き出す流れが安全です。</p>
+            </div>
+          </div>
+          <div className="m-step">
+            <div className="m-step__num">3</div>
+            <div className="m-step__content">
+              <p className="m-step__title">重い機能を避ける・強度を下げる</p>
+              <p className="m-step__desc">ノイズ除去（Noiseless AI）と超解像（SuperSharp AI）は負荷が突出しています。スペックに余裕がない場合は使わないか、適用強度を下げると安定します。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* セクション5: 直らない場合 */}
+      <section id="heading-15" className="content-card card-padding article-body">
+        <h2>それでも直らない場合はどうするか</h2>
         <p>
           ここで理解しておきたいのは、<strong>Luminar Neoは「軽快な現像ソフト」ではない</strong>ということです。
         </p>
@@ -347,12 +328,7 @@ export default function Page() {
           Luminar Neoの「重さ」は欠陥ではなく、<strong>AI処理の代償</strong>です。
           「軽さ」を最優先するなら、そもそもLuminar Neoは向いていないかもしれません。
         </p>
-      </section>
-
-      {/* セクション5: 直らない場合 */}
-      <section id="heading-15" className="content-card card-padding article-body">
-        <h2>直らない場合はどうするか</h2>
-        <p>ここまでの対処法をすべて試しても改善しない場合、以下の3つの選択肢があります。</p>
+        <p>そのうえで、ここまでの対処法をすべて試しても改善しない場合は、次の3つの選択肢があります。</p>
         <h3 id="heading-16">選択肢①：PCを変える</h3>
         <p>
           根本的な解決策です。メモリ16GB以上、SSD搭載、専用GPU搭載のPCなら、Luminar Neoは快適に動作します。
@@ -396,7 +372,8 @@ export default function Page() {
 
       {/* セクション6: よくある質問 */}
       <section id="heading-19" className="content-card card-padding article-body">
-        <h2>よくある質問</h2>
+        <h2>Luminar Neoが重い・落ちるときのよくある質問</h2>
+        <p>切り分けと対処のあとに残りやすい疑問を5つまとめました。</p>
         <dl>
           {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
               日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
@@ -404,20 +381,20 @@ export default function Page() {
             <dt className="faq-q">再インストールすれば直りますか？</dt>
             <dd className="faq-a">
               多くの場合、再インストールでは直りません。カタログデータは残るため、
-              <strong>カタログの初期化が先</strong>です。再インストールは最終手段と考えてください。
+              カタログの初期化が先です。再インストールは最終手段と考えてください。
             </dd>
           </div>
           <div id="faq-2" className="faq-item">
             <dt className="faq-q">メモリ8GBでは使えませんか？</dt>
             <dd className="faq-a">
               基本補正程度なら使えますが、AI機能（ノイズ除去、空の置き換えなど）を使うと重くなりやすいです。
-              <strong>16GB以上を強く推奨</strong>します。
+              16GB以上を強く推奨します。
             </dd>
           </div>
           <div id="faq-3" className="faq-item">
             <dt className="faq-q">MacとWindows、どちらが快適ですか？</dt>
             <dd className="faq-a">
-              同スペックなら大差ありません。ただし<strong>M1/M2 Macは非常に快適</strong>という声が多いです。
+              同スペックなら大差ありません。ただしM1/M2 Macは非常に快適という声が多いです。
               Apple SiliconはCPUとGPUの連携が優秀なため、Luminar Neoと相性が良いようです。
             </dd>
           </div>
@@ -431,7 +408,7 @@ export default function Page() {
           <div id="faq-5" className="faq-item">
             <dt className="faq-q">体験版で重いなら、製品版でも重いですか？</dt>
             <dd className="faq-a">
-              はい、<strong>体験版と製品版の動作は同じ</strong>です。体験版で重いと感じたら、製品版でも同じです。
+              はい、体験版と製品版の動作は同じです。体験版で重いと感じたら、製品版でも同じです。
               購入前に体験版で必ず確認してください。
             </dd>
           </div>
@@ -440,56 +417,27 @@ export default function Page() {
 
       {/* セクション7: まとめ */}
       <section id="heading-20" className="content-card card-padding article-body">
-        <h2>まとめ：原因別の対処</h2>
+        <h2>まとめ：Luminar Neoが重いときの原因別対処</h2>
         <p>
-          Luminar Neoが「重い」「落ちる」問題は、闘雲に対処法を試しても解決しません。
+          Luminar Neoが「重い」「落ちる」問題は、闇雲に対処法を試しても解決しません。
           大切なのは<strong>原因を特定してから対処する</strong>ことです。
         </p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span>
-            <br />
-            <span className="m-point-box__title">この記事のまとめ</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li>
-              <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-              <strong>突然落ちる・起動しない</strong>→ カタログ初期化を最優先で試す
-            </li>
-            <li>
-              <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-              <strong>AI処理中に重い</strong>→ メモリ・GPU・SSDの確認と対策
-            </li>
-            <li>
-              <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-              <strong>特定操作で不安定</strong>→ Neo側の仕様を理解し、使い方を調整
-            </li>
-            <li>
-              <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-              <strong>全部試してもダメ</strong>→ PC買い替え / ソフト変更 / 使い方を変える
-            </li>
-            <li>
-              <i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i>{' '}
-              <strong>購入前の人</strong>→ 必ず体験版で自分の環境を確認する
-            </li>
-          </ul>
-        </div>
+        {/* もとは Point ボックスの5項目リストと m-link-box があったが、
+            m-link-box は flex なのに中に <p> が2つ入っており、1つ目が細い列に潰れて表示が崩れていた。
+            リストも含めて文章に直し、リンクは本文中のテキストリンクにしている。 */}
+        <p>
+          症状ごとに、最初に手をつける場所は決まっています。突然落ちる・起動しないなら<strong>カタログの初期化</strong>、
+          AI処理中に重いなら<strong>メモリ・GPU・SSDの確認</strong>、特定の操作だけ不安定なら<strong>Neo側の仕様を踏まえた使い方の調整</strong>です。
+          ここまで全部試しても直らない場合は、PCを変える・ソフトを変える・使い方を変えるのいずれかになります。
+        </p>
         <p>
           Luminar Neoは高機能なAI編集ソフトですが、その分PCへの要求も高いです。
           自分の環境に合うかどうかは、<strong>7日間の無料体験版</strong>で事前に確認するのが一番確実です。
+          ダウンロード方法と制限は<Link href="/luminar/trial/">Luminar Neo体験版の解説記事</Link>にまとめました。
         </p>
-        <div className="m-link-box">
-          <div className="m-link-box__icon">
-            <i className="fa-solid fa-circle-info"></i>
-          </div>
-          <p className="m-link-box__text">
-            体験版のダウンロード方法は
-            <a href="https://nightscape.tokyo/luminar/trial/">Luminar Neo体験版の解説記事</a>
-            で確認できます。
-          </p>
-          <p><i className="fa-solid fa-arrow-right"></i> これから購入する場合は、<Link href="/luminar/sale-and-coupon-info/">セール時期とクーポンコードのまとめ</Link>を先に確認しておくと無駄がありません。</p>
-        </div>
+        <p>
+          これから購入する場合は、<Link href="/luminar/sale-and-coupon-info/">セール時期とクーポンコードのまとめ</Link>を先に確認しておくと無駄がありません。
+        </p>
       </section>
     </LuminarArticleLayout>
   )

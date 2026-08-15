@@ -1072,36 +1072,6 @@ Version: 1.0.0
 /* すりガラスのパネル。背景写真を透かしつつぼかすことで、
    写真の明暗にかかわらず文字のコントラストを一定に保つ。
    backdrop-filter 非対応環境では単に半透明の黒地になる（可読性は確保される）。 */
-/* サイトトップの .hero-content と同じ扱いにする。
-   強くぼかすより、黒の半透明を薄く敷いてわずかにぼかすほうが
-   背景写真を殺さずにコントラストだけ稼げる。 */
-.m-hero-feature__panel {
-    display: block;
-    padding: 16px;
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.39);
-    -webkit-backdrop-filter: blur(0.5px);
-    backdrop-filter: blur(0.5px);
-    line-height: 1.5;
-}
-
-/* リード文はヒーロー内に置く。タイトルより一段小さくし、
-   白100%ではなく少し落とした色にして主従をつける */
-.m-hero-feature__lead {
-    margin: 0 0 24px;
-    color: rgba(255, 255, 255, 0.92);
-    font-size: 15px;
-    line-height: 1.9;
-}
-
-.m-hero-feature__lead p {
-    margin: 0 0 12px;
-}
-
-.m-hero-feature__lead p:last-child {
-    margin-bottom: 0;
-}
-
 .m-hero-feature__meta {
     display: flex;
     align-items: center;
@@ -1111,12 +1081,15 @@ Version: 1.0.0
     margin: 0;
 }
 
+/* 記事側の .firstVisual-badge（枠線＋角丸4px）に合わせた枠付き。
+   ヒーローは写真の上に載るため、枠線と文字は白系にする。 */
 .m-hero-feature__date,
 .m-hero-feature__badge {
     display: inline-block;
-    padding: 0;
-    border: none;
-    color: rgba(255, 255, 255, 0.8);
+    padding: 2px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 12px;
     font-weight: 400;
     line-height: 1.6;
@@ -1132,14 +1105,6 @@ Version: 1.0.0
     }
     .m-hero-feature__title {
         font-size: 22px;
-    }
-    .m-hero-feature__panel {
-        padding: 12px;
-    }
-    .m-hero-feature__lead {
-        margin-bottom: 18px;
-        font-size: 13px;
-        line-height: 1.8;
     }
 }
 
@@ -1223,6 +1188,9 @@ Version: 1.0.0
     border: 1px solid;
     font-size: var(--font-size-sm);
     line-height: 1.8;
+    /* バッジが top:-12px で枠の外にはみ出すため、上にも余白が要る。
+       これがないと直前の段落や表と重なる。 */
+    margin-top: var(--space-xl);
     margin-bottom: var(--space-xl);
 }
 
@@ -1346,3 +1314,53 @@ Version: 1.0.0
   font-size: var(--font-size-sm);
   line-height: 1.7;
 }
+
+/* m-media-box（画像＋解説の横並び）の中身。
+   もとは h4 と p にインラインスタイルが直書きされていたため、
+   フォントサイズが記事の他の場所と揃わなくなっていた。 */
+.m-media-body__verdict {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: var(--space-sm);
+  padding: 3px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--c-slate-800);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+.m-media-body p,
+.article-body .m-media-body p {
+  margin-bottom: var(--space-sm);
+  font-size: var(--font-size-sm);
+  line-height: 1.75;
+}
+.m-media-body p:last-child,
+.article-body .m-media-body p:last-child { margin-bottom: 0; }
+
+/* ヒーロー直下のリード。もとはヒーロー内（写真の上）に白文字で置いていたが、
+   外に出して白背景で読ませる形にした。色と字サイズは本文寄り。 */
+.m-page-lead {
+  max-width: 960px;
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  /* 45度のストライプ。2%の黒を6px間隔で敷いて、白背景から一段だけ浮かせる */
+  background: linear-gradient(-45deg,
+      rgba(0, 0, 0, 0) 25%,
+      rgba(0, 0, 0, 0.02) 25%,
+      rgba(0, 0, 0, 0.02) 50%,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 0) 75%,
+      rgba(0, 0, 0, 0.02) 75%,
+      rgba(0, 0, 0, 0.02)) 0 0 / 6px 6px;
+  /* 左右は auto で中央寄せ。上下は .m-hero-feature に下マージンがなく、
+     0 にすると直上のヒーローと接してしまうため残している。 */
+  margin: var(--space-xl) auto var(--space-2xl);
+}
+.m-page-lead p {
+  margin: 0 0 var(--space-md);
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  line-height: 1.9;
+}
+.m-page-lead p:last-child { margin-bottom: 0; }
