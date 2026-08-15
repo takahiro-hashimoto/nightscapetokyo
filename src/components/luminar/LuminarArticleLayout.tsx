@@ -161,6 +161,13 @@ export default async function LuminarArticleLayout({
               )}
             </div>
 
+            {/*
+              CTA は firstVisual（白カード）の外に置く。
+              カードの中に入れると「記事カードの一部」に見えて主張が弱まるうえ、
+              カードの角丸・境界の内側でさらに角丸の面が重なって見づらかった。
+            */}
+            <LuminarCtaSale />
+
             {/* ② 目次 */}
             {toc.length >= 3 && (
               <nav className="toc content-card card-padding" aria-label="目次">

@@ -5,6 +5,9 @@ import BaseLayout from "@/components/layout/BaseLayout";
 import RootShell from "@/components/layout/RootShell";
 import { jsonLdHtml } from "@/lib/json-ld-script";
 import "../globals.css";
+// 記事UIの共通パーツ（m-point-box / m-notice / m-table など）。
+// globals.css の後に読むことで、重複していた表組みのスタイルはこちらが勝つ。
+import "../ui-components.css";
 
 const SITE_NAME = "東京夜景ナビ";
 const DEFAULT_DESCRIPTION =

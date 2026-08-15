@@ -1,0 +1,1348 @@
+@charset "UTF-8";
+/* =====================================================================
+   ui-components.css — サイト共通の記事UIパーツ
+   ---------------------------------------------------------------------
+   もとは luminar.css に閉じ込められていた m-* 系のパーツを切り出したもの。
+   m-point-box / m-notice / m-table / m-btn などは Luminar 固有ではなく
+   どの記事でも使う部品なので、(ja)/layout.tsx から全ページで読み込む。
+
+   階層:
+     globals.css        サイトの土台・レイアウト・シェル（--color-* 系）
+       └ このファイル   共通の記事UIパーツ（--c-* パレット）
+            └ luminar.css   Luminar 固有＋Luminar内だけの基底スタイル
+
+   ここに入れないもの:
+     - body / h1〜h6 / p / a / ul,ol のような要素セレクタ
+       （もともと Luminar 配下だけに効いていた。全ページに広げると
+         本サイトのタイポグラフィが変わってしまうため luminar.css に残す）
+     - --radius-md/lg/xl（globals.css を正とする）
+   ===================================================================== */
+
+/*
+Theme Name: LUMINAR NEO GUIDE
+Theme URI: https://example.com/
+Author: LUMINAR NEO GUIDE
+Description: Luminar Neo専門の情報サイト用WordPressクラシックテーマ。
+Version: 1.0.0
+*/
+/* ==========================================================================
+   1. Base & Variables (Merged)
+   ========================================================================== */
+:root {
+    /* Theme Standard Variables (Used by PHP templates) */
+    --c-primary: #0ea5e9;
+    --c-primary-hover: #0284c7;
+    --c-primary-light: #e0f2fe;
+    --c-primary-pale: #bae6fd;
+    --c-accent: #f59e0b;
+    --c-accent-bg: #fffbeb;
+    --c-accent-border: #fbbf24;
+    --c-danger: #ef4444;
+    --c-danger-bg: #fef2f2;
+    --c-danger-border: #f87171;
+    --c-text-main: #334155;
+    --c-text-dark: #0f172a;
+    --c-text-light: #64748b;
+    --c-text-muted: #94a3b8;
+    --c-bg-body: #f8fafc;
+    --c-bg-white: #ffffff;
+    --c-bg-sub: #f1f5f9;
+    --c-border: #e2e8f0;
+    /* Layout Variables */
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+    --radius-3xl: 1.5rem;
+    --shadow-sw: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --content-width: 880px;
+    --wide-width: 1024px;
+    /* Tailwind-port Variables (Used by Styleguide components) */
+    --c-slate-50: #f8fafc;
+    --c-slate-100: #f1f5f9;
+    --c-slate-200: #e2e8f0;
+    --c-slate-300: #e2e8f0;
+    --c-slate-400: #94a3b8;
+    --c-slate-500: #64748b;
+    --c-slate-600: #64748b;
+    --c-slate-700: #334155;
+    --c-slate-800: #1e293b;
+    --c-slate-900: #0f172a;
+    --c-sky-50: #f0f9ff;
+    --c-sky-100: #e0f2fe;
+    --c-sky-200: #bae6fd;
+    --c-sky-400: #38bdf8;
+    --c-sky-500: #0ea5e9;
+    --c-sky-600: #0284c7;
+    --c-sky-900: #0c4a6e;
+    --c-indigo-50: #eef2ff;
+    --c-indigo-200: #c7d2fe;
+    --c-indigo-400: #818cf8;
+    --c-indigo-500: #6366f1;
+    --c-indigo-900: #312e81;
+    --c-emerald-50: #ecfdf5;
+    --c-emerald-200: #a7f3d0;
+    --c-emerald-400: #34d399;
+    --c-emerald-500: #10b981;
+    --c-emerald-700: #047857;
+    --c-amber-50: #fffbeb;
+    --c-amber-100: #fef3c7;
+    --c-amber-200: #fde68a;
+    --c-amber-400: #fbbf24;
+    --c-amber-500: #f59e0b;
+    --c-amber-900: #78350f;
+    --c-red-50: #fef2f2;
+    --c-red-100: #fee2e2;
+    --c-red-200: #fecaca;
+    --c-red-400: #f87171;
+    --c-red-500: #ef4444;
+    --c-red-900: #7f1d1d;
+}
+.l-bottom-medium {
+  margin-bottom: 20px !important
+}
+.l-bottom-large {
+  margin-bottom: 40px !important
+}
+.l-bottom-xlarge {
+  margin-bottom: 60px !important
+}
+.l-top-small {
+  margin-top: 10px !important
+}
+.text-xsmall {
+  font-size: 0.75rem !important
+}
+.text-small {
+  font-size: 0.875rem !important
+}
+.text-xsmall {
+  font-size: 0.75rem !important
+}
+.text-true {
+    color: var(--c-emerald-700);
+    font-weight: bold;
+}
+.text-false {
+    color: var(--c-slate-400);
+    font-weight: bold;
+}
+.l-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+.l-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+.m-related-posts {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--c-border);
+}
+.m-related-posts__title {
+    font-size: 1.375rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+}
+.m-related-posts + .home-author-aside {
+    margin-top: 2rem;
+}
+.m-pagination .current {
+    background: var(--c-primary);
+    color: white;
+    border: 1px solid var(--c-primary);
+}
+.m-post-card {
+    display: block;
+    background: white;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sw);
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.m-post-card:hover {
+    border-color: var(--c-primary);
+    transform: translateY(-2px);
+}
+.m-post-card__thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--c-bg-sub);
+    overflow: hidden;
+}
+.m-post-card__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+.m-post-card:hover .m-post-card__thumb img {
+    transform: scale(1.05);
+}
+.m-post-card__content {
+    padding: 1rem;
+}
+.m-post-card__cat {
+    font-size: 0.875rem;
+    color: var(--c-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+.m-post-card__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--c-text-dark);
+    margin: 0 0 0.5rem;
+    line-height: 1.5;
+    transition: color 0.2s;
+}
+.m-post-card:hover .m-post-card__title {
+    color: var(--c-primary);
+}
+.u-text-center {
+    text-align: center;
+}
+.sp-only {
+    display: inline;
+}
+.hero-section {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    padding: 3rem 0 3rem;
+    position: relative;
+    overflow: hidden;
+}
+.hero-section__desc {
+    color: var(--color-text-light);
+    margin-bottom: .5rem;
+    font-size: 0.6875rem;
+    line-height: 1.8;
+}
+/* Layout Utils (Styleguide) */
+.l-grid-4 {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+}
+.m-mark-yellow {
+    background: linear-gradient(transparent 60%, var(--c-amber-100) 60%);
+    color: inherit;
+    padding: 0 0.125rem;
+    font-weight: 700;
+    display: inline;
+}
+.m-mark-red {
+    background: linear-gradient(transparent 60%, var(--c-red-100) 60%);
+    color: inherit;
+    padding: 0 0.125rem;
+    font-weight: 700;
+    display: inline;
+}
+.m-list-ul li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: var(--c-slate-700);
+    margin-bottom: 0.5rem;
+}
+.m-list-ul__icon {
+    /* 箇条書きの点はアクセント色にしない。行頭の記号までアクセントで塗ると
+       本文中のリンクやボタンと同じ色が散らばって、視線の行き先が定まらなくなる */
+    color: var(--color-text);
+    font-weight: 700;
+}
+.m-abstract {
+    background: var(--c-sky-50);
+    border: 2px solid var(--c-sky-100);
+    padding: 1.25rem;
+    border-radius: var(--radius-xl);
+    margin-bottom: 3rem;
+}
+.m-abstract__label {
+    background: var(--c-sky-500);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 900;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+}
+.m-abstract ul,
+.m-abstract ol {
+    margin-bottom: 0 !important;
+}
+.m-point-box {
+    background: var(--c-sky-50);
+    border: 2px solid var(--c-sky-100);
+    padding: 1.25rem;
+    border-radius: var(--radius-xl);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+.m-point-box__bg {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--c-sky-100);
+    opacity: 0.5;
+}
+.m-point-box__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+.m-point-box__label {
+    background: var(--c-sky-500);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 900;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    text-transform: uppercase;
+}
+.m-point-box__title {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--c-sky-900);
+}
+.m-point-box__list {
+    list-style: none;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    padding-left: 0rem !important;
+}
+/* non-critical.css の `.article-body li { list-style: outside }` と詳細度が
+   同じ (0,1,1) で、あちらが後に読み込まれるため負けていた。位置だけの
+   ショートハンドは list-style-type を disc に戻すので、li が自前で持つ
+   ✓ アイコンとネイティブの • が二重に表示されていた。
+   .article-body を足して詳細度を (0,2,1) に上げ、確実に打ち消す。 */
+.m-point-box__list li,
+.article-body .m-point-box__list li,
+.m-list-ul li,
+.article-body .m-list-ul li {
+    list-style: none;
+}
+
+.m-point-box__list li {
+    display: list-item;
+    font-size: 1rem;
+    color: var(--c-sky-900);
+    margin-bottom: 0.5rem;
+}
+.m-icon-box {
+    border-left: 4px solid;
+    padding: 0.75rem 1rem;
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    background: var(--c-slate-50);
+}
+.m-icon-box p {
+  margin-bottom: 0 !important;
+}
+.m-icon-box--memo {
+    border-color: var(--c-amber-400);
+    background: var(--c-amber-50);
+}
+.m-icon-box--memo i {
+    color: var(--c-amber-500);
+}
+.m-notice {
+    padding: 1.2rem;
+    border: 1px solid;
+    border-radius: var(--radius-lg);
+    margin-bottom: 2rem;
+}
+.m-notice__head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: .5rem;
+}
+.m-notice__badge {
+    font-size: 0.875rem;
+    font-weight: 900;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    color: #fff;
+}
+.m-notice__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+.m-notice p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 0 !important;
+}
+.m-notice--tips {
+    background: var(--c-sky-50);
+    border-color: var(--c-sky-500);
+}
+.m-notice--tips .m-notice__badge {
+    background: var(--c-sky-500);
+}
+.m-notice--tips .m-notice__title {
+    color: var(--c-sky-900);
+}
+.m-notice--tips p {
+    color: var(--c-sky-800);
+}
+.m-notice--warn {
+    background: var(--c-amber-50);
+    border-color: var(--c-amber-500);
+}
+.m-notice--warn .m-notice__badge {
+    background: var(--c-amber-500);
+}
+.m-notice--warn .m-notice__title {
+    color: var(--c-amber-900);
+}
+.m-notice--warn p {
+    color: var(--c-amber-800);
+}
+.m-step {
+    position: relative;
+    padding-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+.m-step__line {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    bottom: 0;
+    width: 2px;
+    background: var(--c-sky-100);
+    z-index: 0;
+}
+.m-step:last-child .m-step__line {
+    display: none;
+}
+.m-step__num {
+    width: 1.625rem;
+    height: 1.625rem;
+    flex-shrink: 0;
+    background: var(--c-sky-600);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    z-index: 10;
+    flex-shrink: 0;
+    box-shadow: 0 4px 6px rgba(14, 165, 233, 0.2);
+}
+.m-step__content {
+    padding-top: 0.25rem;
+}
+.m-step__title {
+    font-size: 1rem;
+    font-weight: 900;
+    margin-bottom: 0.25rem;
+}
+.m-step__desc {
+    color: var(--c-slate-500);
+    font-size: .875rem;
+    margin: 0 !important;
+}
+.m-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--c-slate-200);
+    margin-bottom: 32px;
+}
+.m-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+    margin: 0 !important;
+}
+.m-table caption {
+    padding-bottom: 4px;
+    font-size: 0.875rem;
+    color: #111;
+}
+.m-table-wrap .m-table th {
+    background: var(--c-slate-800);
+    color: white;
+    font-weight: 700;
+    padding: 0.9rem 1.25rem;
+    border: none;
+    font-size: 0.875rem;
+    line-height: 1.2;
+    text-align: center;
+}
+.m-table-wrap .m-table th:first-child {
+    background: var(--c-slate-800);
+    text-align: left;
+}
+.m-table-wrap .m-table td {
+    border: none;
+    border-bottom: 1px solid var(--c-slate-200);
+    vertical-align: middle;
+    background: #fff;
+    padding: .75rem 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.2;
+}
+.m-table-wrap .m-table td:first-child {
+    background: #fff;
+    font-weight: 400;
+    text-align: left;
+}
+.m-table-wrap .m-table tr:last-child td {
+    border-bottom: none;
+}
+.m-compare {
+    border: 1px solid var(--c-slate-200);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-sw);
+}
+.m-compare__head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.m-compare__th {
+    padding: 0.75rem;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+}
+.m-compare__th--1 {
+    background: var(--c-sky-400);
+}
+.m-compare__th--2 {
+    background: var(--c-indigo-400);
+}
+.m-compare__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.m-compare__col {
+    flex-direction: column;
+    gap: .5rem;
+    padding: 1rem;
+    display: flex;
+    margin: 0 !important;
+}
+.m-compare__col--1 {
+    background: var(--c-sky-50);
+}
+.m-compare__col--2 {
+    background: var(--c-indigo-50);
+}
+.m-compare__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+    line-height: 1.5;
+}
+.m-compare__col .m-compare__item:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.m-compare__dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.m-pc-box {
+    border: 1px solid;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+.m-pc-box--pros {
+    border-color: var(--c-emerald-200);
+}
+.m-pc-box--pros .m-pc-head {
+    background: var(--c-emerald-500);
+}
+.m-pc-box--pros .m-pc-body {
+    background: var(--c-emerald-50);
+    margin: 0;
+}
+.m-pc-box--cons {
+    border-color: var(--c-red-200);
+}
+.m-pc-box--cons .m-pc-head {
+    background: var(--c-red-500);
+}
+.m-pc-box--cons .m-pc-body {
+    background: var(--c-red-50);
+    margin: 0;
+}
+.m-pc-head {
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+}
+.m-pc-body {
+    padding: 1rem;
+    font-size: 1rem;
+}
+.m-pc-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.m-pc-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.m-pc-box--pros .m-pc-dot {
+    background: var(--c-emerald-400);
+}
+.m-pc-box--cons .m-pc-dot {
+    background: var(--c-red-400);
+}
+.m-btn {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-lg);
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    transition: 0.2s;
+    border: 1px solid transparent;
+}
+.m-btn--primary {
+    background: var(--c-sky-500);
+    color: white !important;
+    text-decoration: none !important
+}
+.m-btn--primary:hover {
+    background: var(--c-sky-400);
+    color: white;
+}
+.m-badge {
+    padding: .25rem .75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-left: 6px;
+}
+.m-badge--round {
+    border-radius: 9999px;
+    color: white;
+}
+.m-badge--red {
+    background: var(--c-red-500);
+}
+.m-badge--amber {
+    background: var(--c-amber-500);
+}
+.m-badge--sky {
+    background: var(--c-sky-500);
+}
+.m-tabs {
+    background: white;
+    border: 1px solid var(--c-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sw);
+}
+.m-tabs__nav {
+    display: flex;
+    border-bottom: 1px solid var(--c-slate-200);
+}
+.m-tab-btn {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--c-slate-500);
+    transition: 0.2s;
+}
+.m-tab-btn:hover {
+    background: var(--c-slate-50);
+}
+.m-tab-btn.is-active {
+    background: var(--c-sky-500);
+    color: white;
+}
+.m-tab-content {
+    padding: 1rem;
+    display: none;
+}
+.m-tab-content.is-active {
+    display: block;
+}
+.m-media-box {
+    background: var(--c-slate-50);
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--c-slate-200);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.m-media-img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sw);
+    height: auto;
+}
+.m-media-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.hidden {
+    display: none;
+}
+.m-price-list__item .label {
+    color: var(--c-slate-500);
+    font-weight: bold;
+}
+.m-price-list__item .value {
+    font-weight: bold;
+    color: var(--c-slate-800);
+    font-size: 1rem;
+}
+.m-price-list__item .sub {
+    font-size: 0.75rem;
+    font-weight: normal;
+    color: var(--c-slate-400);
+}
+.m-link-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: #f0f9ff; /* Sky-50 (薄い青) */
+    border: 1px solid #bae6fd; /* Sky-200 (薄い境界線) */
+    border-radius: 12px; /* ガイドの角丸ルール */
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    color: var(--c-slate-700);
+}
+.m-link-box__icon {
+    flex-shrink: 0;
+    color: var(--c-sky-500); /* Primary Color */
+    font-size: 1.375rem;
+    margin-top: 2px; /* テキストの1行目と高さを合わせる微調整 */
+}
+.m-link-box__text {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0 !important;
+    flex: 1;
+}
+.m-link-box__text a {
+    color: var(--c-sky-600);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(14, 165, 233, 0.3); /* 薄い下線 */
+    transition: all 0.2s ease;
+}
+.m-link-box__text a:hover {
+    color: var(--c-sky-500);
+    text-decoration-color: var(--c-sky-500); /* ホバー時は線を濃く */
+    background-color: rgba(14, 165, 233, 0.05); /* ほんのり背景色 */
+}
+.card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.image-before {
+    z-index: 1;
+    clip-path: inset(0 50% 0 0);
+}
+.image-after {
+    z-index: 0;
+}
+.label {
+    position: absolute;
+    bottom: 12px;
+    padding: 6px 12px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+}
+.m-tweet-wrap {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1.5rem auto;
+    max-width: 580px;
+}
+.m-tweet-wrap__label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #64748b;
+}
+.m-tweet-wrap__icon {
+    font-size: 1rem;
+}
+.m-tweet-wrap__body {
+    padding: 1rem;
+}
+.m-tweet-wrap__body .twitter-tweet {
+    margin: 0 !important;
+}
+.m-tweet-wrap--positive .m-tweet-wrap__label {
+    background: #f0fdf4;
+    border-bottom-color: #bbf7d0;
+    color: #166534;
+}
+.m-tweet-wrap--negative .m-tweet-wrap__label {
+    background: #fef2f2;
+    border-bottom-color: #fecaca;
+    color: #991b1b;
+}
+.m-btn--shiny {
+    background: linear-gradient(135deg, var(--c-sky-500), var(--c-indigo-500));
+    color: white !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+    transition: all 0.3s;
+}
+.m-btn--shiny:hover {
+    background: linear-gradient(135deg, var(--c-sky-400), #818cf8);
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+    transform: translateY(-1px);
+    color: white;
+}
+
+@media (min-width: 768px) {
+  .l-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+  .l-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+  .sp-only {
+        display: none;
+    }
+  .hero-section {
+        padding: 4rem 0 4rem;
+    }
+  .hero-section__desc {
+        font-size: 0.875rem;
+    }
+  .m-media-box {
+        flex-direction: row;
+    }
+  .m-media-img {
+        width: 40%;
+        flex-shrink: 0;
+    }
+}
+
+/* =====================================================================
+   m-nav-card — 一覧ページから記事へ送る大きめのリンクカード
+   ---------------------------------------------------------------------
+   左に濃紺のアイコンブロック、右に白地のタイトル。カード全体がリンク。
+   /luminar/ のような「案内板」ページ用。記事本文に差し込む小さめの
+   リンクには従来どおり m-link-box を使う（用途が違うので分けている）。
+   ===================================================================== */
+.m-nav-card {
+    display: flex;
+    align-items: stretch;
+    background: #fff;
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    overflow: hidden;
+    /* アイコン枠がほぼ正方形になる高さ。参考デザインの比率に合わせている */
+    min-height: 76px;
+    margin-bottom: 12px;
+    text-decoration: none !important;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.m-nav-card:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+}
+
+.m-nav-card__icon {
+    flex: 0 0 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--c-slate-800);
+    color: var(--c-sky-400);
+    font-size: 24px;
+}
+
+.m-nav-card__title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 18px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--c-text-dark);
+}
+
+.m-nav-card:hover .m-nav-card__title {
+    color: var(--c-primary);
+}
+
+@media (max-width: 767px) {
+    .m-nav-card {
+        min-height: 62px;
+    }
+    .m-nav-card__icon {
+        flex-basis: 62px;
+        font-size: 20px;
+    }
+    .m-nav-card__title {
+        padding: 14px 16px;
+        font-size: 14px;
+    }
+}
+
+/* =====================================================================
+   m-step-section — 案内板ページの「STEP」ブロック
+   ---------------------------------------------------------------------
+   content-card（白いパネル）で包まない。中に白い m-nav-card を並べるため、
+   パネルで囲むと「カードの中にカード」になって境界が読み取りにくくなる。
+   セクションは背景色の上に直接置き、中央のバッジ＋見出し＋区切り線で
+   まとまりを示す。
+   ===================================================================== */
+.m-step-section {
+    margin: 0 0 48px;
+}
+
+/* バッジは見出しの中にインラインで置き、横並びで中央に揃える */
+.m-step-section__badge {
+    display: inline-block;
+    margin-right: 12px;
+    padding: 4px 14px;
+    border-radius: 6px;
+    background: var(--c-sky-400);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.m-step-section__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0px;
+    margin: 56px 0px 18px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--c-slate-800);
+    color: var(--c-slate-800);
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.m-step-section__lead {
+    margin: 0 0 24px;
+    color: var(--c-text-main);
+    font-size: 16px;
+    line-height: 1.9;
+}
+
+@media (max-width: 767px) {
+    .m-step-section {
+        margin-bottom: 36px;
+    }
+    .m-step-section__title {
+        font-size: 18px;
+    }
+    .m-step-section__badge {
+        margin-right: 8px;
+        padding: 3px 10px;
+        font-size: 11px;
+    }
+    .m-step-section__lead {
+        font-size: 14px;
+    }
+}
+
+/* =====================================================================
+   m-hero-feature — 特集ページ用のフルブリード・メインビジュアル
+   ---------------------------------------------------------------------
+   記事ページ共通の .firstVisual（白カード型）とは別物。
+   コンテナ幅(900px)を突き破って画面幅いっぱいに広げ、暗いオーバーレイの上に
+   タイトルを白抜きで置く。「特集」であることを一目で伝えるための扱い。
+   100vw ではなくコンテナ基準の calc を使うのは、縦スクロールバーぶんの
+   はみ出し（横スクロール発生）を避けるため。
+   ===================================================================== */
+.m-hero-feature {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
+    max-width: 100vw;
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 32px;
+    background: var(--c-slate-900);
+}
+
+.m-hero-feature__img {
+    object-fit: cover;
+    z-index: 0;
+}
+
+/* 画像の上に暗幕を敷き、白文字の可読性を確保する */
+.m-hero-feature::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.55) 0%, rgba(15, 23, 42, 0.7) 100%);
+    z-index: 1;
+}
+
+.m-hero-feature__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 900px;
+    padding: 56px 24px;
+    text-align: left;
+}
+
+.m-hero-feature__title {
+    margin: 0 0 16px;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1.5;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* すりガラスのパネル。背景写真を透かしつつぼかすことで、
+   写真の明暗にかかわらず文字のコントラストを一定に保つ。
+   backdrop-filter 非対応環境では単に半透明の黒地になる（可読性は確保される）。 */
+/* サイトトップの .hero-content と同じ扱いにする。
+   強くぼかすより、黒の半透明を薄く敷いてわずかにぼかすほうが
+   背景写真を殺さずにコントラストだけ稼げる。 */
+.m-hero-feature__panel {
+    display: block;
+    padding: 16px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.39);
+    -webkit-backdrop-filter: blur(0.5px);
+    backdrop-filter: blur(0.5px);
+    line-height: 1.5;
+}
+
+/* リード文はヒーロー内に置く。タイトルより一段小さくし、
+   白100%ではなく少し落とした色にして主従をつける */
+.m-hero-feature__lead {
+    margin: 0 0 24px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+.m-hero-feature__lead p {
+    margin: 0 0 12px;
+}
+
+.m-hero-feature__lead p:last-child {
+    margin-bottom: 0;
+}
+
+.m-hero-feature__meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.m-hero-feature__date,
+.m-hero-feature__badge {
+    display: inline-block;
+    padding: 0;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+    .m-hero-feature {
+        min-height: 260px;
+        margin-bottom: 24px;
+    }
+    .m-hero-feature__inner {
+        padding: 36px 20px;
+    }
+    .m-hero-feature__title {
+        font-size: 22px;
+    }
+    .m-hero-feature__panel {
+        padding: 12px;
+    }
+    .m-hero-feature__lead {
+        margin-bottom: 18px;
+        font-size: 13px;
+        line-height: 1.8;
+    }
+}
+
+/* =====================================================================
+   囲みボックスを used-lab の m-callout の設計に合わせる
+   ---------------------------------------------------------------------
+   used-lab では
+     ・ラベルを箱の上辺に「タブ」として浮かせる（position:absolute / top:-12px）
+     ・トーンごとにバリアントを持ち、ラベル色を枠線色と揃える
+     ・余白と文字サイズは --space-* / --font-size-* トークンで指定する
+   という組み方になっている。--space-* は両サイトで同じ値なので
+   そのまま踏襲できる。
+
+   マークアップは変えず、既存の m-point-box / m-notice を
+   この見え方に寄せる（21箇所以上で使われているため）。
+   ===================================================================== */
+
+/* ---------- m-point-box ---------- */
+.m-point-box {
+    position: relative;
+    /* タブを上辺の外にはみ出させるため clip しない。
+       もとは装飾文字 __bg を切るために hidden だったが、__bg は非表示にした */
+    overflow: visible;
+    margin-top: 36px;
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--c-sky-200);
+    background: var(--c-sky-50);
+    font-size: var(--font-size-sm);
+    line-height: 1.8;
+}
+
+/* 装飾の巨大文字は used-lab には無い要素。情報量を増やさず視線だけ散らすため隠す */
+.m-point-box__bg {
+    display: none;
+}
+
+/* ヘッダーは場所を取らない。中身のラベルは隠し、タイトルだけを
+   上辺のタブとして絶対配置するため、in-flow のコンテンツが無くなる */
+.m-point-box__header {
+    display: block;
+    margin: 0;
+    line-height: 0;
+}
+
+.m-point-box__header br {
+    display: none;
+}
+
+/* 「Point」「まとめ」という短いラベルは、タイトルと二重に見出しが
+   並ぶだけで情報を足さないため出さない。タブにはタイトルを入れる */
+.m-point-box__label {
+    display: none;
+}
+
+.m-point-box__title {
+    position: absolute;
+    top: -12px;
+    left: var(--space-md);
+    max-width: calc(100% - var(--space-md) * 2);
+    padding: 4px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--c-sky-500);
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.m-point-box__list li {
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    line-height: 1.8;
+}
+
+/* ---------- m-notice ---------- */
+.m-notice {
+    position: relative;
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+    border-radius: var(--radius-md);
+    border: 1px solid;
+    font-size: var(--font-size-sm);
+    line-height: 1.8;
+    margin-bottom: var(--space-xl);
+}
+
+.m-notice__head {
+    display: block;
+    margin-bottom: var(--space-sm);
+}
+
+.m-notice__badge {
+    position: absolute;
+    top: -12px;
+    left: var(--space-md);
+    padding: 4px 14px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.m-notice__title {
+    display: block;
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.m-notice p {
+    font-size: var(--font-size-sm);
+    line-height: 1.8;
+    color: var(--color-text);
+}
+
+/* トーン別バリアント。枠線とラベルの色を必ず揃える */
+.m-notice--tips {
+    background: var(--c-sky-50);
+    border-color: var(--c-sky-200);
+}
+
+.m-notice--tips .m-notice__badge {
+    background: var(--c-sky-500);
+}
+
+.m-notice--warn {
+    background: var(--c-amber-50);
+    border-color: var(--c-amber-200);
+}
+
+.m-notice--warn .m-notice__badge {
+    background: var(--c-amber-500);
+}
+
+/* ---- m-step の調整 ---- */
+/* タイトルは h4 で書かれており、.article-body h4 の margin:32px 0 12px を
+   受けて番号の丸より大きく下がっていた。番号と行頭を揃えるため打ち消す。 */
+.m-step__title,
+.article-body .m-step__title {
+    margin-top: 0 !important;
+    margin-bottom: 4px !important;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* 番号を小さくしたぶん、縦線の位置も中心に合わせ直す */
+.m-step__line {
+    left: 0.8125rem;
+    top: 1.625rem;
+    background: var(--c-sky-200);
+}
+
+.m-step__content {
+    padding-top: 0;
+}
+
+/* 箱の下端と最後の項目の間に余白が二重に出るのを防ぐ */
+.m-point-box__list li:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* ---- メリット/デメリットの2カラム ---- */
+/* 項目数が左右で違うと、少ないほうの色地が途中で切れて白が残っていた。
+   原因は色を .m-pc-body（中身の高さしかない要素）に敷いていたこと。
+   箱そのものに敷けば、中身の量に関係なく下端まで色が回る。 */
+.m-pc-box--pros {
+    background: var(--c-emerald-50);
+}
+
+.m-pc-box--cons {
+    background: var(--c-red-50);
+}
+
+.m-pc-box--pros .m-pc-body,
+.m-pc-box--cons .m-pc-body {
+    background: transparent;
+}
+
+/* 高さを揃えるための保険（グリッドの stretch が効かない環境向け） */
+.l-grid-2 > .m-pc-box {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.m-pc-box .m-pc-body {
+    flex: 1;
+}
+
+/* 直後の本文と詰まっていたので余白を足す */
+.l-grid-2 {
+    margin-bottom: var(--space-xl);
+}
+
+/* ── 注記 ─────────────────────────────────────────────────────────────────
+   価格の確認日、表の補足、細かい但し書きなど、本文より一段落とす短い断り書き。
+   後から読まれる non-critical.css の .article-body p（1rem）に同点で負けるため、
+   .article-body を足して詳細度を上げている。 */
+.m-note,
+.article-body .m-note {
+  margin-bottom: var(--space-md);
+  color: var(--c-slate-500);
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
+}

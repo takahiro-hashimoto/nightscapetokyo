@@ -8,6 +8,16 @@ export default function LuminarCtaMini() {
   const sale = useSaleSettings()
   const [copied, setCopied] = useState(false)
 
+  // セール終了日。「◯月◯日まで」のバッジに使う
+  const endLabel =
+    sale?.isActive && sale.saleEnd
+      ? new Date(sale.saleEnd).toLocaleDateString('ja-JP', {
+          month: 'long',
+          day: 'numeric',
+          timeZone: 'Asia/Tokyo',
+        })
+      : null
+
   const handleCopy = async () => {
     const code = 'nightscape10'
     try {
@@ -24,6 +34,9 @@ export default function LuminarCtaMini() {
       <div className="m-cta-mini__header">
         <span className="m-cta-mini__title">
           {sale?.isActive ? 'セール開催中！今がお得に購入するチャンス' : 'Luminar Neo を一番お得に購入する'}
+          {endLabel && (
+            <span className="m-badge m-badge--amber m-badge--round">{endLabel}まで</span>
+          )}
         </span>
       </div>
       <div className="m-cta-mini__inner">
@@ -46,13 +59,9 @@ export default function LuminarCtaMini() {
         </div>
         <div className="m-cta-mini__divider" aria-hidden="true"></div>
         <div className="m-cta-mini__action-area">
-          <p className="m-cta-mini__micro">
-            <i className="fa-solid fa-check" style={{ color: 'var(--c-emerald-500)' }}></i> 7日間無料体験 /
-            {' '}<i className="fa-solid fa-shield-halved" style={{ color: 'var(--c-emerald-500)' }}></i> 30日返金保証
-          </p>
           <a
             href="https://skylum.evyy.net/552xL3"
-            className="m-btn m-btn--primary m-btn--wide"
+            className="m-btn m-btn--shiny m-btn--wide"
             target="_blank"
             rel="noopener noreferrer sponsored"
             aria-label="公式サイトで価格をチェック（新しいタブで開く）"

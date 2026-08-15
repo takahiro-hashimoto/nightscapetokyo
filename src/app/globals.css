@@ -20,7 +20,7 @@ html {
   --color-text-secondary: #6e6e73;
   --color-text-muted: #7c7c82;
   --color-text-inverse: #ffffff;
-  --color-text-tertiary: #999999;
+  --color-text-tertiary: #94a3b8;
 
   --color-bg: #ffffff;
   --color-bg-subtle: #f5f5f7;
@@ -89,7 +89,7 @@ html {
   --color-header-bg: #28292b;
   --color-header-text: var(--color-text-inverse);
   --color-star: #eab308;
-  --color-star-bg: #d1d5db;
+  --color-star-bg: #e2e8f0;
   --container-padding: 16px;
 }
 
@@ -151,7 +151,9 @@ img {
 }
 
 .l-article-container {
-  max-width: 960px;
+  /* PC のコンテンツ幅。/luminar/ と /article/ を含む全記事系ページが
+     このコンテナを共有しているため、ここ1箇所でサイト全体の幅が決まる。 */
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 0 60px;
 }
@@ -238,7 +240,7 @@ img {
   left: 16px;
   font-size: 12px;
   font-weight: 700;
-  background: #6b7280;
+  background: #64748b;
   color: #fff;
   padding: 2px 10px;
   border-radius: 4px;
@@ -253,7 +255,7 @@ img {
   padding: 0 0 0 12px;
   list-style: disc;
   line-height: 1.5;
-  font-size: .95rem;
+  font-size: 1rem;
 }
 
 .m-callout__links a {
@@ -280,7 +282,7 @@ img {
 }
 
 .m-callout__service-list dt {
-  font-size: .95rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 
@@ -294,7 +296,7 @@ img {
 }
 
 .m-callout__service-list dd {
-  font-size: .875rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
   line-height: 1.6;
   margin: 2px 0 0;
@@ -331,40 +333,40 @@ img {
    Module - Section Headings
    ========================================= */
 .content-card h2 {
-  color: #1a202c;
-  border-bottom: 2px solid #f0f2f5;
+  color: #1d1d1f;
+  border-bottom: 2px solid #e2e8f0;
   align-items: center;
   gap: 12px;
   margin: 0 0 30px;
   padding-bottom: 15px;
-  font-size: 1.3rem;
+  font-size: 1.625rem;
   font-weight: 700;
   line-height: 1.5;
   display: flex;
 }
 
 .content-card h3 {
-  color: #1a202c;
+  color: #1d1d1f;
   align-items: center;
   gap: 12px;
   margin: 24px 0 12px;
   padding-bottom: 15px;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.5;
   display: flex;
 }
 
 .content-card h4 {
-  color: #2d3748;
-  font-size: 0.95rem;
-  font-weight: 600;
+  color: #1d1d1f;
+  font-size: 1.0625rem;
+  font-weight: 700;
   line-height: 1.5;
   margin: 16px 0 8px;
 }
 
 .heading-icon {
-  color: #4a5568;
+  color: #64748b;
   flex-shrink: 0;
 }
 
@@ -406,7 +408,7 @@ img {
 .firstVisual-title {
   color: var(--color-text);
   margin: 0 0 12px;
-  font-size: 1.4rem !important;
+  font-size: 1.375rem !important;
   font-weight: 800;
   line-height: 1.4;
 }
@@ -419,25 +421,25 @@ img {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .firstVisual-date {
-  color: #718096;
+  color: #64748b;
 }
 .firstVisual-badge {
-  color: #718096;
-  border: 1px solid #cbd5e0;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
   border-radius: 4px;
+  /* margin-left: auto を外し、日付のすぐ隣に並べる */
   padding: 2px 8px;
-  font-size: 12px;
-  margin-left: auto;
+  font-size: 11px;
 }
 
 /* body: リード文・PRバナーなど。なければ header の padding-bottom が閉じる */
 .firstVisual-body {
   padding: 0 24px 24px;
   color: var(--color-text-secondary);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.8;
 }
 .firstVisual-body p {
@@ -457,18 +459,18 @@ img {
 }
 
 .seo-title {
-  color: #718096;
+  color: #64748b;
   margin: 0 0 12px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.1;
   display: block;
 }
 
 .visual-title {
-  color: #1a202c;
+  color: #1d1d1f;
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.375rem;
   font-weight: 800;
   line-height: 1.1;
 }
@@ -637,14 +639,14 @@ img {
 
 .anchor-btn {
   text-align: center;
-  color: #4a5568;
+  color: #64748b;
   background-color: #fff;
   border-radius: 8px;
   justify-content: center;
   align-items: center;
   gap: 8px;
   padding: 16px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   transition: all .2s;
   display: flex;
@@ -709,7 +711,7 @@ img {
   }
 
   .visual-title {
-    font-size: 1.4rem;
+    font-size: 1.375rem;
   }
 
   .hero-image-container {
@@ -767,7 +769,7 @@ img {
   }
 
   .gallery-modal-caption {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .info-table th,
@@ -810,7 +812,7 @@ img {
   }
 
   .panel-link-grid a {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .share-buttons {
@@ -894,25 +896,25 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .card-heading {
-  color: #1a202c;
-  border-bottom: 2px solid #f0f2f5;
+  color: #1d1d1f;
+  border-bottom: 2px solid #e2e8f0;
   align-items: center;
   gap: 12px;
   margin: 0 0 30px;
   padding-bottom: 15px;
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.5;
   display: flex;
 }
 
 .home-section-heading {
-  color: #1a202c;
+  color: #1d1d1f;
   justify-content: center;
   align-items: center;
   gap: 12px;
   margin: 0px 0 24px;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 800;
   line-height: 1.4;
   display: flex;
@@ -921,7 +923,7 @@ main > .home-section:nth-child(even of .home-section) {
 .home-section-desc {
   font-size: 16px;
   line-height: 1.9;
-  color: #4a5568;
+  color: #64748b;
   margin: 0 0 8px;
 }
 
@@ -1035,7 +1037,7 @@ main > .home-section:nth-child(even of .home-section) {
   letter-spacing: .05em;
   text-shadow: 0 2px 20px #0006;
   margin: 0 0 4px;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 900;
   line-height: 1.3;
 }
@@ -1044,7 +1046,7 @@ main > .home-section:nth-child(even of .home-section) {
   color: #ffffffe6;
   text-shadow: 0 1px 8px #0000004d;
   margin: 0 0 12px;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
@@ -1076,7 +1078,7 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .hero-search-input::placeholder {
-  color: #a0aec0;
+  color: #94a3b8;
 }
 
 .hero-search-btn {
@@ -1085,7 +1087,7 @@ main > .home-section:nth-child(even of .home-section) {
   align-items: center;
   justify-content: center;
   background: #f1f5f9;
-  color: #475569;
+  color: #64748b;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   width: 40px;
@@ -1197,7 +1199,7 @@ main > .home-section:nth-child(even of .home-section) {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #475569;
+  color: #64748b;
   transition: all 0.2s;
 }
 
@@ -1207,9 +1209,9 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .category-icon-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  color: #475569;
+  color: #64748b;
 }
 
 /* =========================================
@@ -1332,7 +1334,7 @@ main > .home-section:nth-child(even of .home-section) {
 .badge {
   border-radius: 4px;
   padding: 2px 8px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   display: inline-block;
   margin-bottom: 8px;
@@ -1345,7 +1347,7 @@ main > .home-section:nth-child(even of .home-section) {
 .spot-card-title {
   font-size: 16px;
   font-weight: 700;
-  color: #1a202c;
+  color: #1d1d1f;
   margin: 0 0 8px;
   line-height: 1.4;
 }
@@ -1354,7 +1356,7 @@ main > .home-section:nth-child(even of .home-section) {
   color: var(--color-star);
   align-items: center;
   gap: 4px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   display: flex;
 }
@@ -1368,7 +1370,7 @@ main > .home-section:nth-child(even of .home-section) {
 
 .search-toolbar-count {
   font-size: 16px;
-  color: #1a202c;
+  color: #1d1d1f;
 }
 
 .search-toolbar-sort {
@@ -1376,7 +1378,7 @@ main > .home-section:nth-child(even of .home-section) {
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  color: #4a5568;
+  color: #64748b;
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -1399,7 +1401,7 @@ main > .home-section:nth-child(even of .home-section) {
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   display: -webkit-box;
   overflow: hidden;
@@ -1410,7 +1412,7 @@ main > .home-section:nth-child(even of .home-section) {
   align-items: center;
   gap: 4px;
   margin: 8px 0 0;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.4;
   display: flex;
   overflow: hidden;
@@ -1454,7 +1456,7 @@ main > .home-section:nth-child(even of .home-section) {
     flex: 1;
     border: none;
     outline: none;
-    font-size: 13px;
+    font-size: 14px;
     padding: 2px 0;
     background: transparent;
     color: #333;
@@ -1467,7 +1469,7 @@ main > .home-section:nth-child(even of .home-section) {
     align-items: center;
     justify-content: center;
     background: #f1f5f9;
-    color: #475569;
+    color: #64748b;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
     width: 36px;
@@ -1515,7 +1517,7 @@ main > .home-section:nth-child(even of .home-section) {
   }
 
   .home-section-heading {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .recommend-criteria-grid {
@@ -1537,11 +1539,11 @@ main > .home-section:nth-child(even of .home-section) {
   }
 
   .spot-card-title {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .spot-card-lead {
-    font-size: 13px;
+    font-size: 14px;
     -webkit-line-clamp: 4;
   }
 
@@ -1687,7 +1689,7 @@ main > .home-section:nth-child(even of .home-section) {
 .site-header-nav {
   display: flex;
   align-items: center;
-  font-size: 13px;
+  font-size: 14px;
   white-space: nowrap;
 }
 
@@ -1970,7 +1972,7 @@ main > .home-section:nth-child(even of .home-section) {
 .drawer-accordion-panel .drawer-menu-link {
   padding-left: 36px;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 /* =========================================
@@ -2064,9 +2066,9 @@ main > .home-section:nth-child(even of .home-section) {
 
 .spot-map-filter-btn {
   padding: 5px 12px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  color: #2d3748;
+  color: #1d1d1f;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 20px;
@@ -2130,7 +2132,7 @@ main > .home-section:nth-child(even of .home-section) {
 .spot-map-count {
   text-align: center;
   font-size: 14px;
-  color: #718096;
+  color: #64748b;
   margin-top: 12px;
 }
 
@@ -2151,9 +2153,9 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .spot-map-popup-name {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  color: #1a202c;
+  color: #1d1d1f;
   display: block;
   margin-bottom: 4px;
 }
@@ -2166,7 +2168,7 @@ main > .home-section:nth-child(even of .home-section) {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .spot-map-popup-category {
@@ -2186,7 +2188,7 @@ main > .home-section:nth-child(even of .home-section) {
   }
 
   .spot-map-filter-btn {
-    font-size: 13px;
+    font-size: 14px;
     padding: 5px 10px;
   }
 }
@@ -2338,7 +2340,7 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .amazon-card-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--color-text);
   line-height: 1.5;
@@ -2350,7 +2352,7 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .amazon-card-domain {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text-secondary);
   margin: 0;
 }
@@ -2449,7 +2451,7 @@ main > .home-section:nth-child(even of .home-section) {
 
 .page-lead {
   color: var(--color-text-secondary);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.8;
   padding: 0 !important;
 }
@@ -2562,7 +2564,7 @@ main > .home-section:nth-child(even of .home-section) {
   right: 0;
   text-align: center;
   padding: 6px 12px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #fff;
   background: rgba(0, 0, 0, 0.5);
   pointer-events: none;
@@ -2579,7 +2581,7 @@ main > .home-section:nth-child(even of .home-section) {
   z-index: 3;
   background: rgba(234, 179, 8, 0.92);
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   padding: 5px 10px;
@@ -2650,7 +2652,7 @@ main > .home-section:nth-child(even of .home-section) {
   display: block;
   width: 100%;
   height: 100%;
-  background-color: #cbd5e0;
+  background-color: #e2e8f0;
   border-radius: 2px;
 }
 
@@ -2789,7 +2791,7 @@ main > .home-section:nth-child(even of .home-section) {
 
 .gallery-modal-counter {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 13px;
+  font-size: 14px;
   white-space: nowrap;
 }
 
@@ -2833,7 +2835,7 @@ main > .home-section:nth-child(even of .home-section) {
 .footer-site-name {
   display: block;
   margin-bottom: 4px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
   text-decoration: none;
@@ -2850,7 +2852,7 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .footer-desc {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.6);
   max-width: 400px;
@@ -2938,7 +2940,7 @@ main > .home-section:nth-child(even of .home-section) {
 
 .service-section dt {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   margin-top: 20px;
   margin-bottom: 6px;
 }
@@ -2989,8 +2991,8 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .article-body > h2:first-child {
-  padding: 0 0 24px;
-  margin: 0 0 24px;
+    margin: 0 0 24px;
+    padding: 0px 0 16px;
 }
 
 /* =========================================
@@ -3070,7 +3072,7 @@ main > .home-section:nth-child(even of .home-section) {
 }
 
 .about-avatar-role {
-  color: #718096;
+  color: #64748b;
   text-align: center;
   margin: 0 !important;
   font-size: 11px;
@@ -3092,7 +3094,7 @@ main > .home-section:nth-child(even of .home-section) {
 
 .about-profile-row dt {
   white-space: nowrap;
-  color: #718096;
+  color: #64748b;
   font-weight: 500;
   flex-shrink: 0;
   width: 90px;
@@ -3100,7 +3102,7 @@ main > .home-section:nth-child(even of .home-section) {
 
 .about-profile-row dd {
   margin: 0;
-  color: #1a202c;
+  color: #1d1d1f;
 }
 
 /* ── SNS ピルボタン ── */
@@ -3110,7 +3112,7 @@ main > .home-section:nth-child(even of .home-section) {
   gap: 8px;
   margin-top: 28px;
   padding-top: 24px;
-  border-top: 1px solid #f0f2f5;
+  border-top: 1px solid #e2e8f0;
 }
 
 .about-profile-bio p {
@@ -3129,13 +3131,13 @@ main > .home-section:nth-child(even of .home-section) {
   line-height: 1;
   transition: background 0.15s, border-color 0.15s;
   display: inline-flex;
-  color: #374151 !important;
+  color: #1d1d1f !important;
   text-decoration: none !important;
 }
 
 .about-sns-btn:hover {
   background: #edf2f7;
-  border-color: #cbd5e0;
+  border-color: #e2e8f0;
 }
 
 /* ── SP ── */
@@ -3191,7 +3193,7 @@ main > .home-section:nth-child(even of .home-section) {
   align-items: center;
   gap: 5px;
   color: inherit;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* =========================================
@@ -3246,7 +3248,7 @@ body.modal-open [id*="aswift"] {
   padding: 6px 14px;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text-secondary);
   text-decoration: none;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
@@ -3314,7 +3316,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .lang-select {
-  font-size: 13px;
+  font-size: 14px;
   padding: 3px 18px 4px 8px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 6px;
@@ -3463,62 +3465,17 @@ body.modal-open [id*="aswift"] {
 
 /* =========================================
    Module - m-table
+   -----------------------------------------
+   表組みのスタイルは ui-components.css に集約した。
+   もとは globals.css と luminar.css の2箇所で別々に定義されており、
+   /luminar/ 配下だけ見た目が違う状態だったため、新しい Luminar 版を正とした。
+   （この統合で、旧 globals 版にあった偶数行のゼブラ塗り分けは無くなる）
    ========================================= */
-.m-table-wrap {
-  overflow-x: auto;
-  border-radius: var(--radius-md);
-  border: 1px solid #e2e8f0;
-  margin-bottom: 24px;
-}
-
-.m-table {
-  width: 100%;
-  border-collapse: collapse;
-  white-space: nowrap;
-  margin: 0 !important;
-  font-size: 0.9rem;
-}
-
-.m-table-wrap .m-table th {
-  background: #1e293b;
-  color: #fff;
-  font-weight: 700;
-  padding: 0.75rem 1rem;
-  border: none;
-  line-height: 1.3;
-  text-align: center;
-}
-
-.m-table-wrap .m-table th:first-child {
-  text-align: left;
-}
-
-.m-table-wrap .m-table td {
-  border: none;
-  border-bottom: 1px solid #e2e8f0;
-  vertical-align: middle;
-  background: #fff;
-  padding: 0.65rem 1rem;
-  line-height: 1.3;
-}
-
-.m-table-wrap .m-table td:first-child {
-  font-weight: 500;
-  text-align: left;
-}
-
-.m-table-wrap .m-table tr:last-child td {
-  border-bottom: none;
-}
-
-.m-table-wrap .m-table tbody tr:nth-child(even) td {
-  background: #f8fafc;
-}
 
 .moon-info-modal__title {
   color: #fff;
   margin: 0 0 2px;
-  font-size: 1.3rem;
+  font-size: 1.375rem;
   font-weight: 700;
   line-height: 1.4;
 }
@@ -3526,7 +3483,7 @@ body.modal-open [id*="aswift"] {
 .sim-info-modal__title {
   color: #fff;
   margin: 0 0 2px;
-  font-size: 1.3rem;
+  font-size: 1.375rem;
   font-weight: 700;
   line-height: 1.4;
 }
@@ -3541,7 +3498,7 @@ body.modal-open [id*="aswift"] {
   gap: 8px;
   border-radius: 999px;
   border: none;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
   cursor: pointer;
@@ -3558,7 +3515,7 @@ body.modal-open [id*="aswift"] {
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 12px;
 }
@@ -3634,7 +3591,7 @@ body.modal-open [id*="aswift"] {
 
 .share-modal__desc {
   color: #aaa;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   line-height: 1.6;
   margin: 0;
 }
@@ -3649,7 +3606,7 @@ body.modal-open [id*="aswift"] {
 
 .share-modal__section-label {
   color: #888;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -3665,7 +3622,7 @@ body.modal-open [id*="aswift"] {
 
 .share-modal__sns-title {
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: #aaa;
   font-weight: bold;
   margin-bottom: 10px;
@@ -3737,7 +3694,7 @@ body.modal-open [id*="aswift"] {
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.06);
   color: #ccc;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
   text-align: left;
@@ -3782,7 +3739,7 @@ body.modal-open [id*="aswift"] {
   border-radius: 0;
   border: none;
   box-shadow: none;
-  font-size: 24px;
+  font-size: 22px;
   cursor: pointer;
   transition: transform 0.15s ease;
 }
@@ -3868,7 +3825,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .map-legend__label {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.9);
   white-space: nowrap;
   line-height: 1;
@@ -3901,7 +3858,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .map-ctrl-landmark__label {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.9);
   white-space: nowrap;
   line-height: 1;
@@ -3967,14 +3924,14 @@ body.modal-open [id*="aswift"] {
 
 .sim-datepicker__date-btn {
   text-align: center;
-  color: #e0e0e0;
+  color: #e2e8f0;
   cursor: pointer;
   background-color: #32343a;
   border: 1px solid #3e4046;
   border-radius: 8px;
   flex: 1;
   padding: 4px 12px;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -3987,19 +3944,19 @@ body.modal-open [id*="aswift"] {
 }
 
 .sim-hour-header__label {
-  font-size: .8rem;
+  font-size: 0.75rem;
   font-weight: 400;
   display: block;
 }
 
 .sim-hour-header__time {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 700;
   display: block;
 }
 
 .moon-hour-header__time {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 700;
 }
 
@@ -4013,7 +3970,7 @@ body.modal-open [id*="aswift"] {
   align-items: center;
   gap: 2px;
   padding: 4px 12px;
-  font-size: .85rem;
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.5;
   display: flex;
@@ -4028,7 +3985,7 @@ body.modal-open [id*="aswift"] {
   border: 1px solid #3e4046;
   border-radius: 8px;
   padding: 10px 10px 8px;
-  color: #e0e0e0;
+  color: #e2e8f0;
 }
 
 .weather-widget--loading,
@@ -4068,7 +4025,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .weather-widget__nav-btn:hover {
-  color: #e0e0e0;
+  color: #e2e8f0;
 }
 
 .weather-widget__nav-btn:disabled {
@@ -4077,7 +4034,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .weather-widget__nav-date {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #fff;
   text-align: center;
@@ -4106,16 +4063,16 @@ body.modal-open [id*="aswift"] {
 }
 
 .weather-widget__condition-text {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: bold;
-  color: #e0e0e0;
+  color: #e2e8f0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .weather-widget__label-badge {
-  font-size: 0.65rem;
+  font-size: 0.6875rem;
   color: #888;
 }
 
@@ -4131,12 +4088,12 @@ body.modal-open [id*="aswift"] {
 }
 
 .weather-widget__suitability-label {
-  font-size: 0.6rem;
+  font-size: 0.6875rem;
   color: #888;
 }
 
 .weather-widget__suitability-value {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: bold;
 }
 
@@ -4162,7 +4119,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .weather-widget__stat-value {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: #bbb;
 }
 
@@ -4170,9 +4127,9 @@ body.modal-open [id*="aswift"] {
    SpotWeatherWidget (spot article hourly)
    ========================================= */
 .weather-widget__title {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: bold;
-  color: #e0e0e0;
+  color: #e2e8f0;
   margin-bottom: 4px;
   padding-bottom: 6px;
   border-bottom: 2px solid #c0392b;
@@ -4180,7 +4137,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .weather-widget__title-sub {
-  font-size: 0.7rem;
+  font-size: 0.6875rem;
   font-weight: normal;
   color: #888;
 }
@@ -4201,7 +4158,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .weather-widget__date-label {
-  font-size: 0.7rem;
+  font-size: 0.6875rem;
   font-weight: bold;
   color: #aaa;
   letter-spacing: 0.05em;
@@ -4239,7 +4196,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .weather-widget__hour-time {
-  font-size: 0.6rem;
+  font-size: 0.6875rem;
   color: #aaa;
   line-height: 1;
 }
@@ -4263,12 +4220,12 @@ body.modal-open [id*="aswift"] {
 .weather-widget__hour-temp {
   font-size: 0.75rem;
   font-weight: bold;
-  color: #e0e0e0;
+  color: #e2e8f0;
   line-height: 1;
 }
 
 .weather-widget__hour-precip {
-  font-size: 0.6rem;
+  font-size: 0.6875rem;
   color: #888;
   line-height: 1;
 }
@@ -4300,7 +4257,7 @@ body.modal-open [id*="aswift"] {
 .best-time-nav__date {
   flex: 1;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: #c8aa6e;
   font-weight: 600;
 }
@@ -4338,7 +4295,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .best-time-unified .best-time-section-heading {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: bold;
   color: #c8aa6e;
   letter-spacing: 0.05em;
@@ -4350,7 +4307,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .best-time-value {
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
   color: #fff;
   margin: 0 0 6px;
@@ -4358,7 +4315,7 @@ body.modal-open [id*="aswift"] {
 }
 
 .best-time-desc {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.6;
   margin: 0;

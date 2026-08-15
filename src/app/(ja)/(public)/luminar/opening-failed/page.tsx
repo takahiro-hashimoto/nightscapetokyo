@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
+import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
-import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
 
 
@@ -28,26 +28,26 @@ export async function generateMetadata(): Promise<Metadata> {
 // ── TOC ───────────────────────────────────────────────────────────────────────
 
 const TOC: TocItem[] = [
-  { id: 'heading-1', level: 2, text: 'まず切り分け｜あなたの症状はどれ？' },
+  { id: 'heading-1', level: 2, text: 'まず症状を切り分ける' },
   { id: 'heading-2', level: 3, text: 'Q1：起動直後〜編集中に突然落ちる？' },
   { id: 'heading-3', level: 3, text: 'Q2：RAWを開いた瞬間・AI処理中に重くなる？' },
   { id: 'heading-4', level: 3, text: 'Q3：エラーメッセージが出る？' },
-  { id: 'catalog', level: 2, text: '原因①：カタログが原因の場合【最も多い】' },
+  { id: 'catalog', level: 2, text: '原因①：カタログ（最も多い）' },
   { id: 'heading-6', level: 3, text: 'なぜカタログが原因になるのか' },
   { id: 'heading-7', level: 3, text: 'カタログ問題の対処法' },
   { id: 'spec', level: 2, text: '原因②：PCスペック・GPUの問題' },
   { id: 'heading-9', level: 3, text: '「スペック不足」より「処理内容とのミスマッチ」' },
   { id: 'heading-10', level: 3, text: 'スペック問題の対処法【優先度順】' },
-  { id: 'neo', level: 2, text: '原因③：Luminar Neo側の仕様・不具合' },
+  { id: 'neo', level: 2, text: '原因③：Luminar Neo側の問題' },
   { id: 'heading-12', level: 3, text: 'よくあるパターン' },
   { id: 'heading-13', level: 3, text: 'Neo側の問題への対処法' },
   { id: 'heading-14', level: 3, text: '「重い」は欠陥ではなく仕様の一部' },
-  { id: 'heading-15', level: 2, text: '結局、直らない場合はどうすればいい？' },
+  { id: 'heading-15', level: 2, text: '直らない場合はどうするか' },
   { id: 'heading-16', level: 3, text: '選択肢①：PCを変える' },
   { id: 'heading-17', level: 3, text: '選択肢②：ソフトを変える' },
   { id: 'heading-18', level: 3, text: '選択肢③：Luminar Neoの使い方を変える' },
-  { id: 'heading-19', level: 2, text: 'Luminar Neoが重い・落ちる時のよくある質問' },
-  { id: 'heading-20', level: 2, text: 'まとめ｜原因を特定して、適切な対処を' },
+  { id: 'heading-19', level: 2, text: 'よくある質問' },
+  { id: 'heading-20', level: 2, text: 'まとめ：原因別の対処' },
 ]
 
 // ── リード文（最初の h2 より前）────────────────────────────────────────────────
@@ -60,7 +60,11 @@ const lead = (
       <strong>重い・落ちる原因は複数あり、原因によって対処法が全く異なる</strong>からです。
     </p>
     <p>まず自分の症状を選んで、該当セクションに直接飛んでください。</p>
-    <div className="m-table-wrap" style={{ margin: '1rem 0 1.5rem' }}>
+    <p>
+      この記事では、まず「自分がどの原因に該当するか」を切り分け、
+      <strong>その原因に対して今すぐできる対処法</strong>を解説します。闇雲に全部試す必要はありません。
+    </p>
+    <div className="m-table-wrap">
       <table className="m-table">
         <thead>
           <tr>
@@ -98,10 +102,7 @@ const lead = (
         </tbody>
       </table>
     </div>
-    <p>
-      この記事では、まず「自分がどの原因に該当するか」を切り分け、
-      <strong>その原因に対して今すぐできる対処法</strong>を解説します。闇雲に全部試す必要はありません。
-    </p>
+    <p>起動しない・重いで困っている方は、ぜひチェックしてみてください。</p>
     <div className="m-point-box">
       <div className="m-point-box__bg">!</div>
       <div className="m-point-box__header">
@@ -132,7 +133,6 @@ const lead = (
         </li>
       </ul>
     </div>
-    <LuminarCtaMini />
   </>
 )
 
@@ -148,7 +148,7 @@ export default function Page() {
     >
       {/* セクション1: まず切り分け */}
       <section id="heading-1" className="content-card card-padding article-body">
-        <h2>まず切り分け｜あなたの症状はどれ？</h2>
+        <h2>まず症状を切り分ける</h2>
         <p>「重い」「落ちる」と一口に言っても、症状によって原因が異なります。以下の質問に答えて、自分がどこを見るべきか確認してください。</p>
         <h3 id="heading-2">Q1：起動直後〜編集中に突然落ちる？</h3>
         <div className="definition">
@@ -185,7 +185,7 @@ export default function Page() {
             <dt>特にエラーは出ないが不安定</dt>
             <dd>
               → <strong>Neo側の仕様・不具合</strong>の可能性。
-              <a href="#neo">原因③：Luminar Neo側の仕様・不具合</a>へ
+              <a href="#neo">原因③：Luminar Neo側の問題</a>へ
             </dd>
           </dl>
         </div>
@@ -197,7 +197,7 @@ export default function Page() {
 
       {/* セクション2: 原因① カタログ */}
       <section id="catalog" className="content-card card-padding article-body">
-        <h2>原因①：カタログが原因の場合【最も多い】</h2>
+        <h2>原因①：カタログ（最も多い）</h2>
         <p>
           Luminar Neoが「突然落ちる」「起動しない」場合、
           <strong>カタログの不具合が原因であることが非常に多い</strong>です。
@@ -226,7 +226,7 @@ export default function Page() {
           <li>カタログフォルダを見つける（デフォルトは「ピクチャ」内の「Luminar Neo」フォルダ）</li>
           <li>フォルダ名を任意の名前に変更する（例：Luminar Neo_old）</li>
         </ol>
-        <p>※フォルダは削除しないでください。編集履歴が必要な場合に備えてバックアップとして残します。</p>
+        <p className="m-note">※フォルダは削除しないでください。編集履歴が必要な場合に備えてバックアップとして残します。</p>
         <h4>手順②：AppDataフォルダの内容を削除する（Windows）</h4>
         <ol>
           <li>「Windowsキー + R」を押す</li>
@@ -303,7 +303,7 @@ export default function Page() {
 
       {/* セクション4: 原因③ Neo側の仕様 */}
       <section id="neo" className="content-card card-padding article-body">
-        <h2>原因③：Luminar Neo側の仕様・不具合</h2>
+        <h2>原因③：Luminar Neo側の問題</h2>
         <p>
           PCスペックは十分なのに、特定の操作で重くなる・落ちる場合は、
           <strong>Luminar Neo側の仕様や一時的な不具合</strong>が原因かもしれません。
@@ -344,14 +344,14 @@ export default function Page() {
           従来のスライダー調整とは比較にならないほどPCリソースを消費します。
         </p>
         <p>
-          つまり、Luminar Neoの「重さ」は欠陥ではなく、<strong>高度なAI処理を行うための代償</strong>とも言えます。
+          Luminar Neoの「重さ」は欠陥ではなく、<strong>AI処理の代償</strong>です。
           「軽さ」を最優先するなら、そもそもLuminar Neoは向いていないかもしれません。
         </p>
       </section>
 
       {/* セクション5: 直らない場合 */}
       <section id="heading-15" className="content-card card-padding article-body">
-        <h2>結局、直らない場合はどうすればいい？</h2>
+        <h2>直らない場合はどうするか</h2>
         <p>ここまでの対処法をすべて試しても改善しない場合、以下の3つの選択肢があります。</p>
         <h3 id="heading-16">選択肢①：PCを変える</h3>
         <p>
@@ -396,7 +396,7 @@ export default function Page() {
 
       {/* セクション6: よくある質問 */}
       <section id="heading-19" className="content-card card-padding article-body">
-        <h2>Luminar Neoが重い・落ちる時のよくある質問</h2>
+        <h2>よくある質問</h2>
         <dl>
           {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
               日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
@@ -440,7 +440,7 @@ export default function Page() {
 
       {/* セクション7: まとめ */}
       <section id="heading-20" className="content-card card-padding article-body">
-        <h2>まとめ｜原因を特定して、適切な対処を</h2>
+        <h2>まとめ：原因別の対処</h2>
         <p>
           Luminar Neoが「重い」「落ちる」問題は、闘雲に対処法を試しても解決しません。
           大切なのは<strong>原因を特定してから対処する</strong>ことです。
@@ -488,6 +488,7 @@ export default function Page() {
             <a href="https://nightscape.tokyo/luminar/trial/">Luminar Neo体験版の解説記事</a>
             で確認できます。
           </p>
+          <p><i className="fa-solid fa-arrow-right"></i> これから購入する場合は、<Link href="/luminar/sale-and-coupon-info/">セール時期とクーポンコードのまとめ</Link>を先に確認しておくと無駄がありません。</p>
         </div>
       </section>
     </LuminarArticleLayout>

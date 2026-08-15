@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import MTabsInit from '@/components/luminar/MTabsInit'
-import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
 
 
@@ -22,11 +21,11 @@ const META = {
 }
 
 const TOC: TocItem[] = [
-  { id: 'what-can-do', level: 2, text: 'Luminar Neoの無料体験版でできること・できないこと' },
+  { id: 'what-can-do', level: 2, text: '無料体験版でできること・できないこと' },
   { id: 'why-safe', level: 2, text: '無料体験版が安心して使える3つの理由' },
-  { id: 'how-to-download', level: 2, text: 'Luminar Neo 無料体験版のダウンロードとインストール手順' },
+  { id: 'how-to-download', level: 2, text: 'ダウンロードとインストール手順' },
   { id: 'caution', level: 2, text: '体験版を無駄にしないための注意点' },
-  { id: 'what-to-check', level: 2, text: '7日間でここだけは確認したいAI機能と操作感' },
+  { id: 'what-to-check', level: 2, text: '7日間で確認したいこと' },
   { id: 'faq', level: 2, text: 'よくある質問（FAQ）' },
   { id: 'summary', level: 2, text: 'まとめ' },
 ]
@@ -39,15 +38,15 @@ const lead = (
   <>
     <p>「気になるけど、いきなり買うのはちょっと…」</p>
     <p>写真編集ソフトを検討しているとき、こんな気持ちになったことはありませんか？特にLuminar Neoのように機能が豊富なソフトだと、自分のPCでちゃんと動くのか、本当に使いこなせるのか、不安になりますよね。</p>
-    <p>さらに「体験版を試すだけなのにクレジットカードを登録するのは怖い」「知らないうちに課金されていたらどうしよう」という心配もあるかもしれません。</p>
-    <p>そこでこの記事では、以下の3つのポイントを中心に解説していきます。</p>
+    <p>さらに「体験版を試すだけなのにクレジットカードを登録するのは怖い」「知らないうちに課金されていたらどうしよう」という心配もあります。</p>
+    <p>この記事で扱うのは、次の3つです。</p>
     <ul className="m-list-ul">
       <li><span className="m-list-ul__icon">•</span> 無料体験版の条件と使える機能</li>
       <li><span className="m-list-ul__icon">•</span> 迷わずできるダウンロード・インストール手順</li>
       <li><span className="m-list-ul__icon">•</span> 体験版を無駄にしないための注意点</li>
     </ul>
-    <p>それでは、安心してLuminar Neoを試すための情報を見ていきましょう！</p>
-    <LuminarCtaMini />
+    <p>順に見ていきます。</p>
+    <p>まず試してから決めたい方は、ぜひチェックしてみてください。</p>
   </>
 )
 
@@ -58,8 +57,8 @@ export default async function Page() {
     <LuminarArticleLayout {...META} categoryIds={[1]} toc={TOC} lead={lead}>
 
       <section id="what-can-do" className="content-card card-padding article-body">
-        <h2>Luminar Neoの無料体験版でできること・できないこと</h2>
-        <p>まずは、無料体験版で何ができて何ができないのかを把握しておきましょう。「思っていた機能が使えなかった」となると、せっかくの体験期間がもったいないですからね。</p>
+        <h2>無料体験版でできること・できないこと</h2>
+        <p>まず、体験版で何ができて何ができないのか。ここを外すと「使いたい機能が入っていなかった」で7日間が終わります。</p>
         <div className="l-grid-2 l-bottom-large">
           <div className="m-pc-box m-pc-box--pros">
             <div className="m-pc-head"><i className="fa-solid fa-circle-check"></i> 体験版でできること</div>
@@ -95,20 +94,20 @@ export default async function Page() {
         <h3>1. クレジットカード登録が不要</h3>
         <p>Luminar Neoの体験版をダウンロードする際、<strong>クレジットカード情報の入力は一切求められません</strong>。</p>
         <p>必要なのはメールアドレスだけ。Skylumアカウントを作成して、ダウンロードリンクを受け取るだけで体験を開始できます。</p>
-        <p>一部の写真編集ソフトでは、無料トライアルの段階でクレジットカード登録が必須となっているものもあります。そういったサービスと比べると、Luminar Neoは「まず試してから考えたい」という方にとって、かなりハードルが低い設計になっています。</p>
+        <p>一部の写真編集ソフトでは、無料トライアルの段階でクレジットカード登録が必須となっているものもあります。それに比べると、Luminar Neoは試すまでのハードルがかなり低いほうです。</p>
         <h3>2. 自動更新・自動課金がない</h3>
         <p>体験版を使い終わった後、自動的に有料プランに移行して課金される…ということはありません。</p>
         <p>7日間の体験期間が終了すると、単純にソフトの機能が使えなくなるだけです。<strong>「解約手続きを忘れて請求が来た」という事態は起こりえない仕組み</strong>になっています。</p>
         <p>これは意外と重要なポイントで、サブスクリプション型のサービスに慣れている方ほど「トライアル終了後の自動課金」を警戒しがちです。Luminar Neoの体験版ではその心配は無用です。</p>
         <h3>3. 製品版と近い環境で試せる</h3>
         <p>体験版だからといって機能が大幅に制限されているわけではありません。</p>
-        <p>先ほども触れたように、Proツールを含むすべての機能にフルアクセスできますし、書き出しも透かしなしで行えます。つまり、<strong>体験版で作った作品がそのまま使える</strong>ということです。</p>
-        <p>これは「製品版を買ったら思っていたのと違った」というミスマッチを防ぐ上で非常に重要です。体験版の段階で「自分の写真編集スタイルに合うかどうか」をしっかり見極めることができます。</p>
+        <p>先ほども触れたように、Proツールを含むすべての機能にフルアクセスできますし、書き出しも透かしなしです。<strong>体験版で仕上げた写真は、そのまま公開しても問題ありません。</strong></p>
+        <p>買ってから「思っていたのと違った」となる余地がほぼありません。自分の編集スタイルに合うかどうかを、金を払う前に確かめられます。</p>
       </section>
 
       <section id="how-to-download" className="content-card card-padding article-body">
-        <h2>Luminar Neo 無料体験版のダウンロードとインストール手順</h2>
-        <p>ここからは、実際に体験版をダウンロードしてインストールする手順を解説します。難しい操作は一切ありませんので、画面の指示に従って進めていきましょう。</p>
+        <h2>ダウンロードとインストール手順</h2>
+        <p>ここからは、実際に体験版をダウンロードしてインストールする手順を解説します。難しい操作はないので、画面の指示どおりに進めれば終わります。</p>
         <div style={{ position: 'relative' }}>
           <div className="m-step">
             <div className="m-step__line"></div>
@@ -152,16 +151,10 @@ export default async function Page() {
         <h2>体験版を無駄にしないための注意点</h2>
         <p>せっかく体験版を試すなら、できる限り有意義に使いたいですよね。ここでは、体験版を使う上で知っておくべき注意点をまとめました。</p>
         <h3>カウント開始のタイミング</h3>
-        <div className="m-notice m-notice--warn">
-          <div className="m-notice__head"><span className="m-notice__badge">WARNING</span><span className="m-notice__title">重要</span></div>
-          <p>7日間の体験期間は、<strong>初めてソフトを起動した時点からスタート</strong>します。ダウンロードした時点やインストールした時点ではありません。</p>
-        </div>
+        <p>7日間の体験期間は、<strong>初めてソフトを起動した時点からスタート</strong>します。ダウンロードした時点やインストールした時点ではありません。</p>
         <p>「週末にじっくり試そう」と思っている方は、週末になってから初回起動することをおすすめします。平日の忙しいタイミングで起動してしまうと、せっかくの体験期間を十分に活用できないまま終わってしまう可能性があります。</p>
         <h3>再インストール・延長は不可</h3>
-        <div className="m-notice m-notice--warn">
-          <div className="m-notice__head"><span className="m-notice__badge">WARNING</span><span className="m-notice__title">注意</span></div>
-          <p>一度使い始めた体験版を、アンインストールして再インストールしても、<strong>期間はリセットされません</strong>。体験版の情報はSkylumアカウントに紐づいて管理されています。</p>
-        </div>
+        <p>一度使い始めた体験版を、アンインストールして再インストールしても、<strong>期間はリセットされません</strong>。体験版の情報はSkylumアカウントに紐づいて管理されています。</p>
         <p>7日間という期間は、計画的に使えば十分な長さです。体験を始める前に「何を確認したいか」をある程度リストアップしておくと、効率よく使えます。</p>
         <h3>PCスペックの目安</h3>
         <p>Luminar NeoはAI機能を多用するため、ある程度のPCスペックが必要です。せっかく体験版を試しても、動作が重すぎて評価できない…となるともったいないですよね。</p>
@@ -210,19 +203,19 @@ export default async function Page() {
       </section>
 
       <section id="what-to-check" className="content-card card-padding article-body">
-        <h2>7日間でここだけは確認したいAI機能と操作感</h2>
-        <p>体験版の期間は7日間。限られた時間の中で、何を優先的に確認すべきでしょうか。ここでは「購入するかどうかの判断材料」となるポイントを整理しました。</p>
+        <h2>7日間で確認したいこと</h2>
+        <p>体験版は7日間です。あれこれ触っているうちに終わるので、先に確認する順番を決めておくと無駄がありません。</p>
         <h3>自分の写真ジャンルで使えるか</h3>
         <p>Luminar Neoが得意とするのは、風景写真やポートレートの編集です。空の置き換え機能は風景写真で威力を発揮しますし、スキンAIやフェイスAIは人物写真の仕上げに重宝します。</p>
-        <p>一方で、製品写真やマクロ撮影など、被写体によっては恩恵を感じにくいケースもあります。体験版では、ぜひ<strong>普段ご自身が撮影している写真</strong>を読み込んで編集してみてください。サンプル写真ではなく、自分のRAWファイルで試すことで、より現実的な判断ができます。</p>
+        <p>一方で、製品写真やマクロ撮影など、被写体によっては恩恵を感じにくいケースもあります。試すときは<strong>普段自分が撮っている写真</strong>を読み込んでください。用意されたサンプルではなく自分のRAWで見ないと、判断を誤ります。</p>
         <h3>処理速度の確認</h3>
         <p>AI機能は便利ですが、処理に時間がかかる場合があります。特に「スカイAI（空の置き換え）」や「消去ツール」は、写真のサイズや内容によって処理時間が変わります。</p>
-        <p>お使いのPCで、ストレスなく作業できるかどうかを確認しておきましょう。処理中にPCがフリーズしたり、極端に動作が重くなる場合は、PCスペックの問題かもしれません。</p>
+        <p>自分のPCでストレスなく動くかどうか。処理中にフリーズしたり極端に重くなるなら、スペック不足を疑ったほうがいいです。</p>
         <h3>手動補正との相性</h3>
         <p>Luminar NeoはAI機能が目立ちますが、手動での細かい調整も可能です。露出、コントラスト、ホワイトバランス、トーンカーブなど、基本的な補正ツールは一通り揃っています。</p>
-        <p>AI任せだけでなく、自分でコントロールしたい部分がどれくらいあるかも確認しておくと良いでしょう。「AIで大まかに整えてから、手動で微調整する」というワークフローが自分に合っているかどうか。これも体験版で確かめておきたいポイントです。</p>
+        <p>AI任せにできる部分と、自分で詰めたい部分の割合も見ておきたいところです。「AIでざっくり整えてから手で微調整する」という流れが自分に合うかどうか。ここは触ってみないと分かりません。</p>
         <h3>UIの使いやすさ</h3>
-        <p>操作画面が直感的に使えるかどうかも、長く使い続ける上では重要です。メニューの配置、ツールの切り替え、画像の読み込み・書き出しの手順など、実際に触ってみて「使いやすい」と感じるかどうかは、人によって異なります。</p>
+        <p>操作画面が手に馴染むかどうかも、長く使うなら効いてきます。メニューの配置やツールの切り替え、読み込みと書き出しの手数。この辺の感じ方は本当に人それぞれです。</p>
         <p>体験版の期間中に、一連の編集作業を何度か繰り返してみることで、UIへの慣れ具合も確認できます。</p>
         <div className="m-link-box">
           <div className="m-link-box__icon">
@@ -263,9 +256,9 @@ export default async function Page() {
 
       <section id="summary" className="content-card card-padding article-body">
         <h2>まとめ</h2>
-        <p>Luminar Neoの無料体験版は、<strong>クレジットカード登録不要</strong>、<strong>自動課金なし</strong>で、7日間しっかり試せます。</p>
-        <p>「自分のPCで動くか不安」「使いこなせるか分からない」という方は、まずは体験版で実際に触ってみることをおすすめします。</p>
-        <p>使用感が特に問題なかったら、ぜひ<Link href="/luminar/sale-and-coupon-info/">Luminar Neoを安く買う方法</Link>なども参考にして、お得にLuminar Neoを購入して素敵なフォトライフをお過ごしください。</p>
+        <p>Luminar Neoの無料体験版は、<strong>クレジットカード登録不要</strong>、<strong>自動課金なし</strong>で、7日間フルに試せます。</p>
+        <p>自分のPCで動くか不安、使いこなせるか分からない。そう思っているなら、触ってみるのが一番早いです。</p>
+        <p>使ってみて問題なければ、あとは買うタイミングだけです。<Link href="/luminar/sale-and-coupon-info/">Luminar Neoを安く買う方法</Link>にセール時期をまとめてあります。</p>
       </section>
 
     </LuminarArticleLayout>

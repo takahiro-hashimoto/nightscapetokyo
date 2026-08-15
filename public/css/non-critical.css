@@ -3,7 +3,7 @@
    ========================================= */
 .report-content p {
   margin-bottom: 16px;
-  font-size: 1.05rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
@@ -199,7 +199,7 @@
 
 .gallery-modal-counter {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 13px;
+  font-size: 14px;
   margin: 0;
 }
 
@@ -280,7 +280,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
+  background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
 }
 
 .tag-card-name {
@@ -294,7 +294,7 @@
 
 .tag-card-arrow {
   flex-shrink: 0;
-  color: #a0aec0;
+  color: #94a3b8;
   margin-right: 14px;
 }
 
@@ -307,7 +307,7 @@
 .info-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 15px;
+  font-size: 16px;
   border: none;
   margin: 0;
 }
@@ -330,7 +330,7 @@
 
 .info-table th {
   width: 25%;
-  color: #475569;
+  color: #64748b;
   font-weight: 700;
   font-size: 14px;
   white-space: nowrap;
@@ -478,7 +478,7 @@
   font-weight: 700;
 }
 .faq-q {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--color-text);
   margin: 0 0 6px;
 }
@@ -493,7 +493,7 @@
 .faq-a {
   font-size: 1rem;
   line-height: 1.8;
-  color: #4a5568;
+  color: #64748b;
   margin: 0;
   padding-left: 25px;
 }
@@ -603,7 +603,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .event-row + .event-row {
@@ -628,7 +628,7 @@
   flex-shrink: 0;
 }
 .lang-select {
-  font-size: 13px;
+  font-size: 14px;
   padding: 4px 24px 4px 8px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 6px;
@@ -650,7 +650,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  font-size: 13px;
+  font-size: 14px;
   color: #64748b;
   margin: 0 0 30px;
   padding: 12px 0;
@@ -675,7 +675,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 14px;
   color: #64748b;
 }
 
@@ -692,8 +692,8 @@
 }
 
 .meta-separator {
-  color: #cbd5e1;
-  font-size: 13px;
+  color: #e2e8f0;
+  font-size: 14px;
 }
 
 .meta-desc {
@@ -701,8 +701,8 @@
   flex-direction: row;
   align-items: center;
   gap: 5px;
-  color: #475569;
-  font-size: 13px;
+  color: #64748b;
+  font-size: 14px;
 }
 
 .meta-desc svg {
@@ -725,12 +725,12 @@
 
 .meta-date-label {
   color: #64748b;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .meta-date time {
   color: #64748b;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* =========================================
@@ -783,7 +783,7 @@
 
 .recommend-cta-label {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -918,7 +918,7 @@
 .related-heading {
   font-size: 18px;
   font-weight: 700;
-  color: #1a202c;
+  color: #1d1d1f;
   margin: 0 0 20px;
 }
 
@@ -947,7 +947,7 @@
 .not-found-code {
   font-size: 96px;
   font-weight: 800;
-  color: #cbd5e1;
+  color: #e2e8f0;
   line-height: 1;
   margin: 0 0 8px;
 }
@@ -955,12 +955,12 @@
 .not-found-title {
   font-size: 22px;
   font-weight: 700;
-  color: #1a202c;
+  color: #1d1d1f;
   margin: 0 0 12px;
 }
 
 .not-found-desc {
-  font-size: 15px;
+  font-size: 16px;
   color: #64748b;
   margin: 0 0 32px;
 }
@@ -971,7 +971,7 @@
   background: #3b82f6;
   color: #fff;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   text-decoration: none;
   transition: background 0.2s;
@@ -992,9 +992,9 @@
 }
 
 .share-heading {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
-  color: #1a202c;
+  color: #1d1d1f;
   margin: 0 0 10px;
 }
 
@@ -1022,7 +1022,7 @@
   padding: 14px 8px;
   border-radius: 999px;
   border: none;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
   cursor: pointer;
@@ -1065,7 +1065,7 @@
 }
 
 .share-btn-copy {
-  background: #6b7280;
+  background: #64748b;
 }
 
 .share-btn-copied {
@@ -1125,8 +1125,8 @@
 }
 
 .best-time-desc {
-  font-size: 13px;
-  color: #a0aec0;
+  font-size: 14px;
+  color: #94a3b8;
   margin-top: 15px;
 }
 
@@ -1142,7 +1142,7 @@
 }
 
 .no-reviews {
-  color: #718096;
+  color: #64748b;
   text-align: center;
   padding: 20px;
 }
@@ -1174,13 +1174,13 @@
 
 .review-title {
   font-weight: 700;
-  font-size: 15px;
-  color: #2d3748;
+  font-size: 16px;
+  color: #1d1d1f;
 }
 
 .review-content {
   font-size: 14px;
-  color: #4a5568;
+  color: #64748b;
   line-height: 1.7;
   margin: 0 0 8px;
 }
@@ -1189,7 +1189,7 @@
   display: flex;
   gap: 15px;
   font-size: 12px;
-  color: #a0aec0;
+  color: #94a3b8;
 }
 
 .review-form-container {
@@ -1205,7 +1205,7 @@
   font-weight: 700;
   text-align: center;
   border-bottom: 1px solid #e5e7eb;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .review-form-body {
@@ -1214,7 +1214,7 @@
 
 .review-form-text {
   font-size: 14px;
-  color: #4a5568;
+  color: #64748b;
   line-height: 1.7;
   margin: 0 0 25px;
 }
@@ -1235,7 +1235,7 @@
 .review-form select,
 .review-form textarea {
   width: 100%;
-  border: 1px solid #d1d5db;
+  border: 1px solid #e2e8f0;
   border-radius: 4px;
   padding: 12px;
   font-size: 14px;
@@ -1260,7 +1260,7 @@
   padding: 14px 40px;
   border-radius: 6px;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -1277,8 +1277,8 @@
   align-items: center;
   gap: 6px;
   margin-top: 10px;
-  font-size: 13px;
-  color: #718096;
+  font-size: 14px;
+  color: #64748b;
   font-weight: 600;
 }
 
@@ -1347,7 +1347,7 @@
 }
 
 .home-author-body p {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.8;
   color: #333;
   margin: 0 0 12px;
@@ -1407,7 +1407,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--color-main);
 }
@@ -1469,7 +1469,7 @@
 
   .pill-tag {
     padding: 10px 10px;
-    font-size: 13px;
+    font-size: 14px;
   }
 }
 
@@ -1477,22 +1477,22 @@
    AREA PAGE
    ========================================= */
 .area-page-heading {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
-  color: #1a202c;
+  color: #1d1d1f;
   margin: 0 0 20px;
   line-height: 1.5;
 }
 
 .area-page-lead {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--color-text-light);
   line-height: 1.8;
   margin: 0;
 }
 
 .area-page-empty {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--color-text-light);
   text-align: center;
   padding: 40px 0;
@@ -1502,8 +1502,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
-  color: #4a5568;
+  font-size: 14px;
+  color: #64748b;
 }
 
 .area-sort-select {
@@ -1530,7 +1530,7 @@
 
 @media (max-width: 768px) {
   .area-page-heading {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .area-spot-grid {
@@ -1816,7 +1816,7 @@
   gap: 8px;
   background: var(--color-main);
   color: #fff;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   padding: 14px 32px;
   border-radius: 8px;
@@ -1845,9 +1845,9 @@
 
 /* Area - Section heading */
 .area-section-heading {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  color: #1a202c;
+  color: #1d1d1f;
   margin: 0 0 16px;
   line-height: 1.5;
 }
@@ -1858,7 +1858,7 @@
 }
 
 .area-description-text {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--color-text);
   line-height: 1.8;
   margin: 0;
@@ -1875,7 +1875,7 @@
 
 .news-item-link {
   color: var(--color-main);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   text-decoration: none;
   display: block;
@@ -1886,8 +1886,8 @@
 }
 
 .news-item-date {
-  font-size: 13px;
-  color: #718096;
+  font-size: 14px;
+  color: #64748b;
 }
 
 .news-ext-link {
@@ -1929,16 +1929,16 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 20px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .page-date {
-  color: #718096;
+  color: #64748b;
 }
 
 .page-pr {
-  color: #718096;
-  border: 1px solid #cbd5e0;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
   border-radius: 4px;
   padding: 2px 8px;
   font-size: 12px;
@@ -1946,8 +1946,8 @@
 }
 
 .page-lead p {
-  color: #4a5568;
-  font-size: 15px;
+  color: #64748b;
+  font-size: 16px;
   line-height: 1.8;
   margin: 0 0 8px;
 }
@@ -2005,9 +2005,9 @@
 }
 
 .toc-list > li > a {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
-  color: #2d3748;
+  color: #1d1d1f;
   text-decoration: none;
 }
 
@@ -2032,7 +2032,7 @@
 
 .toc-sublist a {
   font-size: 14px;
-  color: #4a5568;
+  color: #64748b;
   text-decoration: none;
 }
 
@@ -2040,9 +2040,19 @@
   color: var(--color-main);
 }
 
+/* アンカーで飛んだ見出しが画面上端に貼り付かないよう余白を確保する */
+[id] {
+  scroll-margin-top: 16px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
 .section-intro {
-  color: #4a5568;
-  font-size: 15px;
+  color: #64748b;
+  font-size: 16px;
   line-height: 1.8;
   margin: 0;
 }
@@ -2072,7 +2082,7 @@
 }
 
 .section-heading {
-  font-size: 1.2rem;
+  font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 12px;
 }
@@ -2093,7 +2103,7 @@
 
 .tag-spot-rating .rating-details {
   justify-content: flex-start;
-  font-size: 13px;
+  font-size: 14px;
   margin-top: 0;
 }
 
@@ -2136,7 +2146,7 @@
   right: 0;
   text-align: center;
   padding: 2px 12px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #fff;
   background: rgba(0, 0, 0, 0.5);
   pointer-events: none;
@@ -2150,7 +2160,7 @@
   z-index: 3;
   background: rgba(234, 179, 8, 0.92);
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   padding: 5px 10px;
@@ -2221,7 +2231,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  background-color: #cbd5e0;
+  background-color: #e2e8f0;
   border-radius: 2px;
 }
 
@@ -2295,19 +2305,19 @@
 
 .news-name {
   color: var(--color-main);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
 .news-date {
-  color: #a0aec0;
-  font-size: 13px;
+  color: #94a3b8;
+  font-size: 14px;
 }
 
 .videos-intro {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7;
-  color: #4a5568;
+  color: #64748b;
   margin: 0 0 20px;
 }
 
@@ -2339,7 +2349,7 @@
 
 .video-caption {
   font-size: 14px;
-  color: #718096;
+  color: #64748b;
   text-align: center;
   margin: 8px 0 0;
 }
@@ -2364,9 +2374,9 @@
 }
 
 .tl-subsection-desc {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.8;
-  color: #4a5568;
+  color: #64748b;
   margin: 0 0 8px;
 }
 
@@ -2405,7 +2415,7 @@
   text-decoration: none;
   color: #2b6cb0;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
   transition: background 0.15s;
 }
 
@@ -2485,7 +2495,7 @@
   height: 32px;
   border-radius: 8px;
   background: #f1f5f9;
-  color: #475569;
+  color: #64748b;
   flex-shrink: 0;
 }
 
@@ -2497,15 +2507,15 @@
 }
 
 .article-card .article-meta {
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
   margin: 0 0 12px;
 }
 
 .article-lead {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.8;
-  color: #4a5568;
+  color: #64748b;
   margin: 0;
 }
 
@@ -2540,7 +2550,7 @@
 
 .guidelines-dl dd {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: #64748b;
 }
@@ -2603,17 +2613,17 @@
     white-space: normal;
   }
   .article-title {
-    font-size: 19px;
+    font-size: 18px;
   }
   .article-title > .heading-icon {
     width: 28px;
     height: 28px;
   }
   .article-body h2 {
-    font-size: 18px;
+    font-size: 1.625rem;
   }
   .article-body h3 {
-    font-size: 16px;
+    font-size: 1.25rem;
   }
   .article-body th {
     width: 100px;
@@ -2639,8 +2649,8 @@
 
 .definition .definition-body dt {
   font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--color-text, #1a202c);
+  font-size: 1.125rem;
+  color: var(--color-text, #1d1d1f);
   margin-bottom: 6px;
   padding-left: 16px;
   position: relative;
@@ -2728,7 +2738,7 @@
 }
 
 .article-card-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 1.5;
   color: var(--color-text, #333);
@@ -2736,7 +2746,7 @@
 }
 
 .article-card-desc {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text-light, #666);
   line-height: 1.6;
   margin: 0;
@@ -2754,32 +2764,32 @@
 
 /* Article body (detail page) */
 .article-body {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.9;
   color: var(--color-text, #333);
 }
 
 .article-body h2 {
-  font-size: 20px;
+  font-size: 1.625rem;
   font-weight: 700;
   margin: 36px 0 24px;
   padding: 24px 0 12px;
   border-radius: 6px;
   text-align: left;
-  border-bottom: 2px solid #f0f2f5;
+  border-bottom: 2px solid #e2e8f0;
 }
 
 /* .article-body > h2:first-child は globals.css で定義 */
 
 .article-body h3 {
-  font-size: 18px;
+  font-size: 1.25rem;
   font-weight: 700;
   margin: 2em 0 0.6em;
 }
 
 .article-body h4 {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 1.0625rem;
+  font-weight: 700;
   margin: 32px 0 12px;
 }
 
@@ -2794,7 +2804,7 @@
 }
 
 .article-body li {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.4;
   color: var(--color-text);
   list-style: outside;
@@ -2900,7 +2910,7 @@ p.definition-title {
 
 @media (max-width: 600px) {
   .article-body table {
-    font-size: 13px;
+    font-size: 14px;
   }
   .article-body th,
   .article-body td {
@@ -2914,7 +2924,7 @@ p.definition-title {
 }
 
 .article-toc-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   margin-bottom: 12px;
   color: var(--color-text, #333);
@@ -2972,7 +2982,7 @@ p.definition-title {
   content: "–";
   background: none;
   color: #94a3b8;
-  font-size: 13px;
+  font-size: 14px;
   width: auto;
   height: auto;
   border-radius: 0;
@@ -3052,7 +3062,7 @@ p.definition-title {
 }
 
 .drawer-profile-name {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
   margin: 0 0 4px;
@@ -3067,14 +3077,14 @@ p.definition-title {
 .drawer-profile-bio {
   font-size: 12px;
   line-height: 1.7;
-  color: #cbd5e1;
+  color: #e2e8f0;
   margin: 0 0 14px;
   text-align: left;
 }
 
 .drawer-profile-link {
   display: inline-block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--color-accent, #2ab0f0);
   margin-bottom: 16px;
@@ -3094,7 +3104,7 @@ p.definition-title {
   height: 38px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
-  color: #cbd5e1;
+  color: #e2e8f0;
   transition: background 0.15s, color 0.15s;
 }
 
@@ -3166,7 +3176,7 @@ p.definition-title {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--color-text);
   min-width: 180px;
@@ -3318,7 +3328,7 @@ p.definition-title {
   border: 1px solid var(--color-border-light);
   border-radius: 4px;
   padding: 2px 6px;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text);
   margin-bottom: 4px;
   font-family: monospace;
@@ -3377,7 +3387,7 @@ p.definition-title {
   background: var(--color-bg-subtle);
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-md);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--color-primary);
   transition: all var(--transition-fast);
@@ -3414,7 +3424,7 @@ p.definition-title {
 
   .tl-calc-input {
     width: 90px;
-    font-size: 20px;
+    font-size: 22px;
   }
 }
 
@@ -3432,14 +3442,14 @@ p.definition-title {
 
 .map-faq-question {
   font-size: 16px;
-  color: #1a202c;
+  color: #1d1d1f;
   margin: 0 0 8px;
   line-height: 1.5;
 }
 
 .map-faq-answer {
-  font-size: 15px;
-  color: #4a5568;
+  font-size: 16px;
+  color: #64748b;
   line-height: 1.8;
   margin: 0;
 }
@@ -3447,7 +3457,7 @@ p.definition-title {
 .map-faq-answer::before {
   content: "A. ";
   font-weight: 700;
-  color: #718096;
+  color: #64748b;
 }
 
 /* =========================================
@@ -3469,7 +3479,7 @@ p.definition-title {
 
 .calculator-header-title {
   color: #ffffff;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   margin: 0;
 }
@@ -3488,7 +3498,7 @@ p.definition-title {
 .calculator-list dt {
   font-size: 14px;
   font-weight: 600;
-  color: #4a5568;
+  color: #64748b;
 }
 
 .calculator-list dd {
@@ -3584,7 +3594,7 @@ p.definition-title {
   border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
-  color: #4a5568;
+  color: #64748b;
   cursor: pointer;
   transition: all 0.15s;
   background: #f8fafc;
@@ -3626,12 +3636,12 @@ p.definition-title {
 .calculator-result-list dt {
   font-size: 12px;
   font-weight: 600;
-  color: #4a5568;
+  color: #64748b;
   margin-bottom: 6px;
 }
 
 .calculator-result-list dd {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
   color: #0071e3;
   margin: 0;
@@ -3655,4 +3665,25 @@ p.definition-title {
     width: 100%;
     flex: none;
   }
+}
+
+/* ---- 見出しのジャンプ率 ----
+   本文16pxに対し h4 も16pxで、階層が見た目に出ていなかった。
+   h2→h3→h4 を 24 / 19 / 17 と段階を作り、本文との差を確保する。
+   行間も見出しは詰めて、本文との性格の違いを出す。 */
+/* 見出しのジャンプ率。本文1rem(16px)に対し、およそ1.25倍ずつ広げる。
+   px ではなく rem にしているのは、ブラウザの文字サイズ設定と
+   SP のメディアクエリ調整の両方に追随させるため。 */
+.article-body h1 { font-size: 2rem;      line-height: 1.35; letter-spacing: -0.015em; }
+.article-body h2 { font-size: 1.625rem;  line-height: 1.4;  letter-spacing: -0.01em; }
+.article-body h3 { font-size: 1.25rem;   line-height: 1.45; }
+.article-body h4 { font-size: 1.0625rem; line-height: 1.5;  color: var(--color-text); }
+.article-body h5 { font-size: 1rem;      line-height: 1.6;  font-weight: 700; color: var(--color-text); margin: 24px 0 8px; }
+
+@media (max-width: 768px) {
+  .article-body h1 { font-size: 1.5rem; }
+  .article-body h2 { font-size: 1.375rem; }
+  .article-body h3 { font-size: 1.125rem; }
+  .article-body h4 { font-size: 1rem; }
+  .article-body h5 { font-size: 1rem; }
 }

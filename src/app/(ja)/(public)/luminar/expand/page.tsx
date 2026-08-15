@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
-import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
 import { PRICING_CONFIRMED_AT, PLANS, PRIME, LIGHTROOM_ANNUAL, yen, approxYen, lightroomTotal } from '@/lib/luminar/pricing'
 
@@ -15,7 +14,7 @@ const META = {
   description:
     'Luminar NeoのProツール8種（Noiseless AI・Upscale AI・HDR Mergeなど）でできることを解説。現在はすべての買い切りライセンスに標準搭載で、追加購入は不要です。各ツールの活用例と、Luminar Prime（生成AI・アップデート）との関係もまとめました。',
   publishedAt: '2026-01-19T09:32:32',
-  updatedAt: '2026-08-12T00:00:00',
+  updatedAt: '2026-08-13T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/expand.jpg',
     alt: 'Luminar NeoのProツール8種を徹底解説｜買い切り版に標準搭載【2026年】',
@@ -31,22 +30,21 @@ export async function generateMetadata(): Promise<Metadata> {
 // ── TOC ───────────────────────────────────────────────────────────────────────
 
 const TOC: TocItem[] = [
-  { id: 'what-is-pro', level: 2, text: 'Luminar NeoのProツール（拡張機能）とは何か？' },
-  { id: 'pro-included', level: 3, text: '【重要】Proツールはすべての買い切りプランに標準搭載' },
-  { id: 'pro-list', level: 2, text: 'Proツール（拡張機能）全8種の一覧と特徴' },
-  { id: 'supersharp', level: 3, text: '①スーパーシャープAI（Supersharp AI）' },
-  { id: 'noiseless', level: 3, text: '②ノイズレスAI（Noiseless AI）' },
-  { id: 'magic-light', level: 3, text: '③マジックライトAI（Magic Light AI）' },
-  { id: 'focus-stacking', level: 3, text: '④フォーカススタッキング（Focus Stacking）' },
-  { id: 'background-removal', level: 3, text: '⑤背景削除AI（Background Removal AI）' },
-  { id: 'hdr-merge', level: 3, text: '⑥HDRマージ（HDR Merge）' },
-  { id: 'upscale', level: 3, text: '⑦アップスケールAI（Upscale AI）' },
-  { id: 'panorama', level: 3, text: '⑧パノラマスティッチング（Panorama Stitching）' },
-  { id: 'purpose', level: 2, text: 'Proツール（拡張機能）があると何が変わる？（目的別）' },
-  { id: 'compare-adobe', level: 2, text: 'Adobe Lightroom / Photoshopとの比較' },
-  { id: 'price', level: 2, text: 'Luminar Neoの価格プランとLuminar Primeの役割' },
-  { id: 'faq', level: 2, text: 'よくある質問（FAQ）' },
-  { id: 'summary', level: 2, text: 'まとめ｜Proツールはどんな人に向いているか？' },
+  { id: 'what-is-pro', level: 2, text: 'Luminar Neo Proツール（拡張機能）とは' },
+  { id: 'pro-list', level: 2, text: 'Luminar Neo Proツール全8種の一覧' },
+  { id: 'supersharp', level: 3, text: '①スーパーシャープAI（Supersharp AI）｜手ブレ・ピンボケを救済できる' },
+  { id: 'noiseless', level: 3, text: '②ノイズレスAI（Noiseless AI）｜高感度ノイズを消せる' },
+  { id: 'magic-light', level: 3, text: '③マジックライトAI（Magic Light AI）｜光芒を後から足せる' },
+  { id: 'focus-stacking', level: 3, text: '④フォーカススタッキング（Focus Stacking）｜手前から奥までピントを合わせられる' },
+  { id: 'background-removal', level: 3, text: '⑤背景削除AI（Background Removal AI）｜人物以外も切り抜ける' },
+  { id: 'hdr-merge', level: 3, text: '⑥HDRマージ（HDR Merge）｜明暗差の大きい場面を1枚にできる' },
+  { id: 'upscale', level: 3, text: '⑦アップスケールAI（Upscale AI）｜解像度を最大6倍にできる' },
+  { id: 'panorama', level: 3, text: '⑧パノラマスティッチング（Panorama Stitching）｜レンズに収まらない風景をつなげられる' },
+  { id: 'purpose', level: 2, text: 'Luminar Neo Proツールの選び方（目的別）' },
+  { id: 'compare-adobe', level: 2, text: 'Luminar Neo ProツールとAdobe製品の比較' },
+  { id: 'price', level: 2, text: 'Luminar Neo Proツールに追加費用はかかる？' },
+  { id: 'faq', level: 2, text: 'Luminar Neo Proツールのよくある質問（FAQ）' },
+  { id: 'summary', level: 2, text: 'まとめ：Luminar Neo Proツールは必要か' },
 ]
 
 // ── ページ本体 ────────────────────────────────────────────────────────────────
@@ -62,7 +60,8 @@ export default function Page() {
           <p>Luminar Neoを使い始めて、ふと気になったことはありませんか？「Proツール（拡張機能）って、結局のところ必要なの？」と。</p>
           <p>僕自身、最初はLuminar Neoの標準機能だけで十分だと思っていました。でも、使い込んでいくうちに「もうちょっとここをどうにかしたい」という場面が増えてきたんです。</p>
           <p>高感度で撮った夜景写真のノイズをもっときれいに消したい、手ブレしてしまった写真をなんとか救いたい…。そういった<strong>「あと一歩」の部分を補ってくれるのがProツール</strong>でした。</p>
-          <p>そこで本記事では日々Luminar NeoのProツールを愛用している僕が、この機能のできることや料金プランとの関係を解説していきます。</p>
+          <p>この記事では、Proツールで実際に何ができるのか、そして買い切りとの関係がどうなっているのかを整理しました。</p>
+          <p>Proツールが自分に必要かどうか決めかねている方は、ぜひチェックしてみてください。</p>
           <div className="m-abstract">
             <span className="m-abstract__label">この記事の結論</span>
             <ul>
@@ -72,49 +71,30 @@ export default function Page() {
               <li><strong>Luminar Primeが必要なのは？</strong>→ AIツールと最新アップデートを使い続けたい場合のみ</li>
             </ul>
           </div>
-          <LuminarCtaMini />
         </>
       }
     >
       {/* セクション1: Proツールとは */}
       <section id="what-is-pro" className="content-card card-padding article-body">
-        <h2>Luminar NeoのProツール（拡張機能）とは何か？</h2>
-        <p>Luminar NeoのProツール（旧称：拡張機能・エクステンション）は、標準のソフトウェアに追加できる<strong>「高度な補正機能」や「特殊な編集機能」</strong>のことです。Photoshopでいうところの「専用プラグイン」や「複雑な合成作業」を、ワンクリック〜数回の操作で実現できます。</p>
-        <p>僕がProツールを使い始めて感じたのは、「これ、Photoshopでやろうとしたら何時間かかるんだろう」という作業が、本当に数クリックで終わる快適さでした。特に時間のない中で大量の写真を処理しなければならないときには、この差は想像以上に大きいです。</p>
-        <h3 id="pro-included">【重要】Proツールはすべての買い切りプランに標準搭載</h3>
-        <p>以前は「拡張機能（エクステンション）」として別売りされていた時期もありましたが、<strong>現在はProツール8種すべてが、どの買い切り（永久）ライセンスにも標準で含まれています</strong>。追加購入やLuminar Primeの契約は不要で、そのまま永続的に使えます。</p>
-        <div className="m-table-wrap">
-          <table className="m-table">
-            <thead>
-              <tr>
-                <th>プラン</th>
-                <th>Proツール</th>
-                <th>備考</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>買い切りプランのみ</td>
-                <td><span className="text-true">◯標準搭載・永続利用可</span></td>
-                <td>全編集機能＋Proツール8種が使える</td>
-              </tr>
-              <tr>
-                <td>買い切り＋Luminar Prime</td>
-                <td><span className="text-true">◯標準搭載・永続利用可</span></td>
-                <td>さらにAIツール＋最新アップデート＋アセットライブラリが継続</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p>嬉しいポイントは、<strong>Luminar Primeを契約しなくてもProツールは永続的に使える</strong>ということ。Primeが必要になるのは、AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）や最新機能アップデートを使い続けたい場合だけです。Primeが失効しても、アプリ本体・基本機能・Proツールはそのまま使えます。</p>
+        <h2>Luminar Neo Proツール（拡張機能）とは</h2>
+        <p>Luminar NeoのProツールは、標準のソフトウェアに追加できる<strong>「高度な補正機能」や「特殊な編集機能」</strong>のことです。Photoshopでいうところの「専用プラグイン」や「複雑な合成作業」を、ワンクリック〜数回の操作で実現できます。</p>
+        <p>Photoshopならマスクを作って範囲を調整して、と何段階か踏む作業が、Proツールでは効果を選んで強度を決めるだけで終わります。1枚だけなら大した差ではありませんが、まとめて処理するときに効いてきます。</p>
+        <p>このページはProツールに絞って解説しています。Luminar Neoというソフト自体の概要から知りたい場合は<Link href="/luminar/">Luminar Neoの完全ガイド</Link>を先にご覧ください。</p>
+        {/*
+          もとはここに h3「【重要】Proツールはすべての買い切りプランに標準搭載」＋段落2本＋表があったが、
+          同じ主張がリードの結論ボックス・#price・FAQ 1/2・まとめの計5箇所にあり、
+          記事全体で「買い切り」24回・「標準搭載」11回まで膨らんでいた。
+          表も Proツール列が2行とも「◯」で比較になっていなかったため、
+          費用の話は #price に一本化し、このセクションは「Proツールとは何か」だけに絞る。
+        */}
       </section>
 
       {/* セクション2: Proツール全8種 */}
       <section id="pro-list" className="content-card card-padding article-body">
-        <h2>Proツール（拡張機能）全8種の一覧と特徴</h2>
+        <h2>Luminar Neo Proツール全8種の一覧</h2>
         <p>現在Luminar Neoで提供されているProツール全8種を紹介します。</p>
 
-        <h3 id="supersharp">①スーパーシャープAI（Supersharp AI）</h3>
+        <h3 id="supersharp">①スーパーシャープAI（Supersharp AI）｜手ブレ・ピンボケを救済できる</h3>
         <div className="comparison-container">
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-before.jpg" alt="スーパーシャープAIで手ブレを補正する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-after.jpeg" alt="スーパーシャープAIで手ブレを補正した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
@@ -128,22 +108,10 @@ export default function Page() {
           <span className="label label-before">Before</span>
           <span className="label label-after">After</span>
         </div>
-        <p>手ブレやピンボケの補正をAIで行う機能です。「撮り直しが効かないけど、ちょっとブレてしまった…」という写真を救済してくれます。</p>
-        <p>僕が初めてこの機能を使ったのは、旅行先で撮った夕暮れの写真でした。シャッタースピードが足りなくて微妙に手ブレしていたんですが、スーパーシャープAIを適用したら、驚くほど輪郭がくっきりしました。完全にピントを外した写真の復元は難しいですが、「惜しい写真を使えるレベルまで引き上げる」には十分な効果があります。</p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span><br />
-            <span className="m-point-box__title">スーパーシャープAIのポイント</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 手ブレ・ピンボケをAIが自動補正</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 軽度〜中程度の失敗写真に効果的</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 撮り直しが効かない写真の救済に最適</li>
-          </ul>
-        </div>
+        <p>手ブレやピンボケをAIで補正する機能です。撮り直しの効かない写真でも、軽度から中程度のブレなら、輪郭を復元して使えるレベルまで引き上げられます。</p>
+        <p>初めて使ったのは、旅行先で撮った夕暮れの写真でした。シャッタースピードが足りず微妙に手ブレしていたのですが、適用したら驚くほど輪郭がくっきりしました。完全にピントを外した写真の復元までは難しいので、惜しい1枚を使えるところまで戻す機能だと考えておくのがちょうどいいです。</p>
 
-        <h3 id="noiseless">②ノイズレスAI（Noiseless AI）</h3>
+        <h3 id="noiseless">②ノイズレスAI（Noiseless AI）｜高感度ノイズを消せる</h3>
         <div className="comparison-container">
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/noise-before.jpg" alt="Noiseless AIで高感度ノイズを除去する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/DSC08329.jpg" alt="Noiseless AIで高感度ノイズを除去した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
@@ -157,22 +125,10 @@ export default function Page() {
           <span className="label label-before">Before</span>
           <span className="label label-after">After</span>
         </div>
-        <p>高感度撮影時のノイズを除去する機能です。ノイズを除去しながらも、ディテール（細部）をできるだけ残してくれます。</p>
-        <p>夜の街並みを撮った写真でISO6400くらいまで上げていたんですが、ノイズレスAIを使ったら、ISO1600くらいで撮ったかのような仕上がりになりました。Low・Middle・Highの3段階から強度を選べるので、プレビューを見ながら最適な設定を探れるのも使いやすいポイントです。</p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span><br />
-            <span className="m-point-box__title">ノイズレスAIのポイント</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 高感度撮影のノイズを効果的に除去</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> ディテールを保ちながら処理できる</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> Low/Middle/Highの3段階で強度選択可能</li>
-          </ul>
-        </div>
+        <p>高感度撮影で出るノイズを、ディテールを残したまま除去する機能です。強度はLow・Middle・Highの3段階から選べて、プレビューを見ながら効き具合を決められます。</p>
+        <p>夜の街並みをISO6400で撮った写真に使ったところ、ISO1600くらいの仕上がりになりました。夜景や星空のようにISOを上げざるを得ない撮影では、ノイズ除去の品質がそのまま写真の出来を決めます。DxO PureRAWのような専用ソフトを別に買わなくても、買い切りの範囲で完結するのは大きいです。</p>
 
-        <h3 id="magic-light">③マジックライトAI（Magic Light AI）</h3>
+        <h3 id="magic-light">③マジックライトAI（Magic Light AI）｜光芒を後から足せる</h3>
         <div className="comparison-container">
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-before.jpeg" alt="マジックライトAIで光芒を追加する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-after2.jpeg" alt="マジックライトAIで光芒を追加した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
@@ -186,22 +142,10 @@ export default function Page() {
           <span className="label label-before">Before</span>
           <span className="label label-after">After</span>
         </div>
-        <p>写真内の光源（街灯やイルミネーションなど）に、クロスフィルターをかけたような光芒を追加する機能です。撮影時にフィルターを使わなくても、後処理で光の演出ができます。</p>
-        <p>夜景やイルミネーションの写真で、光を強調したいときに使えます。光線の数や強さも細かく調整できるので、「ちょっとキラキラさせたい」から「ドラマチックに演出したい」まで幅広く対応可能。ただし使いすぎると不自然になりやすいので、控えめに使うのがコツです。</p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span><br />
-            <span className="m-point-box__title">マジックライトAIのポイント</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 光芒・光の演出を後処理で追加</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> クロスフィルター不要で撮影可能</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 光線の数・強さを細かく調整可能</li>
-          </ul>
-        </div>
+        <p>街灯やイルミネーションなどの光源に、クロスフィルターをかけたような光芒を追加する機能です。光線の数と強さを個別に調整できるので、撮影時にフィルターを持っていかなくても、後から光を演出できます。</p>
+        <p>夜景で光を目立たせたいときに使っています。ただし効かせすぎるとすぐ嘘っぽくなるので、僕は光線の数を最小にしてから少しずつ足しています。元の写真に強い光源がないと効果自体が出ないので、使うかどうかは撮影の時点でだいたい決まる機能でもあります。</p>
 
-        <h3 id="focus-stacking">④フォーカススタッキング（Focus Stacking）</h3>
+        <h3 id="focus-stacking">④フォーカススタッキング（Focus Stacking）｜手前から奥までピントを合わせられる</h3>
         <div className="comparison-container">
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/paper-before.jpeg" alt="フォーカススタッキングで被写界深度を拡大する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/paper-after.jpeg" alt="フォーカススタッキングで被写界深度を拡大した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
@@ -215,22 +159,10 @@ export default function Page() {
           <span className="label label-before">Before</span>
           <span className="label label-after">After</span>
         </div>
-        <p>ピント位置を少しずつずらして撮った複数枚の写真を合成し、被写界深度（ピントが合っている範囲）を拡大する機能です。最大100枚まで合成可能で、写真のズレも自動補正してくれます。</p>
-        <p>僕がフォーカススタッキングを使い始めたのは、テーブルフォト（料理や雑貨の撮影）がきっかけでした。料理写真って、お皿の手前から奥まで全部にピントを合わせたいことが多いんですよね。この機能を使えば、ボケ味のある柔らかい描写と、全体にピントが合った鮮明さを両立できます。ただし三脚での撮影が前提になります。</p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span><br />
-            <span className="m-point-box__title">フォーカススタッキングのポイント</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 最大100枚まで合成可能</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 写真のズレを自動補正</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> マクロ・物撮りに最適（三脚推奨）</li>
-          </ul>
-        </div>
+        <p>ピント位置を少しずつずらして撮った写真を合成し、ピントの合う範囲を広げる機能です。最大100枚まで重ねられて、撮影中に生じた微妙なズレは自動で補正されます。</p>
+        <p>使い始めたきっかけはテーブルフォトでした。料理写真はお皿の手前から奥まで写したいのに、絞り込むと背景まで写り込んでしまう。この機能なら、背景のボケを残したまま料理だけを端まで鮮明にできます。ただし三脚は必須で、手持ちで撮った素材ではズレが大きすぎて合いませんでした。</p>
 
-        <h3 id="background-removal">⑤背景削除AI（Background Removal AI）</h3>
+        <h3 id="background-removal">⑤背景削除AI（Background Removal AI）｜人物以外も切り抜ける</h3>
         <div className="comparison-container">
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/delete-before.jpg" alt="背景削除AIで背景を削除する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/delete-after.jpg" alt="背景削除AIで背景を削除した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
@@ -244,22 +176,10 @@ export default function Page() {
           <span className="label label-before">Before</span>
           <span className="label label-after">After</span>
         </div>
-        <p>人物やオブジェクトを自動で認識して、背景を削除する機能です。標準の「ポートレート背景除去」は人物限定ですが、このProツールは人物以外も認識でき、複数の被写体を選択することも可能です。</p>
-        <p>僕はブログ用のアイキャッチ画像を作るときによく使っています。以前はPhotoshopの選択とマスクを使って30分くらいかけていた作業が、今では5分で終わります。髪の毛の細かい部分など微調整が必要な場合もありますが、ベースを作ってくれるだけでも作業効率は大きく上がりますね。</p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span><br />
-            <span className="m-point-box__title">背景削除AIのポイント</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 人物以外のオブジェクトも認識可能</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 複数の被写体を個別に選択できる</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> サムネイル・Web用画像制作に最適</li>
-          </ul>
-        </div>
+        <p>被写体を自動で認識して背景を消す機能です。標準搭載のポートレート背景除去は人物専用ですが、こちらは人物以外のオブジェクトも認識でき、複数の被写体を個別に選ぶこともできます。</p>
+        <p>僕はブログのアイキャッチを作るときによく使っています。以前はPhotoshopの「選択とマスク」で30分かけていた作業が、5分で終わるようになりました。髪の毛の細かいところは手で直すこともありますが、土台さえ作ってくれれば作業時間はまったく変わってきます。</p>
 
-        <h3 id="hdr-merge">⑥HDRマージ（HDR Merge）</h3>
+        <h3 id="hdr-merge">⑥HDRマージ（HDR Merge）｜明暗差の大きい場面を1枚にできる</h3>
         <div className="comparison-container">
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-before.jpeg" alt="HDRマージで露出違いの写真を合成する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-after.jpeg" alt="HDRマージで露出違いの写真を合成した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
@@ -273,60 +193,26 @@ export default function Page() {
           <span className="label label-before">Before</span>
           <span className="label label-after">After</span>
         </div>
-        <p>明暗差のある複数枚の写真を合成して、ハイダイナミックレンジ（HDR）の写真を作成する機能です。露出を変えて撮った最大10枚の写真を合成でき、手持ち撮影でもズレを自動補正してくれます。</p>
-        <p>窓から外を撮ると室内が真っ暗になったり、逆に外が白飛びしたりすることがありますよね。そういった「明暗差の大きいシーン」で威力を発揮します。ただしHDR写真は加減を間違えると不自然になりやすいので、控えめな設定から始めるのがおすすめです。</p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span><br />
-            <span className="m-point-box__title">HDRマージのポイント</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 最大10枚の露出違い写真を合成</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 手持ち撮影でもズレ補正が可能</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 明暗差の大きいシーンに最適</li>
-          </ul>
-        </div>
+        <p>露出を変えて撮った写真を合成し、明るいところと暗いところの両方を残す機能です。最大10枚まで重ねられて、手持ち撮影で生じたズレも自動で補正されます。</p>
+        <p>室内から窓の外を撮ると、外が白飛びするか室内が潰れるかのどちらかになりますよね。そういう場面で効きます。ただしHDRは加減を間違えるとすぐ絵画のような質感になるので、僕は必ず控えめな設定から始めて、足りなければ強める順にしています。最初から強くかけると戻せなくなります。</p>
 
-        <h3 id="upscale">⑦アップスケールAI（Upscale AI）</h3>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/unnamed.jpg" alt="アップスケールAIで解像度を拡大した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
-        <p>写真の解像度を最大6倍まで拡大しつつ、画質を保つ機能です。トリミングで切り取った後の写真を大きくしたいときや、古いデジカメで撮った低解像度の写真を再利用したいときに便利です。</p>
-        <p>僕も昔のコンデジで撮った思い出の写真を、この機能で拡大して印刷したことがあります。A4サイズくらいまでの印刷なら十分実用的ですが、大判印刷の場合はAIが「想像」で補完した部分が不自然に見えることもあるので、期待しすぎないほうがいいかもしれません。</p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span><br />
-            <span className="m-point-box__title">アップスケールAIのポイント</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 最大6倍まで解像度拡大可能</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> トリミング後や古い写真の再利用に</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> A4サイズ印刷程度なら十分実用的</li>
-          </ul>
-        </div>
+        <h3 id="upscale">⑦アップスケールAI（Upscale AI）｜解像度を最大6倍にできる</h3>
+        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/unnamed.jpg" alt="アップスケールAIで解像度を拡大した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></div>
+        <p>画質を保ったまま、解像度を最大6倍まで拡大する機能です。トリミングで小さくなってしまった写真や、古いデジカメで撮った低解像度の写真を、もう一度使えるようにできます。</p>
+        <p>昔のコンデジで撮った写真を拡大して印刷したことがあります。A4サイズまでなら十分実用に耐えました。ただし大判になると、AIが推測で埋めた部分の不自然さが見えてきます。失った情報が戻るわけではなく、見られる大きさまで引き上げる機能だと考えておくと期待を外しません。</p>
 
-        <h3 id="panorama">⑧パノラマスティッチング（Panorama Stitching）</h3>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/unit-scaled.jpg" alt="パノラマスティッチングで複数カットを合成した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
-        <p>複数カットの写真をつなげて、ワイドなパノラマ写真を作成する機能です。普通のレンズでは収まりきらない広大な風景も、複数枚に分けて撮影してから合成すればダイナミックな1枚に仕上げられます。</p>
-        <p>風景写真や建築写真で「もっと広い範囲を1枚に収めたい」というときに活躍します。解像度も高くなるため、大きく引き伸ばして印刷したい場合にも向いた機能です。撮影時は露出をマニュアルで固定し、同じ条件で撮っておくと合成がきれいに決まります。</p>
-        <div className="m-point-box">
-          <div className="m-point-box__bg">!</div>
-          <div className="m-point-box__header">
-            <span className="m-point-box__label">Point</span><br />
-            <span className="m-point-box__title">パノラマスティッチングのポイント</span>
-          </div>
-          <ul className="m-point-box__list">
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 複数カットをシームレスに合成</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 風景・建築写真に最適</li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> 高解像度で大判印刷にも対応</li>
-          </ul>
-        </div>
+        <h3 id="panorama">⑧パノラマスティッチング（Panorama Stitching）｜レンズに収まらない風景をつなげられる</h3>
+        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/unit-scaled.jpg" alt="パノラマスティッチングで複数カットを合成した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></div>
+        <p>複数のカットをつなぎ合わせて、1枚のワイドな写真にする機能です。広角レンズでも入りきらない風景を、分けて撮ってから合成できます。</p>
+        <p>つなげた分だけ画素数も増えるので、大きく引き伸ばして印刷したいときにも向いています。きれいに合わせるコツは撮影の側にあって、露出をマニュアルで固定し、同じ設定のまま撮り進めることです。オートのままだとカットごとに明るさが変わり、つなぎ目が帯のように残ります。</p>
       </section>
 
       {/* セクション3: 目的別 */}
       <section id="purpose" className="content-card card-padding article-body">
-        <h2>Proツール（拡張機能）があると何が変わる？（目的別）</h2>
-        <p>「結局自分には必要なの？」と思っている方へ、目的別に整理しました。</p>
+        <h2>Luminar Neo Proツールの選び方（目的別）</h2>
+        <p>8種類あると言われても、自分に関係あるのはどれなのか分かりにくいと思います。やりたいことから逆算すると、<strong>「写真救済」「表現拡張」「作業効率」の3つ</strong>に整理できます。</p>
+        <p>僕の場合、8種のうち日常的に使うのはノイズレスAIとスーパーシャープAIの2つだけです。それでも<strong>撮り直しの効かない写真を救えた</strong>という一点で、選んだ価値は十分にありました。全部を使いこなす必要はなく、1つでも刺さるものがあれば元は取れます。</p>
+        <p>下の表で、自分の目的に近いものを探してみてください。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -355,13 +241,14 @@ export default function Page() {
             </tbody>
           </table>
         </div>
-        <p>僕自身の体験で言えば、ノイズレスAIとスーパーシャープAIだけでも、Luminar Neoを選んだ価値は十分にありました。「撮り直しが効かない写真を救えた」という経験は、金額以上の価値があったと思っています。しかもこれらのProツールは買い切りライセンスに標準で含まれているので、追加費用はかかりません。</p>
       </section>
 
       {/* セクション4: Adobe比較 */}
       <section id="compare-adobe" className="content-card card-padding article-body">
-        <h2>Adobe Lightroom / Photoshopとの比較</h2>
-        <p>「Luminar NeoのProツールを使うくらいなら、Adobeソフトでもいいんじゃないの？」という疑問にお答えします。</p>
+        <h2>Luminar Neo ProツールとAdobe製品の比較</h2>
+        <p>ここまで読んで、「Proツールを使うくらいならAdobeでいいのでは」と思った方もいるはずです。実際、できること自体はかなり重なっています。</p>
+        <p>違いが出るのは使い方のほうです。数千枚の写真を整理しながら現像していくならLightroomのカタログ機能に分がありますし、1枚をAIで手早く仕上げたいならLuminar Neoのほうが速く終わります。どちらか選びきれない場合は、Luminar NeoをLightroomのプラグインとして呼び出す使い方もできるので、そもそも二択にする必要はありません。</p>
+        <p>機能ごとの違いは下の表のとおりです。料金まで含めた比較は<Link href="/luminar/lightroom-compare/">LightroomとLuminar Neoの比較記事</Link>で詳しく扱っています。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -410,20 +297,14 @@ export default function Page() {
             </tbody>
           </table>
         </div>
-        <p><strong>結論：</strong>写真管理メインならLightroom、AI編集メインならLuminar Neo。両方使いたい場合は、Luminar NeoをLightroomのプラグインとして併用することも可能です。</p>
-        <div className="m-link-box">
-          <div className="m-link-box__icon">
-            <i className="fa-solid fa-circle-info"></i>
-          </div>
-          <p className="m-link-box__text">詳しい比較は<Link href="/luminar/lightroom-compare/">LightroomとLuminar Neoを徹底比較</Link>をご覧ください。</p>
-        </div>
-      </section>
+</section>
 
       {/* セクション5: 価格と購入方法 */}
       <section id="price" className="content-card card-padding article-body">
-        <h2>Luminar Neoの価格プランとLuminar Primeの役割</h2>
-        <h3>Proツールは買い切りに標準搭載（追加購入は不要）</h3>
-        <p>繰り返しになりますが、<strong>Proツール8種はすべての買い切りライセンスに標準で含まれています</strong>。日本公式ストアの買い切りプランは以下の3種類です。</p>
+        <h2>Luminar Neo Proツールに追加費用はかかる？</h2>
+        <p>かかりません。Proツール8種はどの買い切りライセンスにも最初から入っていて、あとから払うものはありません。ここでは価格と、混同されやすいLuminar Primeとの違いを整理します。</p>
+        <h3>買い切り3プランの価格（Proツール込み）</h3>
+        <p>日本公式ストアの買い切りプランは以下の3種類です。どれを選んでもProツール8種は同じように使えます。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -440,7 +321,7 @@ export default function Page() {
                 <td>{PLANS.desktop.regular ? yen(PLANS.desktop.regular) : '—'}</td>
               </tr>
               <tr>
-                <td><strong>全プラットフォーム</strong><br /><small>（旧クロスデバイス）</small></td>
+                <td><strong>全プラットフォーム</strong></td>
                 <td>{yen(PLANS.allPlatforms.sale)}</td>
                 <td>{PLANS.allPlatforms.regular ? yen(PLANS.allPlatforms.regular) : '—'}</td>
               </tr>
@@ -452,81 +333,34 @@ export default function Page() {
             </tbody>
           </table>
         </div>
-        <p>※価格・プラン情報は{new Date(PRICING_CONFIRMED_AT).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}に日本公式ストアで確認した時点のセール価格です。セール価格は時期により変動しますが、ほぼ通年何らかのセールが実施されています。</p>
+        <p className="m-note">※価格・プラン情報は{new Date(PRICING_CONFIRMED_AT).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}に日本公式ストアで確認した時点のセール価格です。セール価格は時期により変動しますが、ほぼ通年何らかのセールが実施されています。</p>
         <h3>Luminar Primeの役割は「AIツール」と「最新アップデート」</h3>
-        <p>では、Luminar Primeは何のためにあるのか？というと、以前あった「アップグレードパス」「エコシステムパス」を置き換える形で登場した年額サブスクで、<strong>生成AIツール（GenErase・GenSwap・GenExpand）の無制限利用と、新機能アップデートを受け取り続けるため</strong>のものです。</p>
-        <div className="m-table-wrap">
-          <table className="m-table">
-            <thead>
-              <tr>
-                <th>サブスクの種類</th>
-                <th>価格（税込目安）</th>
-                <th>含まれる内容</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Luminar Prime</strong></td>
-                <td>初年度{approxYen(PRIME.firstYear)}、2年目以降{approxYen(PRIME.renewal)}（為替・時期で変動）</td>
-                <td>契約期間中の新機能アップデート＋AIツール（生成AI・Restoration・AI Assistant）無制限＋アセットライブラリ＋Spaces（Webギャラリー）</td>
-              </tr>
-            </tbody>
-          </table>
+        <p>では、Luminar Primeは何のためにあるのか？というと、年額サブスクで、<strong>生成AIツール（GenErase・GenSwap・GenExpand）の無制限利用と、新機能アップデートを受け取り続けるため</strong>のものです。</p>
+        {/* 1行しかない表は横スクロールが出るだけで比較の役に立たないため、
+            定義リスト（dl/dt/dd）で表現する */}
+        <div className="definition">
+          <dl className="definition-body">
+            <dt>価格</dt>
+            <dd>初年度{approxYen(PRIME.firstYear)}、2年目以降{approxYen(PRIME.renewal)}（為替・時期で変動）</dd>
+            <dt>含まれる内容</dt>
+            <dd>契約期間中の新機能アップデート、AIツール（生成AI・Restoration・AI Assistant）の無制限利用、アセットライブラリ</dd>
+          </dl>
         </div>
         <p>なお、生成AIツールは買い切りの購入日から1年間は追加費用なしで使えます（クラウド処理のためネット接続必須）。<strong>Primeが失効しても、アプリ本体・基本機能・Proツールはそのまま永続で使えます</strong>。使えなくなるのは「AIツール」と「以後の新機能アップデート」、アセットライブラリだけです。</p>
-        <h3>購入パターン別の費用目安</h3>
-        <p>Proツール目的なら<strong>買い切りだけでOK</strong>。AIツールやアップデートを継続したい場合のみLuminar Primeを検討しましょう。</p>
-        <div className="m-table-wrap">
-          <table className="m-table">
-            <thead>
-              <tr>
-                <th>購入パターン</th>
-                <th>費用の目安</th>
-                <th>できること</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style={{ backgroundColor: '#fffde7' }}>
-                <td><strong>買い切りのみ</strong></td>
-                <td><strong>{yen(PLANS.desktop.sale)}〜</strong></td>
-                <td><strong>全編集機能＋Proツール8種を永続利用</strong>（生成AIは購入から1年間）</td>
-              </tr>
-              <tr>
-                <td>買い切り＋Luminar Prime 1年</td>
-                <td>買い切り価格＋初年度{approxYen(PRIME.firstYear)}</td>
-                <td>上記＋AIツール無制限＋最新アップデート＋アセットライブラリ・Spaces</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <h3>購入方法</h3>
-        <p>買い切りライセンスもLuminar Primeも<strong>Skylum公式サイト</strong>から購入できます。</p>
-        <ol>
-          <li>公式サイトにアクセス</li>
-          <li>希望するプラン（買い切り、必要ならLuminar Primeも）を選択</li>
-          <li>カートに追加して決済</li>
-          <li>メールでライセンスキーが届く</li>
-        </ol>
-        <div className="m-notice m-notice--warn">
-          <div className="m-notice__head"><span className="m-notice__badge">Tips</span><span className="m-notice__title">すでに買い切りプランを持っている場合</span></div>
-          <p>Skylumアカウントにログインし、フッター部分にあるお得意様割引をクリックするとお得なクーポンをゲットできる可能性が高いです。</p>
-        </div>
-        <h3>セール時期を狙おう</h3>
-        <p>ブラックフライデーやサマーセールなど、定期的に大幅な割引が行われます。急ぎでなければセールを待つのが賢い選択です。</p>
-        <div className="m-link-box">
-          <div className="m-link-box__icon">
-            <i className="fa-solid fa-circle-info"></i>
-          </div>
-          <p className="m-link-box__text">セール時期やクーポン情報は<Link href="/luminar/sale-and-coupon-info/">Luminar Neoのセール時期・クーポン情報</Link>をご覧ください。</p>
-        </div>
-        <p style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <a href="https://skylum.evyy.net/mO9BEa" className="m-btn m-btn--primary" target="_blank" rel="noopener">Luminar Neo公式サイトで価格を確認する</a>
-        </p>
+
+        {/*
+          もとはここに「購入パターン別の費用目安」「購入方法」「セール時期を狙おう」が
+          105行分あったが、いずれも luminar-plan / sale-and-coupon-info の主題で、
+          Proツールの記事が価格記事の領域に踏み込んでいる状態だった。
+          （expand が実際に取れているのは luminar neo pro / 拡張機能 / ノイズ除去）
+          Proツールの費用に答えたうえで、詳細は各記事へ送る。
+        */}
+        <p>どのプランを選ぶか、総額がいくらになるかは<Link href="/luminar/luminar-plan/">買い切り3プランの価格と選び方</Link>で、購入時期とクーポンについては<Link href="/luminar/sale-and-coupon-info/">セール時期とクーポンコード</Link>で解説しています。</p>
       </section>
 
       {/* セクション6: FAQ */}
       <section id="faq" className="content-card card-padding article-body">
-        <h2>よくある質問（FAQ）</h2>
+        <h2>Luminar Neo Proツールのよくある質問（FAQ）</h2>
         <dl>
           {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
               日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
@@ -555,7 +389,7 @@ export default function Page() {
 
       {/* セクション7: まとめ */}
       <section id="summary" className="content-card card-padding article-body">
-        <h2>まとめ｜Proツールはどんな人に向いているか？</h2>
+        <h2>まとめ：Luminar Neo Proツールは必要か</h2>
         <div className="l-grid-2 l-bottom-large">
           <div className="m-pc-box m-pc-box--pros">
             <div className="m-pc-head"><i className="fa-solid fa-circle-check"></i> 向いている人</div>
@@ -586,7 +420,7 @@ export default function Page() {
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Proツールは全8種類</strong>：高度な補正・特殊編集機能</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>すべての買い切りライセンスに標準搭載</strong>→追加購入は不要</li>
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Luminar Primeを契約しなくてもProツールは永続利用可</strong></li>
-            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Primeが必要なのはAIツールと最新アップデートを続けたい場合のみ</strong>（旧アップグレードパス／エコシステムパスは廃止）</li>
+            <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> <strong>Primeが必要なのはAIツールと最新アップデートを続けたい場合のみ</strong></li>
           </ul>
         </div>
       </section>

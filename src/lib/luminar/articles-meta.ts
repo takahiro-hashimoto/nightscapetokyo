@@ -100,9 +100,9 @@ const ARTICLES: NormalizedPostSummary[] = [
   {
     id: 4,
     slug: 'merit-demerit',
-    title: 'Luminar Neoのメリット・デメリット｜1年以上使ったリアルな評価【2026年】',
+    title: 'Luminar Neoのメリット・デメリット｜2年以上使ったリアルな評価【2026年】',
     description:
-      'Luminar Neoを1年以上使い続けた現役フォトグラファーによるリアルなレビュー。AIで現像が速くなる反面、動作の重さや写真管理の弱さも正直に解説。Adobeからの乗り換えを検討中の方向け。',
+      'Luminar Neoを2年以上使い続けた現役フォトグラファーによるリアルなレビュー。AIで現像が速くなる反面、動作の重さや写真管理の弱さも正直に解説。Adobeからの乗り換えを検討中の方向け。',
     publishedAt: '2026-01-18T10:37:52',
     updatedAt: '2026-08-12T00:00:00',
     featuredImage: {

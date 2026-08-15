@@ -4,105 +4,52 @@ import Link from '@/components/common/AppLink'
 import Image from 'next/image'
 import Footer from '@/components/layout/Footer'
 import Breadcrumb from '@/components/layout/Breadcrumb'
-import ImageComparisonSlider from '@/components/luminar/ImageComparisonSlider'
 import LuminarCtaSale from '@/components/luminar/LuminarCtaSale'
-import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import SpotShare from '@/components/spot/SpotShare'
 import HomeAuthorCard from '@/components/common/HomeAuthorCard'
-import { getAllPostsSummary, normalizePostSummary } from '@/lib/luminar/articles-meta'
 import {
   LUMINAR_SITE_NAME,
   LUMINAR_SITE_DESCRIPTION,
   LUMINAR_SITE_URL,
 } from '@/lib/luminar/config'
 import { PLANS, PRIME, LIGHTROOM, yen, approxYen } from '@/lib/luminar/pricing'
+import { getSaleSettings } from '@/lib/luminar/getSaleSettings'
+import { SaleSettingsProvider } from '@/contexts/SaleSettingsContext'
 
 /** このページの最終更新日。dateTime 属性と表示テキストの両方に使う */
-const LAST_UPDATED = '2026-08-12'
+const LAST_UPDATED = '2026-08-13'
 
 const OG_IMAGE = 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/main-after.jpg'
 
+// タイトルと同じ理由で「料金プランの違い」「最安の買い方」は外している（子記事のテーマのため）。
+// 旧文にあった「7日間無料体験版」は Skylum に問い合わせても確認が取れていないため記載しない。
 const META_DESCRIPTION =
-  'Luminar Neoとは何か、料金プランの違い、Lightroomとの比較、最安の買い方まで現役フォトグラファーがわかりやすく解説。7日間無料体験版・30日返金保証あり。'
+  'Luminar Neo（ルミナーネオ）とは何か、AIで何ができるのかを現役フォトグラファーが解説。編集機能の特徴、買い切りライセンスの仕組み、購入方法まで、はじめての人が知りたい全体像をこの1ページにまとめました。'
 
-const FAQ_JSON_LD = [
-  {
-    '@type': 'Question',
-    name: '無料体験版はありますか？',
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: 'はい、7日間の無料体験版があります。体験版のダウンロード方法や製品版との違いは専用ページで詳しく解説しています。',
-    },
-  },
-  {
-    '@type': 'Question',
-    name: '拡張機能（Proツール）は必須ですか？',
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: '現在はProツール全8種（ノイズ除去、超解像、HDR合成など）がすべての買い切りライセンスに標準で含まれており、追加購入なしで永続利用できます。Luminar Primeの契約は生成AIの継続利用や新機能アップデートが欲しい場合のみ検討すればOKです。',
-    },
-  },
-  {
-    '@type': 'Question',
-    name: 'ルミナーネオの評判が知りたいです。',
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: 'Luminar Neoは、AI編集の手軽さを評価する声が多い一方、動作の重さや写真管理機能の弱さを指摘する声もあります。サイトで良い口コミ・悪い口コミを整理して解説しています。',
-    },
-  },
-  {
-    '@type': 'Question',
-    name: '返金保証はありますか？',
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: 'はい、購入から30日間は返金保証があります。安心して試せます。',
-    },
-  },
-  {
-    '@type': 'Question',
-    name: 'WindowsとMac、両方で使えますか？',
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: '1ライセンスで2台のPCにインストール可能です。Windows・Mac混在でも問題ありません。',
-    },
-  },
-  {
-    '@type': 'Question',
-    name: '動作が重いと聞きましたが？',
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: 'AI処理を多用するため、ある程度のPCスペックは必要です。推奨は16GB以上のRAMとSSD。心配な方は体験版で自分の環境で試してみてください。',
-    },
-  },
-  {
-    '@type': 'Question',
-    name: 'アップデートは無料ですか？',
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: 'マイナーアップデート（バグ修正など）は無料です。メジャーアップデート（新機能追加）はPrime契約者のみ。Prime未契約でも購入時のバージョンは永続利用できます。',
-    },
-  },
-]
-
-const TOC = [
-  { id: 'about-luminar', text: 'Luminar Neoとは？できること・特徴' },
-  { id: 'pricing', text: 'Luminar Neoの料金プランをどう考えるべきか' },
-  { id: 'target', text: 'Luminar Neoはどんな人に向いている？' },
-  { id: 'vs-lightroom', text: 'Lightroomと迷ったときの判断軸' },
-  { id: 'discount', text: 'ルミナーネオを安く買う方法はある？' },
-  { id: 'faq', text: 'ルミナーネオの購入前によくある疑問' },
-  { id: 'articles', text: '目的別に詳しく知りたい人はこちら' },
-]
+// トップページの <title> はサイト名（LUMINAR_SITE_NAME）と切り離している。
+//
+// 理由: サイト名由来の旧タイトルは「特徴・料金・安く買う方法」で、
+//       「料金」は luminar-plan（掲載順位1.6位）、「安く買う方法」は
+//       sale-and-coupon-info のテーマそのものだった。つまりトップが
+//       自分の子記事とタイトルレベルで競合し、内容が浅いぶん負けていた。
+//       逆にトップだけが独占できる「とは」がタイトルに入っていなかった。
+//       ブランド系クエリ（ルミナーネオ／luminar neo）でトップは6.5〜16.3位と
+//       5ページ中最下位だったため、競合語を外して定義側に寄せる。
+//
+// LUMINAR_SITE_NAME 自体はサイト識別子（パンくず・siteName・JSON-LD）として
+// 使い続けるので変更しない。ここで上書きするのはページの <title> だけ。
+const PAGE_TITLE =
+  'Luminar Neo（ルミナーネオ）とは？特徴・できること・購入方法を解説【2026年】'
 
 export const metadata: Metadata = {
   title: {
-    absolute: `${LUMINAR_SITE_NAME}｜ ${LUMINAR_SITE_DESCRIPTION}`,
+    absolute: PAGE_TITLE,
   },
   description: META_DESCRIPTION,
   openGraph: {
     type: 'website',
     url: `${LUMINAR_SITE_URL}/`,
-    title: `${LUMINAR_SITE_NAME}｜ ${LUMINAR_SITE_DESCRIPTION}`,
+    title: PAGE_TITLE,
     description: META_DESCRIPTION,
     images: [{ url: OG_IMAGE, width: 880, height: 495, alt: 'Luminar Neo完全購入ガイド' }],
   },
@@ -116,11 +63,13 @@ export const metadata: Metadata = {
 }
 
 export default async function LuminarTopPage() {
-  const rawPosts = await getAllPostsSummary()
-  const articles = rawPosts.map(normalizePostSummary)
+  // CTA（LuminarCtaSale）はクライアント側で
+  // useSaleSettings() を読む。Provider が無いと null になり、
+  // セール中でも非セール文言が出てしまうため必ず包むこと。
+  const saleSettings = await getSaleSettings()
 
   return (
-    <>
+    <SaleSettingsProvider value={saleSettings}>
       <div className="l-article-body">
         <div className="l-article-container">
 
@@ -130,448 +79,126 @@ export default async function LuminarTopPage() {
           <article itemScope itemType="https://schema.org/WebPage">
             <meta itemProp="url" content={`${LUMINAR_SITE_URL}/`} />
 
-            {/* ① firstVisual */}
-            <div className="firstVisual">
-              <figure className="firstVisual-image" style={{ margin: 0 }}>
-                <Image
-                  src={OG_IMAGE}
-                  alt="Luminar Neo完全購入ガイド"
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, 960px"
-                />
-              </figure>
-              <header className="firstVisual-header">
-                <h1 className="firstVisual-title">
-                  Luminar Neo 完全購入ガイド｜ ルミナーネオの特徴・料金・安く買う方法を解説
+            {/* ① メインビジュアル（特集扱いのフルブリード） */}
+            <div className="m-hero-feature">
+              <Image
+                src={OG_IMAGE}
+                alt=""
+                fill
+                className="m-hero-feature__img"
+                priority
+                sizes="100vw"
+              />
+              <div className="m-hero-feature__inner">
+                <h1 className="m-hero-feature__title">
+                  Luminar Neo（ルミナーネオ）とは？<br className="sp-only" />特徴・できること・購入方法
                 </h1>
-                <div className="firstVisual-meta">
-                  <time className="firstVisual-date" dateTime={LAST_UPDATED}>
-                    最終更新: {new Date(LAST_UPDATED).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
-                  </time>
-                  <span className="firstVisual-badge">一部広告を含みます</span>
+                {/* リードとメタは1枚のパネルにまとめる。背景写真の上に直接
+                    文字を置くと、写真の明暗によって読みにくい箇所が出るため */}
+                <div className="m-hero-feature__panel">
+                <div className="m-hero-feature__lead">
+                  <p>
+                    Luminar（ルミナー）は、ウクライナのSkylum社が開発する写真編集ソフトです。
+                    AIを用いて撮影した写真を簡単に高いクオリティに現像できる点や、
+                    サブスクではなく買い切りで購入できるのが魅力。
+                  </p>
+                  <p>
+                    本ページではそんなLuminar Neoを2年以上使ってきた現役フォトグラファーが、
+                    Luminarの購入から利用までに必要な情報を体系的に整理しました。
+                  </p>
                 </div>
-              </header>
-              <div className="firstVisual-body article-body">
-                <p>
-                  Luminar Neoを買うかどうかの判断は、意外と面倒です。
-                  動作が重いという評判は本当なのか、Lightroomから乗り換える価値があるのか、
-                  買い切りと書いてあるのに追加料金が出てくるのはなぜか。
-                  調べるほど書いてあることがバラバラで、かえって決めきれなくなります。
+                <p className="m-hero-feature__meta">
+                  <time className="m-hero-feature__date" dateTime={LAST_UPDATED}>
+                    更新日：{new Date(LAST_UPDATED).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </time>
+                  <span className="m-hero-feature__badge">一部広告を含みます</span>
                 </p>
-                <p>
-                  このページは、<strong>Luminar Neoを2年以上使い続けてきた現役フォトグラファー</strong>が
-                  購入前に知っておきたい情報をひとつにまとめたハブページです。
-                  「特徴と料金体系」から「Lightroomとの違い」「安く買うタイミング」まで網羅しています。
-                </p>
-                <p>
-                  気になるテーマだけ読み進めてもOK。まずはこのページで
-                  <strong>「自分に合うかどうか」を判断する軸</strong>を掴んでください。
-                </p>
-                <LuminarCtaMini />
+                </div>
               </div>
             </div>
 
-            {/* ② 目次 */}
-            <nav className="toc content-card card-padding" aria-label="目次">
-              <p className="toc-title">タップできる目次</p>
-              <ol className="toc-list">
-                {TOC.map((item) => (
-                  <li key={item.id}>
-                    <a href={`#${item.id}`}>{item.text}</a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
+            {/*
+              ここはナビゲーションに徹する。以前は料金・向いている人・Lightroom比較・
+              セール・FAQ の解説を並べていたが、すべて子記事と同じテーマで、
+              子記事のほうが深く各クエリで1.6〜2.4位を取っていた。トップが同じ土俵に
+              立つと勝てないうえに子記事の評価を割るため、STEP別の導線に置き換えている。
+              各STEPの導入文は判断材料として最小限に留め、詳細は子記事に譲る。
+            */}
 
-            {/* ③ Luminar Neoとは？ */}
-            <section id="about-luminar" className="content-card card-padding article-body">
-              <h2>Luminar Neoとは？<br className="sp-only" />できること・特徴</h2>
-
-              <ImageComparisonSlider
-                beforeSrc="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/main-before.jpg"
-                afterSrc="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/main-after.jpg"
-                beforeAlt="Before: 編集前の写真"
-                afterAlt="After: Luminar Neo編集後の写真"
-                caption="Luminar NeoのRAW現像+ジェネ変換（AIツール）の作例"
-              />
-
-              <p>
-                Luminar Neoは、ウクライナのSkylum社が開発する
-                <strong>AI搭載の写真編集ソフト</strong>です。
-                RAW現像から高度なレタッチまで、AIの力を借りて効率的に行えるのが特徴です。
+            {/* STEP 1 */}
+            <section id="step-know" className="m-step-section">
+              <h2 className="m-step-section__title">
+                <span className="m-step-section__badge">STEP.1</span>知る・見極める
+              </h2>
+              <p className="m-step-section__lead">
+                Luminar Neoが得意なのは、1枚をていねいに仕上げる編集です。
+                逆に数百枚をまとめて処理する用途には向いておらず、評価が割れるのもここが理由になっています。
+                Lightroomとの違いもあわせて、自分に合うソフトかどうかを見極めましょう。
               </p>
-              <p>
-                Windows・Mac両対応で、1ライセンスで2台のPCにインストール可能。
-                LightroomやPhotoshopのプラグインとしても動作するので、
-                今のワークフローを変えずに導入することもできます。
-              </p>
-
-              <h3>Luminar Neoの主な特徴</h3>
-
-              <div className="definition l-bottom-large">
-                <dl className="definition-body">
-                  <dt>AIによる自動編集</dt>
-                  <dd>
-                    露出・コントラスト・カラーをAIが分析し、ワンクリックで補正。
-                    被写体や空の自動認識により、面倒なマスク作成も不要です。
-                  </dd>
-                  <dt>生成AI機能</dt>
-                  <dd>
-                    GenErase（不要物削除）、GenSwap（オブジェクト置換）、GenExpand（画像拡張）など、
-                    Adobeの生成塗りつぶしに近い機能を搭載しています。
-                  </dd>
-                  <dt>柔軟なライセンス</dt>
-                  <dd>
-                    買い切り版なら基本機能もProツールも永続利用可能。サブスク疲れしている方にも選ばれています。
-                    生成AIや新機能を使い続けたい場合だけLuminar Primeを追加する形式です。
-                  </dd>
-                </dl>
-              </div>
-
-              <div className="u-text-center" style={{ marginTop: '2rem' }}>
-                <Link href="/luminar/merit-demerit/" className="m-btn m-btn--primary">
-                  Luminar Neoのメリット・デメリット
-                </Link>
-              </div>
+              <Link href="/luminar/expand/" className="m-nav-card">
+                <span className="m-nav-card__icon"><i className="fa-solid fa-wand-magic-sparkles"></i></span>
+                <span className="m-nav-card__title">Proツール8種でできることを見る</span>
+              </Link>
+              <Link href="/luminar/merit-demerit/" className="m-nav-card">
+                <span className="m-nav-card__icon"><i className="fa-solid fa-star-half-stroke"></i></span>
+                <span className="m-nav-card__title">2年以上使ったメリット・デメリット</span>
+              </Link>
+              <Link href="/luminar/voice/" className="m-nav-card">
+                <span className="m-nav-card__icon"><i className="fa-solid fa-comments"></i></span>
+                <span className="m-nav-card__title">利用者の口コミ・評判を見る</span>
+              </Link>
+              <Link href="/luminar/lightroom-compare/" className="m-nav-card">
+                <span className="m-nav-card__icon"><i className="fa-solid fa-scale-balanced"></i></span>
+                <span className="m-nav-card__title">Lightroomとの料金・機能を比較する</span>
+              </Link>
             </section>
 
-            {/* ④ 料金プラン */}
-            <section id="pricing" className="content-card card-padding article-body">
-              <h2>Luminar Neoの料金プランを<br className="sp-only" />どう考えるべきか</h2>
-
-              <figure style={{ margin: '0 0 1.5rem' }}>
-                <Image
-                  src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/plan-image.jpg"
-                  alt="ルミナーネオの料金体系"
-                  width={880}
-                  height={495}
-                  style={{ width: '100%', height: 'auto' }}
-                />
-                <figcaption style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-text-light)', marginTop: '0.5rem' }}>
-                  ルミナーネオは買い切り＋任意のLuminar Primeの料金体系を採用
-                </figcaption>
-              </figure>
-
-              <p>
-                Luminar Neoの料金体系は「
-                <strong>買い切り＋任意のLuminar Prime（年額サブスク）</strong>
-                」という構造になっています。
+            {/* STEP 2 */}
+            <section id="step-buy" className="m-step-section">
+              <h2 className="m-step-section__title">
+                <span className="m-step-section__badge">STEP.2</span>価格を確かめて買う
+              </h2>
+              <p className="m-step-section__lead">
+                Luminar Neoのサブスクプランは廃止され、現在は<strong>買い切り3プランのみ</strong>です。
+                追加費用は任意のLuminar Primeだけで、Proツール8種は全プランに標準搭載されています。
+                動作の軽さは環境によって差が出るので、体験版で確かめてから購入すると失敗しません。
               </p>
-              <p>
-                買い切りには3つのグレード（デスクトップ専用／全プラットフォーム＝旧クロスデバイス／Max）があり、
-                Proツール全8種はどのグレードにも標準で含まれ、永続的に使えます。
-                Luminar Primeは生成AIの継続利用や新機能アップデートが欲しい人向けのオプション。
-                正解は使用頻度や予算によって変わるので、自分に合ったプランを見つけることが大切です。
-              </p>
-
-              <h3>買い切り版でできること・できないこと</h3>
-
-              <div className="definition l-bottom-large">
-                <dl className="definition-body">
-                  <dt>買い切りライセンス</dt>
-                  <dd>
-                    基本機能（RAW現像、Sky AI、補正AIなど）に加え、Proツール全8種（ノイズ除去、超解像、HDR合成など）も永続的に使えます。
-                    デスクトップ専用 {yen(PLANS.desktop.sale)}、全プラットフォーム {yen(PLANS.allPlatforms.sale)}、Max {yen(PLANS.max.sale)}の3グレード展開（セール価格・時期により変動）。
-                  </dd>
-                  <dt>Luminar Prime（年額サブスク・任意）</dt>
-                  <dd>
-                    契約期間中の新機能アップデートとAIツールの無制限利用ができます。
-                    プリセット等のアセットライブラリやSpaces（Webギャラリー）も利用可能。
-                    初年度{approxYen(PRIME.firstYear)}、2年目以降{approxYen(PRIME.renewal)}が目安です。
-                    以前あったUpgrade Pass／Ecosystem Passは廃止され、Primeに一本化されています。
-                    Primeが切れてもアプリ本体・基本機能・Proツールは永続で使えます。
-                  </dd>
-                </dl>
-              </div>
-
-              <h3>AI機能は更新しないとどうなる？</h3>
-              <p>
-                生成AIは買い切りの購入日から1年間利用でき、以後はLuminar Primeでの更新が必要です。
-                更新しないと生成AIと新機能アップデートは止まりますが、
-                アプリ本体・基本機能・Proツールは手元に残ります。生成AIが不要なら更新しないという選択もアリです。
-              </p>
-
-              <h3>Luminar Primeは1年だけでも問題ない？</h3>
-              <p>
-                「結局どれを選べばいいの？」という方のために、簡単なシミュレーターを用意しました。
-                詳細ページでご確認ください。
-              </p>
-
-              <div className="u-text-center" style={{ marginTop: '2rem' }}>
-                <Link href="/luminar/luminar-plan/" className="m-btn m-btn--primary">
-                  Luminar Neoの料金プランを詳しく解説
-                </Link>
-              </div>
+              <Link href="/luminar/luminar-plan/" className="m-nav-card">
+                <span className="m-nav-card__icon"><i className="fa-solid fa-tags"></i></span>
+                <span className="m-nav-card__title">買い切り3プランの価格と選び方</span>
+              </Link>
+              <Link href="/luminar/sale-and-coupon-info/" className="m-nav-card">
+                <span className="m-nav-card__icon"><i className="fa-solid fa-percent"></i></span>
+                <span className="m-nav-card__title">セール時期とクーポンコードを確認する</span>
+              </Link>
+              <Link href="/luminar/trial/" className="m-nav-card">
+                <span className="m-nav-card__icon"><i className="fa-solid fa-download"></i></span>
+                <span className="m-nav-card__title">無料体験版のダウンロード方法</span>
+              </Link>
             </section>
 
-            {/* ⑤ 向いている人・向いていない人 */}
-            <section id="target" className="content-card card-padding article-body">
-              <h2>Luminar Neoは<br className="sp-only" />どんな人に向いている？</h2>
-
-              <p>
-                Luminar Neoは万能なソフトではありません。正直なところ、合う人と合わない人がはっきり分かれます。
+            {/* STEP 3 */}
+            <section id="step-help" className="m-step-section">
+              <h2 className="m-step-section__title">
+                <span className="m-step-section__badge">STEP.3</span>使い始めてから
+              </h2>
+              <p className="m-step-section__lead">
+                Luminar Neoが起動しない、動作が重いといったトラブルは、原因がある程度決まっています。
+                やみくもに再インストールする前に、症状から切り分けるのが近道です。
               </p>
-              <p>
-                「合う・合わない」は機能面だけでなく、
-                <strong>写真編集に何を求めるか</strong>という価値観の違いでもあります。
-                たとえば「夜景のノイズを手軽に消したい」「旅行写真の空をもっと青くしたい」といった
-                明確な目的がある人には、特におすすめできるソフトです。
-              </p>
-
-              <h3>向いている人・向いていない人の特徴</h3>
-
-              <div className="l-grid-2">
-                <div className="m-pc-box m-pc-box--pros">
-                  <div className="m-pc-head">
-                    <i className="fa-solid fa-circle-check" aria-hidden="true"></i> 向いている人
-                  </div>
-                  <ul className="m-pc-body">
-                    {[
-                      '失敗写真をAIの力で救いたい',
-                      '編集時間を大幅に短縮したい',
-                      '撮影スキルを後処理で補いたい',
-                      'サブスク疲れで買い切りを探している',
-                      '1つのソフトで完結させたい',
-                    ].map((text) => (
-                      <li className="m-pc-item" key={text}>
-                        <span className="m-pc-dot" aria-hidden="true"></span> {text}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="m-pc-box m-pc-box--cons">
-                  <div className="m-pc-head">
-                    <i className="fa-solid fa-circle-xmark" aria-hidden="true"></i> 向いていない人
-                  </div>
-                  <ul className="m-pc-body">
-                    {[
-                      '基本補正しかしない',
-                      '撮って出しを好む',
-                      '写真管理機能を重視する',
-                      '今のソフトで十分満足している',
-                      '最新カメラへの即時対応が必須',
-                    ].map((text) => (
-                      <li className="m-pc-item" key={text}>
-                        <span className="m-pc-dot" aria-hidden="true"></span> {text}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="u-text-center" style={{ marginTop: '2rem' }}>
-                <Link href="/luminar/merit-demerit/" className="m-btn m-btn--primary">
-                  Luminar Neoの長期使用レビュー
-                </Link>
-              </div>
-            </section>
-
-            {/* ⑥ Lightroomとの比較 */}
-            <section id="vs-lightroom" className="content-card card-padding article-body">
-              <h2>Lightroomと<br className="sp-only" />迷ったときの判断軸</h2>
-
-              <p>
-                「Luminar NeoとLightroom、結局どっちがいいの？」という質問をよくいただきます。
-                結論から言うと、<strong>比較する軸によって答えが変わります</strong>。
-              </p>
-
-              <h3>何年使うとどちらが得か？</h3>
-              <p>
-                たとえば3年間のコストで比較すると、Luminar Neo（買い切りのみ）は{approxYen(PLANS.desktop.sale)}、
-                Lightroomプラン（1TB・年間一括）は{approxYen(LIGHTROOM.annualPrepay * 3)}。コスト面ではLuminar Neoが有利です。
-              </p>
-              <p>
-                ただし、両方を併用している方も実は多くいます。LightroomからLuminar Neoをプラグインとして
-                呼び出す使い方も可能なので、「どちらか一方」と決めつけなくてもOKです。
-              </p>
-
-              <h3>Luminar NeoとLightroomの思想の違い</h3>
-
-              <div className="m-compare">
-                <div className="m-compare__head">
-                  <div className="m-compare__th m-compare__th--1">Luminar Neoの思想</div>
-                  <div className="m-compare__th m-compare__th--2">Lightroomの思想</div>
-                </div>
-                <div className="m-compare__body">
-                  <ul className="m-compare__col m-compare__col--1">
-                    {[
-                      { color: 'var(--c-sky-400)', text: 'AIで編集を効率化' },
-                      { color: 'var(--c-sky-400)', text: '買い切りで永続利用' },
-                      { color: 'var(--c-sky-400)', text: '1枚の仕上げに集中' },
-                    ].map(({ color, text }) => (
-                      <li className="m-compare__item" key={text}>
-                        <span className="m-compare__dot" style={{ background: color }} aria-hidden="true"></span> {text}
-                      </li>
-                    ))}
-                  </ul>
-                  <ul className="m-compare__col m-compare__col--2">
-                    {[
-                      { color: 'var(--c-indigo-400)', text: '写真管理と現像の統合' },
-                      { color: 'var(--c-indigo-400)', text: 'サブスクで常に最新' },
-                      { color: 'var(--c-indigo-400)', text: '大量の写真を効率管理' },
-                    ].map(({ color, text }) => (
-                      <li className="m-compare__item" key={text}>
-                        <span className="m-compare__dot" style={{ background: color }} aria-hidden="true"></span> {text}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="u-text-center" style={{ marginTop: '2rem' }}>
-                <Link href="/luminar/lightroom-compare/" className="m-btn m-btn--primary">
-                  Luminar NeoとLightroomを徹底比較
-                </Link>
-              </div>
-            </section>
-
-            {/* ⑦ 安く買う方法 */}
-            <section id="discount" className="content-card card-padding article-body">
-              <h2>ルミナーネオを<br className="sp-only" />安く買う方法はある？</h2>
-
-              <p>
-                Luminar Neoは定期的にセールを実施しており、タイミングが合えば
-                <strong>最大40〜50%オフ</strong>で購入できることもあります。
-                ブラックフライデー（11月）やサマーセール（7〜8月）が特に狙い目です。
-              </p>
-              <p>
-                当サイト限定のクーポンコードもあり、セールと併用できる場合もあります。
-                購入から30日間は返金保証があるので、体験版で試してから購入しても安心です。
-                セール時期の詳細・クーポンの使い方は下記で解説しています。
-              </p>
-
-              <div className="u-text-center" style={{ marginTop: '2rem' }}>
-                <Link href="/luminar/sale-and-coupon-info/" className="m-btn m-btn--primary">
-                  セール時期・クーポンの詳細を確認する
-                </Link>
-              </div>
-            </section>
-
-            {/* ⑧ FAQ */}
-            <section id="faq" className="content-card card-padding article-body">
-              <h2>ルミナーネオの購入前に<br className="sp-only" />よくある疑問</h2>
-
-              <p>
-                購入を検討する際によくある疑問をまとめました。実は体験版で確認できることも多いので、
-                気になる方はまず試してみるのがおすすめです。
-              </p>
-
-              <dl>
-                {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
-                    日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
-                <div id="faq-1" className="faq-item">
-                  <dt className="faq-q">無料体験版はありますか？</dt>
-                  <dd className="faq-a">
-                    はい、7日間の無料体験版があります。詳細は「
-                    <Link href="/luminar/trial/">Luminar Neo体験版のダウンロード方法・製品版との違い</Link>
-                    」で詳しく解説しています。
-                  </dd>
-                </div>
-                <div id="faq-2" className="faq-item">
-                  <dt className="faq-q">拡張機能（Proツール）は必須ですか？</dt>
-                  <dd className="faq-a">
-                    現在はProツール全8種（ノイズ除去、超解像、HDR合成など）がすべての買い切りライセンスに標準で含まれており、
-                    追加購入なしで永続利用できます。詳細は「
-                    <Link href="/luminar/expand/">拡張機能でできることまとめ</Link>」で解説しています。
-                  </dd>
-                </div>
-                <div id="faq-3" className="faq-item">
-                  <dt className="faq-q">ルミナーネオの評判が知りたいです。</dt>
-                  <dd className="faq-a">
-                    「<Link href="/luminar/voice/">Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態</Link>
-                    」で解説しています。
-                  </dd>
-                </div>
-                <div id="faq-4" className="faq-item">
-                  <dt className="faq-q">返金保証はありますか？</dt>
-                  <dd className="faq-a">はい、購入から30日間は返金保証があります。安心して試せますね。</dd>
-                </div>
-                <div id="faq-5" className="faq-item">
-                  <dt className="faq-q">WindowsとMac、両方で使えますか？</dt>
-                  <dd className="faq-a">1ライセンスで2台のPCにインストール可能です。Windows・Mac混在でも問題ありません。</dd>
-                </div>
-                <div id="faq-6" className="faq-item">
-                  <dt className="faq-q">動作が重いと聞きましたが？</dt>
-                  <dd className="faq-a">
-                    AI処理を多用するため、ある程度のPCスペックは必要です。推奨は16GB以上のRAMとSSD。
-                    心配な方は体験版で自分の環境で試してみてください。対処法は
-                    <Link href="/luminar/opening-failed/">
-                      Luminar Neoが重い・落ちる原因と対処法｜症状別に今すぐ解決
-                    </Link>
-                    で詳しく紹介しています。
-                  </dd>
-                </div>
-                <div id="faq-7" className="faq-item">
-                  <dt className="faq-q">アップデートは無料ですか？</dt>
-                  <dd className="faq-a">
-                    マイナーアップデート（バグ修正など）は無料です。メジャーアップデート（新機能追加）はPrime契約者のみ。
-                    Prime未契約でも購入時のバージョンは永続利用できます。
-                  </dd>
-                </div>
-              </dl>
-
-              <div className="u-text-center" style={{ marginTop: '2rem' }}>
-                <Link href="/luminar/faq/" className="m-btn m-btn--primary">
-                  よくある質問をもっと見る
-                </Link>
-              </div>
+              <Link href="/luminar/opening-failed/" className="m-nav-card">
+                <span className="m-nav-card__icon"><i className="fa-solid fa-screwdriver-wrench"></i></span>
+                <span className="m-nav-card__title">起動しない・重いときの対処法</span>
+              </Link>
+              <Link href="/luminar/faq/" className="m-nav-card">
+                <span className="m-nav-card__icon"><i className="fa-solid fa-circle-question"></i></span>
+                <span className="m-nav-card__title">よくある質問30問をまとめて見る</span>
+              </Link>
             </section>
 
             {/* CTA */}
             <LuminarCtaSale />
 
-            {/* ⑨ 記事一覧 */}
-            <section id="articles" style={{ padding: '0 0 2rem' }}>
-              <h2 style={{ padding: '0 16px 1rem', fontSize: '1.1rem', fontWeight: 700 }}>目的別に詳しく知りたい人はこちら</h2>
-
-              <div className="l-grid-3">
-                {articles.map((article) => (
-                  <article className="m-post-card" key={article.slug}>
-                    <Link href={`/luminar/${article.slug}/`} aria-labelledby={`post-title-${article.slug}`}>
-                      <div className="m-post-card__thumb">
-                        {article.featuredImage ? (
-                          <Image
-                            src={article.featuredImage.src}
-                            alt={article.featuredImage.alt}
-                            fill
-                            style={{ objectFit: 'cover' }}
-                            sizes="(max-width: 768px) 100vw, 400px"
-                          />
-                        ) : (
-                          <div style={{ width: '100%', height: '100%', background: 'var(--c-bg-sub)' }} aria-hidden="true" />
-                        )}
-                      </div>
-                      <div className="m-post-card__content">
-                        {article.category && (
-                          <span className="m-post-card__cat">{article.category}</span>
-                        )}
-                        <h3
-                          id={`post-title-${article.slug}`}
-                          className="m-post-card__title"
-                          dangerouslySetInnerHTML={{ __html: article.title }}
-                        />
-                        {article.description && (
-                          <p style={{
-                            fontSize: '0.78rem',
-                            color: 'var(--color-text-light)',
-                            margin: '0.4rem 0 0',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                            lineHeight: 1.6,
-                          }}>
-                            {article.description}
-                          </p>
-                        )}
-                      </div>
-                    </Link>
-                  </article>
-                ))}
-              </div>
-            </section>
           </article>
 
           {/* 運営者情報 */}
@@ -583,7 +210,7 @@ export default async function LuminarTopPage() {
       {/* SNS シェア */}
       <SpotShare
         url={`${LUMINAR_SITE_URL}/`}
-        title="Luminar Neo 完全購入ガイド｜特徴・料金・安く買う方法【2026年版】"
+        title={PAGE_TITLE}
         labels={{
           heading: 'この記事をシェアする',
           x: 'X (Twitter)',
@@ -619,14 +246,10 @@ export default async function LuminarTopPage() {
                 // breadcrumb はここに書かない。ページ上部の <Breadcrumb> が
                 // DOM と一致した BreadcrumbList を出力済みで、二重定義になるため
               },
-              {
-                '@type': 'FAQPage',
-                mainEntity: FAQ_JSON_LD,
-              },
             ],
           }),
         }}
       />
-    </>
+    </SaleSettingsProvider>
   )
 }

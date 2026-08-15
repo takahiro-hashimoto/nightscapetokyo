@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import Link from '@/components/common/AppLink'
 import { AFFILIATE_URL, COUPON_CODE } from '@/lib/luminar/config'
 import { useSaleSettings } from '@/hooks/useSaleSettings'
@@ -8,6 +8,9 @@ import { useSaleSettings } from '@/hooks/useSaleSettings'
 export default function LuminarCtaSale() {
   const settings = useSaleSettings()
   const [copied, setCopied] = useState(false)
+  // 1ページに複数置けるようにする。固定の id だと重複して
+  // aria-labelledby がどちらを指すか決まらなくなる
+  const titleId = useId()
 
   const handleCopy = async () => {
     try {
@@ -23,19 +26,22 @@ export default function LuminarCtaSale() {
   const hasCoupon = settings?.hasCoupon ?? true
 
   return (
-    <aside className="m-cta-sale" aria-labelledby="cta-title">
+    <aside className="m-cta-sale" aria-labelledby={titleId}>
       <div className="m-cta-sale__bg m-cta-sale__bg--1" aria-hidden="true"></div>
       <div className="m-cta-sale__bg m-cta-sale__bg--2" aria-hidden="true"></div>
 
       <div className="m-cta-sale__content">
-        <h2 className="m-cta-sale__title" id="cta-title">
+        {/* CTA の見出しは h2 にしない。記事本文の見出し階層に混ざり、
+            アウトライン上で本文の h2 と競合するため。
+            aria-labelledby は p でも参照できるのでラベル付けは維持される。 */}
+        <p className="m-cta-sale__title" id={titleId}>
           <i className="fa fa-bolt" aria-hidden="true"></i>{' '}
           {isActive ? (
             <>Luminar Neo<br className="sp-only" />セール実施中！</>
           ) : (
             <>Luminar Neoを<br className="sp-only" />お得に購入する</>
           )}
-        </h2>
+        </p>
 
         <div className="m-cta-sale__desc">
           {isActive ? (

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
+import Link from '@/components/common/AppLink'
 import Image from 'next/image'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
-import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
 import { PLANS, PRIME, LIGHTROOM, yen, approxYen, totalWithPrime } from '@/lib/luminar/pricing'
 
@@ -11,7 +11,7 @@ const META = {
   title: 'Luminar NeoとLightroom徹底比較｜料金・機能・使いやすさの違いを結論から解説',
   description: '写真の現像ソフト選びで、LightroomとLuminar Neoのどちらにするか迷っていませんか？どちらも人気のRAW現像ソフトですが、料金体系も操作感も設計思想がまったく違います。',
   publishedAt: '2026-01-18T10:36:17',
-  updatedAt: '2026-08-12T00:00:00',
+  updatedAt: '2026-08-13T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom.jpg',
     alt: 'Luminar NeoとLightroom徹底比較｜料金・機能・使いやすさの違いを結論から解説',
@@ -21,13 +21,14 @@ const META = {
 }
 
 const TOC: TocItem[] = [
-  { id: 'conclusion', level: 2, text: '結論：LightroomとLuminar Neoはこう使い分ける' },
-  { id: 'price', level: 2, text: '料金プランの違いを比較（買い切り vs サブスク）' },
-  { id: 'features', level: 2, text: '機能の違いを比較｜現像・AI・編集自由度' },
-  { id: 'genre', level: 2, text: '写真ジャンル別の向き不向き' },
-  { id: 'migration', level: 2, text: 'LightroomからLuminar Neoに乗り換えるときの注意点' },
+  { id: 'conclusion', level: 2, text: '使い方で選ぶ' },
+  { id: 'price', level: 2, text: '料金の比較（買い切り vs サブスク）' },
+  { id: 'lightroom-buyout', level: 2, text: 'Lightroomに買い切り版はない' },
+  { id: 'features', level: 2, text: 'RAW現像・AI・合成の機能比較' },
+  { id: 'genre', level: 2, text: '撮影ジャンルで選ぶ' },
+  { id: 'migration', level: 2, text: '乗り換えるときの注意点' },
   { id: 'faq', level: 2, text: 'よくある質問（FAQ）' },
-  { id: 'summary', level: 2, text: 'まとめ：LightroomとLuminar Neo どちらを選ぶべきか' },
+  { id: 'summary', level: 2, text: 'まとめ：どちらを選ぶか' },
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -36,18 +37,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const lead = (
   <>
-    <p>写真の現像ソフト選びで、LightroomとLuminar Neoのどちらにするか迷っていませんか？</p>
-    <p>どちらも人気のRAW現像ソフトですが、料金体系も操作感も設計思想がまったく違います。ここで厄介なのは、料金だけを見ると判断できそうで、実は<span className="m-mark-yellow">使い方次第で&quot;後悔の方向が真逆になる&quot;</span>のがこの2つのソフトだということ。</p>
-    <p>Lightroomを選んで「毎月払い続けるのがしんどい」と感じる人もいれば、Luminar Neoを選んで「やっぱりカタログ管理が欲しかった」と戻る人もいます。</p>
-    <p>この記事では、両ソフトの料金・機能・使いやすさを具体的に比較して、「自分にはどちらが向いているか」を判断できる材料をお伝えしますね。</p>
-    <div className="m-abstract">
-      <span className="m-abstract__label">この記事の結論</span>
-      <ul>
-        <li><strong>Lightroom</strong>：大量の写真をカタログ管理したい人、パラメータを細かく追い込みたい人向け</li>
-        <li><strong>Luminar Neo</strong>：AI機能で現像時間を短縮したい人、買い切りでコストを抑えたい人向け</li>
-        <li><strong>コスト差</strong>：5年使うとLightroomは約9〜14万円、Luminar Neoは約1.6〜2.3万円</li>
-      </ul>
-    </div>
+    <p>写真の現像ソフト選びで、LightroomとLuminar Neoのどちらにするか迷っていませんか？どちらも人気のRAW現像ソフトですが、料金体系も操作感も設計思想がまったく違います。</p>
+    <p>まず金額差です。5年使った場合を並べます。</p>
+    <ul className="m-list-ul">
+      <li><span className="m-list-ul__icon">•</span> <strong>Lightroom</strong>（サブスク）：約9〜14万円</li>
+      <li><span className="m-list-ul__icon">•</span> <strong>Luminar Neo</strong>（買い切り）：約1.6〜2.3万円</li>
+    </ul>
+    <p>ただ<span className="m-mark-yellow">安いほうを選べばいい、という話でもありません</span>。Lightroomを選んで「毎月払い続けるのがしんどい」と感じる人もいれば、Luminar Neoを選んで「やっぱりカタログ管理が欲しかった」と戻る人もいます。</p>
+    <p>やりたいことから逆算すれば、選ぶべきほうは決まります。</p>
     <div className="m-table-wrap" style={{ margin: '1.5rem 0' }}>
       <table className="m-table">
         <thead>
@@ -88,7 +85,7 @@ const lead = (
         </tbody>
       </table>
     </div>
-    <LuminarCtaMini />
+    <p>Lightroomから乗り換えるか迷っている方は、ぜひチェックしてみてください。</p>
   </>
 )
 
@@ -97,9 +94,9 @@ export default async function Page() {
     <LuminarArticleLayout {...META} categoryIds={[1]} toc={TOC} lead={lead}>
 
       <section id="conclusion" className="content-card card-padding article-body">
-        <h2>結論：LightroomとLuminar Neoはこう使い分ける</h2>
-        <p>先に結論をお伝えすると、<strong>LightroomとLuminar Neoは「どちらが優れているか」ではなく、「何を重視するか」で選ぶべきソフト</strong>です。</p>
-        <p>両者がそれぞれどんな人に向いているかを簡単にまとめていきます。</p>
+        <h2>使い方で選ぶ</h2>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-03.jpg" alt="タブレットでLightroomを操作しながらレンズを並べた作業環境" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+        <p>上の表がなぜそうなるのか、普段の使い方から見ていきます。Luminar Neo側の基本情報から確認したい場合は<Link href="/luminar/">Luminar Neoの完全ガイド</Link>もあわせてどうぞ。</p>
         <h3>Lightroomが向いている人</h3>
         <div className="definition">
           <dl className="definition-body">
@@ -108,7 +105,7 @@ export default async function Page() {
             <dt>すべてのパラメータを自分で調整したい人</dt>
             <dd>露光量、トーンカーブ、HSL、カラーグレーディング……Lightroomでは写真のあらゆる要素を数値で細かくコントロールできます。「この部分のハイライトをあと5だけ下げたい」といった微調整を繰り返して、自分だけの仕上がりを追求したい方に最適です。</dd>
             <dt>Photoshopとの連携が前提の人</dt>
-            <dd>Adobe Creative Cloudのエコシステムの中で、LightroomからPhotoshopにシームレスに移行してレイヤー編集やレタッチを行うワークフローが確立している方は、その連携の良さを手放しにくいでしょう。</dd>
+            <dd>Adobe Creative Cloudのエコシステムの中で、LightroomからPhotoshopにシームレスに移行してレイヤー編集やレタッチを行うワークフローができあがっている人は、この連携を手放すほうが損になります。</dd>
           </dl>
         </div>
         <h3>Luminar Neoが向いている人</h3>
@@ -119,7 +116,7 @@ export default async function Page() {
             <dt>直感的に「こうしたい」を実現したい人</dt>
             <dd>Luminar Neoは「空をドラマチックにしたい」「肌をきれいに見せたい」といった仕上がりのイメージから操作を選べます。数値を追い込むのではなく、結果から逆算して調整できるので思考のプロセスがシンプルになります。</dd>
             <dt>支払いを自分でコントロールしたい人</dt>
-            <dd>Luminar Neoは買い切りライセンスが基本です。購入後は追加の支払いなしでソフト自体を永続的に使えます。「使わない月は払いたくない」「いつでも支払いを止められる安心感がほしい」という方にはこの料金体系が合っています。</dd>
+            <dd>Luminar Neoは買い切りライセンスが基本です。購入後は追加の支払いなしでソフト自体を永続的に使えます。使わない月まで払いたくない、いつでも止められるほうが気が楽、という感覚の人にはこの料金体系が合います。</dd>
           </dl>
         </div>
         <p style={{ textAlign: 'center', margin: '2rem 0' }}>
@@ -128,8 +125,9 @@ export default async function Page() {
       </section>
 
       <section id="price" className="content-card card-padding article-body">
-        <h2>料金プランの違いを比較（買い切り vs サブスク）</h2>
-        <p>写真現像ソフトを選ぶとき、月額料金だけで比較するのは判断を誤る原因になります。大事なのは、<span className="m-mark-yellow">3年、5年と使い続けたときにいくら払うことになるか</span>という総支払額の視点です。</p>
+        <h2>料金の比較（買い切り vs サブスク）</h2>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-02.jpg" alt="タブレット版Lightroomで写真を編集している様子" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+        <p>月額料金だけを見ると判断を誤ります。効いてくるのは<span className="m-mark-yellow">3年、5年と使い続けたときの総額</span>のほうです。</p>
         <h3>Lightroomの料金体系</h3>
         <p>Lightroomを使うには、Adobe Creative Cloudのサブスクリプション契約が必要です。</p>
         <p>2025年1月15日より、これまで人気だった「フォトプラン（20GB）月額1,180円」は新規受付を終了しました。現在、新規で選べる主なプランは以下の2つです。</p>
@@ -143,77 +141,14 @@ export default async function Page() {
         </div>
         <p>この料金体系の特徴は、<strong>使用頻度に関係なく毎月支払いが発生する</strong>こと。また、解約するとソフトが起動できなくなり、カタログにもアクセスできなくなります（RAWファイル自体は手元に残ります）。</p>
         <h3>Luminar Neoの料金体系</h3>
-        <p>Luminar Neoは<strong>買い切りライセンスが基本</strong>です。一度購入すれば、追加料金なしでソフトを永続的に使用できます。</p>
-        <p><strong>※Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。</strong>以前あったUpgrade Pass／Ecosystem Passは廃止され、現在は年額サブスクのLuminar Primeに一本化されています。Primeは契約期間中の新機能アップデートやAIツールの継続利用のためのオプションです。</p>
-        <div className="m-table-wrap l-bottom-medium">
-          <table className="m-table">
-            <thead>
-              <tr>
-                <th>プラン</th>
-                <th>価格</th>
-                <th>内容</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>永久ライセンス<br />デスクトップ版</strong></td>
-                <td>{yen(PLANS.desktop.sale)}</td>
-                <td>PC2台で使用可。Proツール8種込み。生成AIツールは購入から1年間利用可能。</td>
-              </tr>
-              <tr>
-                <td><strong>全プラットフォーム<br />ライセンス</strong><br /><small>（旧クロスデバイス永続ライセンス）</small></td>
-                <td>{yen(PLANS.allPlatforms.sale)}<br /><small>（通常{yen(PLANS.allPlatforms.regular!)}）</small></td>
-                <td>PC2台＋モバイル3台。スマホアプリ（Luminar Mobile）が使用可。</td>
-              </tr>
-              <tr>
-                <td><strong>Luminar Prime</strong></td>
-                <td>初年度{approxYen(PRIME.firstYear)}／以降{approxYen(PRIME.renewal)}</td>
-                <td>契約期間中の新機能アップデート＋AIツール無制限＋アセットライブラリ＋Spaces。旧Upgrade Pass／Ecosystem Passの後継。</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <h4>Luminar Neoの機能は3種類に分かれている</h4>
-        <div className="m-table-wrap l-bottom-large">
-          <table className="m-table">
-            <thead>
-              <tr>
-                <th>機能の種類</th>
-                <th>含まれる機能</th>
-                <th>利用条件</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>基本機能</strong></td>
-                <td>Sky AI（空の置き換え）、補正AI、電線除去、スキンAI、フェイスAI、リライトAI、基本的な色調補正・露出調整など</td>
-                <td><span className="text-true">買い切りで永続利用可</span></td>
-              </tr>
-              <tr>
-                <td><strong>Proツール（8種）</strong></td>
-                <td>Noiseless AI、Supersharp AI、Upscale AI、HDR Merge、Focus Stacking、Background Removal AI、Magic Light AI、Panorama Stitching</td>
-                <td><span className="text-true">買い切りで永続利用可</span><br />※すべての永久ライセンスに標準搭載</td>
-              </tr>
-              <tr>
-                <td><strong>生成AI機能</strong></td>
-                <td>GenErase（生成AI削除）、GenSwap（生成AI置換）、GenExpand（生成AI拡張）</td>
-                <td><span className="text-false">期限あり</span><br />買い切り購入から1年間<br />以後はPrime契約期間中は利用可</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p>2年目以降については、以下の選択肢があります。</p>
-        <div className="definition">
-          <dl className="definition-body">
-            <dt>選択肢1：そのまま使い続ける（追加費用なし）</dt>
-            <dd>生成AIツールの使用期限は切れますが、Proツールを含む購入時点の編集機能はそのまま永続的に使えます。</dd>
-            <dt>選択肢2：Luminar Primeを更新する</dt>
-            <dd>AIツールを引き続き使いたい場合や、最新アップデートを受け取りたい場合は、Luminar Prime（初年度{approxYen(PRIME.firstYear)}／2年目以降{approxYen(PRIME.renewal)}）を契約します。</dd>
-          </dl>
-        </div>
-        <p>※Luminar Neoの価格はセールや為替レートにより変動します（上記は公式ストアで確認した時点のセール価格）。最新価格は公式サイトでご確認ください。</p>
+        {/* もとは 1,089字・表1・定義リスト2 でプラン内訳まで書いていたが、
+            そこは luminar-plan（「買い切り」で掲載順位1.6位）の主題。
+            比較記事に必要な「サブスクではない」という一点に絞り、詳細は送る。 */}
+        <p>Luminar Neoは<strong>買い切り</strong>です。一度購入すれば追加料金なしで使い続けられます。買い切りプランは3種類あり、<strong>いちばん安いデスクトップ専用ライセンスが{approxYen(PLANS.desktop.sale)}前後</strong>（セール時）。Proツール8種も最初から含まれます。</p>
+        <p>2年目以降も生成AIを使いたい場合だけ、年額のLuminar Prime（初年度{approxYen(PRIME.firstYear)}）を足す形です。使わなければ追加費用はゼロで、これが総額の差につながります。</p>
+        <p>3プランの違いと総額の試算は<Link href="/luminar/luminar-plan/">買い切り3プランの価格と選び方</Link>にまとめてあります。</p>
         <h3>5年間使い続けた場合の総支払額を比較</h3>
-        <p>長期で見ると、買い切りのLuminar Neoのコスト優位性は明らかです。<strong>Proツールを含む編集機能は買い切りだけで永続的に使えます。</strong>生成AIの継続利用や新機能アップデートも欲しい場合は「買い切り＋Luminar Prime 1年」（合計{approxYen(totalWithPrime('desktop', 1))}）を目安にするとよいでしょう。</p>
+        <p>長期で見ると、買い切りのLuminar Neoのコスト優位性は明らかです。<strong>Proツールを含む編集機能は買い切りだけで永続的に使えます。</strong>生成AIの継続や新機能まで欲しいなら「買い切り＋Luminar Prime 1年」（合計{approxYen(totalWithPrime('desktop', 1))}）が目安になります。</p>
         <p>「払い続けなければ使えなくなる」のと「払わなくても使い続けられる」のとでは、同じ金額でも受け止め方が違います。撮影の頻度が落ちた時期にサブスクの請求だけ続くのは、地味に効いてきます。</p>
         <div className="m-table-wrap">
           <table className="m-table">
@@ -251,15 +186,68 @@ export default async function Page() {
             </tbody>
           </table>
         </div>
-        <p>※Lightroomフォトプラン(1TB)：月額2,380円×12ヶ月で計算<br />
+        <p className="m-note">※Lightroomフォトプラン(1TB)：月額2,380円×12ヶ月で計算<br />
         ※Lightroom単体プラン(1TB)：月額1,480円×12ヶ月で計算<br />
         ※Luminar Neo「買い切り＋Luminar Prime 1年」：生成AI無制限＋1年間の新機能アップデートが付くパターン（Proツールは買い切りのみでも永続利用可）</p>
+        <p><i className="fa-solid fa-arrow-right"></i> Luminar Neo側はセールとクーポンでさらに下がります。<Link href="/luminar/sale-and-coupon-info/">Luminar Neoを安く買う方法（セール時期・クーポンコード）</Link>もあわせてどうぞ。</p>
+      </section>
+
+      {/*
+        「lightroom 買い切り」「lightroom 代替」「lightroom 料金」など Lightroom 単体の
+        クエリは表示だけあって掲載順位が12〜23位に沈んでいた。比較表の中に数字として
+        置くだけでは拾えないため、疑問そのものを見出しにして受け止める。
+      */}
+      <section id="lightroom-buyout" className="content-card card-padding article-body">
+        <h2>Lightroomに買い切り版はない</h2>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-01.jpg" alt="ノートPCでAdobe Lightroom Classicを起動しようとしている画面" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+        <p><strong>Adobe Lightroomに買い切り版はありません。</strong>販売されているのはサブスクリプションだけで、契約をやめると編集機能は使えなくなります。「昔は買い切りで買えたはず」という記憶は間違いではなく、パッケージ版のLightroom 6が売られていた時期はありました。ただし新規販売は終了していて、いま入手する手段はありません。</p>
+        <h3>Lightroomの料金は年いくらか</h3>
+        <p>買い切りと比較する前提として、Lightroomにかかる金額を整理しておきます。</p>
+        <ul className="m-list-ul">
+          <li><span className="m-list-ul__icon">•</span> Lightroom単体プラン（1TB）：年 {approxYen(LIGHTROOM.annualMonthly)}（月々払いの場合）</li>
+          <li><span className="m-list-ul__icon">•</span> フォトプラン（Lightroom＋Photoshop・1TB）：年 {approxYen(LIGHTROOM.photoPlan1TB)}</li>
+        </ul>
+        <p>ここで効いてくるのが<strong>「使い続ける限り毎年かかる」という点</strong>です。3年使えば単体プランでも{approxYen(LIGHTROOM.annualMonthly * 3)}前後、5年なら{approxYen(LIGHTROOM.annualMonthly * 5)}前後になります。一方Luminar Neoは{approxYen(PLANS.desktop.sale)}前後の買い切りで、追加費用なしで使い続けられます。<Link href="/luminar/luminar-plan/">Luminar Neoの買い切り価格の内訳</Link>もあわせて確認してみてください。</p>
+        <h3>LightroomとLightroom Classicの違い</h3>
+        <p>もうひとつ混乱しやすいのが、名前のよく似た2つのアプリです。</p>
+        <p>どちらもフォトプランに含まれるため、<strong>プラン選択で悩む必要はありません</strong>。使い方に合うほうを起動すればよい、という関係です。</p>
+        <div className="m-table-wrap">
+          <table className="m-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Lightroom（クラウド版）</th>
+                <th>Lightroom Classic</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>写真の置き場所</td>
+                <td>クラウド中心</td>
+                <td>PCのローカル中心</td>
+              </tr>
+              <tr>
+                <td>得意なこと</td>
+                <td>PC・スマホでの同期編集</td>
+                <td>大量の写真の管理・書き出し</td>
+              </tr>
+              <tr>
+                <td>向いている人</td>
+                <td>複数端末で編集したい</td>
+                <td>PCでじっくり現像したい</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section id="features" className="content-card card-padding article-body">
-        <h2>機能の違いを比較｜現像・AI・編集自由度</h2>
+        <h2>RAW現像・AI・合成の機能比較</h2>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-05.jpg" alt="LightroomとLuminar Neoの編集画面を比較するイメージ" width={1200} height={801} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>LightroomとLuminar Neoはできることの範囲に大きな差があるわけではありません。どちらもRAW現像、色補正、部分調整、書き出しといった基本機能を備えています。違いは、<strong>それらの機能にどうアプローチするか</strong>という操作思想にあります。</p>
         <h3>基本的な現像機能の違い</h3>
+        <p>露出・コントラスト・彩度といった基本の調整は、どちらでも同じことができます。違うのは<strong>触り方</strong>です。Lightroomは項目ごとにスライダーが並び、数値で追い込みます。Luminar Neoは「明るくしたい」という目的から入り、細部はAIが埋めます。</p>
+        <p>同じ写真を仕上げても、通る道筋が変わります。慣れた操作がそのまま通用しないのはこのためです。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -289,6 +277,10 @@ export default async function Page() {
           </table>
         </div>
         <h3>AI補正機能の違い</h3>
+        {/* 表の前に説明をまとめる。部品（表）だけ先に出しても
+            何を見比べればいいか分からないため。 */}
+        <p>AIの位置づけがそもそも違います。<strong>Lightroomは作業を速くするためにAIを使い、Luminar Neoは仕上がりそのものをAIに任せます。</strong></p>
+        <p>逆光の人物を明るくする場合、Lightroomはマスクを作り、被写体を選び、露光量を上げ、境界をぼかして4ステップ。Luminar NeoはリライトAIをオンにしてスライダーを動かすだけの2ステップです。ただし万能ではなく、複雑な構図では境界の認識が甘くなります。体感で8割方はうまくいき、残りは手で直します。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -317,16 +309,9 @@ export default async function Page() {
             </tbody>
           </table>
         </div>
-        <p><strong>例：逆光の人物を明るくしたい場合</strong></p>
-        <ul>
-          <li><strong>Lightroom</strong>：マスク作成→被写体選択→露光量調整→境界ぼかし（4ステップ）</li>
-          <li><strong>Luminar Neo</strong>：リライトAI ON→スライダー調整（2ステップ）</li>
-        </ul>
-        <div className="m-notice m-notice--tips">
-          <div className="m-notice__head"><span className="m-notice__badge">TIPS</span><span className="m-notice__title">AIの限界も知っておこう</span></div>
-          <p>複雑な構図での空の境界認識が甘くなることや、AI補正が強すぎて不自然になることも。8割以上のケースでは十分な結果が出ますが、万能ではありません。</p>
-        </div>
         <h3>合成・特殊表現の違い</h3>
+        <p><strong>Lightroomは「撮った写真を整える」ソフト</strong>で、写真に写っていないものを足す作業はPhotoshopの担当になります。一方の<strong>Luminar Neoは足す作業まで1本で完結</strong>します。</p>
+        <p>曇り空を夕焼けに変える、木漏れ日を足すといった編集が、ソフト内で終わります。表でLightroom側に「不可」が並ぶのは機能不足ではなく、担当範囲がそこまでだからです。</p>
         <div className="m-table-wrap">
           <table className="m-table">
             <thead>
@@ -363,15 +348,15 @@ export default async function Page() {
       </section>
 
       <section id="genre" className="content-card card-padding article-body">
-        <h2>写真ジャンル別の向き不向き</h2>
-        <p>撮影するジャンルによって、どちらのソフトが合理的かは変わってきます。代表的なジャンルごとに整理しますね。</p>
+        <h2>撮影ジャンルで選ぶ</h2>
+        <p>使い方が似ていても、撮るものが変われば答えは変わります。代表的な3ジャンルで見ていきます。</p>
         <h3>風景・夜景</h3>
         <div className="m-media-box">
           <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/dust-after-1.jpeg" alt="風景写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
           <div className="m-media-body">
             <h4 style={{ fontWeight: 900, marginBottom: '0.5rem' }}>Luminar Neoに優位性あり</h4>
             <p style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>スカイAIによる空の置き換えや強調は、風景写真の印象を大きく左右します。曇り空で撮影した写真を青空やドラマチックな夕焼けに変更できるのは、撮影時の天候に左右されないという意味で強力な武器です。エンハンスAIによる風景全体の立体感強調も、ワンクリックで「おっ」という仕上がりに。</p>
-            <p style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>夜景においてはノイズ除去の性能が重要です。より高精度なノイズ除去が必要な場合は、<strong>Proツール「Noiseless AI」</strong>（買い切りライセンスに標準搭載）がおすすめ。ディテールを保持しながらノイズを低減する処理に定評があります。</p>
+            <p style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>夜景で効いてくるのはノイズ除去の質です。もう一段きれいに消したいときは<strong>Proツール「Noiseless AI」</strong>（買い切りライセンスに標準搭載）を使います。ディテールを残したままノイズだけ落としてくれます。</p>
           </div>
         </div>
         <h3>ポートレート</h3>
@@ -393,11 +378,20 @@ export default async function Page() {
       </section>
 
       <section id="migration" className="content-card card-padding article-body">
-        <h2>LightroomからLuminar Neoに乗り換えるときの注意点</h2>
-        <p>Lightroomを使っていて、Luminar Neoへの移行を検討している方に、現実的な注意点をお伝えしますね。</p>
-        <p>まず、<strong>カタログの完全移行はできません</strong>。Lightroomのカタログ（写真の管理情報、編集履歴、キーワードなど）をLuminar Neoにそのまま移行する方法はありません。Luminar Neoには、Lightroomのようなカタログ機能自体が存在しないためです。写真のRAWファイルは当然読み込めますが、Lightroomで行った編集内容を引き継ぐことはできません。</p>
-        <p>また、<strong>編集思想の違いに慣れる時間が必要</strong>です。「トーンカーブを調整したい」と思っても、Luminar Neoでは同じ場所に同じツールがあるわけではありません。代わりに別のツールで目的を達成できますが、慣れるまでは「あの機能はどこ？」と探すことになるでしょう。</p>
-        <p>現実的な解は<strong>「併用から段階的移行」</strong>です。いきなり完全移行するのではなく、新規の撮影分はLuminar Neoで現像し、過去のLightroomカタログはそのまま参照用に残しておく。慣れてきたら徐々にLightroomを使う頻度を減らしていく。「いつでもLightroomに戻れる」状態を保ちながら移行を進めることで、リスクなく自分に合うワークフローを見つけられます。</p>
+        <h2>乗り換えるときの注意点</h2>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-04.jpg" alt="Lightroomから乗り換える際の作業イメージ" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+        <p>Lightroomから移る場合、先に知っておきたい制約が2つあります。</p>
+        {/* もとは3つの注意点が長い段落で並び、どれが制約でどれが対処なのか
+            読み分けにくかった。制約は定義リスト、対処は本文に分けている。 */}
+        <div className="definition">
+          <dl className="definition-body">
+            <dt>カタログは移行できない</dt>
+            <dd>写真の管理情報・編集履歴・キーワードをLuminar Neoに持っていく方法はありません。そもそもLuminar Neoにカタログ機能がないためです。RAWファイルは読み込めますが、<strong>Lightroomでの編集内容は引き継げません</strong>。</dd>
+            <dt>ツールの場所が変わる</dt>
+            <dd>「トーンカーブを触りたい」と思っても、同じ名前のツールが同じ場所にあるわけではありません。別のツールで同じ結果は出せますが、慣れるまでは探す時間がかかります。</dd>
+          </dl>
+        </div>
+        <p>そこで現実的なのが<strong>いきなり乗り換えないこと</strong>です。新しく撮った分だけLuminar Neoで現像し、過去のカタログはLightroomに残したままにします。慣れてきたらLightroomを開く頻度を減らしていけば、<span className="m-mark-yellow">いつでも戻れる状態を保ったまま</span>移行できます。</p>
       </section>
 
       <section id="faq" className="content-card card-padding article-body">
@@ -433,7 +427,7 @@ export default async function Page() {
       </section>
 
       <section id="summary" className="content-card card-padding article-body">
-        <h2>まとめ：LightroomとLuminar Neo どちらを選ぶべきか</h2>
+        <h2>まとめ：どちらを選ぶか</h2>
         <p>LightroomとLuminar Neoは、どちらも優れた写真現像ソフトです。ただし設計思想が異なるため、合う人・合わない人がはっきり分かれます。</p>
         <p>最終的な判断軸は、<span className="m-mark-yellow"><strong>「現像に時間をかけたいか、写真に時間を使いたいか」</strong></span>です。</p>
         <p>パラメータを追い込んで自分だけの仕上がりを探求するプロセス自体を楽しみたいならLightroom。撮影や作品作りに時間を使いたいから、現像は効率よく終わらせたいならLuminar Neo。どちらの時間の使い方が自分に合っているかを考えれば、答えは見えてくるはずです。</p>

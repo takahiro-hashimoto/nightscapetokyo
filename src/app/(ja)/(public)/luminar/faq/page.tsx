@@ -2,7 +2,6 @@ import { jsonLdHtml } from "@/lib/json-ld-script";
 import type { Metadata } from 'next'
 import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
-import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
 import { PRIME, approxYen, priceWithRegular } from '@/lib/luminar/pricing'
 
@@ -12,7 +11,7 @@ const META = {
   title: 'Luminar Neo購入前FAQ｜動作環境・対応カメラ・ライセンスの疑問を解決【2026年】',
   description: 'Luminar Neoは体験版が7日間しかなく、判断しきれないまま購入を決めることになりがちです。動作環境、対応カメラ、ライセンスの仕組みなど、購入前によく寄せられる疑問をSkylum公式のカスタマーサポートにも問い合わせた上でQ&A形式でまとめました。',
   publishedAt: '2026-01-19T10:28:58',
-  updatedAt: '2026-08-12T00:00:00',
+  updatedAt: '2026-08-13T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/faq.jpg',
     alt: 'Luminar Neoの購入前によくある質問まとめ｜動作環境・対応カメラ・ライセンスの疑問を解決【FAQ】',
@@ -42,7 +41,7 @@ const lead = (
     <p>このページでは、購入前によく寄せられる疑問をSkylum公式のカスタマーサポートにも問い合わせた上でQ&amp;A形式でまとめました。細かい解説は専門ページに任せて、ここでは「YES or NO」でサクッと判断できるようにしています。気になる項目だけチェックしてみてくださいね。</p>
     <p>なお、公式サイトにもFAQページがあるので、あわせて参考にしてみてください。<br />
     <i className="fa-solid fa-arrow-right"></i> <a href="https://skylum.evyy.net/OeGRoW" target="_blank" rel="noopener nofollow">Luminar Neo公式FAQ（Skylum）</a></p>
-    <LuminarCtaMini />
+    <p>購入前に疑問をひととおり解消しておきたい方は、ぜひチェックしてみてください。</p>
   </>
 )
 
@@ -70,6 +69,12 @@ const FAQ_JSON_LD = [
   { '@type': 'Question', name: 'クロスデバイスライセンスという名前が見当たりません', acceptedAnswer: { '@type': 'Answer', text: '「クロスデバイス永続ライセンス」は名称が変わり、現在は「全プラットフォームライセンス」として販売されています。中身はPC2台＋モバイル3台で、Web版への対応も加わりました。旧名称で検索した場合も、指しているのは同じ系統のプランです。' } },
   { '@type': 'Question', name: '永久ライセンス デスクトップ版とデスクトップ専用ライセンスは同じ？', acceptedAnswer: { '@type': 'Answer', text: 'はい、同じプランです。以前は「永久ライセンス デスクトップ版」と表記されていましたが、現在の公式ストアでは「デスクトップ専用ライセンス」という名称になっています。PC2台で使える買い切りプランという内容は変わっていません。' } },
   { '@type': 'Question', name: 'Luminar Primeとは？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Primeは、旧アップグレードパス・旧エコシステムパスを置き換える形で登場した年額サブスクです。契約期間中の新機能アップデート、AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）の無制限利用、プリセットなどのアセットライブラリ、Spacesが含まれます。任意のオプションで、契約しなくても買い切りの基本機能とProツール8種は永続的に使えます。' } },
+  { '@type': 'Question', name: 'Luminar Neoの読み方は？', acceptedAnswer: { '@type': 'Answer', text: '「ルミナーネオ」と読みます。開発元のSkylumは「スカイラム」です。日本語の記事では「ルミナーネオ」「ルミナー」と表記されることもありますが、どれも同じソフトを指しています。' } },
+  { '@type': 'Question', name: 'どこの国のソフト？開発元は？', acceptedAnswer: { '@type': 'Answer', text: 'ウクライナ発のSkylum（スカイラム）社が開発しています。もともとMac向けの写真編集ソフトから始まったメーカーで、Luminar 4、Luminar AIを経て現在のLuminar Neoに至ります。日本語表示に対応しており、日本の公式ストアから購入できます。' } },
+  { '@type': 'Question', name: '夜景や星景写真の編集にも向いている？', acceptedAnswer: { '@type': 'Answer', text: '向いています。高感度撮影で乗ったノイズをNoiseless AIで抑えられるので、夜景のように暗所でISOを上げざるを得ない写真と相性がいいです。街灯やイルミネーションに光芒を足すMagic Light AIもあり、夜の写真に使える機能が揃っています。' } },
+  { '@type': 'Question', name: '数百枚を一括で同じ設定にできる？', acceptedAnswer: { '@type': 'Answer', text: 'Lightroomのように「1枚で作った設定を選択した数百枚へ一括同期」という処理は得意ではありません。1枚ずつ丁寧に仕上げるスタイル向けのソフトです。撮影会の大量カットやタイムラプス素材のような均一処理が必要な場面では、Lightroomと併用するのが現実的です。' } },
+  { '@type': 'Question', name: 'グラフィックボード（GPU）は必要？', acceptedAnswer: { '@type': 'Answer', text: 'OpenGL 3.3以降に対応したグラフィックカードが必要です。専用のグラボが必須というわけではなく、Apple SiliconのMacや内蔵GPUのノートPCでも動作します。ただしAI処理はGPUの性能に影響を受けるため、処理時間が気になる場合は体験版で実機の速度を確かめてから判断してください。' } },
+  { '@type': 'Question', name: 'iPadやスマホでも使える？', acceptedAnswer: { '@type': 'Answer', text: '全プラットフォームライセンスとMaxライセンスなら、モバイルアプリを3台まで使えます。iOS（iPhone・iPad）、Android、ChromeOSに対応しており、PCとの間で編集データを同期できます。デスクトップ専用ライセンスはPCのみなので、iPadでも編集したい場合は上位プランを選ぶ必要があります。' } },
   { '@type': 'Question', name: 'コスパの良い買い方は？', acceptedAnswer: { '@type': 'Answer', text: `「Proツールを含む編集機能だけ使えればいい」という方は、デスクトップ専用ライセンス（旧・永久ライセンス デスクトップ版）だけの購入が最もコスパの良い選択です（セール時${priceWithRegular('desktop')}）。Proツール8種も標準で含まれ永続的に使えます。AIツールの継続利用や新機能アップデートが欲しい場合のみ、Luminar Primeを追加・更新する形になります。` } },
 ]
 
@@ -80,6 +85,7 @@ export default async function Page() {
 
       <section id="faq-purchase" className="content-card card-padding article-body">
         <h2>Luminar Neoの購入・料金に関する質問</h2>
+        <p>個別の疑問に答えるページです。全体像から把握したい場合は<Link href="/luminar/">Luminar Neoの完全ガイド</Link>をご覧ください。</p>
         {/* 各 FAQ に id を付与し、#faq-1 形式で個別の質問へ直接リンク・引用できるようにする。
             日本語の質問文をスラッグ化すると URL エンコードで読めなくなり、文言修正でリンクが壊れるため連番で固定 */}
         <div id="faq-1" className="faq-item">
@@ -116,6 +122,18 @@ export default async function Page() {
           <dd className="faq-a">
             はい、購入から30日以内であれば返金を申請できます。いわゆる「30日間返金保証」がついているので、実際に使ってみて「思っていたのと違う」と感じた場合でも安心です。
             体験版と違って、購入後にすべての機能を試せるのが返金保証のメリットですね。
+          </dd>
+        </div>
+        <div id="faq-25" className="faq-item">
+          <dt className="faq-q">Luminar Neoの読み方は？</dt>
+          <dd className="faq-a">
+            「ルミナーネオ」と読みます。開発元のSkylumは「スカイラム」です。日本語の記事では「ルミナーネオ」「ルミナー」と表記されることもありますが、どれも同じソフトを指しています。
+          </dd>
+        </div>
+        <div id="faq-26" className="faq-item">
+          <dt className="faq-q">どこの国のソフト？開発元は？</dt>
+          <dd className="faq-a">
+            ウクライナ発のSkylum（スカイラム）社が開発しています。もともとMac向けの写真編集ソフトから始まったメーカーで、Luminar 4、Luminar AIを経て現在のLuminar Neoに至ります。日本語表示に対応しており、日本の公式ストアから購入できます。
           </dd>
         </div>
       </section>
@@ -190,6 +208,13 @@ export default async function Page() {
             <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/expand/">Proツール（拡張機能）の詳細と選び方</Link>
           </dd>
         </div>
+        <div id="faq-27" className="faq-item">
+          <dt className="faq-q">夜景や星景写真の編集にも向いている？</dt>
+          <dd className="faq-a">
+            向いています。高感度撮影で乗ったノイズをNoiseless AIで抑えられるので、夜景のように暗所でISOを上げざるを得ない写真と相性がいいです。街灯やイルミネーションに光芒を足すMagic Light AIもあり、夜の写真に使える機能が揃っています。
+            <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/expand/">Proツール8種でできることを見る</Link>
+          </dd>
+        </div>
       </section>
 
       <section id="faq-files" className="content-card card-padding article-body">
@@ -258,6 +283,19 @@ export default async function Page() {
             たとえばApple Silicon（M1/M2/M3/M4）搭載Macではネイティブ対応が進んでいて、比較的軽快に動作する傾向があります。Windows 11でも問題なく動きますが、グラフィックドライバの更新は忘れずに。
           </dd>
         </div>
+        <div id="faq-28" className="faq-item">
+          <dt className="faq-q">数百枚を一括で同じ設定にできる？</dt>
+          <dd className="faq-a">
+            Lightroomのように「1枚で作った設定を選択した数百枚へ一括同期」という処理は得意ではありません。1枚ずつ丁寧に仕上げるスタイル向けのソフトです。撮影会の大量カットやタイムラプス素材のような均一処理が必要な場面では、Lightroomと併用するのが現実的です。
+            <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/merit-demerit/">長期使用で感じた弱点をまとめて見る</Link>
+          </dd>
+        </div>
+        <div id="faq-29" className="faq-item">
+          <dt className="faq-q">グラフィックボード（GPU）は必要？</dt>
+          <dd className="faq-a">
+            OpenGL 3.3以降に対応したグラフィックカードが必要です。専用のグラボが必須というわけではなく、Apple SiliconのMacや、内蔵GPUのノートPCでも動作します。ただしAI処理はGPUの性能に影響を受けるため、処理時間が気になる場合は体験版で実機の速度を確かめてから判断してください。
+          </dd>
+        </div>
       </section>
 
       <section id="faq-license" className="content-card card-padding article-body">
@@ -265,8 +303,8 @@ export default async function Page() {
         <div id="faq-15" className="faq-item">
           <dt className="faq-q">何台のPCにインストールできる？</dt>
           <dd className="faq-a">
-            永久ライセンス デスクトップ版の場合、2台のPCにインストールできます。自宅のデスクトップと持ち運び用のノートPCなど、使い分けている方でも1ライセンスでカバーできるのは嬉しいポイントです。
-            クロスデバイス版を選ぶと、さらに3台のモバイルデバイスでも使用できます。
+            デスクトップ専用ライセンス（旧・永久ライセンス デスクトップ版）の場合、2台のPCにインストールできます。自宅のデスクトップと持ち運び用のノートPCなど、使い分けている方でも1ライセンスでカバーできるのは嬉しいポイントです。
+            全プラットフォームライセンス（旧・クロスデバイス版）を選ぶと、さらに3台のモバイルデバイスでも使用できます。
           </dd>
         </div>
         <div id="faq-16" className="faq-item">
@@ -295,6 +333,13 @@ export default async function Page() {
             購入が完了すると、インストーラーが自動でダウンロードされます。あわせて、登録したメールアドレス宛にダウンロードリンクとアクティベーション手順が届くので、そちらからでもOKです。ダウンロードリンクはSkylumアカウント内でいつでも確認できるので、再インストール時も困りません。
             アクティベーションは、アプリ内でSkylumアカウントにログインするだけ。ライセンスキーやアクティベーションコードの入力は不要です。購入時と同じメールアドレスでログインすれば、自動的にライセンスが有効化されます。
             GoogleやAppleなどの外部アカウントで登録した場合は、該当のボタンからサインインしてください。もし別のメールアドレスで購入してしまった場合でも、「My Software &gt; App isn&apos;t showing?」セクションからアカウント統合ができますよ。
+          </dd>
+        </div>
+        <div id="faq-30" className="faq-item">
+          <dt className="faq-q">iPadやスマホでも使える？</dt>
+          <dd className="faq-a">
+            全プラットフォームライセンスとMaxライセンスなら、モバイルアプリを3台まで使えます。iOS（iPhone・iPad）、Android、ChromeOSに対応しており、PCとの間で編集データを同期できます。デスクトップ専用ライセンスはPCのみなので、iPadでも編集したい場合は上位プランを選ぶ必要があります。
+            <i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">プランごとの対応デバイスを確認する</Link>
           </dd>
         </div>
       </section>

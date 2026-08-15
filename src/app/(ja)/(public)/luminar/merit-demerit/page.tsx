@@ -2,17 +2,16 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
-import LuminarCtaMini from '@/components/luminar/LuminarCtaMini'
 import type { TocItem } from '@/lib/luminar/toc'
 import { PLANS, PRIME, yen, approxYen, totalWithPrime } from '@/lib/luminar/pricing'
 
 
 const META = {
   slug: 'merit-demerit',
-  title: 'Luminar Neoのメリット・デメリット｜1年以上使ったリアルな評価【2026年】',
-  description: '「Luminar Neo（ルミナーネオ）」って実際どうなの？Adobeから乗り換える価値はある？LightroomとPhotoshopのサブスクは年間3万円近く。1年以上使い込んで感じたリアルな良い点・イマイチな点を包み隠さずお伝えします。',
+  title: 'Luminar Neoのメリット・デメリット｜2年以上使ったリアルな評価【2026年】',
+  description: '「Luminar Neo（ルミナーネオ）」って実際どうなの？Adobeから乗り換える価値はある？LightroomとPhotoshopのサブスクは年間3万円近く。2年以上使い込んで感じたリアルな良い点・イマイチな点を包み隠さずお伝えします。',
   publishedAt: '2026-01-18T10:37:52',
-  updatedAt: '2026-08-12T00:00:00',
+  updatedAt: '2026-08-13T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/review.jpg',
     alt: 'Luminar Neoの良い点・イマイチな点を夜景フォトグラファーが徹底解説【長期使用レビュー】',
@@ -22,18 +21,18 @@ const META = {
 }
 
 const TOC: TocItem[] = [
-  { id: 'about', level: 2, text: 'そもそもLuminar Neo（ルミナーネオ）ってどんなソフト？' },
-  { id: 'merits', level: 2, text: 'Luminar Neoの「ここが最高！」な良い点（メリット）' },
+  { id: 'about', level: 2, text: 'Luminar Neoはどんなソフト？' },
+  { id: 'reputation', level: 2, text: '評価が割れる理由' },
+  { id: 'merits', level: 2, text: 'Luminar Neoのメリット' },
   { id: 'ui', level: 3, text: 'UIがシンプルで分かりやすい' },
   { id: 'quality', level: 3, text: 'サクッと高クオリティな写真を現像できる' },
   { id: 'layers', level: 3, text: 'レイヤー機能で合成・レタッチも1本で完結' },
   { id: 'catalog', level: 3, text: '写真管理（カタログ）機能もそこそこ使える' },
-  { id: 'price', level: 3, text: 'お財布に優しい「買い切り型」ライセンス' },
-  { id: 'demerits', level: 2, text: 'Luminar Neoの「ここは注意…」なイマイチな点（デメリット）' },
-  { id: 'compare-adobe', level: 2, text: 'Lightroom Classic / Photoshop との比較' },
+  { id: 'price', level: 3, text: '買い切り型ライセンス' },
+  { id: 'demerits', level: 2, text: 'Luminar Neoのデメリット' },
+  { id: 'compare-adobe', level: 2, text: 'Lightroom・Photoshopとの関係' },
   { id: 'plugin', level: 2, text: '最強の使い方：プラグイン連携' },
-  { id: 'conclusion', level: 2, text: '結論：Luminar Neoはどんな人におすすめ？' },
-  { id: 'ending', level: 2, text: 'おわりに：写真は「技術」から「表現」へ' },
+  { id: 'conclusion', level: 2, text: 'まとめ：どんな人に向いているか' },
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,9 +43,9 @@ const lead = (
   <>
     <p>「Luminar Neo（ルミナーネオ）」って実際どうなの？Adobeから乗り換える価値はある？</p>
     <p>LightroomとPhotoshopのサブスクは年間3万円近く。決して安くはない出費ですよね。5年使えば15万円近くになり、レンズが1本買える金額です。AI搭載の編集ソフトが増えた今、その支出を続ける前に他の選択肢を見ておく価値はあります。</p>
-    <p>そこでこの記事では、LightroomもPhotoshopも使っているフォトグラファーが、Luminar Neoを<strong>1年以上使い込んで</strong>感じた<strong>リアルな良い点・イマイチな点</strong>を包み隠さずお伝えします。</p>
-    <p>実際の作例もたっぷり載せているので、ぜひ参考にしてください。</p>
-    <LuminarCtaMini />
+    <p>そこでこの記事では、LightroomもPhotoshopも使っているフォトグラファーが、Luminar Neoを<strong>2年以上使い込んで</strong>感じた<strong>リアルな良い点・イマイチな点</strong>を包み隠さずお伝えします。</p>
+    <p>作例も一緒に載せているので、仕上がりのイメージが掴めると思います。</p>
+    <p>買ってから後悔したくない方は、ぜひチェックしてみてください。</p>
   </>
 )
 
@@ -55,9 +54,9 @@ export default async function Page() {
     <LuminarArticleLayout {...META} categoryIds={[2]} toc={TOC} lead={lead}>
 
       <section id="about" className="content-card card-padding article-body">
-        <h2>そもそもLuminar Neo（ルミナーネオ）ってどんなソフト？</h2>
+        <h2>Luminar Neoはどんなソフト？</h2>
         <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/about-luminar-neo.jpg" alt="Luminar Neo（ルミナーネオ）の編集画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
-        <p>まずは簡単にLuminar Neoについておさらいしておきましょう。</p>
+        <p>先に、どんなソフトなのかだけ簡単に押さえておきます。</p>
         <p>Luminar Neoは、ウクライナの<strong>Skylum（スカイラム）社</strong>が開発したRAW現像・画像編集ソフトです。最大の特徴は、<strong>AI（人工知能）を活用した編集機能</strong>が満載なこと。</p>
         <p>従来の写真編集って、「露出を+0.5に」「ハイライトを-30に」みたいに、数値をいじりながら調整していくスタイルですよね。Lightroomを使っている方なら、スライダーをちまちま動かす作業に馴染みがあると思います。</p>
         <p>一方、Luminar Neoは<strong>「こういう写真にしたい」というゴールを選ぶと、AIが自動で最適な調整をしてくれる</strong>というアプローチ。</p>
@@ -74,11 +73,51 @@ export default async function Page() {
             <li><i className="fa-solid fa-check" style={{ color: 'var(--c-sky-600)' }}></i> RAW現像とレタッチが1本で完結</li>
           </ul>
         </div>
+        <p>この記事は使ってみた評価に絞っています。プラン構成や購入手順まで含めた全体像は<Link href="/luminar/">Luminar Neoの完全ガイド</Link>にまとめてあります。</p>
+      </section>
+
+      {/*
+        「評判」系クエリで掲載順位2.4位・CTR18〜21%と main の流入源になっているのに、
+        本文に「評判」は1回、「口コミ」は0回しかなかった。実在しないレビューを装わず、
+        自分の評価であることを明示したうえで、賛否が割れる論点を先に提示する。
+      */}
+      <section id="reputation" className="content-card card-padding article-body">
+        <h2>評価が割れる理由</h2>
+        <p>Luminar Neoの評判やレビューを読むと、絶賛と酷評が両方出てきて戸惑うと思います。2年以上使ってみると、その理由ははっきりしていました。<strong>評価が割れているのは、ソフトの出来ではなく「何に使うか」</strong>です。</p>
+        <p><strong>1枚を丁寧に仕上げたい人ほど評価が高く、数百枚をさばきたい人ほど評価が下がる。</strong>自分がどちら寄りかを先に決めておくと、この先の話が判断しやすくなります。</p>
+        <div className="m-table-wrap">
+          <table className="m-table">
+            <thead>
+              <tr>
+                <th>よく語られる評判</th>
+                <th>実際に使ってみた評価</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AIが優秀で編集が速い</td>
+                <td>そのとおり。空の置き換えや人物補正はワンクリックで実用レベル</td>
+              </tr>
+              <tr>
+                <td>買い切りで安い</td>
+                <td>そのとおり。サブスクが不要なのは最大の魅力</td>
+              </tr>
+              <tr>
+                <td>動作が重い</td>
+                <td>環境による。AI処理はマシンパワーを要求するのは事実</td>
+              </tr>
+              <tr>
+                <td>大量処理に向かない</td>
+                <td>そのとおり。ここが最大の弱点で、後述する一括編集の制約が理由</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section id="merits" className="content-card card-padding article-body">
-        <h2>Luminar Neoの「ここが最高！」な良い点（メリット）</h2>
-        <p>それでは、ここからは実際にLuminar Neoを長期間使ってみて感じた「良い点」と「イマイチな点」を詳しく紹介していきます！</p>
+        <h2>Luminar Neoのメリット</h2>
+        <p>ここからは、長く使って感じた良い点とイマイチな点を順に挙げていきます。</p>
 
         <h3 id="ui">UIがシンプルで分かりやすい</h3>
         <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-edit.jpg" alt="Luminar Neoの編集画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
@@ -94,7 +133,7 @@ export default async function Page() {
 
         <h3 id="quality">サクッと高クオリティな写真を現像できる</h3>
         <p>Luminar Neoを使い始めて最初に感動したのが、<strong>作業時間の短縮</strong>です。</p>
-        <p>ここからは、僕が実際に使って気に入っている機能を作例とともに紹介していきます。</p>
+        <p>実際に気に入って使っている機能を、作例と一緒に挙げます。</p>
         <p>なお、Luminar Neoの機能は3種類に分かれており、それぞれ利用条件が異なります。この記事では各機能にラベルを付けながら特に気に入っている機能を紹介しますので、参考にしてください。</p>
         <div className="m-point-box l-bottom-xlarge">
           <ul className="m-point-box__list">
@@ -308,7 +347,7 @@ export default async function Page() {
 
         <h3 id="catalog">写真管理（カタログ）機能もそこそこ使える</h3>
         <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-catalog-scaled.jpg" alt="Luminar Neoのカタログ機能" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
-        <p>「Luminar Neoはカタログ機能が弱い」という評判を聞いたことがある方もいるかもしれません。</p>
+        <p>「Luminar Neoはカタログ機能が弱い」という評判があります。</p>
         <p>確かに以前は機能が限定的でしたが、<strong>アップデートで大幅に改善</strong>されました。現在は以下の項目で写真をフィルタリングできます。</p>
         <ul className="m-list-ul">
           <li><span className="m-list-ul__icon">•</span> 編集済み / 未編集</li>
@@ -320,30 +359,30 @@ export default async function Page() {
         </ul>
         <p>Lightroom Classicほど強力ではありませんが、「去年の秋にα7IVで撮った写真だけ表示」みたいな絞り込みは問題なくできます。趣味で撮影している方なら<strong>十分実用的なレベル</strong>です。</p>
 
-        <h3 id="price">お財布に優しい「買い切り型」ライセンス</h3>
-        <p>ここ、結構重要なポイントです。</p>
-        <p>Adobe Creative Cloudって、フォトプラン（1TB・Lightroom + Photoshop）で<strong>月額2,380円〜</strong>かかりますよね。年間だと約28,000円。10年使ったら28万円…。</p>
-        <p>もちろんAdobeのソフトは素晴らしいし、常に最新版を使えるサブスクのメリットも分かります。でも「毎月お金が出ていく」というのは、特に趣味で写真をやっている方には負担に感じることもあるのでは。</p>
-        <p>Luminar Neoには<strong>「永久ライセンス（買い切り型）」</strong>があります。一度購入すれば、そのバージョンはずっと使い続けられる。</p>
-        <div className="m-notice m-notice--warn">
-          <div className="m-notice__head"><span className="m-notice__badge">ポイント</span><span className="m-notice__title">買い切りプランに含まれるもの・含まれないもの</span></div>
-          <p><strong>含まれる：</strong>基本的なAI編集機能（スカイAI、補正AI、電線除去など）、RAW現像機能、Proツール全8種（Noiseless AI、HDR Mergeなど）、生成AI機能（購入から1年間）</p>
-          <p><strong>含まれない：</strong>2年目以降のAIツールの継続利用と新機能アップデート → 年額サブスクのLuminar Primeが必要（旧Upgrade Pass／Ecosystem Passは廃止）</p>
-          <p>生成AIの継続が不要という方は、買い切りプランのみで<strong>ランニングコストゼロ</strong>で使い続けられます。</p>
+        <h3 id="price">買い切り型ライセンス</h3>
+        <p>Adobe Creative Cloudのフォトプランは月額2,380円〜。年間で約28,000円、10年なら28万円です。ソフトの出来に不満はありませんが、趣味で撮っている身には毎月出ていく感覚がそれなりに重い。</p>
+        <p>Luminar Neoは<strong>買い切り</strong>です。一度払えば、そのバージョンはずっと使えます。</p>
+        <div className="definition">
+          <dl className="definition-body">
+            <dt>含まれる</dt>
+            <dd>基本のAI編集（スカイAI、補正AI、電線除去など）、RAW現像、Proツール全8種、生成AI（購入から1年間）</dd>
+            <dt>含まれない</dt>
+            <dd>2年目以降のAIツールと新機能アップデート。使い続けるなら年額のLuminar Primeが要ります。</dd>
+          </dl>
         </div>
-        <p>「料金体系がちょっと分かりづらい…」という声もありますが、実は<strong>やりたいことのほとんどは買い切りライセンスの中で実現可能</strong>です。Proツール全8種も買い切りに標準で含まれており、永続的に使えます。</p>
-        <p>AIツールを2年目以降も使い続けたい、常に新機能を取り込みたいという場合は、Luminar Prime（初年度{approxYen(PRIME.firstYear)}／2年目以降{approxYen(PRIME.renewal)}）を追加する形になります。<strong>買い切り（セール時 {yen(PLANS.desktop.sale)}）＋Luminar Prime 1年（{approxYen(PRIME.firstYear)}）＝{approxYen(totalWithPrime('desktop', 1))}</strong>が目安ですが、生成AI不要なら買い切りのみでOKなのでコスパは非常に良好です。</p>
+        <p>生成AIを翌年以降も使わないなら、買い切りだけで<strong>ランニングコストはゼロ</strong>です。</p>
+
+        <p>2年目以降もAIツールを使いたい場合だけ、Luminar Prime（初年度{approxYen(PRIME.firstYear)}／2年目以降{approxYen(PRIME.renewal)}）を足す形になります。合計{approxYen(totalWithPrime('desktop', 1))}前後が目安です。</p>
         <p><i className="fa-solid fa-arrow-right"></i> <Link href="/luminar/luminar-plan/">料金プランの詳細とコストシミュレーション</Link></p>
       </section>
 
       <section id="demerits" className="content-card card-padding article-body">
-        <h2>Luminar Neoの「ここは注意…」なイマイチな点（デメリット）</h2>
-        <p>さて、ここからはLuminar Neoの<strong>気になる点</strong>を正直にお伝えします。</p>
-        <p>どんなソフトにも長所と短所があります。「買ってから後悔した…」とならないように、ぜひ参考にしてください。</p>
+        <h2>Luminar Neoのデメリット</h2>
+        <p>次にLuminar Neoの<strong>気になる点</strong>を正直にお伝えします。</p>
+        <p>どんなソフトにも合う合わないがあります。買ってから気づくと面倒なので、先に書いておきます。</p>
 
         <h3>PCスペックへの要求が高い（動作の重さ）</h3>
         <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/macboook-air-use-image.jpg" alt="MacBookでLuminar Neoを操作する様子" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
-        <p>これが<strong>最大のデメリット</strong>と言っていいかもしれません。</p>
         <p>Luminar NeoはAI処理を多用するため、PCへの負荷がかなり高いです。特にスカイAIやポートレートAI系の機能を使うと、処理に時間がかかることがあります。</p>
         <p>僕の環境（M4 MacBook Air、メモリ16GB）では比較的サクサク動きますが、それでも複数の機能を重ねると少しもたついたり、クラッシュしたことが数回あります。</p>
         <p>快適に使うなら、以下のスペックは欲しいところです。</p>
@@ -355,10 +394,10 @@ export default async function Page() {
         </ul>
         <p>最近のアップデートで動作は改善されてきていますが、それでも<strong>Lightroomと比べると重い</strong>のは事実。購入前に無料体験版で自分のPCで動くか確認することを強くおすすめします。</p>
 
-        <h3>複数の写真に同じ設定を一括適用できない</h3>
+        <h3>一括編集ができない｜複数の写真に同じ設定をまとめて適用できない</h3>
         <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-display-scaled.jpg" alt="Lightroomの管理画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
         <p>Lightroomでは、1枚の写真で設定した現像パラメータを、他の写真にまとめて同期（一括適用）できますよね。僕は数百枚の連続写真に同じ設定を当てて、タイムラプス素材を効率よく処理できます。</p>
-        <p>しかし、Luminar Neoには<strong>この一括同期機能がありません</strong>。1枚ずつ編集するか、プリセットとして保存して個別に適用する必要があります。</p>
+        <p>しかし、Luminar Neoには<strong>この一括同期機能がありません</strong>。1枚ずつ編集するか、プリセットに保存して1枚ずつ当てていくことになります。</p>
         <p>風景写真を1枚ずつ丁寧に仕上げる分には問題ありませんが、大量の写真を効率よく処理したい場面では不便を感じることがあります。</p>
 
         <h3>ミリ単位の精密な修正・合成は苦手</h3>
@@ -367,66 +406,25 @@ export default async function Page() {
         <p>例えば、複雑な形状のオブジェクトを完璧に切り抜きたい場合。Photoshopならペンツールで丁寧にパスを描いて、1ピクセル単位でマスクを調整できます。</p>
         <p>Luminar NeoのAI選択は「だいたい」は上手くやってくれますが、髪の毛の細かい部分や、複雑に入り組んだ輪郭などは<strong>完璧とは言えない</strong>ことも。</p>
         <p>また、複数の写真を違和感なく1枚に合成するような高度な作業は、やはりPhotoshopの方が優れています。</p>
-        <div className="m-icon-box m-icon-box--memo">
-          <i className="fa-solid fa-pencil"></i>
-          <p><strong>「簡単に、速く、それなりのクオリティで」がLuminar Neoの得意領域</strong>。<strong>「時間をかけてでも、完璧なクオリティで」はPhotoshopの領域</strong>。この棲み分けを理解しておくと、ストレスなく使えます。</p>
-        </div>
       </section>
 
+      {/*
+        比較表は lightroom-compare（「比較」で掲載順位2.1位・CTR27.9%）の主題。
+        メリット・デメリット記事として「競合ではなく補完」という結論だけ示し、
+        項目ごとの比較はそちらへ送る。
+      */}
       <section id="compare-adobe" className="content-card card-padding article-body">
-        <h2>Lightroom Classic / Photoshop との比較</h2>
-        <p>結論から言うと、<strong>LightroomとLuminar Neoは競合というより、補完関係</strong>にあると思っています。</p>
-        <p>Lightroomは大量の写真を効率よく管理・現像するのに最適化されたソフト。色の再現性も高く、RAW現像の基本ツールとしては非常に優秀です。</p>
-        <p>一方、Luminar Neoは<strong>クリエイティブな演出や、面倒な作業の時短</strong>に強い。AIの力で、従来は難しかった表現が簡単にできるようになります。</p>
-        <div className="m-table-wrap">
-          <table className="m-table">
-            <thead>
-              <tr>
-                <th>比較項目</th>
-                <th>Luminar Neo</th>
-                <th>Adobe Lightroom Classic</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>得意なこと</strong></td>
-                <td>創作・演出・AI時短</td>
-                <td>大量管理・色再現・効率化</td>
-              </tr>
-              <tr>
-                <td><strong>操作性</strong></td>
-                <td>直感的・スライダー中心</td>
-                <td>パラメーター・数値中心</td>
-              </tr>
-              <tr>
-                <td><strong>価格</strong></td>
-                <td>買い切りあり（高コスパ）</td>
-                <td>サブスクリプションのみ</td>
-              </tr>
-              <tr>
-                <td><strong>管理機能</strong></td>
-                <td>そこそこ（フィルター機能充実）</td>
-                <td>強力（カタログ・メタデータ）</td>
-              </tr>
-              <tr>
-                <td><strong>一括編集</strong></td>
-                <td>苦手</td>
-                <td>得意（同期機能）</td>
-              </tr>
-              <tr>
-                <td><strong>動作の軽さ</strong></td>
-                <td>やや重い</td>
-                <td>比較的軽い</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <h2>Lightroom・Photoshopとの関係</h2>
+        <p>LightroomとLuminar Neoは競合というより補完関係です。Lightroomは大量の写真を管理しながら効率よく現像することに最適化されていて、Luminar Neoは1枚を創作的に仕上げたり、面倒な作業を時短したりするのが得意です。</p>
+        <p>実際、僕はどちらも使っています。整理と一次現像はLightroom、仕上げでAIを使いたいときだけLuminar Neoに渡す、という分担です。<strong>片方を捨てる必要はありません</strong>。</p>
+        <p>料金や機能を項目ごとに並べた比較は<Link href="/luminar/lightroom-compare/">LightroomとLuminar Neoの比較記事</Link>で扱っています。</p>
       </section>
 
       <section id="plugin" className="content-card card-padding article-body">
         <h2>最強の使い方：プラグイン連携</h2>
         <p>実は、Luminar NeoはLightroomやPhotoshopのプラグインとしても使えます。</p>
-        <p>僕のワークフローはこんな感じ。</p>
+        <p>「脱Adobe」も選択肢としてはアリですが、僕は<strong>併用に落ち着きました</strong>。管理はLightroom、AIが要る写真だけLuminar Neoに渡す。この形なら両方のいいところだけ使えます。</p>
+        <p>実際のワークフローはこうです。</p>
         <div className="m-step">
           <div className="m-step__line"></div>
           <div className="m-step__num">1</div>
@@ -450,13 +448,14 @@ export default async function Page() {
             <p className="m-step__desc">AI機能で時短しながら仕上げ、書き出し</p>
           </div>
         </div>
-        <p>この使い方だと、<strong>両方のいいとこ取り</strong>ができるのでおすすめです。</p>
-        <p>「脱Adobe」も選択肢としてはアリですが、個人的には<strong>併用が最強</strong>だと感じています。</p>
       </section>
 
+      {/* 「結論」と「おわりに」は役割が重なっていたため1つのまとめに統合した。
+          向き不向き（判断材料）→ 使ってみての所感、の順で締める。 */}
       <section id="conclusion" className="content-card card-padding article-body">
-        <h2>結論：Luminar Neoはどんな人におすすめ？</h2>
-        <p>長々と書いてきましたが、最後にまとめます。</p>
+        <h2>まとめ：どんな人に向いているか</h2>
+        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sony-sel40f25g-image.webp" alt="SONYのカメラを手に取る様子" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
+        <p>2年以上使ってきて分かったのは、Luminar Neoは<strong>誰にでも勧められるソフトではない</strong>ということです。向き不向きがはっきりしています。</p>
         <div className="l-grid-2">
           <div className="m-pc-box m-pc-box--pros">
             <div className="m-pc-head"><i className="fa-solid fa-circle-check"></i> おすすめな人</div>
@@ -477,19 +476,8 @@ export default async function Page() {
             </div>
           </div>
         </div>
-      </section>
-
-      <section id="ending" className="content-card card-padding article-body">
-        <h2>おわりに：写真は「技術」から「表現」へ</h2>
-        <p><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sony-sel40f25g-image.webp" alt="SONYのカメラを手に取る様子" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></p>
-        <p>Luminar Neoを使い始めてから、<strong>写真との向き合い方が少し変わった</strong>気がします。</p>
-        <p>以前は「この電線、消すの面倒だな…」「空がイマイチだけど、どうしようもないな…」と諦めていた写真が、AIの力で生き返るようになりました。</p>
-        <p>編集に費やす時間が減った分、<strong>撮影に出かける時間が増えた</strong>のも嬉しい変化。</p>
-        <p>もちろん、AIに頼りすぎるのは良くないとも思います。基本的な露出や構図の知識は大切だし、「なんでもAIで盛ればいい」という姿勢は本質的ではない。</p>
-        <p>でも、AIを<strong>「ツール」として賢く使う</strong>のは、決して悪いことじゃないと今は思っています。</p>
-        <p><strong>写真は「技術」から「表現」の時代へ。</strong></p>
-        <p>面倒な作業はAIに任せて、僕たちは「何を撮るか」「どう表現するか」に集中する。Luminar Neoは、そんな時代の象徴的なソフトなのかもしれません。</p>
-        <p>この記事が、あなたの写真ライフの参考になれば嬉しいです！</p>
+        <p>Luminar Neoを使い始めてから、<strong>諦める写真が減りました</strong>。以前は「この電線、消すのが面倒だな」で終わっていたカットが、そのまま作品になります。</p>
+        <p>編集の時間が減ったぶん、撮影に出る時間が増えたのも大きい変化でした。もちろん露出や構図の知識は変わらず必要で、なんでもAIで盛ればいいとは思いません。ただ、面倒な工程を任せて<strong>「何を撮るか」に集中できる</strong>のは、素直にありがたいです。</p>
       </section>
 
     </LuminarArticleLayout>
