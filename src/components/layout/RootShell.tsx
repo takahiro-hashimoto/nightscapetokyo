@@ -1,5 +1,6 @@
 import NavigationProgressSlot from "@/components/layout/NavigationProgressSlot";
 import AdSenseConditional from "@/components/ads/AdSenseConditional";
+import SmoothTocScroll from "@/components/common/SmoothTocScroll";
 
 export default function RootShell({
   headContent,
@@ -12,6 +13,7 @@ export default function RootShell({
     <>
       {headContent}
       <NavigationProgressSlot />
+      <SmoothTocScroll />
       <AdSenseConditional>{children}</AdSenseConditional>
     </>
   );

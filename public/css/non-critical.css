@@ -2047,9 +2047,11 @@
   scroll-margin-top: 16px;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* html に scroll-behavior: smooth を付けてはいけない。
+   目次のジャンプだけでなく、ルート遷移時に Next が行う「先頭へ戻す」動作まで
+   アニメーションになり、別記事へ移った直後にページが流れながら
+   メインビジュアルが出てくる挙動になる。
+   飛び先の位置は上の scroll-margin-top で確保できているので不要。 */
 
 
 .section-intro {
