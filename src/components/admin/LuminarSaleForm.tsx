@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react'
 import { Save, Loader2 } from 'lucide-react'
-import { updateSaleSettings } from '@/app/(ja)/admin/luminar-sale/actions'
+import { updateSaleSettings } from '@/app/(ja)/admin/(protected)/luminar-sale/actions'
 
 type InitialValues = {
   sale_start: string

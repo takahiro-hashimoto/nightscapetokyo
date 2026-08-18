@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "main": "index.ts",
+  "name": "nightscape-cron",
+  "compatibility_date": "2025-08-01",
+  // vercel.json の crons と同じスケジュール（UTC）
+  "triggers": {
+    "crons": ["10 15 * * *", "0 22 * * *"]
+  },
+  "vars": {
+    "SITE_URL": "https://nightscape.tokyo"
+  }
+  // CRON_SECRET は secret で入れる:
+  //   npx wrangler secret put CRON_SECRET --config workers/cron/wrangler.jsonc
+}
