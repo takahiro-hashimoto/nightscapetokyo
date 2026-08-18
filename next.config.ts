@@ -1,5 +1,33 @@
 import type { NextConfig } from "next";
 import bundleAnalyzer from "@next/bundle-analyzer";
+import { execSync } from "node:child_process";
+
+/**
+ * サイトマップの lastmod に使うデプロイ時刻。
+ *
+ * Vercel は VERCEL_GIT_COMMIT_TIMESTAMP を自動で入れるが、Cloudflare Workers には
+ * 相当する変数がない。git のコミット時刻を見れば両方の環境で同じ値になる。
+ *
+ * ここで解決してビルド時に埋め込むのが重要で、実行時に new Date() を評価すると
+ * ページが再生成されるたび lastmod が動き、Google に「全ページが更新された」と
+ * 誤って伝わってしまう。
+ */
+function resolveDeployTime(): string {
+  const fromVercel = process.env.VERCEL_GIT_COMMIT_TIMESTAMP;
+  if (fromVercel) return new Date(Number(fromVercel) * 1000).toISOString();
+
+  try {
+    const committedAt = execSync("git log -1 --format=%ct", {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+    if (committedAt) return new Date(Number(committedAt) * 1000).toISOString();
+  } catch {
+    // git が使えない環境（tarball 展開など）ではビルド時刻にフォールバック
+  }
+
+  return new Date().toISOString();
+}
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -7,6 +35,10 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 const nextConfig: NextConfig = {
   trailingSlash: true,
+
+  env: {
+    DEPLOY_TIME: resolveDeployTime(),
+  },
 
   images: {
     // R2直配信: 事前生成した幅別webp（scripts/backfill-r2-image-variants.mjs +
