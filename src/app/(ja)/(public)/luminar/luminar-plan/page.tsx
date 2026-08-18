@@ -358,7 +358,6 @@ export default async function Page() {
             '@type': 'FAQPage',
             mainEntity: [
               { '@type': 'Question', name: 'サブスクプランはもうないの？', acceptedAnswer: { '@type': 'Answer', text: '公式ストアでは現在、新規販売されていません。以前は月額・年額のサブスクリプションプランも存在しましたが、2026年現在、日本の公式ストアで販売されているのは買い切りプラン＋Luminar Prime（任意）のみとなっています。' } },
-              { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切りプランに標準で含まれており、永続的に利用できます。Luminar Primeの契約は不要です。' } },
               { '@type': 'Question', name: 'Luminar Primeを契約すると何が変わる？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Primeの契約期間中、AIツール（GenErase・GenSwap・GenExpand・Restoration・AI Assistant）の無制限利用と、その期間中にリリースされる新機能へのアップデートが手に入ります。プリセット等のアセットライブラリとSpaces（Webギャラリー）も利用可能。なお以前あったアップグレードパス／エコシステムパスは廃止され、現在はPrimeに一本化されています。' } },
               { '@type': 'Question', name: '途中でLuminar Primeをやめたらどうなる？', acceptedAnswer: { '@type': 'Answer', text: '生成AI機能と最新アップデートが使えなくなりますが、基本機能とProツールはそのまま使い続けられます。' } },
               { '@type': 'Question', name: 'Luminar Primeは毎年契約しないといけない？', acceptedAnswer: { '@type': 'Answer', text: '必要な年だけ購入すればOKです。基本機能とProツールだけ使えればいい場合は、Luminar Primeなしの買い切りのみが最もコスパが良いです。' } },

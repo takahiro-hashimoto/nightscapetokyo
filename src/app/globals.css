@@ -48,9 +48,12 @@ html {
 
   /* Radius */
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  /* md/lg/xl は ui-components.css 側の再定義が後読みで勝っていたため、
+     実際にレンダリングされていた値をこちらへ集約した（見た目は変わらない）。
+     分割前の値は md 10px / lg 16px / xl 24px。戻す場合はここだけを直すこと。 */
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
   --radius-full: 9999px;
 
   /* Spacing */

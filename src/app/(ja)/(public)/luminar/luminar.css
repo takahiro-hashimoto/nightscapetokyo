@@ -601,9 +601,6 @@ img {
 }
 
 @media (min-width: 768px) {
-  .m-cta-sale {
-        padding: 3rem;
-    }
   .m-cta-sale__title {
         font-size: 1.875rem;
     }
@@ -770,9 +767,6 @@ img {
 }
 
 @media (min-width: 768px) {
-    .m-cta-sale {
-        padding: 1.75rem 2.5rem;
-    }
     .m-cta-sale__title {
         font-size: 1.5rem;
     }

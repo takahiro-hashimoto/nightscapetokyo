@@ -49,9 +49,8 @@ Version: 1.0.0
     --c-bg-sub: #f1f5f9;
     --c-border: #e2e8f0;
     /* Layout Variables */
-    --radius-md: 0.5rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
+    /* md/lg/xl は globals.css を正とする（冒頭コメントの方針どおり）。
+       ここで再定義すると後読みで globals を上書きしてしまう。 */
     --radius-2xl: 1.5rem;
     --radius-3xl: 1.5rem;
     --shadow-sw: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
@@ -363,12 +362,6 @@ Version: 1.0.0
 }
 .m-icon-box--memo i {
     color: var(--c-amber-500);
-}
-.m-notice {
-    padding: 1.2rem;
-    border: 1px solid;
-    border-radius: var(--radius-lg);
-    margin-bottom: 2rem;
 }
 .m-notice__head {
     display: flex;
