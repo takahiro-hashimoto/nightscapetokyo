@@ -28,12 +28,11 @@
   ],
 
   // revalidateTag / revalidatePath 用のタグキャッシュ
-  // database_id は `wrangler d1 create` の出力に置き換えること
   "d1_databases": [
     {
       "binding": "NEXT_TAG_CACHE_D1",
       "database_name": "nightscape-next-tag-cache",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+      "database_id": "02d6fd6c-4de4-4f47-9557-4d5369f73585"
     }
   ],
 

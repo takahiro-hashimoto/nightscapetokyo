@@ -8,7 +8,8 @@
     "crons": ["10 15 * * *", "0 22 * * *"]
   },
   "vars": {
-    "SITE_URL": "https://nightscape.tokyo"
+    // 検証中は Cloudflare 側を指す。本番切り替え時に https://nightscape.tokyo へ戻すこと
+    "SITE_URL": "https://nightscape-tokyo.bridge-takahiro-1539.workers.dev"
   }
   // CRON_SECRET は secret で入れる:
   //   npx wrangler secret put CRON_SECRET --config workers/cron/wrangler.jsonc
