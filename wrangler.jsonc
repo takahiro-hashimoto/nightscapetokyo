@@ -6,13 +6,19 @@
   // Node の crypto（timingSafeEqual）と @aws-sdk/client-s3 のために必須
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 
-  // 本番ドメイン。custom_domain により Cloudflare が DNS レコードを
-  // この Worker 向けに置き換える（apex と www のみ。ワイルドカードは
-  // メール用に Xserver を指したまま触らない）。
+  // 本番ドメイン。custom_domain ではなく zone route を使う。
+  //
+  // custom_domain は既存の A/CNAME の削除を要求し、削除から割り当てまでの間
+  // apex にレコードが無くなってサイトが落ちる。route ならレコードを
+  // 残したまま Worker が横取りするので、切り替えにダウンタイムが無く、
+  // route を外せばそのまま Vercel に戻せる。
+  //
+  // apex と www のみ。ワイルドカード *.nightscape.tokyo はメールクライアントの
+  // 接続先（mail/smtp/pop/imap 等）を支えているため Xserver を指したまま触らない。
   // www → apex のリダイレクトは next.config.ts の redirects() が担当する。
   "routes": [
-    { "pattern": "nightscape.tokyo", "custom_domain": true },
-    { "pattern": "www.nightscape.tokyo", "custom_domain": true }
+    { "pattern": "nightscape.tokyo/*", "zone_name": "nightscape.tokyo" },
+    { "pattern": "www.nightscape.tokyo/*", "zone_name": "nightscape.tokyo" }
   ],
 
   "assets": {
