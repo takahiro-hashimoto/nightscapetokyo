@@ -6,6 +6,15 @@
   // Node の crypto（timingSafeEqual）と @aws-sdk/client-s3 のために必須
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 
+  // 本番ドメイン。custom_domain により Cloudflare が DNS レコードを
+  // この Worker 向けに置き換える（apex と www のみ。ワイルドカードは
+  // メール用に Xserver を指したまま触らない）。
+  // www → apex のリダイレクトは next.config.ts の redirects() が担当する。
+  "routes": [
+    { "pattern": "nightscape.tokyo", "custom_domain": true },
+    { "pattern": "www.nightscape.tokyo", "custom_domain": true }
+  ],
+
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
