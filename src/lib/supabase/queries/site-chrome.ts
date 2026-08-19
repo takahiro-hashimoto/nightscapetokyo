@@ -5,6 +5,7 @@ import { getPurposeTags } from "./tags";
 import { getTotalSpotCount } from "./spots";
 import { TAG_NAME } from "@/lib/constants";
 import type { SiteLocale } from "@/lib/types";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 
 /** Header と Footer が共有するナビゲーションデータをまとめて取得 */
 export const getSiteChromeData = cache(
@@ -31,6 +32,9 @@ export const getSiteChromeData = cache(
       return { areas, tags, spotCount };
     },
     ["site-chrome"],
-    { revalidate: false, tags: ["areas", "tags", "spots"] }
+    // spots は載せない。ここは全ページの共通ヘッダー/フッターなので、
+    // spots を含めるとスポット1件の増減でサイト全体が無効化される。
+    // 参照しているスポット由来の値は総件数だけなので spot-count で足りる。
+    { revalidate: false, tags: ["areas", "tags", CACHE_TAGS.spotCount] }
   )
 );
