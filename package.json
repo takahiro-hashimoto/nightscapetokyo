@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "rm -f .next/dev/lock && next dev",
-    "build": "next build",
+    "build": "npm run css:minify && next build",
     "start": "next start",
     "lint": "eslint",
-    "css:minify": "cleancss -o public/css/non-critical.min.css public/css/non-critical.css"
+    "css:minify": "cleancss -o public/css/non-critical.min.css public/css/non-critical.css",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "deploy:quick": "opennextjs-cloudflare build && wrangler deploy --no-autoconfig",
+    "deploy:cron": "wrangler deploy --config workers/cron/wrangler.jsonc"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
