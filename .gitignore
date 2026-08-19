@@ -44,8 +44,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.open-next
 .dev.vars
 
-# Wrangler のローカル状態（miniflare の R2/D1 エミュレーション等）
+# Cloudflare / Wrangler のビルド成果物・ローカル状態
+.open-next/
 .wrangler/
