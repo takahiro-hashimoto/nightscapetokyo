@@ -30,8 +30,13 @@ type Props = {
 }
 
 function formatDate(isoString: string): string {
-  const d = new Date(isoString)
-  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`
+  // getFullYear 等はビルド環境のTZに依存し、ビルド機ごとに1日ずれる。JST に固定する。
+  return new Date(isoString).toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'Asia/Tokyo',
+  })
 }
 
 export function buildArticleMetadata({

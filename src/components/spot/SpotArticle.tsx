@@ -135,7 +135,9 @@ export default function SpotArticle({
                 : currentLocale === "tw" ? "zh-TW"
                 : currentLocale === "cn" ? "zh-CN"
                 : "ja-JP",
-                { year: "numeric", month: "2-digit", day: "2-digit" }
+                // timeZone を省くとビルド環境のTZで日付が焼き込まれ、
+                // ビルド機ごとに1日ずれる。日本のサイトなので JST に固定する。
+                { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Tokyo" }
               )}
                 </time>
               </span>
