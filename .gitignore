@@ -46,3 +46,6 @@ yarn-error.log*
 next-env.d.ts
 .open-next
 .dev.vars
+
+# Wrangler のローカル状態（miniflare の R2/D1 エミュレーション等）
+.wrangler/
