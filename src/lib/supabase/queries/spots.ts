@@ -13,6 +13,7 @@ import {
   LISTING_SELECT,
   FULL_SELECT,
 } from "./shared";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 
 const _getSpotBySlugUncached = async (
   categorySlug: string,
@@ -102,7 +103,7 @@ export const getTotalSpotCount = cache(unstable_cache(async (): Promise<number> 
     .select("*", { count: "exact", head: true })
     .eq("published", true);
   return count ?? 0;
-}, ["spot-count"], { revalidate: false, tags: ["spots"] }));
+}, ["spot-count"], { revalidate: false, tags: [CACHE_TAGS.spotCount] }));
 
 /** limit によらず共有できる上位100件のキャッシュ */
 const _getTopSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {

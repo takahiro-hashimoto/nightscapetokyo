@@ -10,6 +10,7 @@ import {
   LISTING_SELECT,
   NON_AREA_SLUGS,
 } from "./shared";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 
 /** カテゴリslugからカテゴリ情報を取得 */
 export const getCategoryBySlug = cache(async function getCategoryBySlug(
@@ -71,7 +72,7 @@ export const getAreas = cache(unstable_cache(async () => {
     if (bi !== -1) return -1;
     return b.spot_count - a.spot_count;
   });
-}, ["areas"], { revalidate: false, tags: ["areas"] }));
+}, ["areas"], { revalidate: false, tags: ["areas", CACHE_TAGS.spotCount] }));
 
 /** 翻訳付きエリアデータ取得（ホームページ翻訳版用） */
 export const getAreasTranslated = cache(unstable_cache(async (urlSlug: string) => {

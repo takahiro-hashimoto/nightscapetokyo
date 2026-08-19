@@ -61,8 +61,12 @@ export async function GET(req: NextRequest) {
     for (const { path, type } of DAILY_PATHS) {
       revalidatePath(path, type);
     }
+    // ヘッダー/フッターの「掲載スポット数N件」とエリア別件数。
+    // スポットの増減では倒さない（全ページに載るため影響が大きすぎる）ので、
+    // ここで1日1回まとめて更新する。
+    revalidateTag(CACHE_TAGS.spotCount, "max");
     return NextResponse.json({
-      revalidated: DAILY_PATHS.map((p) => p.path),
+      revalidated: [...DAILY_PATHS.map((p) => p.path), CACHE_TAGS.spotCount],
       at: new Date().toISOString(),
     });
   }
