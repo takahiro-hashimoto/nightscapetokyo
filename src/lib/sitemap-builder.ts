@@ -51,10 +51,9 @@ export type SitemapUrl = {
 /** All supported locale keys for sitemaps */
 export const SITEMAP_LOCALES = ["ja", ...ALL_LOCALE_SLUGS] as const;
 
-// Vercel が自動でセットするコミットタイムスタンプ（秒単位）。ない場合はプロセス起動時刻にフォールback。
-const DEPLOY_TIME = process.env.VERCEL_GIT_COMMIT_TIMESTAMP
-  ? new Date(Number(process.env.VERCEL_GIT_COMMIT_TIMESTAMP) * 1000).toISOString()
-  : new Date().toISOString();
+// next.config.ts の resolveDeployTime() がビルド時に埋め込む ISO 文字列。
+// Vercel / Cloudflare のどちらでも git のコミット時刻に揃う。
+const DEPLOY_TIME = process.env.DEPLOY_TIME ?? new Date().toISOString();
 
 /**
  * Build hreflang alternates for a given JA path.
