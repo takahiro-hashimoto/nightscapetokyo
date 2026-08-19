@@ -61,7 +61,7 @@ export default function SpotReview({ spotName, reviews = [], labels }: Props) {
                     <span itemProp="name">{review.name}</span>
                   </span>
                   <time className="review-date" dateTime={review.created_at} itemProp="datePublished">
-                    {new Date(review.created_at).toLocaleDateString("ja-JP")}
+                    {new Date(review.created_at).toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo" })}
                   </time>
                 </div>
               </div>

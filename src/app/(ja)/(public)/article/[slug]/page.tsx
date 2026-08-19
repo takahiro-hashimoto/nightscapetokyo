@@ -232,7 +232,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                 <div className="firstVisual-meta">
                   <time className="firstVisual-date" dateTime={article.updated_at} itemProp="dateModified">
                     最終更新: {new Date(article.updated_at).toLocaleDateString("ja-JP", {
-                      year: "numeric", month: "2-digit", day: "2-digit",
+                      year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Tokyo",
                     })}
                   </time>
                   <span className="firstVisual-badge">一部PRを含みます</span>
@@ -327,7 +327,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                         )}
                         <time className="article-card-date" dateTime={r.published_at ?? r.created_at}>
                           {new Date(r.published_at ?? r.created_at).toLocaleDateString("ja-JP", {
-                            year: "numeric", month: "2-digit", day: "2-digit",
+                            year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Tokyo",
                           })}
                         </time>
                       </div>
