@@ -1,0 +1,57 @@
+# Supabase の日次バックアップ。
+#
+# Supabase Free にはバックアップ機能が無いため、pg_dump で完全ダンプを取り
+# GitHub Actions の artifact として90日保持する（DB実体は約4MBなので
+# プライベートリポジトリの無料枠に余裕で収まる）。
+#
+# 必要なシークレット（gh secret set で登録。値はチャット等に貼らないこと）:
+#   SUPABASE_DB_URL          nightscape の接続文字列
+#   SUPABASE_DB_URL_USEDLAB  used-lab の接続文字列（任意。未設定ならスキップ）
+#
+# 重要: 接続文字列は Supabase ダッシュボードの
+#   Connect → Session pooler の URI を使うこと。
+#   Direct connection (db.<ref>.supabase.co) は IPv6 専用のため
+#   GitHub Actions のランナー（IPv4）からは接続できない。
+name: db-backup
+
+on:
+  schedule:
+    - cron: "30 18 * * *" # 03:30 JST
+  workflow_dispatch:
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install PostgreSQL client 17
+        run: |
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y postgresql-client-17
+
+      - name: Dump nightscape
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$DB_URL" ]; then
+            echo "::error::SUPABASE_DB_URL が未設定です"; exit 1
+          fi
+          pg_dump "$DB_URL" -Fc --no-owner -f nightscape.dump
+          ls -la nightscape.dump
+
+      - name: Dump used-lab (optional)
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL_USEDLAB }}
+        run: |
+          if [ -z "$DB_URL" ]; then
+            echo "SUPABASE_DB_URL_USEDLAB 未設定のためスキップ"; exit 0
+          fi
+          pg_dump "$DB_URL" -Fc --no-owner -f used-lab.dump
+          ls -la used-lab.dump
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ github.run_id }}
+          path: "*.dump"
+          retention-days: 90
+          if-no-files-found: error

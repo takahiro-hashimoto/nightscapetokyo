@@ -8,7 +8,9 @@
     "crons": ["10 15 * * *", "0 22 * * *"]
   },
   "vars": {
-    "SITE_URL": "https://nightscape.tokyo"
+    "SITE_URL": "https://nightscape.tokyo",
+    // Supabase Free の自動停止防止。anon キーは公開情報（サイトHTMLに含まれる）
+    "KEEPALIVE_TARGETS": "[{\"name\": \"nightscape\", \"url\": \"https://idnhefzhidetbiqiveci.supabase.co\", \"key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkbmhlZnpoaWRldGJpcWl2ZWNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5ODIzMjAsImV4cCI6MjA4OTU1ODMyMH0.y27MRj2i6G5Xi3Aj3anusBaY2iUnbIf-blEQwU807Tk\", \"probe\": \"spots\"}, {\"name\": \"used-lab\", \"url\": \"https://wzmhbllxciebcpwjrlvb.supabase.co\", \"key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6bWhibGx4Y2llYmNwd2pybHZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0NDI0NDAsImV4cCI6MjEwMjAxODQ0MH0.nMPcjEu177V3nlhAJK1ZNOEhs5764Qh60lV3wOjNBAs\", \"probe\": \"ipad_models\"}]"
   }
   // CRON_SECRET は secret で入れる:
   //   npx wrangler secret put CRON_SECRET --config workers/cron/wrangler.jsonc

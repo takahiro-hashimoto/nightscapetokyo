@@ -10,7 +10,8 @@
     "css:minify": "cleancss -o public/css/non-critical.min.css public/css/non-critical.css",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "deploy:quick": "opennextjs-cloudflare build && wrangler deploy --no-autoconfig",
-    "deploy:cron": "wrangler deploy --config workers/cron/wrangler.jsonc"
+    "deploy:cron": "wrangler deploy --config workers/cron/wrangler.jsonc",
+    "backup:json": "node scripts/db-backup-json.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

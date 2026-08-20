@@ -49,3 +49,6 @@ next-env.d.ts
 # Cloudflare / Wrangler のビルド成果物・ローカル状態
 .open-next/
 .wrangler/
+
+# DBバックアップ（ローカル保管。リポジトリに含めない）
+backups/
