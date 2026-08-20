@@ -1,3 +1,7 @@
+> [!IMPORTANT]
+> **障害対応・バックアップ復元・デプロイ手順は [docs/OPERATIONS.md](docs/OPERATIONS.md) を参照。**
+> 本番は Cloudflare Workers で稼働（2026-08 移行済み）。稼働ブランチは `cloudflare-poc`。
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
