@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "css:minify": "cleancss -o public/css/non-critical.min.css public/css/non-critical.css"
+    "css:minify": "cleancss -o public/css/non-critical.min.css public/css/non-critical.css",
+    "backup:json": "node scripts/db-backup-json.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
