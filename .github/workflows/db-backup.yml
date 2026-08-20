@@ -35,7 +35,7 @@ jobs:
           if [ -z "$DB_URL" ]; then
             echo "::error::SUPABASE_DB_URL が未設定です"; exit 1
           fi
-          pg_dump "$DB_URL" -Fc --no-owner -f nightscape.dump
+          /usr/lib/postgresql/17/bin/pg_dump "$DB_URL" -Fc --no-owner -f nightscape.dump
           ls -la nightscape.dump
 
       - name: Dump used-lab (optional)
@@ -45,7 +45,7 @@ jobs:
           if [ -z "$DB_URL" ]; then
             echo "SUPABASE_DB_URL_USEDLAB 未設定のためスキップ"; exit 0
           fi
-          pg_dump "$DB_URL" -Fc --no-owner -f used-lab.dump
+          /usr/lib/postgresql/17/bin/pg_dump "$DB_URL" -Fc --no-owner -f used-lab.dump
           ls -la used-lab.dump
 
       - name: Upload artifact
