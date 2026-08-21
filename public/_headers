@@ -14,3 +14,15 @@
 # バージョンを上げ忘れたときに1年間古いCSSが残るため、1日に留める。
 /css/*
   Cache-Control: public, max-age=86400
+
+# public 直下の画像（ロゴ・OG画像・アイコン類）。中身はほぼ変わらないが
+# ファイル名にハッシュが無いため immutable にはせず、1週間 + SWR で持たせる。
+# （max-age=0 のままだと全ページ表示のたびにロゴの再検証が飛ぶ）
+/*.png
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/*.jpg
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/*.svg
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/*.webp
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
