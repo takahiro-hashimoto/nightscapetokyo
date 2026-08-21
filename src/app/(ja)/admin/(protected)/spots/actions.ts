@@ -143,7 +143,7 @@ export async function createSpot(formData: FormData) {
     .select("slug")
     .eq("id", (formData.get("category_id") as string) || "")
     .maybeSingle();
-  revalidateSpotCaches({ slug, categorySlug: newCat?.slug ?? undefined });
+  revalidateSpotCaches({ slug, categorySlug: newCat?.slug ?? undefined, structural: true });
   revalidatePath("/admin/spots");
   redirect("/admin/spots");
 }
@@ -298,7 +298,7 @@ export async function updateSpot(id: string, formData: FormData) {
 
   if (publishedChanged) {
     // 公開状態の変更: 自ページ + 所属カテゴリの一覧 + サイトマップ
-    revalidateSpotCaches({ slug, categorySlug: catSlug ?? undefined });
+    revalidateSpotCaches({ slug, categorySlug: catSlug ?? undefined, structural: true });
   } else {
     // コンテンツのみ更新: 自ページ + 同カテゴリ（一覧のカードや関連欄に
     // タイトル・評価が載るため）。タグ細分化により全体は巻き込まれない
@@ -338,6 +338,7 @@ export async function deleteSpot(id: string) {
     slug: target?.slug,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     categorySlug: (target as any)?.category?.slug,
+    structural: true,
   });
   revalidatePath("/admin/spots");
   return { success: true };
@@ -374,6 +375,7 @@ export async function toggleSpotPublished(id: string, published: boolean) {
     slug: target?.slug,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     categorySlug: (target as any)?.category?.slug,
+    structural: true,
   });
   revalidatePath("/admin/spots");
   return { success: true };
