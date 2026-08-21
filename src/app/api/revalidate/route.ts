@@ -65,6 +65,9 @@ export async function GET(req: NextRequest) {
     // スポットの増減では倒さない（全ページに載るため影響が大きすぎる）ので、
     // ここで1日1回まとめて更新する。
     revalidateTag(CACHE_TAGS.spotCount, "max");
+    // サイト横断のスポット集合（トップの人気/ホテル/おすすめ・全体マップ）。
+    // 同じ理由で保存時には倒さず、日次でまとめて更新する。
+    revalidateTag(CACHE_TAGS.spotCollections, "max");
     return NextResponse.json({
       revalidated: [...DAILY_PATHS.map((p) => p.path), CACHE_TAGS.spotCount],
       at: new Date().toISOString(),

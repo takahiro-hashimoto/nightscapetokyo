@@ -10,7 +10,7 @@ import {
   LISTING_SELECT,
   NON_AREA_SLUGS,
 } from "./shared";
-import { CACHE_TAGS } from "@/lib/cache-tags";
+import { CACHE_TAGS, spotCategoryTag } from "@/lib/cache-tags";
 
 /** カテゴリslugからカテゴリ情報を取得 */
 export const getCategoryBySlug = cache(async function getCategoryBySlug(
@@ -133,11 +133,14 @@ const _getSpotsByCategoryUncached = async (categorySlug: string): Promise<SpotLi
   return data.map(mapSpotToListing);
 };
 
-export const getSpotsByCategory = cache(
-  unstable_cache(_getSpotsByCategoryUncached, ["spots-by-category"], {
-    revalidate: false,
-    tags: ["spots"],
-  })
+// カテゴリごとに unstable_cache を作り、spots-cat-{cat} タグを付ける。
+// スポット保存時に「そのエリアの一覧・関連欄」だけを倒すため。
+export const getSpotsByCategory = cache(async (categorySlug: string) =>
+  unstable_cache(
+    () => _getSpotsByCategoryUncached(categorySlug),
+    ["spots-by-category", categorySlug],
+    { revalidate: false, tags: [spotCategoryTag(categorySlug)] }
+  )()
 );
 
 /** カテゴリslugに属する翻訳済みスポット一覧を取得 */
@@ -195,10 +198,12 @@ const _getSpotsByCategoryTranslatedUncached = async (
 };
 
 export const getSpotsByCategoryTranslated = cache(
-  unstable_cache(_getSpotsByCategoryTranslatedUncached, ["spots-by-category-translated"], {
-    revalidate: false,
-    tags: ["spots", "translations"],
-  })
+  async (categorySlug: string, urlSlug: string) =>
+    unstable_cache(
+      () => _getSpotsByCategoryTranslatedUncached(categorySlug, urlSlug),
+      ["spots-by-category-translated", categorySlug, urlSlug],
+      { revalidate: false, tags: [spotCategoryTag(categorySlug), "translations"] }
+    )()
 );
 
 /** エリアの代表座標を取得（上位スポットの lat/lng） */
@@ -302,6 +307,6 @@ export const getAvailableAreaLocales = cache(
       return Array.from(locales);
     },
     ["available-area-locales"],
-    { revalidate: false, tags: ["spots", "translations"] }
+    { revalidate: false, tags: ["areas", "translations"] }
   )
 );

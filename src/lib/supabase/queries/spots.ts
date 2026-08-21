@@ -13,7 +13,7 @@ import {
   LISTING_SELECT,
   FULL_SELECT,
 } from "./shared";
-import { CACHE_TAGS } from "@/lib/cache-tags";
+import { CACHE_TAGS, spotTag } from "@/lib/cache-tags";
 
 const _getSpotBySlugUncached = async (
   categorySlug: string,
@@ -41,11 +41,15 @@ const _getSpotBySlugUncached = async (
   return normalizeSpotRelations({ ...spot, tags });
 };
 
+// slug ごとに unstable_cache を作り、spot-{slug} タグを付ける（articles.ts と同じ形）。
+// これで1件の保存時にそのスポットのデータだけを狙って無効化できる。
 export const getSpotBySlug = cache(
-  unstable_cache(_getSpotBySlugUncached, ["spot-by-slug"], {
-    revalidate: false,
-    tags: ["spots"],
-  })
+  async (categorySlug: string, spotSlug: string) =>
+    unstable_cache(
+      () => _getSpotBySlugUncached(categorySlug, spotSlug),
+      ["spot-by-slug", categorySlug, spotSlug],
+      { revalidate: false, tags: [spotTag(spotSlug)] }
+    )()
 );
 
 export async function getAllSpotSlugs(): Promise<
@@ -134,7 +138,7 @@ const _getTopSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {
       return true;
     })
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg);
-}, ["top-spots"], { revalidate: false, tags: ["spots"] });
+}, ["top-spots"], { revalidate: false, tags: [CACHE_TAGS.spotCollections] });
 
 export const getTopSpots = cache(async (limit = 6): Promise<SpotListItem[]> => {
   const all = await _getTopSpotsAll();
@@ -161,7 +165,7 @@ const _getRecommendedSpotSlugs = unstable_cache(async (): Promise<string[]> => {
     .filter((spot: any) => TOKYO_AREA_SLUGS.has(spot.category?.slug ?? "") && !spot.closed)
     .slice(0, 30)
     .map((spot: any) => spot.slug);
-}, ["recommended-spot-slugs"], { revalidate: false, tags: ["spots", "areas"] });
+}, ["recommended-spot-slugs"], { revalidate: false, tags: [CACHE_TAGS.spotCollections, "areas"] });
 
 export const getRecommendedSpotSlugs = cache(_getRecommendedSpotSlugs);
 
@@ -190,7 +194,7 @@ const _getHotelSpotsAll = unstable_cache(async (): Promise<SpotListItem[]> => {
     .map(mapSpotToListing)
     .filter((s: SpotListItem) => !s.closed) // 閉鎖済みはランキングに載せない
     .sort((a: SpotListItem, b: SpotListItem) => b.rating_avg - a.rating_avg);
-}, ["hotel-spots"], { revalidate: false, tags: ["spots"] });
+}, ["hotel-spots"], { revalidate: false, tags: [CACHE_TAGS.spotCollections] });
 
 export const getHotelSpots = cache(async (limit = 4): Promise<SpotListItem[]> => {
   const all = await _getHotelSpotsAll();
@@ -252,7 +256,7 @@ const _getTopSpotsTranslatedUncached = async (
 const _getTopSpotsTranslatedCached = unstable_cache(
   _getTopSpotsTranslatedUncached,
   ["top-spots-translated"],
-  { revalidate: false, tags: ["spots", "translations"] }
+  { revalidate: false, tags: [CACHE_TAGS.spotCollections, "translations"] }
 );
 
 export const getTopSpotsTranslated = cache(
@@ -309,7 +313,7 @@ export const getHotelSpotsTranslated = cache(
         });
     },
     ["hotel-spots-translated"],
-    { revalidate: false, tags: ["spots", "translations"] }
+    { revalidate: false, tags: [CACHE_TAGS.spotCollections, "translations"] }
   )
 );
 
@@ -499,7 +503,7 @@ const _getSpotsBySlugsTranslatedCached = unstable_cache(
     return _getSpotsBySlugsTranslatedCore(slugsSorted, urlSlug);
   },
   ["spots-by-slugs-translated"],
-  { revalidate: false, tags: ["spots", "translations"] }
+  { revalidate: false, tags: [CACHE_TAGS.spotCollections, "translations"] }
 );
 
 export const getSpotsBySlugsTranslated = cache(
@@ -686,5 +690,5 @@ export const getSpotImagesBySlugs = unstable_cache(
     return Object.fromEntries(data.map((s: any) => [s.slug, s.featured_image ?? ""]));
   },
   ["spot-images-by-slugs"],
-  { revalidate: false, tags: ["spots"] }
+  { revalidate: false, tags: [CACHE_TAGS.spotCollections] }
 );

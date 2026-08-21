@@ -5,6 +5,7 @@ import {
   isSupabaseConfigured,
   getSupabaseClient,
 } from "./shared";
+import { CACHE_TAGS, spotCategoryTag } from "@/lib/cache-tags";
 
 export type MapSpotItem = {
   id: string;
@@ -51,7 +52,7 @@ export const getSpotsForMap = cache(unstable_cache(async (): Promise<MapSpotItem
     });
     return acc;
   }, []);
-}, ["map-spots"], { revalidate: false, tags: ["spots"] }));
+}, ["map-spots"], { revalidate: false, tags: [CACHE_TAGS.spotCollections] }));
 
 const SPOT_SELECT =
   "id, slug, name, title, featured_image, latitude, longitude, rating_beautiful, rating_access, rating_atmosphere, rating_cost, category:categories(slug, name)";
@@ -103,7 +104,7 @@ const _getSpotsForMapTranslatedCached = unstable_cache(
     }, []);
   },
   ["map-spots-translated"],
-  { revalidate: false, tags: ["spots", "translations"] }
+  { revalidate: false, tags: [CACHE_TAGS.spotCollections, "translations"] }
 );
 
 export async function getSpotsForMapTranslated(localeSlug: string): Promise<MapSpotItem[]> {
@@ -146,11 +147,12 @@ const _getMapSpotsByCategoryUncached = async (categorySlug: string): Promise<Map
   }));
 };
 
-export const getMapSpotsByCategory = cache(
-  unstable_cache(_getMapSpotsByCategoryUncached, ["map-spots-by-category"], {
-    revalidate: false,
-    tags: ["spots"],
-  })
+export const getMapSpotsByCategory = cache(async (categorySlug: string) =>
+  unstable_cache(
+    () => _getMapSpotsByCategoryUncached(categorySlug),
+    ["map-spots-by-category", categorySlug],
+    { revalidate: false, tags: [spotCategoryTag(categorySlug)] }
+  )()
 );
 
 export async function getMapSpotsByTag(tagSlug: string): Promise<MapSpotItem[]> {

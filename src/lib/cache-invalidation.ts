@@ -1,19 +1,28 @@
 import { revalidateTag } from "next/cache";
-import { CACHE_TAGS } from "./cache-tags";
+import { CACHE_TAGS, spotTag, spotCategoryTag } from "./cache-tags";
 
 const MAX = "max" as const;
 
 /**
- * スポットの追加・削除・公開切替で呼ぶ。
+ * スポットの保存・追加・削除・公開切替で呼ぶ。
  *
- * areas は倒さない。areas は共通ヘッダー（getSiteChromeData）が参照しており、
- * ここで倒すとスポット1件の増減でサイト全体が無効化される。実測では
- * spots タグを倒すだけで luminar 記事や記事一覧まで再生成されていた。
- * areas に載る情報のうちスポット増減で変わるのは件数表示だけなので、
- * 日次 cron（/api/revalidate?mode=daily）でまとめて更新する。
+ * タグは3階層に分かれている:
+ *   spot-{slug}      そのスポット1件のデータ → 該当ページ（ja+4言語）だけ再生成
+ *   spots-cat-{cat}  カテゴリ単位の一覧・関連欄 → 同エリアのページだけ再生成
+ *   spots            サイトマップ専用（buildAllEntries）。ページは巻き込まれない
+ *
+ * サイト横断の集合（トップの人気/ホテル/おすすめ・全体マップ）は
+ * spot-collections タグで、ここでは倒さず日次 cron が更新する。
+ * 保存で倒すと全ページ再生成（実測250枚・キュー消化10分）に逆戻りするため。
+ * areas を倒さない理由も同じ（共通ヘッダー経由で全ページに波及する）。
  */
-export function revalidateSpotCaches() {
+export function revalidateSpotCaches(opts?: {
+  slug?: string;
+  categorySlug?: string;
+}) {
   revalidateTag(CACHE_TAGS.spots, MAX);
+  if (opts?.slug) revalidateTag(spotTag(opts.slug), MAX);
+  if (opts?.categorySlug) revalidateTag(spotCategoryTag(opts.categorySlug), MAX);
 }
 
 export function revalidateCategoryCaches() {

@@ -136,7 +136,14 @@ export async function createSpot(formData: FormData) {
     });
   }
 
-  revalidateSpotCaches();
+  // 新スポットの反映先: 自ページ + 所属カテゴリの一覧 + サイトマップ。
+  // トップの人気/おすすめ等（spot-collections）は日次 cron で追いつく。
+  const { data: newCat } = await admin
+    .from("categories")
+    .select("slug")
+    .eq("id", (formData.get("category_id") as string) || "")
+    .maybeSingle();
+  revalidateSpotCaches({ slug, categorySlug: newCat?.slug ?? undefined });
   revalidatePath("/admin/spots");
   redirect("/admin/spots");
 }
@@ -290,11 +297,12 @@ export async function updateSpot(id: string, formData: FormData) {
   const publishedChanged = published !== (current as any)?.published;
 
   if (publishedChanged) {
-    // published 状態の変更はエリア一覧の表示件数にも影響するため全体を無効化
-    revalidateSpotCaches();
+    // 公開状態の変更: 自ページ + 所属カテゴリの一覧 + サイトマップ
+    revalidateSpotCaches({ slug, categorySlug: catSlug ?? undefined });
   } else {
-    // コンテンツのみ更新: 対象スポットのページだけ無効化（ISR Writes 削減）
-    // Vercel Data Cache のスポットデータは fetch revalidate TTL(1h) で自然更新
+    // コンテンツのみ更新: 自ページ + 同カテゴリ（一覧のカードや関連欄に
+    // タイトル・評価が載るため）。タグ細分化により全体は巻き込まれない
+    revalidateSpotCaches({ slug, categorySlug: catSlug ?? undefined });
     const LOCALE_SLUGS = ["en", "ko", "tw", "cn"] as const;
     if (catSlug) {
       revalidatePath(`/${catSlug}/${slug}`);
@@ -313,13 +321,24 @@ export async function updateSpot(id: string, formData: FormData) {
 export async function deleteSpot(id: string) {
   if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
+  // 削除後には引けないので、無効化対象（slug と所属カテゴリ）を先に控える
+  const { data: target } = await admin
+    .from("spots")
+    .select("slug, category:categories(slug)")
+    .eq("id", id)
+    .maybeSingle();
   const { error } = await admin.from("spots").delete().eq("id", id);
 
   if (error) {
     return { error: error.message };
   }
 
-  revalidateSpotCaches();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  revalidateSpotCaches({
+    slug: target?.slug,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    categorySlug: (target as any)?.category?.slug,
+  });
   revalidatePath("/admin/spots");
   return { success: true };
 }
@@ -327,6 +346,11 @@ export async function deleteSpot(id: string) {
 export async function toggleSpotPublished(id: string, published: boolean) {
   if (!(await requireAdmin())) return { error: "Unauthorized" };
   const admin = createAdminClient();
+  const { data: target } = await admin
+    .from("spots")
+    .select("slug, category:categories(slug)")
+    .eq("id", id)
+    .maybeSingle();
   const updateData: Record<string, unknown> = { published };
   if (published) {
     // Only set published_at if not already set
@@ -346,7 +370,11 @@ export async function toggleSpotPublished(id: string, published: boolean) {
     return { error: error.message };
   }
 
-  revalidateSpotCaches();
+  revalidateSpotCaches({
+    slug: target?.slug,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    categorySlug: (target as any)?.category?.slug,
+  });
   revalidatePath("/admin/spots");
   return { success: true };
 }
