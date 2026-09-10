@@ -67,11 +67,13 @@ export async function GET(req: NextRequest) {
 
   const nextEnd = result.saleActive ? result.saleEnd : null
   const currentEnd = current?.sale_end ? new Date(current.sale_end).toISOString() : null
-  const changed = nextEnd !== currentEnd
+  // 終了日の無いセールがあるので、終了日の比較だけでなく「セール中か」の変化も見る
+  const currentActive = current?.sale_start != null
+  const changed = result.saleActive !== currentActive || nextEnd !== currentEnd
 
   if (changed && !dryRun) {
-    // セール開始日は「今回検知した時点」を採用する。既にセール中で終了日だけ延びた場合は開始日を維持する
-    const keepStart = currentEnd != null && nextEnd != null && current?.sale_start
+    // セール開始日は「今回検知した時点」を採用する。既にセール中なら（終了日だけ変わった場合も）開始日を維持する
+    const keepStart = currentActive && result.saleActive
     const payload = {
       sale_start: result.saleActive
         ? (keepStart ? current!.sale_start : now.toISOString())

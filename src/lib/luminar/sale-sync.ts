@@ -66,7 +66,9 @@ const MONTHS: Record<string, number> = {
 
 /**
  * "August 31st" のような表記を JST の終了時刻に起こす。
- * 年の記載がないため、過去日になる場合は翌年と解釈する。
+ * 年の記載がないため、前年・今年・翌年のうち今日に最も近い日付と解釈する。
+ * 年末に "January 5th" とあれば翌年、9月に古い "August 31st" が残っていれば
+ * 今年（＝過去日）になり、過去日は呼び出し側で捨てる。
  */
 export function parseSaleEnd(raw: string, now: Date): string | null {
   const m = raw.trim().toLowerCase().match(/^([a-z]+)\s+(\d{1,2})/)
@@ -78,9 +80,11 @@ export function parseSaleEnd(raw: string, now: Date): string | null {
 
   // JST 23:59:59 = UTC 14:59:59
   const build = (year: number) => new Date(Date.UTC(year, month, day, 14, 59, 59))
-  let end = build(now.getUTCFullYear())
-  // 3日以上過去なら翌年扱い（時差やページ更新の遅れを吸収する猶予）
-  if (end.getTime() < now.getTime() - 3 * 86400_000) end = build(now.getUTCFullYear() + 1)
+  // 以前は「3日以上過去なら翌年」としていたため、セール終了後に残った
+  // "August 31st" が翌年8月31日と解釈され、「残り355日」になりえた
+  const y = now.getUTCFullYear()
+  const dist = (d: Date) => Math.abs(d.getTime() - now.getTime())
+  const end = [y - 1, y, y + 1].map(build).reduce((a, b) => (dist(b) < dist(a) ? b : a))
   return end.toISOString()
 }
 
@@ -112,15 +116,21 @@ export function parsePricingHtml(html: string, now = new Date()): ScrapeResult {
 
   const endMatch = html.match(/Sale ends\s*(?:<br\s*\/?>)?\s*([A-Za-z]+\s+\d{1,2}(?:st|nd|rd|th)?)/i)
   const saleEndRaw = endMatch ? endMatch[1].trim() : null
-  const saleEnd = saleEndRaw ? parseSaleEnd(saleEndRaw, now) : null
+  const parsedEnd = saleEndRaw ? parseSaleEnd(saleEndRaw, now) : null
+  // 終了日の告知が残っていても過去の日付なら使わない（8/31 の告知が 9/1 にも残っていた実例あり）
+  const saleEnd = parsedEnd && new Date(parsedEnd).getTime() > now.getTime() ? parsedEnd : null
 
-  // 1つでも割引されているプランがあり、かつ終了日が未来ならセール中とみなす
+  // 1つでも割引されているプランがあればセール中とみなす。終了日は任意。
+  // 以前は「終了日の告知」も必須にしていたが、Skylum は終了日を出さずに
+  // 「最大50%OFFのセール」を続けることがあり（2026-09 に実際に発生）、
+  // 値引き中なのにサイトが「セール終了」と表示し続けていた。
+  // 値引きが終われば価格が通常に戻るので、価格を正とすれば終了も正しく拾える。
   const rates = Object.values(plans)
     .filter((p) => p.regular > 0 && p.sale < p.regular)
     .map((p) => Math.round((1 - p.sale / p.regular) * 100))
   const maxDiscountRate = rates.length > 0 ? Math.max(...rates) : null
   const discounted = rates.length > 0
-  const saleActive = discounted && saleEnd != null && new Date(saleEnd).getTime() > now.getTime()
+  const saleActive = discounted
 
   const prime = {
     desktop: readPrice(html, 'data-oldp', PRIME_KEYS.desktop),

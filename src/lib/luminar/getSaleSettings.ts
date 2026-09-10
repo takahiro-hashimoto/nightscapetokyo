@@ -40,11 +40,11 @@ export async function getSaleSettings(): Promise<SaleSettings> {
   }
 
   const now = Date.now()
+  // 終了日は任意。公式が終了日を告知しないセールがあるため、null は「終了日未定のセール中」
   const isActive =
     data.sale_start != null &&
-    data.sale_end != null &&
     now >= new Date(data.sale_start).getTime() &&
-    now <= new Date(data.sale_end).getTime()
+    (data.sale_end == null || now <= new Date(data.sale_end).getTime())
 
   return {
     isActive,

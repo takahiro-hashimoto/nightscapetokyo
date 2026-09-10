@@ -16,10 +16,11 @@ export async function GET() {
   }
 
   const now = Date.now()
+  // 終了日は任意（getSaleSettings と同じ判定）
   const isActive =
-    data.sale_start && data.sale_end
-      ? now >= new Date(data.sale_start).getTime() && now <= new Date(data.sale_end).getTime()
-      : false
+    data.sale_start != null &&
+    now >= new Date(data.sale_start).getTime() &&
+    (data.sale_end == null || now <= new Date(data.sale_end).getTime())
 
   return NextResponse.json({
     isActive,
