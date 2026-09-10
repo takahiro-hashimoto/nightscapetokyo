@@ -128,3 +128,8 @@ GitHub Actions:
 - Workers Free プランは CPU 10ms 制限で SSR が Error 1102 を吐く。Paid 必須
 - 日付処理は必ず timeZone: "Asia/Tokyo" を明示（ビルド環境のTZで1日ずれる）
 - proxy.ts(middleware) は OpenNext 非対応。認可は (protected)/layout.tsx が担う
+- ビルド前に `.next/cache/fetch-cache` を必ず消す（`npm run build` に組み込み済み）。
+  ここには unstable_cache / fetch のデータキャッシュが残り、本番で revalidate しても
+  手元には伝わらない。消さずにビルドすると、最大で数週間前のデータでページが生成され、
+  デプロイのたびに本番の内容が巻き戻る（2026-09 にセール表示で発覚）
+
