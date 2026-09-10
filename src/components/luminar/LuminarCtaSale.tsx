@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useState } from 'react'
 import Link from '@/components/common/AppLink'
-import { AFFILIATE_URL, COUPON_CODE } from '@/lib/luminar/config'
+import { AFFILIATE_URL, getActiveCoupon } from '@/lib/luminar/config'
 import { useSaleSettings } from '@/hooks/useSaleSettings'
 
 export default function LuminarCtaSale() {
@@ -11,10 +11,11 @@ export default function LuminarCtaSale() {
   // 1ページに複数置けるようにする。固定の id だと重複して
   // aria-labelledby がどちらを指すか決まらなくなる
   const titleId = useId()
+  const coupon = getActiveCoupon()
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(COUPON_CODE)
+      await navigator.clipboard.writeText(coupon.code)
       setCopied(true)
       setTimeout(() => setCopied(false), 3000)
     } catch {
@@ -81,9 +82,9 @@ export default function LuminarCtaSale() {
           {hasCoupon && (
             <div className="m-cta-coupon-area">
               <button className="m-cta-coupon-btn" onClick={handleCopy} type="button" aria-label="クーポンコードをコピー">
-                <span className="m-cta-coupon__label">10%OFF COUPON</span>
+                <span className="m-cta-coupon__label">{coupon.discount}OFF COUPON</span>
                 <div className="m-cta-coupon__code">
-                  <span>{COUPON_CODE}</span>
+                  <span>{coupon.code}</span>
                   <i className="fa-regular fa-copy m-cta-coupon__icon" aria-hidden="true"></i>
                 </div>
                 <p className="m-cta-coupon__hint">クリックしてコピー</p>

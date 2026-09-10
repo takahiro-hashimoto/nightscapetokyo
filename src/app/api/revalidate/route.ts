@@ -26,6 +26,9 @@ const DAILY_PATHS: { path: string; type: "page" | "layout" }[] = [
   { path: "/simulator", type: "page" },
   // エリア22件 + ロケールトップ4件をルート単位でまとめて無効化する
   { path: "/[category]", type: "page" },
+  // 期間限定クーポン（lib/luminar/config.ts）の切り替えを本文に反映するため。
+  // 10ページ程度なので日次で全再生成しても負荷は無視できる
+  { path: "/luminar", type: "layout" },
 ];
 
 function safeEqual(actual: string | null, expected: string | undefined): boolean {

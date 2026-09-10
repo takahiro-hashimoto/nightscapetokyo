@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import Link from '@/components/common/AppLink'
 import { useSaleSettings } from '@/hooks/useSaleSettings'
+import { getActiveCoupon } from '@/lib/luminar/config'
 
 export default function LuminarCtaMini() {
   const sale = useSaleSettings()
   const [copied, setCopied] = useState(false)
+  const coupon = getActiveCoupon()
 
   // セール終了日。「◯月◯日まで」のバッジに使う
   const endLabel =
@@ -19,7 +21,7 @@ export default function LuminarCtaMini() {
       : null
 
   const handleCopy = async () => {
-    const code = 'nightscape10'
+    const code = coupon.code
     try {
       await navigator.clipboard.writeText(code)
     } catch {
@@ -43,10 +45,10 @@ export default function LuminarCtaMini() {
         <div className="m-cta-mini__coupon-area">
           <button className="m-cta-mini__coupon-btn" type="button" onClick={handleCopy} aria-label="クーポンコードをコピー">
             <div className="m-cta-mini__coupon-head">
-              <span className="m-cta-mini__coupon-label">10%OFF COUPON</span>
+              <span className="m-cta-mini__coupon-label">{coupon.discount}OFF COUPON</span>
             </div>
             <div className="m-cta-mini__coupon-body">
-              <span className="m-cta-mini__code">nightscape10</span>
+              <span className="m-cta-mini__code">{coupon.code}</span>
               <i className="fa-regular fa-copy m-cta-mini__icon" aria-hidden="true"></i>
             </div>
             <p className="m-cta-mini__hint">クリックしてコピー</p>

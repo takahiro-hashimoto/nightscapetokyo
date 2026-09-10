@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import type { TocItem } from '@/lib/luminar/toc'
+import { getActiveCoupon } from '@/lib/luminar/config'
 
 
 const META = {
@@ -67,6 +68,7 @@ const FAQ_JSON_LD = [
 ]
 
 export default async function Page() {
+  const coupon = getActiveCoupon()
   // セール状況（開催中かどうか・残り日数）は LuminarArticleLayout が DB から取得して
   // SaleSettingsProvider に流し、CTA 側が表示する。このページ側での取得は不要。
 
@@ -80,11 +82,11 @@ export default async function Page() {
         <p>そもそもLuminar Neoがどんなソフトなのかは<Link href="/luminar/">Luminar Neoの完全ガイド</Link>で解説しています。ここでは価格を下げる方法に絞ります。</p>
         <p>セールがない時期でも、安く買う手はあります。僕が実際に使っているのは次の3つです。</p>
         <h3 id="save-coupon">プロモーションコード（クーポン）を利用する</h3>
-        <p>セール開催の有無にかかわらず、当サイト限定のクーポンコード「nightscape10」が使えます。購入画面でコードを入力するだけで10%OFFになります。</p>
+        <p>セール開催の有無にかかわらず、当サイト限定のクーポンコード「{coupon.code}」が使えます{coupon.periodLabel && `（${coupon.periodLabel}の期間限定）`}。購入画面でコードを入力するだけで{coupon.discount}OFFになります。</p>
         <p>なお公式の規約上、割引の併用は不可となっています。<strong>セール価格と併用できるかどうかは購入画面で確認してください。</strong>カートでクーポンを入れてみて、金額が下がるのを見てから決済すれば確実です。</p>
 
         <h3 id="save-sale">公式キャンペーン・大型セールを狙う</h3>
-        <p>Skylum公式サイトでは、季節ごとにキャンペーンやセールを実施しています。通常価格から<strong>50%〜75%近い割引</strong>になることもあり、値引きの幅はクーポンの10%OFFとは桁が違います。</p>
+        <p>Skylum公式サイトでは、季節ごとにキャンペーンやセールを実施しています。通常価格から<strong>50%〜75%近い割引</strong>になることもあり、値引きの幅はクーポンの{coupon.discount}OFFとは桁が違います。</p>
         <p>年に5〜6回は何らかのセールが走っているので、次を待つ期間もそう長くはなりません。どの月に何が来るかは「<a href="#timing">次回のセールはいつ？</a>」にまとめました。</p>
 
         <h3 id="save-loyalty">過去にSkylum製品を持っていれば「特別価格」</h3>
@@ -150,7 +152,7 @@ export default async function Page() {
 
       <section id="coupon-how-to" className="content-card card-padding article-body">
         <h2>クーポンコードの使い方</h2>
-        <p>クーポンコード「nightscape10」は、セールの有無にかかわらず常時使えます。購入画面で入力するだけなので、手順は3ステップです。</p>
+        <p>クーポンコード「{coupon.code}」は、セールの有無にかかわらず{coupon.periodLabel ? `${coupon.periodLabel}使えます` : '常時使えます'}。購入画面で入力するだけなので、手順は3ステップです。</p>
         <p>つまずきやすいのは2番目のコード入力だけです。半角で入っているかと、適用ボタンを押したあとに合計金額が下がっているかを見てください。</p>
         <div style={{ position: 'relative' }}>
           <div className="m-step">
@@ -177,7 +179,7 @@ export default async function Page() {
             <div className="m-step__num">3</div>
             <div className="m-step__content">
               <p className="m-step__title">割引を確認して決済</p>
-              <p className="m-step__desc">合計金額が<strong>10%OFF</strong>になっていれば成功です。あとはメールアドレスと決済情報を入れれば購入完了。登録したアドレスにダウンロードリンクが届きます。</p>
+              <p className="m-step__desc">合計金額が<strong>{coupon.discount}OFF</strong>になっていれば成功です。あとはメールアドレスと決済情報を入れれば購入完了。登録したアドレスにダウンロードリンクが届きます。</p>
               <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-03.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ3" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
             </div>
           </div>
