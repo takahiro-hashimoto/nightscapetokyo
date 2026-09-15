@@ -205,7 +205,7 @@ export default function MobileMenu({
 
         <div className="drawer-profile">
           <Image
-            src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/10/images.jpg"
+            src="https://img.nightscape.tokyo/uploads/2024/10/images.jpg"
             alt="Takahiro"
             width={72}
             height={72}

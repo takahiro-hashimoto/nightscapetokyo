@@ -10,8 +10,11 @@ DNS           Cloudflare（ネームサーバー: quinton / wally .ns.cloudflare
 サイト本体      Cloudflare Workers「nightscape-tokyo」
                 zone route: nightscape.tokyo/* と www.nightscape.tokyo/*
 ISRキャッシュ    R2「nightscape-next-cache」+ D1「nightscape-next-tag-cache」
-画像           R2「nightscape-images」（pub-7d43...r2.dev で直配信）
+画像           R2「nightscape-images」（img.nightscape.tokyo で配信・CDN キャッシュ有効）
                 ★これはキャッシュではなく本体。消すと復旧不能
+                旧 pub-7d43...r2.dev は外部リンク・画像検索のため当面公開のまま。
+                配信元の定義は src/lib/image-origin.ts、アップロード時の URL は
+                secret の R2_PUBLIC_URL（どちらも https://img.nightscape.tokyo に揃える）
 DB / 認証      Supabase「nightscapetokyo」(idnhefzhidetbiqiveci)
 メール          Xserver（MX: sv15008.xserver.jp。DNSレコードは Cloudflare 上）
                 *.nightscape.tokyo は必ずグレー雲（プロキシOFF）。
@@ -31,8 +34,11 @@ npm run deploy:cron   # workers/cron を変更したとき
 - `build` は css:minify を自動実行する（non-critical.css の反映漏れ防止）
 - 本番稼働ブランチは `cloudflare-poc`（main は Vercel 時代の系譜）
 - Worker のエントリは `custom-worker.ts`（wrangler.jsonc の main）。OpenNext 生成の
-  `.open-next/worker.js` を包み、http → https の 301 だけを先に行う
-  （ゾーンの Always Use HTTPS が OFF でも http で表示させないため）
+  `.open-next/worker.js` を包み、Next に渡す前に次の 301 だけを行う
+  - http → https（ゾーンの Always Use HTTPS が OFF でも http で表示させないため）
+  - WordPress 時代の画像 URL `/wp-content/uploads/…` → `img.nightscape.tokyo/uploads/…`
+    （外部リンク・画像検索に残る旧 URL の救済。サイズ付き -1024x683 等は元画像へ。
+    ロジックは src/lib/wp-image-redirect.ts）
 
 ## バックアップ
 

@@ -6,7 +6,7 @@ export default function HomePrBanner() {
       <PrBanner
         heading="【PR】ヘリコプター遊覧で一生の思い出に残る感動体験を。"
         image={{
-          src: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/08/air.jpg",
+          src: "https://img.nightscape.tokyo/uploads/2024/08/air.jpg",
         }}
         paragraphs={[
           "AIROS Skyviewでは、22~55分の多彩なヘリコプター遊覧コースをご用意しています。",

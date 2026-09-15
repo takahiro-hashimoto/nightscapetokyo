@@ -18,7 +18,9 @@
  * scripts/backfill-r2-image-variants.mjs でバリアントを生成しておくこと。
  * バリアントが無い画像は 404 になる。
  */
-const R2_PREFIX = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/";
+import { IMAGE_ORIGIN, toImageOrigin } from "./image-origin";
+
+const R2_PREFIX = `${IMAGE_ORIGIN}/`;
 
 /** バリアント生成済みのローカルディレクトリ（scripts/build-public-image-variants.mjs と一致させること） */
 const LOCAL_VARIANT_DIRS = ["/images/tag/"];
@@ -33,6 +35,8 @@ export default function r2ImageLoader({
   width: number;
   quality?: number;
 }): string {
+  // 旧 r2.dev の URL（DB に残った分・記事本文など）も新しい配信元に寄せてから扱う
+  src = toImageOrigin(src);
   const isVariantUrl = /\.w\d+\.webp$/i.test(src); // 既にバリアントURLならそのまま
 
   if (

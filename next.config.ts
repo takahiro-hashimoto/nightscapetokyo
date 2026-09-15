@@ -61,6 +61,12 @@ const nextConfig: NextConfig = {
         hostname: "nightscape.tokyo",
       },
       {
+        // 画像の配信元（R2 の独自ドメイン）。2026-09 に r2.dev から移行
+        protocol: "https",
+        hostname: "img.nightscape.tokyo",
+      },
+      {
+        // 旧配信元。DB・外部リンクの移行が終わるまで残す
         protocol: "https",
         hostname: "*.r2.dev",
       },

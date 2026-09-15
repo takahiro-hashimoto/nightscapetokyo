@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
     images: [
       {
-        url: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg",
+        url: "https://img.nightscape.tokyo/uploads/2023/01/wakura-park-2.jpg",
         width: 1200,
         height: 630,
         alt: PAGE_TITLE,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    images: ["https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"],
+    images: ["https://img.nightscape.tokyo/uploads/2023/01/wakura-park-2.jpg"],
   },
   alternates: {
     canonical: `${SITE_URL}/time-lapse/`,
@@ -150,7 +150,7 @@ export default async function TimeLapsePage() {
             <div className="firstVisual">
               <figure className="firstVisual-image">
                 <Image
-                  src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"
+                  src="https://img.nightscape.tokyo/uploads/2023/01/wakura-park-2.jpg"
                   alt={PAGE_TITLE}
                   fill
                   className="object-cover"

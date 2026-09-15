@@ -19,7 +19,7 @@ import { SaleSettingsProvider } from '@/contexts/SaleSettingsContext'
 /** このページの最終更新日。dateTime 属性と表示テキストの両方に使う */
 const LAST_UPDATED = '2026-08-13'
 
-const OG_IMAGE = 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/main-after.jpg'
+const OG_IMAGE = 'https://img.nightscape.tokyo/luminar/main-after.jpg'
 
 // タイトルと同じ理由で「料金プランの違い」「最安の買い方」は外している（子記事のテーマのため）。
 // 旧文にあった「7日間無料体験版」は Skylum に問い合わせても確認が取れていないため記載しない。

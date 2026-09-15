@@ -15,7 +15,7 @@ const META = {
   publishedAt: '2026-01-22T23:14:58',
   updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
-    src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-voice.jpg',
+    src: 'https://img.nightscape.tokyo/luminar/luminar-neo-voice.jpg',
     alt: 'Luminar Neoの評判はどう？良い口コミ・悪い口コミを整理して見えた実態を解説',
     width: 1920,
     height: 1080,
@@ -81,7 +81,7 @@ export default async function Page() {
 
       <section id="summary" className="content-card card-padding article-body">
         <h2>Luminar Neoの評判まとめ</h2>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/about-luminar-neo.jpg" alt="Luminar Neoの管理画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/about-luminar-neo.jpg" alt="Luminar Neoの管理画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>まず全体像から。</p>
         <p><strong>良い評判で多いのは</strong>、AI編集の手軽さと仕上がりの速さです。「Lightroomで1時間かかっていた作業が10分で終わった」「初心者の自分でもプロっぽい写真が作れた」という声が目立ちます。特に、空の置き換え（Sky AI）やノイズ除去（Noiseless AI）の評価は高く、「これだけでも買う価値がある」という意見も少なくありません。</p>
         <p><strong>不満として挙がりやすいのは</strong>、動作の重さと料金体系のわかりにくさ。「古いノートPCだとカクカクする」「生成AI機能の継続にはLuminar Primeの契約が必要だと知らなかった」という声です。ただ、どちらも買う前に知っていれば避けられます。</p>
@@ -93,8 +93,8 @@ export default async function Page() {
 
         <h3 id="good-ai">AI編集が速く初心者でも結果が出やすいという評判</h3>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sky-before.jpg" alt="スカイAIで曇り空を青空に入れ替える前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/sky-after2.jpeg" alt="スカイAIで曇り空を青空に入れ替えた後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/sky-before.jpg" alt="スカイAIで曇り空を青空に入れ替える前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/sky-after2.jpeg" alt="スカイAIで曇り空を青空に入れ替えた後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -122,8 +122,8 @@ export default async function Page() {
 
         <h3 id="good-noise">ノイズ除去の評判が特に高い</h3>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/noise-before.jpg" alt="Noiseless AIで高感度ノイズを除去する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/DSC08329.jpg" alt="Noiseless AIで高感度ノイズを除去した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/noise-before.jpg" alt="Noiseless AIで高感度ノイズを除去する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/DSC08329.jpg" alt="Noiseless AIで高感度ノイズを除去した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -149,8 +149,8 @@ export default async function Page() {
 
         <h3 id="good-erase">不要物の消去も「違和感がない」と好評</h3>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/ai-gen-delete-before.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/ai-gen-delete-after.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/ai-gen-delete-before.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/ai-gen-delete-after.jpeg" alt="ジェネ消去機能で不要なオブジェクトを削除した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -175,7 +175,7 @@ export default async function Page() {
         <p>観光地で「人がいない写真を撮りたかったのに」という経験がある人は多いはずです。ただし消す範囲が大きいほど、埋めた部分の不自然さは出やすくなります。人が1〜2人なら気づかれませんが、人だかりを丸ごと消すのは難しいです。</p>
 
         <h3 id="good-lightroom">Lightroomより直感的という口コミが多い理由</h3>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-edit.jpg" alt="Luminar Neoの編集画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/luminar-neo-edit.jpg" alt="Luminar Neoの編集画面" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>「Lightroomを使ってたけど、Luminar Neoのほうが直感的」という声もよく見かけます。Adobe製品から乗り換えた人の感想として、これはかなり多い印象です。</p>
         <p>違いは<strong>操作思想</strong>にあります。Lightroomは細かく追い込む前提で設計されていて、基本補正パネルだけでも20項目以上あります。Luminar Neoは「まずAIに任せて、気になるところだけ調整」という設計なので、どこから触ればいいか迷いません。</p>
         <div className="m-tweet-wrap m-tweet-wrap--neutral">

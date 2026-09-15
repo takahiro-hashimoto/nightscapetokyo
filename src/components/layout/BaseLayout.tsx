@@ -30,7 +30,7 @@ export default function BaseLayout({
         {isProd && <GtmLoader gtmId={GTM_ID} />}
         <link
           rel="preconnect"
-          href="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev"
+          href="https://img.nightscape.tokyo"
           crossOrigin="anonymous"
         />
         {isProd && (

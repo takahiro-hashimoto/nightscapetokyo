@@ -156,7 +156,7 @@ export default function PhotographySections({ l }: { l: PhotographyLabels }) {
         </h2>
         <div className="about-achievement-image">
           <Image
-            src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/07/my-favorite-camera-items.jpg.w1920.webp"
+            src="https://img.nightscape.tokyo/uploads/2024/07/my-favorite-camera-items.jpg.w1920.webp"
             alt={l.equipment.heading}
             width={960}
             height={640}

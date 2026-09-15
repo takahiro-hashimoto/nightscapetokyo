@@ -1,10 +1,12 @@
+import { IMAGE_ORIGIN, LEGACY_R2_ORIGIN } from "./image-origin";
+
 /**
  * WordPress の画像 URL を Cloudflare R2 URL に変換する。
  * https://nightscape.tokyo/wp-content/uploads/YYYY/MM/file.jpg
- * → https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/YYYY/MM/file.jpg
+ * → https://img.nightscape.tokyo/uploads/YYYY/MM/file.jpg
  */
 const WP_ORIGIN = "https://nightscape.tokyo/wp-content/";
-const R2_ORIGIN = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/";
+const R2_ORIGIN = `${IMAGE_ORIGIN}/`;
 
 /**
  * WordPress が付与するサイズサフィックスを除去する。
@@ -26,6 +28,8 @@ export function toR2Url(url: string): string {
 export function replaceWpImagesInHtml(html: string): string {
   return html
     .replaceAll(WP_ORIGIN, R2_ORIGIN)
+    // 本文に直書きされた旧 r2.dev の URL も新しい配信元へ（DB 移行漏れの保険）
+    .replaceAll(`${LEGACY_R2_ORIGIN}/`, R2_ORIGIN)
     // Strip size suffix only from src="..." to avoid collapsing srcset candidates
     .replace(/\bsrc="(https?:\/\/[^"]+)-\d+x\d+(\.[a-zA-Z]+")/g, 'src="$1$2')
     .replace(/<img\b(?![^>]*\bloading\b)/gi, '<img loading="lazy" decoding="async"');

@@ -13,7 +13,7 @@ const META = {
   publishedAt: '2026-01-19T10:28:58',
   updatedAt: '2026-08-13T00:00:00',
   featuredImage: {
-    src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/faq.jpg',
+    src: 'https://img.nightscape.tokyo/luminar/faq.jpg',
     alt: 'Luminar Neoの購入前によくある質問まとめ｜動作環境・対応カメラ・ライセンスの疑問を解決【FAQ】',
     width: 1920,
     height: 1080,

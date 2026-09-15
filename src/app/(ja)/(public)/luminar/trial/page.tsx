@@ -13,7 +13,7 @@ const META = {
   publishedAt: '2026-01-18T20:45:12',
   updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
-    src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/trial.jpg',
+    src: 'https://img.nightscape.tokyo/luminar/trial.jpg',
     alt: 'Luminar Neo体験版のダウンロード方法・製品版との違いを紹介',
     width: 1920,
     height: 1080,
@@ -94,7 +94,7 @@ export default async function Page() {
 
       <section id="why-safe" className="content-card card-padding article-body">
         <h2>Luminar Neoの無料体験版が安心して使える3つの理由</h2>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-plan-trial.jpg" alt="Luminar Neoの無料体験版が安心して使える3つの理由" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/luminar-neo-plan-trial.jpg" alt="Luminar Neoの無料体験版が安心して使える3つの理由" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>「無料体験版」と聞くと身構える人もいると思います。海外のソフトだと、解約し忘れて課金されていたという話もよく聞きます。</p>
         <p>でも、Luminar Neoの体験版はそういった心配がありません。その理由を3つ説明します。</p>
         <h3 id="safe-nocard">1. クレジットカード登録が不要</h3>

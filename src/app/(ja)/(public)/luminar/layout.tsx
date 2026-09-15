@@ -6,7 +6,7 @@ import './luminar.css'
 const FA_CSS_URL =
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
 
-const OG_IMAGE = 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/main-after.jpg'
+const OG_IMAGE = 'https://img.nightscape.tokyo/luminar/main-after.jpg'
 
 export const metadata: Metadata = {
   metadataBase: new URL(LUMINAR_SITE_URL),

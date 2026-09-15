@@ -101,7 +101,7 @@ export default async function AboutPageI18n({ params }: Props) {
           <div className="about-profile">
             <div className="about-profile-avatar">
               <Image
-                src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/10/images.jpg"
+                src="https://img.nightscape.tokyo/uploads/2024/10/images.jpg"
                 alt="Takahiro"
                 width={120}
                 height={120}

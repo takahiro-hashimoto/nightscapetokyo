@@ -1,6 +1,6 @@
 import type { SpotWithRelations } from "./types";
 
-const WP = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads";
+const WP = "https://img.nightscape.tokyo/uploads";
 
 /** ヘルパー: SpotWithRelations の共通デフォルト値 */
 function spot(

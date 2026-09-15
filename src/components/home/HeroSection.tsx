@@ -4,8 +4,8 @@ import { Search } from "lucide-react";
 import type { HomePageLabels } from "@/lib/i18n-labels";
 import HeroSearchInputSlot from "./HeroSearchInputSlot";
 
-const HERO_PC_SRC = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/images/hero.webp";
-const HERO_SP_SRC = "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/images/main.webp";
+const HERO_PC_SRC = "https://img.nightscape.tokyo/images/hero.webp";
+const HERO_SP_SRC = "https://img.nightscape.tokyo/images/main.webp";
 /** globals.css の .hero-bg--pc / --sp の切り替えと同じ境界（768px 以下がスマホ用画像） */
 const SP_MEDIA = "(max-width: 768px)";
 const PC_MEDIA = "(min-width: 769px)";

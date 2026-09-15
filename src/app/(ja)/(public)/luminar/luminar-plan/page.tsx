@@ -21,7 +21,7 @@ const META = {
   publishedAt: '2026-01-18T10:38:20',
   updatedAt: '2026-08-13T00:00:00',
   featuredImage: {
-    src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/plan.jpg',
+    src: 'https://img.nightscape.tokyo/luminar/plan.jpg',
     alt: 'Luminar Neoの買い切りはいくら？3プランの価格とサブスクとの違い【2026年】',
     width: 1920,
     height: 1080,
@@ -103,7 +103,7 @@ export default async function Page() {
       */}
       <section id="features-overview" className="content-card card-padding article-body">
         <h2>Luminar Neoの機能は3種類に分かれている</h2>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/plan-image.jpg" alt="Luminar Neoの料金体系を表したイメージ" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/plan-image.jpg" alt="Luminar Neoの料金体系を表したイメージ" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>Luminar Neoの機能は、利用条件の違う3つに分かれています。ここさえ押さえれば、料金体系はほぼ理解できます。</p>
         <div className="m-table-wrap">
           <table className="m-table">

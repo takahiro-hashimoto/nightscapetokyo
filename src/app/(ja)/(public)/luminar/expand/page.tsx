@@ -18,7 +18,7 @@ const META = {
   publishedAt: '2026-01-19T09:32:32',
   updatedAt: '2026-08-13T00:00:00',
   featuredImage: {
-    src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/expand.jpg',
+    src: 'https://img.nightscape.tokyo/luminar/expand.jpg',
     alt: 'Luminar NeoのProツール（拡張機能）8種を徹底解説【2026年版】',
     width: 1920,
     height: 1080,
@@ -100,8 +100,8 @@ export default function Page() {
 
         <h3 id="supersharp">①スーパーシャープAI（Supersharp AI）</h3>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-before.jpg" alt="スーパーシャープAIで手ブレを補正する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/supershape-after.jpeg" alt="スーパーシャープAIで手ブレを補正した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/supershape-before.jpg" alt="スーパーシャープAIで手ブレを補正する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/supershape-after.jpeg" alt="スーパーシャープAIで手ブレを補正した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -117,8 +117,8 @@ export default function Page() {
 
         <h3 id="noiseless">②ノイズレスAI（Noiseless AI）</h3>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/noise-before.jpg" alt="Noiseless AIで高感度ノイズを除去する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/DSC08329.jpg" alt="Noiseless AIで高感度ノイズを除去した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/noise-before.jpg" alt="Noiseless AIで高感度ノイズを除去する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/DSC08329.jpg" alt="Noiseless AIで高感度ノイズを除去した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -134,8 +134,8 @@ export default function Page() {
 
         <h3 id="magic-light">③マジックライトAI（Magic Light AI）</h3>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-before.jpeg" alt="マジックライトAIで光芒を追加する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/magic-light-after2.jpeg" alt="マジックライトAIで光芒を追加した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/magic-light-before.jpeg" alt="マジックライトAIで光芒を追加する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/magic-light-after2.jpeg" alt="マジックライトAIで光芒を追加した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -151,8 +151,8 @@ export default function Page() {
 
         <h3 id="focus-stacking">④フォーカススタッキング（Focus Stacking）</h3>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/paper-before.jpeg" alt="フォーカススタッキングで被写界深度を拡大する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/paper-after.jpeg" alt="フォーカススタッキングで被写界深度を拡大した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/paper-before.jpeg" alt="フォーカススタッキングで被写界深度を拡大する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/paper-after.jpeg" alt="フォーカススタッキングで被写界深度を拡大した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -168,8 +168,8 @@ export default function Page() {
 
         <h3 id="background-removal">⑤背景削除AI（Background Removal AI）</h3>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/delete-before.jpg" alt="背景削除AIで背景を削除する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/delete-after.jpg" alt="背景削除AIで背景を削除した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/delete-before.jpg" alt="背景削除AIで背景を削除する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/delete-after.jpg" alt="背景削除AIで背景を削除した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -185,8 +185,8 @@ export default function Page() {
 
         <h3 id="hdr-merge">⑥HDRマージ（HDR Merge）</h3>
         <div className="comparison-container">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-before.jpeg" alt="HDRマージで露出違いの写真を合成する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/hdr-after.jpeg" alt="HDRマージで露出違いの写真を合成した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/hdr-before.jpeg" alt="HDRマージで露出違いの写真を合成する前の作例" className="image-before" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
+          <Image src="https://img.nightscape.tokyo/luminar/hdr-after.jpeg" alt="HDRマージで露出違いの写真を合成した後の作例" className="image-after" width={1000} height={667} sizes="(max-width: 768px) 100vw, 880px" />
           <div className="slider-handle">
             <div className="slider-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -201,12 +201,12 @@ export default function Page() {
         <p>室内から窓の外を撮ると、外が白飛びするか室内が潰れるかのどちらかになりますよね。そういう場面で効きます。ただしHDRは加減を間違えるとすぐ絵画のような質感になるので、僕は必ず控えめな設定から始めて、足りなければ強める順にしています。最初から強くかけると戻せなくなります。</p>
 
         <h3 id="upscale">⑦アップスケールAI（Upscale AI）</h3>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/unnamed.jpg" alt="アップスケールAIで解像度を拡大した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/unnamed.jpg" alt="アップスケールAIで解像度を拡大した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></div>
         <p>画質を保ったまま、解像度を最大6倍まで拡大する機能です。トリミングで小さくなってしまった写真や、古いデジカメで撮った低解像度の写真を、もう一度使えるようにできます。</p>
         <p>昔のコンデジで撮った写真を拡大して印刷したことがあります。A4サイズまでなら十分実用に耐えました。ただし大判になると、AIが推測で埋めた部分の不自然さが見えてきます。失った情報が戻るわけではなく、見られる大きさまで引き上げる機能だと考えておくと期待を外しません。</p>
 
         <h3 id="panorama">⑧パノラマスティッチング（Panorama Stitching）</h3>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/unit-scaled.jpg" alt="パノラマスティッチングで複数カットを合成した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/unit-scaled.jpg" alt="パノラマスティッチングで複数カットを合成した作例" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" style={{ width: '100%', height: 'auto' }} /></div>
         <p>複数のカットをつなぎ合わせて、1枚のワイドな写真にする機能です。広角レンズでも入りきらない風景を、分けて撮ってから合成できます。</p>
         <p>つなげた分だけ画素数も増えるので、大きく引き伸ばして印刷したいときにも向いています。きれいに合わせるコツは撮影の側にあって、露出をマニュアルで固定し、同じ設定のまま撮り進めることです。オートのままだとカットごとに明るさが変わり、つなぎ目が帯のように残ります。</p>
       </section>

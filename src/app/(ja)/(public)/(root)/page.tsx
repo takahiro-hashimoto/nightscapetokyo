@@ -35,9 +35,9 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "東京夜景ナビ",
       locale: "ja_JP",
       alternateLocale: ["en_US", "ko_KR", "zh_TW", "zh_CN"],
-      images: [{ url: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/cta-mv.jpg", width: 1200, height: 630, alt: title }],
+      images: [{ url: "https://img.nightscape.tokyo/uploads/2023/01/cta-mv.jpg", width: 1200, height: 630, alt: title }],
     },
-    twitter: { card: "summary_large_image", title, description, images: ["https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/cta-mv.jpg"] },
+    twitter: { card: "summary_large_image", title, description, images: ["https://img.nightscape.tokyo/uploads/2023/01/cta-mv.jpg"] },
     alternates: {
       canonical: `${SITE_URL}/`,
       languages: buildHomeHreflangAlternates(SITE_URL, ALL_LOCALE_SLUGS),

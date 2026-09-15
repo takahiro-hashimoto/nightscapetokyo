@@ -305,7 +305,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       alternateLocale: ALL_OG_LOCALES.filter((ol) => ol !== ogLocale),
       images: [
         {
-          url: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg",
+          url: "https://img.nightscape.tokyo/uploads/2023/01/wakura-park-2.jpg",
           width: 1200,
           height: 630,
           alt: l.title,
@@ -316,7 +316,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: "summary_large_image",
       title: l.title,
       description: l.description,
-      images: ["https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"],
+      images: ["https://img.nightscape.tokyo/uploads/2023/01/wakura-park-2.jpg"],
     },
     alternates: {
       canonical: canonicalUrl,
@@ -366,7 +366,7 @@ export default async function TimeLapseLocalePage({ params }: PageProps) {
             <div className="firstVisual">
               <figure className="firstVisual-image">
                 <Image
-                  src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/wakura-park-2.jpg"
+                  src="https://img.nightscape.tokyo/uploads/2023/01/wakura-park-2.jpg"
                   alt={l.title}
                   fill
                   className="object-cover"

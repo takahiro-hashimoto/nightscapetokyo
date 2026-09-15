@@ -14,7 +14,7 @@ const META = {
   publishedAt: '2026-01-25T10:49:41',
   updatedAt: '2026-08-12T00:00:00',
   featuredImage: {
-    src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/failed.jpg',
+    src: 'https://img.nightscape.tokyo/luminar/failed.jpg',
     alt: 'Luminar Neoが重い・落ちる原因と対処法｜症状別に今すぐ解決',
     width: 1920,
     height: 1080,

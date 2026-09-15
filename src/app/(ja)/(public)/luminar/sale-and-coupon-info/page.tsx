@@ -17,7 +17,7 @@ const META = {
   // 期間限定クーポン nightscape20 に差し替えた日
   updatedAt: '2026-09-10T00:00:00',
   featuredImage: {
-    src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/how-to-buy.jpg',
+    src: 'https://img.nightscape.tokyo/luminar/how-to-buy.jpg',
     alt: 'Luminar Neoのセール時期はいつ？クーポンコードと安く買う方法について徹底解説【2026年最新】',
     width: 1920,
     height: 1080,
@@ -127,7 +127,7 @@ export default async function Page() {
 
       <section id="how-to-save" className="content-card card-padding article-body">
         <h2>Luminar Neoを安く買う3つの方法</h2>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-sale.jpg" alt="Luminar Neoを安く買う3つの方法" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/luminar-neo-sale.jpg" alt="Luminar Neoを安く買う3つの方法" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>そもそもLuminar Neoがどんなソフトなのかは<Link href="/luminar/">Luminar Neoの完全ガイド</Link>で解説しています。ここでは価格を下げる方法に絞ります。</p>
         {/* 金額は pricing.ts から出す（記事に直書きしない）。表の形は expand / luminar-plan の
             m-table に合わせている。クーポン列は計算上の目安で、併用可否は保証しない */}
@@ -241,7 +241,7 @@ export default async function Page() {
               <p className="m-step__title">プランを選択</p>
               <p className="m-step__desc">まずはLuminar Neo公式サイト（<a href="https://skylum.evyy.net/mO9BEa" target="_blank" rel="sponsored nofollow noopener">skylum.com</a>）にアクセス。</p>
               <p className="m-step__desc">「デスクトップ専用ライセンス」「全プラットフォームライセンス」「Maxライセンス」の3つから選択し、購入ボタンをクリック。迷ったら、スマホで編集しないかぎり<strong>デスクトップ専用ライセンス</strong>で十分です。</p>
-              <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-01.jpg" alt="Luminarの買い切り3プラン（デスクトップ専用・全プラットフォーム・Max）の価格と違いを比較した図" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
+              <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/luminar-cuopon-01.jpg" alt="Luminarの買い切り3プラン（デスクトップ専用・全プラットフォーム・Max）の価格と違いを比較した図" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
               <p className="m-step__desc text-xsmall">※上図は通常価格です。実際の購入画面では、開催中のセールに応じて割引後の価格が表示されます。</p>
             </div>
           </div>
@@ -251,7 +251,7 @@ export default async function Page() {
             <div className="m-step__content">
               <p className="m-step__title">プロモーションコードを入力</p>
               <p className="m-step__desc">カート画面の「プロモーションコードを入力」をクリックすると入力欄が開くので、コードを入れて「適用」を押します。全角になっていると弾かれるので、半角で入っているかだけ見てください。</p>
-              <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-02.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ2" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
+              <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/luminar-cuopon-02.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ2" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
             </div>
           </div>
           <div className="m-step">
@@ -259,7 +259,7 @@ export default async function Page() {
             <div className="m-step__content">
               <p className="m-step__title">割引を確認して決済</p>
               <p className="m-step__desc">合計金額が<strong>{coupon.discount}OFF</strong>になっていれば成功です。あとはメールアドレスと決済情報を入れれば購入完了。登録したアドレスにダウンロードリンクが届きます。</p>
-              <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-03.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ3" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
+              <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/luminar-cuopon-03.jpg" alt="Luminar Neoの購入方法、クーポンの使い方 ステップ3" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
             </div>
           </div>
         </div>

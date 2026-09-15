@@ -43,7 +43,7 @@ export type WpPostSummary = NormalizedPostSummary
 
 const CAT_BUY: Term = { id: 1, name: '購入ガイド', slug: 'buy' }
 const CAT_HOW: Term = { id: 2, name: '使い方', slug: 'how' }
-const R2 = 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar'
+const R2 = 'https://img.nightscape.tokyo/luminar'
 
 const ARTICLES: NormalizedPostSummary[] = [
   {

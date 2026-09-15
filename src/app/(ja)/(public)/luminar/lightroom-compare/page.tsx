@@ -13,7 +13,7 @@ const META = {
   publishedAt: '2026-01-18T10:36:17',
   updatedAt: '2026-08-13T00:00:00',
   featuredImage: {
-    src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom.jpg',
+    src: 'https://img.nightscape.tokyo/luminar/lightroom.jpg',
     alt: 'Luminar NeoとLightroom徹底比較｜料金・機能・使いやすさの違いを解説',
     width: 1920,
     height: 1080,
@@ -108,7 +108,7 @@ export default async function Page() {
 
       <section id="conclusion" className="content-card card-padding article-body">
         <h2>使い方でLightroomとLuminar Neoを選ぶ</h2>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-03.jpg" alt="タブレットでLightroomを操作しながらレンズを並べた作業環境" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/lightroom-03.jpg" alt="タブレットでLightroomを操作しながらレンズを並べた作業環境" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>上の表がなぜそうなるのか、普段の使い方から見ていきます。Luminar Neo側の基本情報から確認したい場合は<Link href="/luminar/">Luminar Neoの完全ガイド</Link>もあわせてどうぞ。</p>
         <h3 id="fit-lightroom">Lightroomが向いている人</h3>
         <p>写真を「資産」として扱う人ほどLightroom寄りになります。次の3つのどれかに当てはまるなら、乗り換えるより使い続けたほうが得です。</p>
@@ -141,7 +141,7 @@ export default async function Page() {
 
       <section id="price" className="content-card card-padding article-body">
         <h2>LightroomとLuminar Neoの料金比較（買い切り vs サブスク）</h2>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-02.jpg" alt="タブレット版Lightroomで写真を編集している様子" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/lightroom-02.jpg" alt="タブレット版Lightroomで写真を編集している様子" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>月額料金だけを見ると判断を誤ります。効いてくるのは<span className="m-mark-yellow">3年、5年と使い続けたときの総額</span>のほうです。</p>
         <h3 id="price-lightroom">Lightroomの料金体系</h3>
         <p>Lightroomを使うには、Adobe Creative Cloudのサブスクリプション契約が必要です。</p>
@@ -214,7 +214,7 @@ export default async function Page() {
       */}
       <section id="lightroom-buyout" className="content-card card-padding article-body">
         <h2>Lightroomに買い切り版はない</h2>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-01.jpg" alt="ノートPCでAdobe Lightroom Classicを起動しようとしている画面" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/lightroom-01.jpg" alt="ノートPCでAdobe Lightroom Classicを起動しようとしている画面" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p><strong>Adobe Lightroomに買い切り版はありません。</strong>販売されているのはサブスクリプションだけで、契約をやめると編集機能は使えなくなります。「昔は買い切りで買えたはず」という記憶は間違いではなく、パッケージ版のLightroom 6が売られていた時期はありました。ただし新規販売は終了していて、いま入手する手段はありません。</p>
         <h3 id="lr-annual">Lightroomの料金は年いくらか</h3>
         <p>買い切りと比較する前提として、Lightroomにかかる金額を整理しておきます。</p>
@@ -258,7 +258,7 @@ export default async function Page() {
 
       <section id="features" className="content-card card-padding article-body">
         <h2>LightroomとLuminar NeoのRAW現像・AI・合成の機能比較</h2>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-05.jpg" alt="LightroomとLuminar Neoの編集画面を比較するイメージ" width={1200} height={801} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/lightroom-05.jpg" alt="LightroomとLuminar Neoの編集画面を比較するイメージ" width={1200} height={801} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>LightroomとLuminar Neoはできることの範囲に大きな差があるわけではありません。どちらもRAW現像、色補正、部分調整、書き出しといった基本機能を備えています。違いは、<strong>それらの機能にどうアプローチするか</strong>という操作思想にあります。</p>
         <h3 id="feature-basic">基本的な現像機能の違い</h3>
         <p>露出・コントラスト・彩度といった基本の調整は、どちらでも同じことができます。違うのは<strong>触り方</strong>です。Lightroomは項目ごとにスライダーが並び、数値で追い込みます。Luminar Neoは「明るくしたい」という目的から入り、細部はAIが埋めます。</p>
@@ -367,7 +367,7 @@ export default async function Page() {
         <p>使い方が似ていても、撮るものが変われば答えは変わります。代表的な3ジャンルで見ていきます。</p>
         <h3 id="genre-landscape">風景・夜景</h3>
         <div className="m-media-box">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/dust-after-1.jpeg" alt="風景写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
+          <Image src="https://img.nightscape.tokyo/luminar/dust-after-1.jpeg" alt="風景写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
           <div className="m-media-body">
             <span className="m-media-body__verdict">Luminar Neoに優位性あり</span>
             <p>スカイAIによる空の置き換えや強調は、風景写真の印象を大きく左右します。曇り空で撮影した写真を青空やドラマチックな夕焼けに変更できるのは、撮影時の天候に左右されないという意味で強力な武器です。エンハンスAIによる風景全体の立体感強調も、ワンクリックで「おっ」という仕上がりに。</p>
@@ -376,7 +376,7 @@ export default async function Page() {
         </div>
         <h3 id="genre-portrait">ポートレート</h3>
         <div className="m-media-box">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/portrait-after.jpg" alt="ポートレート写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
+          <Image src="https://img.nightscape.tokyo/luminar/portrait-after.jpg" alt="ポートレート写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
           <div className="m-media-body">
             <span className="m-media-body__verdict">Luminar Neoが効率的</span>
             <p>フェイスAI、スキンAI、ボディAIといった人物専用ツールは、顔の各パーツを認識して個別に調整できます。目の明るさ、肌のなめらかさ、顔の輪郭など、ポートレートで求められる補正がスライダーで完結します。</p>
@@ -385,7 +385,7 @@ export default async function Page() {
         </div>
         <h3 id="genre-product">商品・商用写真</h3>
         <div className="m-media-box">
-          <Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/MH40.jpg" alt="商品写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
+          <Image src="https://img.nightscape.tokyo/luminar/MH40.jpg" alt="商品写真の作例" className="m-media-img" width={0} height={0} sizes="(max-width: 768px) 100vw, 30vw" style={{ height: 'auto' }} />
           <div className="m-media-body">
             <span className="m-media-body__verdict">Lightroomの堅実さが活きる</span>
             <p>商品写真は色の正確性と再現性が求められます。同じ商品を別の日に撮り直したとき、仕上がりの色味が揃っていなければなりません。Lightroomのカラーマネジメントとプロファイル適用は、この用途に最適化されています。</p>
@@ -396,7 +396,7 @@ export default async function Page() {
 
       <section id="migration" className="content-card card-padding article-body">
         <h2>LightroomからLuminar Neoに乗り換えるときの注意点</h2>
-        <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/lightroom-04.jpg" alt="Lightroomから乗り換える際の作業イメージ" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" /></div>
+        <div className="m-figure"><Image src="https://img.nightscape.tokyo/luminar/lightroom-04.jpg" alt="Lightroomから乗り換える際の作業イメージ" width={1200} height={800} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>Lightroomから移る場合、先に知っておきたい制約が2つあります。</p>
         {/* もとは3つの注意点が長い段落で並び、どれが制約でどれが対処なのか
             読み分けにくかった。制約は定義リスト、対処は本文に分けている。 */}

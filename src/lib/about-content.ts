@@ -39,55 +39,55 @@ export type AchievementBase = {
 
 export const ACHIEVEMENTS_BASE: AchievementBase[] = [
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/tokyo-station-4.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2023/01/tokyo-station-4.jpg",
     link: { title: "東京タワー", href: "https://www.tokyotower.co.jp/", siteName: "tokyotower.co.jp", excerpt: "東京タワーは1958年12月23日に開業した東京のランドマーク。2023年12月23日に開業65周年を迎えました。" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/prince-hotel-room-02.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2023/01/prince-hotel-room-02.jpg",
     link: { title: "お部屋から見える景色", href: "https://www.princehotels.co.jp/parktower/plan/guestroom_view/", siteName: "ザ・プリンス パークタワー東京", thumbnail: "https://www.princehotels.co.jp/image/pla_guestroomview.jpg", excerpt: "都会の中心で非日常を味わえるラグジュアリーな滞在を求める方や、夜景を愛する方におすすめのホテルです。" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2025/10/tower-1.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2025/10/tower-1.jpg",
     link: { title: "20th ANNIVERSARY｜ザ・プリンス パークタワー東京", href: "https://www.princehotels.co.jp/parktower/contents/20th/renewal.html", siteName: "ザ・プリンス パークタワー東京", excerpt: "ザ・プリンス パークタワー東京は、2025年で開業20周年を迎えます。" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/02/aserf-1-2.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2024/02/aserf-1-2.jpg",
     link: { title: "ホテルからの眺望紹介", href: "https://www.princehotels.co.jp/nagoya/plan/view/", siteName: "名古屋プリンスホテル スカイタワー", thumbnail: "https://www.princehotels.co.jp/nagoya/images/north-night-03.jpg", excerpt: "名古屋プリンスホテル スカイタワーから眼下に広がる夜景をお楽しみください" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/12/minatu-ugoku.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2024/12/minatu-ugoku.jpg",
     link: { title: "港、動く", href: "https://minato-ugoku.com/", siteName: "minato-ugoku.com", excerpt: "港区のナイトスポットの魅力を発信する動画コンテスト公式サイト。" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2025/01/nihon-densetu.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2025/01/nihon-densetu.jpg",
     link: { title: "HOME – 日本電設工業株式会社", href: "https://www.densetsuko.co.jp/", siteName: "日本電設工業株式会社", thumbnail: "https://www.densetsuko.co.jp/wp/wp-content/uploads/2024/11/og-image.png", excerpt: "インフラで 日本を支え 未来を築く 総合インフラ設備工事会社、日本電設工業（NDK）のWebサイトです。" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/02/08.jpg",
-    link: { title: "【体験記】AIROS Skyviewのヘリコプター遊覧で東京夜景を堪能してきた話。", href: "https://nightscape.tokyo/pickup/airos-skyview/", siteName: "東京夜景ナビ", thumbnail: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/02/21.jpg", excerpt: "東京タワーやスカイツリーなどのランドマークを上空から堪能できるヘリコプター遊覧の体験レポート。" },
+    image: "https://img.nightscape.tokyo/uploads/2024/02/08.jpg",
+    link: { title: "【体験記】AIROS Skyviewのヘリコプター遊覧で東京夜景を堪能してきた話。", href: "https://nightscape.tokyo/pickup/airos-skyview/", siteName: "東京夜景ナビ", thumbnail: "https://img.nightscape.tokyo/uploads/2024/02/21.jpg", excerpt: "東京タワーやスカイツリーなどのランドマークを上空から堪能できるヘリコプター遊覧の体験レポート。" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2025/02/restaurant-luke-2-1.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2025/02/restaurant-luke-2-1.jpg",
     link: { title: "「東京夜景ナビ」に当店の『SKY TERRACE』をご紹介いただきました", href: "https://www.restaurant-luke.com/news/8381/", siteName: "Restaurant LUKE with SKY LOUNGE", thumbnail: "https://www.restaurant-luke.com/wp-content/uploads/2024/02/221029-10.jpg", excerpt: "東京の夜景スポットを紹介する「東京夜景ナビ」にて、当店の期間限定プラン『SKY TERRACE』が紹介されました。" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/marunouchi-builuding-35-03.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2023/01/marunouchi-builuding-35-03.jpg",
     link: { title: "東京大回廊写真コンテスト｜Visit Chiyoda", href: "https://visit-chiyoda.tokyo/photo_contest/", siteName: "Visit Chiyoda", excerpt: "東京大回廊写真コンテスト｜東京の中心、東京都千代田区の観光情報公式ウェブサイト。" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2025/04/sample-tbs-1.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2025/04/sample-tbs-1.jpg",
     link: { title: "カンニング竹山の昼酒は人生の味。", href: "https://bs.tbs.co.jp/entertainment/hiruzake/", siteName: "BS-TBS", thumbnail: "https://bs.tbs.co.jp/images/program/5476.jpg", excerpt: "飲み仲間を探しに街へと繰り出す昼呑み番組。青空の下で、ルール無用の人情トークを展開！" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/07/shibuya-scrabble-1.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2023/07/shibuya-scrabble-1.jpg",
     link: { title: "〜天才ピアニスト 10年の空白を越えて〜 | スタニスラフ・ブーニン", href: "https://www.nhk.jp/p/ts/581332RQ53/episode/te/M6NWNQX4YG/", siteName: "NHK", thumbnail: "https://imgu.web.nhk/static/assets/images/tvseries/ts/581332RQ53/581332RQ53-eyecatch_3661a0c5dee272b624595807286efb99.jpg", excerpt: "天才ピアニスト、スタニスラフ・ブーニン。ケガを乗り越え、10年ぶりに本格ツアーを再開。復活までの格闘に密着。" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2024/11/zawatuku.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2024/11/zawatuku.jpg",
     link: { title: "ザワつく!金曜日｜テレビ朝日", href: "https://www.tv-asahi.co.jp/zawatsukufriday/", siteName: "テレビ朝日", thumbnail: "https://www.tv-asahi.co.jp/zawatsukufriday/OG.jpg", excerpt: "テレビ朝日「ザワつく!金曜日」番組公式サイト" },
   },
   {
-    image: "https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/uploads/2023/01/harumi-futo-1.jpg",
+    image: "https://img.nightscape.tokyo/uploads/2023/01/harumi-futo-1.jpg",
     link: { title: "コラム／アートリップ／風媒銀乱　伊原通夫作（東京都中央区）－朝日マリオン・コム－", href: "https://www.asahi-mullion.com/column/article/artrip/2470", siteName: "朝日マリオン・コム", thumbnail: "https://dn9bqdq7w42e9.cloudfront.net/articles/main/2f4ab2392d105ce4b877a8e038f18e0800091395.jpg", excerpt: "夕闇迫る東京湾。海の玄関口晴海客船ターミナルで、カメラを持った人々に行き会った。" },
   },
 ];

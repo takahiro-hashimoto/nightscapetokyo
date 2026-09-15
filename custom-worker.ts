@@ -11,6 +11,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore .open-next/worker.js は `opennextjs-cloudflare build` で生成される
 import { default as handler } from "./.open-next/worker.js";
+import { wpImageRedirectTarget } from "./src/lib/wp-image-redirect";
 
 type Env = {
   /** ローカルの wrangler dev 専用（.dev.vars で "1"）。本番には設定しない */
@@ -28,6 +29,9 @@ export default {
       url.protocol = "https:";
       return Response.redirect(url.toString(), 301);
     }
+    // WordPress 時代の画像 URL は画像の配信元（img.nightscape.tokyo）へ。Next を通さずここで返す
+    const wpImage = wpImageRedirectTarget(url.pathname);
+    if (wpImage) return Response.redirect(wpImage, 301);
     return handler.fetch(request, env, ctx);
   },
 };
