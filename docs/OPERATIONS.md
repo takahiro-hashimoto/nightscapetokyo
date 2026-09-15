@@ -35,7 +35,9 @@ npm run deploy:cron   # workers/cron を変更したとき
 - 本番稼働ブランチは `cloudflare-poc`（main は Vercel 時代の系譜）
 - Worker のエントリは `custom-worker.ts`（wrangler.jsonc の main）。OpenNext 生成の
   `.open-next/worker.js` を包み、Next に渡す前に次の 301 だけを行う
-  - http → https（ゾーンの Always Use HTTPS が OFF でも http で表示させないため）
+  （判定は src/lib/edge-redirects.ts。どれも1回で最終 URL に着くようにしてある）
+  - http → https、www → apex（ゾーンの Always Use HTTPS が OFF でも http で表示させないため。
+    末尾スラッシュも trailingSlash と同じ規則で最終形にする）
   - WordPress 時代の画像 URL `/wp-content/uploads/…` → `img.nightscape.tokyo/uploads/…`
     （外部リンク・画像検索に残る旧 URL の救済。サイズ付き -1024x683 等は元画像へ。
     ロジックは src/lib/wp-image-redirect.ts）

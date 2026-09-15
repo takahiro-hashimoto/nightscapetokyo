@@ -1,6 +1,6 @@
 // Cloudflare Workers のエントリ（wrangler.jsonc の main）。
-// OpenNext が生成する .open-next/worker.js を包み、Next に渡す前に http → https の
-// リダイレクトだけを行う。
+// OpenNext が生成する .open-next/worker.js を包み、Next に渡す前に 301 だけを返す
+// （http → https・www 外し・WordPress 時代の画像 URL。判定は src/lib/edge-redirects.ts）。
 //
 // ゾーンの「Always Use HTTPS」が OFF で、http://nightscape.tokyo/ が 200 のまま
 // 表示されていた（2026-09 の SEO 監査で発覚）。ダッシュボードの設定に依存させず
@@ -11,7 +11,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore .open-next/worker.js は `opennextjs-cloudflare build` で生成される
 import { default as handler } from "./.open-next/worker.js";
-import { wpImageRedirectTarget } from "./src/lib/wp-image-redirect";
+import { edgeRedirect } from "./src/lib/edge-redirects";
 
 type Env = {
   /** ローカルの wrangler dev 専用（.dev.vars で "1"）。本番には設定しない */
@@ -20,18 +20,11 @@ type Env = {
 
 export default {
   async fetch(request: Request, env: Env, ctx: unknown): Promise<Response> {
-    const url = new URL(request.url);
     // wrangler dev（opennextjs-cloudflare preview）は routes に合わせてリクエストを
     // 「http の nightscape.tokyo」として渡してくるため、ホスト名ではローカルと区別できない。
-    // ローカルでは .dev.vars の SKIP_HTTPS_REDIRECT=1 で止める（無いと全部 301 になる）
-    const isProductionHost = url.hostname === "nightscape.tokyo" || url.hostname === "www.nightscape.tokyo";
-    if (url.protocol === "http:" && isProductionHost && env.SKIP_HTTPS_REDIRECT !== "1") {
-      url.protocol = "https:";
-      return Response.redirect(url.toString(), 301);
-    }
-    // WordPress 時代の画像 URL は画像の配信元（img.nightscape.tokyo）へ。Next を通さずここで返す
-    const wpImage = wpImageRedirectTarget(url.pathname);
-    if (wpImage) return Response.redirect(wpImage, 301);
+    // ローカルでは .dev.vars の SKIP_HTTPS_REDIRECT=1 で https 化を止める（無いと全部 301 になる）
+    const target = edgeRedirect(new URL(request.url), { enforceHttps: env.SKIP_HTTPS_REDIRECT !== "1" });
+    if (target) return Response.redirect(target, 301);
     return handler.fetch(request, env, ctx);
   },
 };
