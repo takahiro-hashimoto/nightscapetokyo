@@ -56,7 +56,8 @@ export default function HomeMapSection({
       "@type": "ListItem",
       position: i + 1,
       name: spot.name,
-      url: `${SITE_URL}/${spot.categorySlug}/${spot.slug}/`,
+      // 翻訳トップでは各言語版のスポットを指す（以前は常に日本語版 URL になっていた）
+      url: `${SITE_URL}${localePrefix ?? ""}/${spot.categorySlug}/${spot.slug}/`,
     })),
   };
 

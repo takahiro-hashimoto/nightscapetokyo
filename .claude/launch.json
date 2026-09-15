@@ -7,6 +7,20 @@
       "runtimeArgs": ["node_modules/.bin/next", "dev", "--webpack", "-p", "3001"],
       "port": 3001,
       "autoPort": false
+    },
+    {
+      "name": "prod-local",
+      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeArgs": ["node_modules/.bin/next", "start", "-p", "3002"],
+      "port": 3002,
+      "autoPort": false
+    },
+    {
+      "name": "worker-local",
+      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeArgs": ["node_modules/.bin/opennextjs-cloudflare", "preview"],
+      "port": 8787,
+      "autoPort": false
     }
   ]
 }

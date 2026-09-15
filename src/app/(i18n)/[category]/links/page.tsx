@@ -11,6 +11,7 @@ import {
   buildAreaHreflangAlternates,
 } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
+import { notFoundUnlessLocale } from "@/lib/i18n-route-guard";
 
 export const dynamic = "force-static";
 
@@ -220,10 +221,6 @@ const LINKS_LABELS: Record<string, LinksLabels> = {
   },
 };
 
-// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
-// これが無いと /chiyoda/links/ 等が英語版を自己canonical付きで返し重複コンテンツになる
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((lang) => ({ category: lang }));
 }
@@ -263,6 +260,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function LinksPageI18n({ params }: Props) {
   const { category } = await params;
+  notFoundUnlessLocale(category);
   const locale = category;
   const l = LINKS_LABELS[locale] ?? LINKS_LABELS.en;
 

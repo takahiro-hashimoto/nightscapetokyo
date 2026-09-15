@@ -2,14 +2,42 @@ import type React from "react";
 import type { SiteLocale } from "@/lib/types";
 import type { ComponentLabels } from "./types";
 
+/**
+ * スポットの meta description の書き出しに使うリード文。
+ * 以前は全スポットが同じ定型文で、検索結果で差が出なかった。各スポット固有の
+ * lead を先頭に置き、長い場合は後ろの定型部分が切れないよう文単位で詰める
+ */
+function leadForDescription(lead: string | null | undefined, max: number): string {
+  const text = (lead ?? "").replace(/\s+/g, " ").trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const end = Math.max(...["。", "！", "？", ". ", "! ", "? "].map((p) => cut.lastIndexOf(p)));
+  return end > max * 0.4 ? cut.slice(0, end + 1).trim() : `${cut.trim()}…`;
+}
+
+/**
+ * 翻訳ページ用。翻訳に lead が無いと日本語の lead がそのまま渡ってくる
+ * （queries/spots.ts のマージ仕様）ので、かなを含むものは使わない
+ */
+function translatedLead(lead: string | null | undefined): string | null {
+  return lead && !/[ぁ-んァ-ヶ]/.test(lead) ? lead : null;
+}
+
+/** 文末に句点が無ければ補う */
+function withStop(text: string, stop: string): string {
+  return /[。！？.!?…]$/.test(text) ? text : `${text}${stop}`;
+}
+
 const LABELS = {
   ja: {
-    seoH1: (name) => `${name}の行き方・営業時間・夜景見どころガイド`,
-    seoDescription: (name, area, type, _lead) => {
+    seoH1: (name) => `${name}の夜景｜行き方・営業時間・見どころ`,
+    seoDescription: (name, area, type, lead) => {
       if (type === "hotel")
         return `${area}にある${name}の夜景情報を紹介。客室やレストランからの夜景・眺望、アクセス、宿泊料金など、夜景が楽しめるホテルをお探しの方はぜひ確認してみて下さい！`;
       if (type === "event")
         return `${name}のイベント情報を紹介。開催期間・開催時間・場所・アクセス方法などイベントの詳細を知りたい方はぜひ確認してみて下さい！`;
+      const head = leadForDescription(lead, 80);
+      if (head) return `${withStop(head, "。")}${name}への行き方・営業時間・料金と、夜景が綺麗に見える時間を紹介。`;
       return `${area}にある${name}の夜景・夕景情報を紹介。${name}への行き方・住所・営業時間・入場料金・最寄駅・眺望の見どころ、何時に訪れるのがおすすめかなどを知りたい方はぜひ確認してみて下さい！`;
     },
     heroImageAlt: (name) => `${name}の夜景`,
@@ -46,6 +74,7 @@ const LABELS = {
       eventVenue: "開催場所",
       eventHours: "開催時間",
       hotelInfo: "ホテル情報",
+      affiliateNote: "【PR】提携先の予約サイトへのリンクです",
       checkinCheckout: "チェックイン / アウト",
       amenity: "アメニティ",
     },
@@ -170,8 +199,8 @@ const LABELS = {
       emptyState: "このエリアにはまだ翻訳済みスポットがありません。",
     },
     homePage: {
-      seoTitle: (year) => `【${year}年】東京のおすすめ夜景スポットを定番から穴場まで200以上掲載 | 東京夜景ナビ`,
-      seoDescription: "東京都内の夜景が綺麗な場所を200ヶ所以上掲載！東京タワー、スカイツリーなどのランドマークが綺麗に見える場所、定番の展望台、無料の穴場夜景スポット、夜景が綺麗なホテルなどを紹介しているので、告白スポット、デート、旅行、撮影スポットの目的地探しにお役立てください。",
+      seoTitle: (year, spotCount) => `東京の夜景スポット${spotCount ?? 200}選【${year}年】写真家が現地で撮影・採点 | 東京夜景ナビ`,
+      seoDescription: "現役の夜景フォトグラファーが実際に訪れて撮影した東京の夜景スポット200ヶ所以上を、美しさ・アクセス・雰囲気・コスパの4項目で採点。無料の展望台や穴場、夜景が綺麗なホテルまで、今日の日没時刻とあわせて探せます。",
       hero: {
         catchphrase: "輝きの街の魅力、再発見。",
         subtitle: (count) => `東京の夜景スポットを定番から穴場まで紹介！デート・旅行・写真撮影におすすめの場所がわかる【${count}件掲載】`,
@@ -188,7 +217,7 @@ const LABELS = {
         names: { observatory: "展望台", building: "高層ビル", park: "公園", bridge: "橋", hotel: "ホテル", event: "イベント", waterfront: "水辺", mountain: "山・丘" },
       },
       spotRanking: {
-        heading: (year) => `東京都内の夜景スポット ランキング【${year}年】`,
+        heading: (year) => `東京・横浜の夜景スポット ランキング【${year}年】`,
         desc1: "実際に訪問した200ヶ所以上の東京の夜景スポットの中からおすすめの場所をランキング形式でご紹介！",
         desc2: "各スポットの評価は美しさ、アクセスの良さ、雰囲気の良さ、コスパの4項目から決定しています。デートや撮影の目的先を決めるのにご活用ください。",
         moreLink: "東京の夜景スポットおすすめランキング",
@@ -211,7 +240,7 @@ const LABELS = {
         heading: "東京の夜景に関するよくある質問",
         items: [
           { question: "本日の日没時間と夜景鑑賞におすすめの時間帯は何時ですか？", answer: "__SUNSET_DYNAMIC__" },
-          { question: "東京でおすすめの夜景スポットはどこですか？", answer: "東京でおすすめの夜景スポットは、SHIBUYA SKY、東京都庁展望室（無料）、豊洲ぐるり公園、東京タワー、レインボーブリッジなどです。本サイトでは200ヶ所以上を実際に訪れた経験をもとに、評価・アクセス情報とともに紹介しています。" },
+          { question: "東京でおすすめの夜景スポットはどこですか？", answer: "東京でおすすめの夜景スポットは、当サイトのランキング上位の和田倉噴水公園、KITTEガーデン屋上庭園、東京タワー展望台、東京都庁展望室（無料）、渋谷スカイなどです。本サイトでは200ヶ所以上を実際に訪れた経験をもとに、評価・アクセス情報とともに紹介しています。" },
           { question: "東京で無料で夜景を楽しめる場所はどこですか？", answer: "無料で楽しめる夜景スポットとして、東京都庁南展望室・北展望室、タワーホール船堀展望台、豊洲ぐるり公園、若洲海浜公園、和田倉噴水公園などがおすすめです。入場料なしで都心の絶景を楽しめます。" },
           { question: "東京の夜景デート・告白におすすめの場所はどこですか？", answer: "デートや告白には、和田倉噴水公園、KITTE屋上庭園、豊洲ぐるり公園、若洲海浜公園などがおすすめです。美しい夜景を眺めながら落ち着いた雰囲気で過ごせます。" },
           { question: "東京タワーが見えるおすすめ夜景スポットはどこですか？", answer: "東京タワーが綺麗に見えるスポットとして、ザ・プリンス パークタワー東京（客室）、増上寺、芝公園、六本木ヒルズ周辺などが人気です。角度によって異なる表情が楽しめます。" },
@@ -261,8 +290,9 @@ const LABELS = {
     },
     notFound: {
       title: "ページが見つかりませんでした",
-      desc: "お探しのページは移動または削除された可能性があります。",
+      desc: "URLが変わったか、ページが削除された可能性があります。人気の夜景スポットやエリアから探してみてください。",
       button: "トップページに戻る",
+      popularHeading: "人気の夜景スポット",
     },
     homeAuthor: {
       heading: "東京夜景ナビについて",
@@ -281,12 +311,14 @@ const LABELS = {
     },
   },
   en: {
-    seoH1: (name) => `${name}: Access, Hours & Night View Guide`,
-    seoDescription: (name, area, type, _lead) => {
+    seoH1: (name) => `${name} Night View Guide: Access & Hours`,
+    seoDescription: (name, area, type, lead) => {
       if (type === "hotel")
         return `Discover night views from ${name} in ${area}. Find room views, restaurant panoramas, access info, and rates for this hotel with stunning nightscape.`;
       if (type === "event")
         return `Event details for ${name}. Find event dates, hours, location, and access information.`;
+      const head = leadForDescription(translatedLead(lead), 110);
+      if (head) return `${withStop(head, ".")} Directions, hours, admission and the best time to see the night view.`;
       return `Night view guide for ${name} in ${area}. Directions, address, hours, admission, nearest station, scenic highlights, and the best time to visit.`;
     },
     heroImageAlt: (name) => `Night view from ${name}`,
@@ -323,6 +355,7 @@ const LABELS = {
       eventVenue: "Venue",
       eventHours: "Event Hours",
       hotelInfo: "Hotel Information",
+      affiliateNote: "[PR] Links to partner booking sites",
       checkinCheckout: "Check-in / Check-out",
       amenity: "Amenities",
     },
@@ -449,8 +482,8 @@ const LABELS = {
       emptyState: "No translated spots available in this area yet.",
     },
     homePage: {
-      seoTitle: (year) => `Best Tokyo Night View Spots in Japan (${year}) — 200+ Iconic & Hidden Gems | Tokyo Night View Guide`,
-      seoDescription: "The ultimate guide to 200+ Tokyo night view spots for sightseeing and photography. Discover Tokyo Tower, Skytree, free observatories, hidden gems, and rooftop bars. Plan your Tokyo night tour with ratings, access info, and sunset times.",
+      seoTitle: (year, spotCount) => `Best Night Views in Tokyo ${year}: ${spotCount ?? "200+"} Spots Rated by a Local`,
+      seoDescription: "Free observation decks, Tokyo Tower views and hidden gems, each visited and rated by a Tokyo night view photographer. With tonight's sunset time, hours and access.",
       hero: {
         catchphrase: "The Ultimate Guide to Tokyo Nightscapes.",
         subtitle: (count) => `Plan your Tokyo night itinerary with ${count} hand-picked spots — from must-see landmarks to local hidden gems`,
@@ -583,8 +616,9 @@ const LABELS = {
     },
     notFound: {
       title: "Page Not Found",
-      desc: "The page you are looking for may have been moved or deleted.",
+      desc: "The URL may have changed, or the page may have been removed. Try one of the popular spots or areas below.",
       button: "Back to Home",
+      popularHeading: "Popular Night View Spots",
     },
     homeAuthor: {
       heading: "About Tokyo Nightscape Navi",
@@ -610,11 +644,13 @@ const LABELS = {
   },
   ko: {
     seoH1: (name) => `${name} 야경 가이드 | 교통편・영업시간・요금 총정리`,
-    seoDescription: (name, area, type, _lead) => {
+    seoDescription: (name, area, type, lead) => {
       if (type === "hotel")
         return `도쿄 ${area}에서 야경이 아름다운 호텔 ${name}. 객실·레스토랑 전망, 교통편, 숙박 요금 등 상세 정보를 확인하세요.`;
       if (type === "event")
         return `${name} 이벤트 정보. 개최 기간·시간·장소·교통편 등 상세 내용을 한눈에 확인하세요.`;
+      const head = leadForDescription(translatedLead(lead), 80);
+      if (head) return `${withStop(head, ".")} 교통편・영업시간・입장료와 야경이 가장 아름다운 시간을 확인하세요.`;
       return `도쿄 여행 중 ${area}의 야경 명소 ${name}. 교통편·영업시간·입장료·최적 방문 시간까지 한눈에 확인하세요. 야경 사진, 데이트 코스, 관광 계획에 활용하세요.`;
     },
     heroImageAlt: (name) => `${name}의 야경`,
@@ -651,6 +687,7 @@ const LABELS = {
       eventVenue: "개최 장소",
       eventHours: "개최 시간",
       hotelInfo: "호텔 정보",
+      affiliateNote: "[PR] 제휴 예약 사이트 링크입니다",
       checkinCheckout: "체크인 / 체크아웃",
       amenity: "어메니티",
     },
@@ -897,8 +934,9 @@ const LABELS = {
     },
     notFound: {
       title: "페이지를 찾을 수 없습니다",
-      desc: "찾으시는 페이지가 이동되었거나 삭제되었을 수 있습니다.",
+      desc: "URL이 변경되었거나 페이지가 삭제되었을 수 있습니다. 아래 인기 스폿이나 지역에서 찾아보세요.",
       button: "홈으로 돌아가기",
+      popularHeading: "인기 야경 스폿",
     },
     homeAuthor: {
       heading: "도쿄 야경 나비에 대하여",
@@ -923,11 +961,13 @@ const LABELS = {
   },
   tw: {
     seoH1: (name) => `${name}的交通方式・營業時間・夜景看點指南`,
-    seoDescription: (name, area, type, _lead) => {
+    seoDescription: (name, area, type, lead) => {
       if (type === "hotel")
         return `東京${area}夜景飯店${name}。客房及餐廳的夜景、交通方式、住宿費用等詳細資訊一覽，是尋找夜景飯店的最佳參考。`;
       if (type === "event")
         return `${name}活動資訊。舉辦期間、時間、地點及交通方式等詳情一次掌握。`;
+      const head = leadForDescription(translatedLead(lead), 70);
+      if (head) return `${withStop(head, "。")}交通方式、營業時間、票價及最佳夜景時段一次掌握。`;
       return `東京${area}必訪夜景景點${name}完整攻略。交通方式、營業時間、票價及最佳觀賞時段一次掌握，適合攝影愛好者、情侶約會及觀光旅遊。`;
     },
     heroImageAlt: (name) => `${name}的夜景`,
@@ -964,6 +1004,7 @@ const LABELS = {
       eventVenue: "活動地點",
       eventHours: "活動時間",
       hotelInfo: "飯店資訊",
+      affiliateNote: "【PR】合作訂房・訂票網站連結",
       checkinCheckout: "入住 / 退房",
       amenity: "設施服務",
     },
@@ -1209,8 +1250,9 @@ const LABELS = {
     },
     notFound: {
       title: "找不到頁面",
-      desc: "您尋找的頁面可能已被移動或刪除。",
+      desc: "網址可能已變更，或頁面已被刪除。請從下方的熱門景點或地區尋找。",
       button: "返回首頁",
+      popularHeading: "熱門夜景景點",
     },
     homeAuthor: {
       heading: "關於東京夜景導航",
@@ -1235,11 +1277,13 @@ const LABELS = {
   },
   cn: {
     seoH1: (name) => `${name}的交通方式・营业时间・夜景看点指南`,
-    seoDescription: (name, area, type, _lead) => {
+    seoDescription: (name, area, type, lead) => {
       if (type === "hotel")
         return `东京${area}夜景酒店${name}。客房及餐厅的夜景、交通方式、住宿费用等详细信息一览，是寻找夜景酒店的最佳参考。`;
       if (type === "event")
         return `${name}活动信息。举办时间、地点及交通方式等详情一次掌握。`;
+      const head = leadForDescription(translatedLead(lead), 70);
+      if (head) return `${withStop(head, "。")}交通路线、营业时间、票价及最佳夜景时间一目了然。`;
       return `东京${area}必游夜景景点${name}全攻略。交通路线、营业时间、票价及最佳观赏时间一目了然，适合摄影爱好者、情侣约会及观光游览。`;
     },
     heroImageAlt: (name) => `${name}的夜景`,
@@ -1276,6 +1320,7 @@ const LABELS = {
       eventVenue: "活动地点",
       eventHours: "活动时间",
       hotelInfo: "酒店信息",
+      affiliateNote: "【PR】合作订房・订票网站链接",
       checkinCheckout: "入住 / 退房",
       amenity: "设施服务",
     },
@@ -1521,8 +1566,9 @@ const LABELS = {
     },
     notFound: {
       title: "找不到页面",
-      desc: "您寻找的页面可能已被移动或删除。",
+      desc: "网址可能已变更，或页面已被删除。请从下方的热门景点或地区查找。",
       button: "返回首页",
+      popularHeading: "热门夜景景点",
     },
     homeAuthor: {
       heading: "关于东京夜景导航",

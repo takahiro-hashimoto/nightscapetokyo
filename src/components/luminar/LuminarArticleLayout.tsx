@@ -19,6 +19,8 @@ import { SaleSettingsProvider } from '@/contexts/SaleSettingsContext'
 type Props = {
   slug: string
   title: string
+  /** H1 に出す見出し。<title> と変えたいときだけ指定する（未指定なら title） */
+  h1?: string
   description: string
   publishedAt: string
   updatedAt: string
@@ -37,6 +39,20 @@ function formatDate(isoString: string): string {
     day: 'numeric',
     timeZone: 'Asia/Tokyo',
   })
+}
+
+// luminar/layout.tsx の title.template は「%s | Luminar Neo 完全購入ガイド」で、
+// 接尾辞だけで22字ある。記事タイトル本体は30〜47字あり、付けると64〜69字になって
+// 検索結果で後半が切れていた。本体＋接尾辞がこの字数を超える場合は absolute にして
+// 接尾辞を付けない（現状は全記事が該当する）。サイト名は og:site_name・パンくず・
+// JSON-LD の publisher で伝わるので、<title> から外しても識別には困らない。
+const TITLE_MAX_LENGTH = 45
+const TITLE_SUFFIX = ` | ${LUMINAR_SITE_NAME}`
+
+function resolveTitle(title: string): Metadata['title'] {
+  // 絵文字などサロゲートペアを1字と数えるため、length ではなくコードポイントで数える
+  const length = [...title].length + [...TITLE_SUFFIX].length
+  return length <= TITLE_MAX_LENGTH ? title : { absolute: title }
 }
 
 export function buildArticleMetadata({
@@ -59,7 +75,7 @@ export function buildArticleMetadata({
   // Next.js は openGraph / twitter を浅くマージ（＝丸ごと置換）するため、
   // luminar/layout.tsx の siteName / locale / card は継承されない。ここで明示する
   return {
-    title,
+    title: resolveTitle(title),
     description,
     openGraph: {
       type: 'article',
@@ -92,6 +108,7 @@ export function buildArticleMetadata({
 export default async function LuminarArticleLayout({
   slug,
   title,
+  h1,
   description,
   publishedAt,
   updatedAt,
@@ -146,7 +163,7 @@ export default async function LuminarArticleLayout({
               )}
               <header className="firstVisual-header">
                 <h1 className="firstVisual-title" itemProp="headline">
-                  {title}
+                  {h1 ?? title}
                 </h1>
                 <div className="firstVisual-meta">
                   <time

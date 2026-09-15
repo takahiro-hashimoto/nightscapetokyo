@@ -77,6 +77,9 @@ const nextConfig: NextConfig = {
 
   experimental: {
     optimizePackageImports: ["lucide-react", "suncalc"],
+    // ルートレイアウトが (ja)・(site)・(i18n) の3つあり、どれにも一致しない URL の 404 を
+    // 組み立てる共通レイアウトが無い。app/global-not-found.tsx で受ける
+    globalNotFound: true,
   },
 
   async redirects() {

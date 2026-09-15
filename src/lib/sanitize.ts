@@ -413,3 +413,23 @@ export function sanitizeHtml(html: string): string {
     // CMS 由来の iframe（YouTube・Google Maps 等）は遅延ロード
     .replace(/<iframe\b(?![^>]*\bloading\b)/gi, '<iframe loading="lazy"');
 }
+
+/**
+ * 提携先（アフィリエイト）の貼り付け HTML 用。sanitizeHtml に加えて、
+ * すべての <a> の rel を "sponsored nofollow noopener" に揃える。
+ * Google は有償リンクに rel="sponsored" を求めているが、DB に貼られた HTML は
+ * 提携先ごとに rel がばらばら（nofollow だけ等）なので、出力時に強制する。
+ */
+export function sanitizeAffiliateHtml(html: string): string {
+  return sanitize(sanitizeHtml(html), {
+    // 1回目で無害化済みなので、ここではタグ・属性を削らず rel の書き換えだけ行う
+    allowedTags: false,
+    allowedAttributes: false,
+    transformTags: {
+      a: (tagName, attribs) => ({
+        tagName,
+        attribs: { ...attribs, rel: "sponsored nofollow noopener" },
+      }),
+    },
+  });
+}

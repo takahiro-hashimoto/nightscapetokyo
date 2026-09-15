@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { fitTitle } from "@/lib/metadata";
 import Link from "@/components/common/AppLink";
 import TagArticle from "@/components/tag/TagArticle";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
@@ -33,6 +34,7 @@ import { tagPageContents, dummyTagSpots } from "@/lib/dummy-tag-data";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
 import { getComponentLabels, TAG_ARTICLE_LABELS } from "@/lib/i18n-labels";
 import type { SiteLocale } from "@/lib/types";
+import { toSpotListCardItems } from "@/lib/spot-list-props";
 
 /*
  * URL: /en/tag/date, /tw/tag/date
@@ -220,7 +222,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const languages = buildTagHreflangAlternates(SITE_URL, tagSlug, availableLocales);
 
   return {
-    title,
+    title: fitTitle(title, SITE_NAMES[localeSlug] ?? SITE_NAMES.en, localeSlug),
     description,
     openGraph: {
       type: "article",
@@ -311,8 +313,9 @@ export default async function TranslatedTagPage({ params }: Props) {
             {spots.length > 0 && (
               <section aria-labelledby="spotlist-heading">
                 <h2 className="visually-hidden" id="spotlist-heading">{title}</h2>
+                {/* クライアントへは描画に使う値だけ渡す。翻訳版は住所・駅名を描画しないので省く */}
                 <AreaSpotList
-                  spots={spots}
+                  spots={toSpotListCardItems(spots, { localized: true })}
                   localeSlug={localeSlug}
                   showAds={false}
                   labels={{

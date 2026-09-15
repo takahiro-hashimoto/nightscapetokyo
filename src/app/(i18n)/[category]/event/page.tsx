@@ -7,6 +7,7 @@ import AreaSpotList from "@/components/area/AreaSpotList";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { LOCALE_LABELS } from "@/lib/types";
+import { notFoundUnlessLocale } from "@/lib/i18n-route-guard";
 
 type EventLabels = {
   title: string;
@@ -57,9 +58,6 @@ const EVENT_LABELS: Record<string, EventLabels> = {
 };
 
 /* ─── Static params ─── */
-// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
-// これが無いと /chiyoda/event/ 等が英語版を自己canonical付きで返し重複コンテンツになる
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((lang) => ({ category: lang }));
@@ -110,6 +108,7 @@ export const fetchCache = "force-cache";
 /* ─── Page ─── */
 export default async function EventPageI18n({ params }: Props) {
   const { category: locale } = await params;
+  notFoundUnlessLocale(locale);
   const labels = EVENT_LABELS[locale];
   if (!labels) return null;
 

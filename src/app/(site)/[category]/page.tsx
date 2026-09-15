@@ -43,6 +43,7 @@ import {
   ALL_OG_LOCALES,
 } from "@/lib/types";
 import type { SpotListItem } from "@/lib/types";
+import { toSpotListCardItems } from "@/lib/spot-list-props";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { calculateSunData } from "@/lib/sun-calc";
 import { buildFaqJsonLd, buildItemListJsonLd, buildAreaItemListJsonLd, buildCollectionPageJsonLd, localeToLanguage } from "@/lib/json-ld";
@@ -195,7 +196,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (ALL_LOCALE_SLUGS.includes(categorySlug)) {
     const labels = getComponentLabels(categorySlug);
     const hp = labels.homePage;
-    const title = hp.seoTitle(new Date().getFullYear());
+    const spotCount = await getTotalSpotCount().catch(() => 200);
+    const title = hp.seoTitle(new Date().getFullYear(), spotCount);
     const description = hp.seoDescription;
     const canonicalUrl = `${SITE_URL}/${categorySlug}/`;
     const ogLocale = OG_LOCALE_MAP[categorySlug] ?? "en_US";
@@ -323,7 +325,7 @@ export default async function AreaPage({ params }: Props) {
           localeLabels={LOCALE_LABELS}
         />
         <HeroSection labels={hp.hero} localeSlug={localeSlug} spotCount={spotCount} />
-        <SpotRanking spots={spots} labels={hp.spotRanking} localeSlug={localeSlug} />
+        <SpotRanking spots={spots} labels={hp.spotRanking} ratingNames={labels.rating} localeSlug={localeSlug} />
         <HotelRanking hotels={hotels} labels={hp.hotelRanking} localeSlug={localeSlug} />
         <PurposeSearch tags={purposeTags} labels={hp.purposeSearch} localeSlug={localeSlug} />
         <AreaSearch areas={areas} labels={hp.areaSearch} localeSlug={localeSlug} />
@@ -373,6 +375,7 @@ export default async function AreaPage({ params }: Props) {
                 buildFaqJsonLd(faqItems, {
                   sunsetTime: sunData.sunsetTime,
                   inLanguage,
+                  labels: hp.faq,
                 })
               ),
             }}
@@ -447,7 +450,8 @@ export default async function AreaPage({ params }: Props) {
         ) : (
           <section aria-labelledby="spotlist-heading">
             <h2 className="visually-hidden" id="spotlist-heading">{cat.name}の夜景スポット</h2>
-            <AreaSpotList spots={spots} showAds={false} />
+            {/* クライアントへは描画に使う値だけ渡す（RSC ペイロード削減） */}
+            <AreaSpotList spots={toSpotListCardItems(spots)} showAds={false} />
           </section>
         )}
 

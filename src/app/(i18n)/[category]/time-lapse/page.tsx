@@ -9,6 +9,7 @@ import { YouTubeEmbed, extractYouTubeIds, type Video } from "@/components/time-l
 import { ALL_LOCALE_SLUGS, LOCALE_LABELS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, SITE_NAMES, buildAreaHreflangAlternates } from "@/lib/types";
 import { getTimeLapseSpots } from "@/lib/supabase/queries";
 import { getComponentLabels } from "@/lib/i18n-labels";
+import { notFoundUnlessLocale } from "@/lib/i18n-route-guard";
 
 type SubsectionLabel = {
   heading: string;
@@ -324,10 +325,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
-// これが無いと /chiyoda/time-lapse/ 等が英語版を自己canonical付きで返し重複コンテンツになる
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((locale) => ({ category: locale }));
 }
@@ -337,6 +334,7 @@ export const fetchCache = "force-cache";
 
 export default async function TimeLapseLocalePage({ params }: PageProps) {
   const { category: locale } = await params;
+  notFoundUnlessLocale(locale);
   const l = LABELS[locale] ?? LABELS.en;
   const componentLabels = getComponentLabels(locale);
 

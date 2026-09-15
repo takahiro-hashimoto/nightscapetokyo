@@ -135,7 +135,7 @@ export default async function Page() {
           </dl>
         </div>
         <p style={{ textAlign: 'center', margin: '2rem 0' }}>
-          <a href="https://skylum.evyy.net/mO9BEa" className="m-btn m-btn--primary" target="_blank" rel="noopener">Luminar Neo公式サイトで詳細を確認する</a>
+          <a href="https://skylum.evyy.net/mO9BEa" className="m-btn m-btn--primary" target="_blank" rel="sponsored noopener">Luminar Neo公式サイトで詳細を確認する</a>
         </p>
       </section>
 

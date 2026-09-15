@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
+  "main": "custom-worker.ts",
   "name": "nightscape-tokyo",
   "compatibility_date": "2025-08-01",
   // Node の crypto（timingSafeEqual）と @aws-sdk/client-s3 のために必須

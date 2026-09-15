@@ -22,7 +22,8 @@ import { jsonLdHtml } from "@/lib/json-ld-script";
 
 export async function generateMetadata(): Promise<Metadata> {
   const hp = getComponentLabels("ja").homePage;
-  const title = hp.seoTitle(new Date().getFullYear());
+  const spotCount = await getTotalSpotCount().catch(() => 200);
+  const title = hp.seoTitle(new Date().getFullYear(), spotCount);
   const description = hp.seoDescription;
   return {
     title: { absolute: title },
@@ -76,6 +77,9 @@ export default async function Home() {
       />
       <HeroSection labels={labels.homePage.hero} spotCount={spotCount} />
       <SpotRanking spots={spots} prBanner={<HomePrBanner />} />
+      {/* 運営者の実績（東京タワー公式映像・NHK 提供・受賞歴）はこのサイト最大の信頼の根拠。
+          以前はページ最下部にあり、ほぼ読まれない位置だったのでランキングの直後に置く */}
+      <HomeAuthor />
       <HotelRanking hotels={hotels} />
       <PurposeSearch tags={purposeTags} />
       <AreaSearch areas={areas} />
@@ -91,7 +95,6 @@ export default async function Home() {
       <Suspense fallback={null}>
         <HomeFaq faqs={faqItems} sunsetTime={sunData.sunsetTime} labels={labels.homePage.faq} />
       </Suspense>
-      <HomeAuthor />
       <SpotShare
         url={SITE_URL}
         title="東京夜景ナビ｜東京都内の夜景スポット情報サイト"

@@ -4,15 +4,18 @@ import Image from 'next/image'
 import Link from '@/components/common/AppLink'
 import LuminarArticleLayout, { buildArticleMetadata } from '@/components/luminar/LuminarArticleLayout'
 import type { TocItem } from '@/lib/luminar/toc'
-import { getActiveCoupon } from '@/lib/luminar/config'
+import { getActiveCoupon, type ActiveCoupon } from '@/lib/luminar/config'
+import { PLANS, PLAN_ORDER, PRICING_CONFIRMED_AT, yen, approxYen } from '@/lib/luminar/pricing'
 
 
+// title・description はクーポン（期間限定か通常か）で文言が変わるため、
+// モジュール読み込み時に固定せず、生成のたびに getActiveCoupon() から組み立てる。
+// 期間限定クーポンが切れたあとの再生成（日次 cron）で自動的に通常クーポン表記に戻る。
 const META = {
   slug: 'sale-and-coupon-info',
-  title: 'Luminar Neoを安く買う方法｜セール時期・クーポンコードまとめ【2026年】',
-  description: '「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」Luminar Neoは定価だと3〜7万円ほどする写真編集ソフトですが、実は購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能です。',
   publishedAt: '2026-01-18T10:36:49',
-  updatedAt: '2026-08-13T00:00:00',
+  // 期間限定クーポン nightscape20 に差し替えた日
+  updatedAt: '2026-09-10T00:00:00',
   featuredImage: {
     src: 'https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/how-to-buy.jpg',
     alt: 'Luminar Neoのセール時期はいつ？クーポンコードと安く買う方法について徹底解説【2026年最新】',
@@ -32,8 +35,39 @@ const TOC: TocItem[] = [
   { id: 'summary', level: 2, text: 'まとめ：一番安く買う方法' },
 ]
 
+// 2026/8/5 に製品名は「Luminar」へ変わったが、検索されているのはまだ旧名が中心なので
+// title は「Luminar Neo」で始める。H1 は現行名を先に出し、旧名を括弧で添える。
+const H1 = 'Luminar（旧Luminar Neo）を安く買う方法｜今使えるクーポンとセール時期'
+
+/** 45字前後に収める。サイト名の接尾辞は buildArticleMetadata 側で外れる（absolute） */
+function buildTitle(coupon: ActiveCoupon): string {
+  return `Luminar Neoクーポン${coupon.discount}OFF・セール最新情報｜安く買う方法【2026年】`
+}
+
+/** 120字以内。期間限定クーポンのときだけ期間を添える */
+function buildDescription(coupon: ActiveCoupon): string {
+  const period = coupon.periodLabel ? `（${coupon.periodLabel}）` : ''
+  return `当サイト限定クーポン「${coupon.code}」で${coupon.discount}OFF${period}。セール時期の傾向、クーポンの使い方、3プランの価格を公式ストアの情報をもとに掲載。`
+}
+
+/**
+ * セール価格にクーポンの割引率を掛けた目安（円）。
+ * 併用できるかは購入画面でしか分からないので、表では「併用できた場合の目安」として出す。
+ * 割引率が読めない表記（"10%" 以外の形）なら null を返し、表では「—」にする。
+ */
+function priceWithCoupon(sale: number, coupon: ActiveCoupon): number | null {
+  const rate = Number.parseFloat(coupon.discount)
+  if (!Number.isFinite(rate) || rate <= 0 || rate >= 100) return null
+  return Math.round((sale * (100 - rate)) / 100)
+}
+
 export async function generateMetadata(): Promise<Metadata> {
-  return buildArticleMetadata(META)
+  const coupon = getActiveCoupon()
+  return buildArticleMetadata({
+    ...META,
+    title: buildTitle(coupon),
+    description: buildDescription(coupon),
+  })
 }
 
 // もとはリード冒頭に「現在のセール状況」の m-notice があったが、開催状況と残り日数は
@@ -42,7 +76,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const lead = (
     <>
       <p>「Luminar Neoを一番安く買う方法は？」「今セールやってる？クーポンはある？」</p>
-      <p>Luminar Neoは定価だと3〜7万円ほどする写真編集ソフトですが、実は<strong>購入タイミングとクーポンの使い方次第で、1万円台で手に入れることも可能</strong>です。</p>
+      {/* もとは「1万円台で手に入れることも可能」としていたが、これはセール価格にクーポンを
+          重ねられた場合にしか成り立たない（公式規約上、割引の併用は不可）。併用に依存しない言い方にしている。 */}
+      <p>Luminar Neoは定価だと4〜6万円台する写真編集ソフトですが、実は<strong>セールの時期に買うだけで、定価から大きく値下がりします</strong>。そこに当サイト限定クーポンを重ねられれば、さらに安くなります。</p>
+      <p>なお、2026年8月に製品名が Luminar Neo から「Luminar」に変わりました。このページでは検索されやすい旧名 Luminar Neo も併記しています。</p>
       <p>ただしセールの開催時期は年によってずれるので、今買うべきか次を待つべきかの判断が難しいところです。</p>
       <p>そこで本記事では、現在使えるクーポンコード、過去のセール傾向から読み解く次回セールの予想、そしてお得に購入するための具体的な方法を詳しく解説します。「今買うべきか、セールを待つべきか」の判断材料にしてください。</p>
       <div className="m-point-box">
@@ -60,10 +97,14 @@ const lead = (
     </>
 )
 
+// 本文の FAQ（#faq-1〜6）と同じ順・同じ問数にそろえる。
+// もとは体験版と Proツールの2問が抜けて4問しかなかった。
 const FAQ_JSON_LD = [
   { '@type': 'Question', name: '購入後に気に入らなかった場合は？', acceptedAnswer: { '@type': 'Answer', text: 'Luminar Neoには購入後30日間の返金保証があります。実際に使ってみて合わないと感じた場合でも、リスクなく試せる仕組みです。返金手続きはサポートに連絡するだけで完了します。' } },
+  { '@type': 'Question', name: '無料体験版はある？', acceptedAnswer: { '@type': 'Answer', text: 'はい、7日間の無料体験版があります。ただし、セール期間中は体験版を試している間にセールが終わってしまうリスクがあります。返金保証が30日間あるため、セール中であれば先に購入してしまうのがおすすめです。' } },
   { '@type': 'Question', name: 'クーポンはセール価格と併用できる？', acceptedAnswer: { '@type': 'Answer', text: '公式の規約上は割引の併用は不可とされており、併用できるかどうかは時期やキャンペーンによって異なります。購入画面でプロモーションコードを入力し、割引が適用されるかを確認してから決済してください。クーポン同士（複数のプロモーションコード）の併用はできません。' } },
   { '@type': 'Question', name: '何台のPCで使える？', acceptedAnswer: { '@type': 'Answer', text: '買い切りのデスクトップ専用ライセンスは2台のパソコンでアクティベートできます。全プラットフォームライセンスはさらに3台のモバイルデバイスでも利用可能です。' } },
+  { '@type': 'Question', name: '買い切りプランだけでProツールは使える？', acceptedAnswer: { '@type': 'Answer', text: 'はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Luminar Primeが必要なのは、AIツールの継続利用や新機能アップデートを受け取りたい場合のみです。' } },
   { '@type': 'Question', name: '1年で使えなくなる機能があるの？', acceptedAnswer: { '@type': 'Answer', text: '基本機能（Sky AI、補正AI、電線除去など）は永久に使えます。1年で期限が切れるのはGenErase・GenSwap・GenExpandという3つの生成AI機能のみで、継続利用にはLuminar Primeの契約が必要です。Proツールも買い切りに含まれており永続的に使えます。' } },
 ]
 
@@ -74,12 +115,50 @@ export default async function Page() {
 
   return (
     <>
-    <LuminarArticleLayout {...META} categoryIds={[1]} toc={TOC} lead={lead}>
+    <LuminarArticleLayout
+      {...META}
+      title={buildTitle(coupon)}
+      h1={H1}
+      description={buildDescription(coupon)}
+      categoryIds={[1]}
+      toc={TOC}
+      lead={lead}
+    >
 
       <section id="how-to-save" className="content-card card-padding article-body">
         <h2>Luminar Neoを安く買う3つの方法</h2>
         <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-neo-sale.jpg" alt="Luminar Neoを安く買う3つの方法" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
         <p>そもそもLuminar Neoがどんなソフトなのかは<Link href="/luminar/">Luminar Neoの完全ガイド</Link>で解説しています。ここでは価格を下げる方法に絞ります。</p>
+        {/* 金額は pricing.ts から出す（記事に直書きしない）。表の形は expand / luminar-plan の
+            m-table に合わせている。クーポン列は計算上の目安で、併用可否は保証しない */}
+        <p>まずは基準になる価格です。買い切り3プランの価格は次のとおりです。</p>
+        <div className="m-table-wrap">
+          <table className="m-table">
+            <thead>
+              <tr>
+                <th>プラン</th>
+                <th>通常価格</th>
+                <th>確認時の価格</th>
+                <th>クーポン{coupon.discount}OFF<br /><small>（併用できた場合の目安）</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              {PLAN_ORDER.map((key) => {
+                const plan = PLANS[key]
+                const withCoupon = priceWithCoupon(plan.sale, coupon)
+                return (
+                  <tr key={key}>
+                    <td><strong>{plan.name}</strong><br /><small>（{plan.devices}）</small></td>
+                    <td>{plan.regular != null ? yen(plan.regular) : '—'}</td>
+                    <td><strong>{yen(plan.sale)}</strong></td>
+                    <td>{withCoupon != null ? approxYen(withCoupon) : '—'}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="m-note">※価格は{new Date(PRICING_CONFIRMED_AT).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}に公式ストアで確認したものです。「確認時の価格」はその時点のセール価格で、時期により変動します。通常価格が「—」のプランは、公式ストアに通常価格の表示がありません。クーポン列は確認時の価格から{coupon.discount}引いた計算上の目安で、セール価格と併用できるかは購入画面で確認してください。</p>
         <p>セールがない時期でも、安く買う手はあります。僕が実際に使っているのは次の3つです。</p>
         <h3 id="save-coupon">プロモーションコード（クーポン）を利用する</h3>
         <p>セール開催の有無にかかわらず、当サイト限定のクーポンコード「{coupon.code}」が使えます{coupon.periodLabel && `（${coupon.periodLabel}の期間限定）`}。購入画面でコードを入力するだけで{coupon.discount}OFFになります。</p>
@@ -160,7 +239,7 @@ export default async function Page() {
             <div className="m-step__num">1</div>
             <div className="m-step__content">
               <p className="m-step__title">プランを選択</p>
-              <p className="m-step__desc">まずはLuminar Neo公式サイト（<a href="https://skylum.evyy.net/mO9BEa" target="_blank" rel="noopener nofollow">skylum.com</a>）にアクセス。</p>
+              <p className="m-step__desc">まずはLuminar Neo公式サイト（<a href="https://skylum.evyy.net/mO9BEa" target="_blank" rel="sponsored nofollow noopener">skylum.com</a>）にアクセス。</p>
               <p className="m-step__desc">「デスクトップ専用ライセンス」「全プラットフォームライセンス」「Maxライセンス」の3つから選択し、購入ボタンをクリック。迷ったら、スマホで編集しないかぎり<strong>デスクトップ専用ライセンス</strong>で十分です。</p>
               <div className="m-figure"><Image src="https://pub-7d430b8241bc4d38b717b9e2905120d8.r2.dev/luminar/luminar-cuopon-01.jpg" alt="Luminarの買い切り3プラン（デスクトップ専用・全プラットフォーム・Max）の価格と違いを比較した図" width={880} height={495} sizes="(max-width: 768px) 100vw, 880px" /></div>
               <p className="m-step__desc text-xsmall">※上図は通常価格です。実際の購入画面では、開催中のセールに応じて割引後の価格が表示されます。</p>
@@ -197,7 +276,7 @@ export default async function Page() {
           </div>
           <div id="faq-2" className="faq-item">
             <dt className="faq-q">無料体験版はある？</dt>
-            <dd className="faq-a">はい、7日間の無料体験版があります。ただし、セール期間中は体験版を試している間にセールが終わってしまうリスクがあります。返金保証が30日間あるため、セール中であれば先に購入してしまうのがおすすめです。</dd>
+            <dd className="faq-a">はい、7日間の無料体験版があります。ただし、セール期間中は体験版を試している間にセールが終わってしまうリスクがあります。返金保証が30日間あるため、セール中であれば先に購入してしまうのがおすすめです。体験版の入手手順と製品版との違いは<Link href="/luminar/trial/">体験版のダウンロード方法</Link>にまとめています。</dd>
           </div>
           <div id="faq-3" className="faq-item">
             <dt className="faq-q">クーポンはセール価格と併用できる？</dt>
@@ -209,7 +288,7 @@ export default async function Page() {
           </div>
           <div id="faq-5" className="faq-item">
             <dt className="faq-q">買い切りプランだけでProツールは使える？</dt>
-            <dd className="faq-a">はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Luminar Primeが必要なのは、AIツールの継続利用や新機能アップデートを受け取りたい場合のみです。</dd>
+            <dd className="faq-a">はい、使えます。Proツール（Noiseless AI、HDR Mergeなど8種）は、現在はすべての買い切り（永久）ライセンスに標準で含まれており、永続的に使えます。Luminar Primeが必要なのは、AIツールの継続利用や新機能アップデートを受け取りたい場合のみです。8種それぞれで何ができるかは<Link href="/luminar/expand/">Proツール8種の解説</Link>で紹介しています。</dd>
           </div>
           <div id="faq-6" className="faq-item">
             <dt className="faq-q">1年で使えなくなる機能があるの？</dt>

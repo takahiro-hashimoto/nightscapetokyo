@@ -40,7 +40,7 @@ const lead = (
     <p>Luminar Neoは体験版が7日間しかなく、判断しきれないまま購入を決めることになりがちです。自分のPCで動くのか、使っているカメラのRAWに対応しているのか、買ったあとで気づいても手遅れな項目がいくつかあります。</p>
     <p>このページでは、購入前によく寄せられる疑問をSkylum公式のカスタマーサポートにも問い合わせた上でQ&amp;A形式でまとめました。細かい解説は専門ページに任せて、ここでは「YES or NO」でサクッと判断できるようにしています。気になる項目だけチェックしてみてくださいね。</p>
     <p>なお、公式サイトにもFAQページがあるので、あわせて参考にしてみてください。<br />
-    <i className="fa-solid fa-arrow-right"></i> <a href="https://skylum.evyy.net/OeGRoW" target="_blank" rel="noopener nofollow">Luminar Neo公式FAQ（Skylum）</a></p>
+    <i className="fa-solid fa-arrow-right"></i> <a href="https://skylum.evyy.net/OeGRoW" target="_blank" rel="sponsored nofollow noopener">Luminar Neo公式FAQ（Skylum）</a></p>
     <p>購入前に疑問をひととおり解消しておきたい方は、ぜひチェックしてみてください。</p>
   </>
 )
@@ -314,7 +314,7 @@ export default async function Page() {
         <div id="faq-18" className="faq-item">
           <dt className="faq-q">Luminar Primeはどこで買える？</dt>
           <dd className="faq-a">
-            Skylum公式サイトから購入できます。すでに買い切りライセンスを持っている方は、Skylumアカウント（<a href="https://skylum.evyy.net/7a3mLg" target="_blank" rel="noopener nofollow">https://skylum.com/account/my-software</a>）にログインすると、Luminar Primeのみを追加購入するオファーが表示されることがあります。
+            Skylum公式サイトから購入できます。すでに買い切りライセンスを持っている方は、Skylumアカウント（<a href="https://skylum.evyy.net/7a3mLg" target="_blank" rel="sponsored nofollow noopener">https://skylum.com/account/my-software</a>）にログインすると、Luminar Primeのみを追加購入するオファーが表示されることがあります。
           </dd>
         </div>
         <div className="faq-item faq-item-last">

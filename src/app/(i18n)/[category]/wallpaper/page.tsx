@@ -9,11 +9,9 @@ import { ALL_LOCALE_SLUGS, SITE_URL, LOCALE_LABELS, OG_LOCALE_MAP, ALL_OG_LOCALE
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import { WALLPAPER_LABELS, WALLPAPERS } from "@/lib/wallpaper-content";
+import { notFoundUnlessLocale } from "@/lib/i18n-route-guard";
 
 /* ─── Static params ─── */
-// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
-// これが無いと /chiyoda/wallpaper/ 等が英語版を自己canonical付きで返し重複コンテンツになる
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((lang) => ({ category: lang }));
@@ -60,6 +58,7 @@ export const fetchCache = "force-cache";
 /* ─── Page ─── */
 export default async function WallpaperPageI18n({ params }: Props) {
   const { category: locale } = await params;
+  notFoundUnlessLocale(locale);
   const labels = WALLPAPER_LABELS[locale];
   if (!labels) return null;
   const componentLabels = getComponentLabels(locale);

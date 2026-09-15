@@ -4,12 +4,9 @@ import LanguageSwitcher from "@/components/spot/LanguageSwitcher";
 import { LOCALE_LABELS, ALL_LOCALE_SLUGS, SITE_URL, OG_LOCALE_MAP, ALL_OG_LOCALES, SITE_NAMES, buildAreaHreflangAlternates } from "@/lib/types";
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { GUIDELINES_LABELS } from "@/lib/i18n-static-pages";
+import { notFoundUnlessLocale } from "@/lib/i18n-route-guard";
 
 export const dynamic = "force-static";
-
-// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
-// これが無いと /chiyoda/guidelines/ 等が英語版を自己canonical付きで返し重複コンテンツになる
-export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((c) => ({ category: c }));
@@ -51,6 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function I18nGuidelinesPage({ params }: Props) {
   const { category } = await params;
+  notFoundUnlessLocale(category);
   const locale = category;
   const l = GUIDELINES_LABELS[locale] ?? GUIDELINES_LABELS.en;
 

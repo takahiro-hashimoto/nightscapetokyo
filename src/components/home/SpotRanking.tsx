@@ -6,14 +6,20 @@ import { Star, Train } from "lucide-react";
 import type { HomePageLabels } from "@/lib/i18n-labels";
 import type { ReactNode } from "react";
 
+type RatingNames = { beautiful: string; access: string; atmosphere: string; cost: string };
+
+const JA_RATING_NAMES: RatingNames = { beautiful: "美しさ", access: "アクセス", atmosphere: "雰囲気", cost: "コスパ" };
+
 type Props = {
   spots: SpotListItem[];
   labels?: HomePageLabels["spotRanking"];
+  /** 4項目評価の名前（翻訳トップでは ComponentLabels.rating を渡す） */
+  ratingNames?: RatingNames;
   localeSlug?: string;
   prBanner?: ReactNode;
 };
 
-export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Props) {
+export default function SpotRanking({ spots, labels, ratingNames = JA_RATING_NAMES, localeSlug, prBanner }: Props) {
   const currentYear = new Date().getFullYear();
   if (spots.length === 0) return null;
 
@@ -24,7 +30,7 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
       <div className="home-container">
         {prBanner}
         <h2 className="home-section-heading">
-          {labels?.heading(currentYear) ?? `東京都内の夜景スポット ランキング【${currentYear}年】`}
+          {labels?.heading(currentYear) ?? `東京・横浜の夜景スポット ランキング【${currentYear}年】`}
         </h2>
         <p className="home-section-desc">
           {labels?.desc1 ?? <>実際に訪問した200ヶ所以上の東京の夜景スポットの中からおすすめの場所をランキング形式でご紹介！</>}
@@ -35,6 +41,16 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
         <ol className="ranking-grid">
           {spots.map((spot, i) => {
             const stationText = spot.station_names;
+            // 平均の★だけでは「なぜこの順位か」が伝わらない。採点の内訳はこのサイト独自の
+            // 情報なので、取得済みの4項目をそのまま見せる（未採点の項目は出さない）
+            const subScores = (
+              [
+                [ratingNames.beautiful, spot.rating_beautiful],
+                [ratingNames.access, spot.rating_access],
+                [ratingNames.atmosphere, spot.rating_atmosphere],
+                [ratingNames.cost, spot.rating_cost],
+              ] as const
+            ).filter((s): s is readonly [string, number] => s[1] != null);
             return (
             <li key={spot.id}>
             <Link
@@ -70,6 +86,15 @@ export default function SpotRanking({ spots, labels, localeSlug, prBanner }: Pro
                   </div>
                 </div>
                 <h3 className="spot-card-title">{spot.name}</h3>
+                {subScores.length > 0 && (
+                  <ul className="spot-card-subscores">
+                    {subScores.map(([name, score]) => (
+                      <li key={name}>
+                        {name}<b>{score.toFixed(1)}</b>
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <p className="spot-card-lead">{spot.lead}</p>
                 {stationText && !localeSlug && (
                   <p className="spot-card-station">

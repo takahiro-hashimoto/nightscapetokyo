@@ -38,6 +38,8 @@ export type InfoLabels = {
   hotelInfo: string;
   checkinCheckout: string;
   amenity: string;
+  /** 提携先（アフィリエイト）リンクの直前に出す広告表記 */
+  affiliateNote: string;
 };
 
 export type AccessLabels = {
@@ -129,7 +131,7 @@ export type FooterLabels = {
 };
 
 export type HomePageLabels = {
-  seoTitle: (year: number) => string;
+  seoTitle: (year: number, spotCount?: number) => string;
   seoDescription: string;
   hero: {
     catchphrase: string;
@@ -235,6 +237,8 @@ export type NotFoundLabels = {
   title: string;
   desc: string;
   button: string;
+  /** 404 から探し直すための人気スポット一覧の見出し */
+  popularHeading: string;
 };
 
 export type HomeAuthorLabels = {

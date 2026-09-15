@@ -103,10 +103,10 @@ export default function SpotArticle({
           localeLabels={LOCALE_LABELS}
         />
 
-        <article
-          itemScope
-          itemType="https://schema.org/TouristAttraction"
-        >
+        {/* 構造化データは JSON-LD（jsonLdSchemas）に一本化する。以前ここにあった
+            microdata の TouristAttraction は JSON-LD の Place と別の名無しエンティティになり、
+            存在しない author プロパティまで持っていた */}
+        <article>
           {jsonLdSchemas.map((schema, i) => (
             <script
               key={i}
@@ -124,7 +124,7 @@ export default function SpotArticle({
             closedBadge={labels.closedBadge}
           />
 
-          <div className="article-meta" itemProp="author" itemScope itemType="https://schema.org/Person">
+          <div className="article-meta">
             <div className="meta-left">
               <span className="meta-date">
                 <span className="meta-date-label">{fl.updated}：</span>
@@ -143,7 +143,7 @@ export default function SpotArticle({
               </span>
               <span className="meta-author">
                 <span className="meta-date-label">{fl.authorLabel}：</span>
-                <Link href={currentLocale ? `/${currentLocale}/about/` : "/about/"} itemProp="url"><span itemProp="name">{fl.author}</span></Link>
+                <Link href={currentLocale ? `/${currentLocale}/about/` : "/about/"}>{fl.author}</Link>
               </span>
             </div>
             {!currentLocale && (

@@ -2,6 +2,7 @@ import { sanitizeHtml } from "@/lib/sanitize";
 import Image from "next/image";
 import Link from "@/components/common/AppLink";
 import { Star, MapPin, Clock, Banknote, Mountain, Train } from "lucide-react";
+import type { CSSProperties } from "react";
 import type { SpotWithRelations, SiteLocale } from "@/lib/types";
 import { calcRatingAvg } from "@/lib/types";
 import { TAG_SPOT_CARD_LABELS, TAG_SLIDER_LABELS, localizeAffiliateHtml } from "@/lib/i18n-labels";
@@ -39,19 +40,13 @@ function SpotInfoRows({ spot, avg, ratingItems, isHotel, l }: InfoRowsProps) {
           </th>
           <td>
             <span className="article-star-wrapper">
-              <span className="article-star-rating">
-                {[1, 2, 3, 4, 5].map((i) => {
-                  const fill = Math.min(100, Math.max(0, (avg - (i - 1)) * 100));
-                  return (
-                    <span key={i} className="star-icon">
-                      <Star size={20} fill="#d1d5db" stroke="none" aria-hidden="true" />
-                      <span className="star-fill" style={{ width: `${fill}%` }}>
-                        <Star size={20} fill="#eab308" stroke="none" aria-hidden="true" />
-                      </span>
-                    </span>
-                  );
-                })}
-              </span>
+              {/* 星5個×2層を SVG で描くと1カード10個になり、/tag/date/ では
+                  RSC ペイロードの4割（約330KB）を星の SVG が占めていた。CSS マスク1要素で描く */}
+              <span
+                className="css-stars"
+                style={{ "--rating": Math.min(5, Math.max(0, avg)) } as CSSProperties}
+                aria-hidden="true"
+              />
               <span className="article-star-score">{avg.toFixed(1)}</span>
             </span>
           </td>

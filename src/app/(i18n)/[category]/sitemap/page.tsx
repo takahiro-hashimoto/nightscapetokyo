@@ -7,12 +7,9 @@ import type { CategoryPageProps as Props, SiteLocale } from "@/lib/types";
 import { supabase } from "@/lib/supabase/client";
 import { SITEMAP_LABELS } from "@/lib/i18n-static-pages";
 import { TAG_NAME } from "@/lib/constants";
+import { notFoundUnlessLocale } from "@/lib/i18n-route-guard";
 
 export const revalidate = false;
-
-// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
-// これが無いと /chiyoda/sitemap/ 等が英語版を自己canonical付きで返し重複コンテンツになる
-export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((c) => ({ category: c }));
@@ -125,6 +122,7 @@ async function getSitemapData(dbLocale: string, locale: string) {
 
 export default async function I18nSitemapPage({ params }: Props) {
   const { category } = await params;
+  notFoundUnlessLocale(category);
   const locale = category;
   const dbLocale = LOCALE_SLUG_MAP[locale] ?? "en";
   const l = SITEMAP_LABELS[locale] ?? SITEMAP_LABELS.en;

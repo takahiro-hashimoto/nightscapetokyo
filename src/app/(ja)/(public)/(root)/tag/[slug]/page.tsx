@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { fitTitle } from "@/lib/metadata";
 import type { ReactNode } from "react";
 import Link from "@/components/common/AppLink";
 import TagArticle from "@/components/tag/TagArticle";
@@ -15,6 +16,7 @@ import { shouldSkipStaticGenerationForPreview } from "@/lib/vercel";
 import { SITE_URL, calcRatingAvg, LOCALE_LABELS, OG_LOCALE_MAP, ALL_LOCALE_SLUGS, buildTagHreflangAlternates } from "@/lib/types";
 import { getComponentLabels } from "@/lib/i18n-labels";
 import type { SpotListItem, SpotWithRelations } from "@/lib/types";
+import { toSpotListCardItems } from "@/lib/spot-list-props";
 import { tagPageContents, dummyTagSpots } from "@/lib/dummy-tag-data";
 import type { TagPageContent } from "@/lib/dummy-tag-data";
 import { jsonLdHtml } from "@/lib/json-ld-script";
@@ -183,14 +185,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : content.lead.split("\n")[0];
 
     return {
-      title: content.title,
+      title: fitTitle(content.title, "東京夜景ナビ", "ja"),
       description: tagDescription,
       openGraph: {
         type: "article",
         title: content.title,
         description: tagDescription,
         url: canonicalUrl,
-        siteName: "nightscape.tokyo",
+        siteName: "東京夜景ナビ",
         locale: "ja_JP",
         alternateLocale: availableLocales.map((s) => OG_LOCALE_MAP[s]).filter(Boolean),
         publishedTime: dbPage?.created_at ?? dbPage?.updated_at ?? undefined,
@@ -234,7 +236,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description: `「${tag.name}」に関連する夜景スポットの一覧です。`,
       url: canonicalUrl,
-      siteName: "nightscape.tokyo",
+      siteName: "東京夜景ナビ",
       locale: "ja_JP",
       images: heroImage ? [{ url: heroImage, width: 1200, height: 630, alt: title }] : undefined,
     },
@@ -421,7 +423,8 @@ export default async function TagPage({ params }: Props) {
         ) : (
           <section aria-labelledby="spotlist-heading">
             <h2 className="visually-hidden" id="spotlist-heading">{tagName}の夜景スポット</h2>
-            <AreaSpotList spots={spots} showAds={false} />
+            {/* クライアントへは描画に使う値だけ渡す（RSC ペイロード削減） */}
+            <AreaSpotList spots={toSpotListCardItems(spots)} showAds={false} />
           </section>
         )}
 

@@ -1,5 +1,6 @@
 import { SITE_URL, LOCALE_CONFIG, calcRatingAvg, buildSpotUrl } from "@/lib/types";
 import type { SpotListItem, SpotWithRelations } from "@/lib/types";
+import type { HomePageLabels } from "@/lib/i18n-labels";
 
 /** BCP 47 language codes for schema.org inLanguage（LOCALE_CONFIG から自動導出） */
 const LOCALE_LANGUAGE_MAP: Record<string, string> = {
@@ -53,22 +54,53 @@ function addMinutes(time: string, minutes: number): string {
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
 }
 
+/**
+ * 翻訳ページの FAQ 回答文。HomeFaq（画面側）と同じラベルを使う。
+ * 省略時は日本語の既定文になる。翻訳トップでこれを渡し忘れると、
+ * 画面は英語なのに構造化データだけ日本語になる（2026-09 に en/ko で発生）
+ */
+type FaqAnswerLabels = Partial<
+  Pick<
+    HomePageLabels["faq"],
+    | "sunsetAnswer"
+    | "sunsetUnavailable"
+    | "simulatorLinkText"
+    | "simulatorSuffix"
+    | "moonLinkText"
+    | "moonSuffix"
+    | "twilightPrefix"
+    | "twilightLinkText"
+    | "twilightSuffix"
+  >
+>;
+
 export function resolveFaqAnswerText(
   answer: string,
-  sunsetTime: string | null
+  sunsetTime: string | null,
+  labels?: FaqAnswerLabels
 ): string {
   if (answer === "__SUNSET_DYNAMIC__") {
-    if (!sunsetTime) return "日没後30〜40分が夜景の見頃です。";
+    if (!sunsetTime) return labels?.sunsetUnavailable ?? "日没後30〜40分が夜景の見頃です。";
     const from = addMinutes(sunsetTime, 20);
     const to = addMinutes(sunsetTime, 40);
+    if (labels?.sunsetAnswer) return labels.sunsetAnswer(sunsetTime, from, to);
     return `本日の東京都の日没時間は${sunsetTime}です。${from}〜${to}が夜景が綺麗に見える時間になります。`;
   }
   if (answer === "__SIMULATOR_LINK__") {
+    if (labels?.simulatorLinkText) return `${labels.simulatorLinkText}${labels.simulatorSuffix ?? ""}`;
     return "日の出・日の入り方角シミュレーターを利用すると簡単に夕日が沈む方向をチェックすることができます。";
+  }
+  if (answer === "__MOON_LINK__") {
+    // 以前はここが無く、プレースホルダー文字列がそのまま回答として出力されていた
+    if (labels?.moonLinkText) return `${labels.moonLinkText}${labels.moonSuffix ?? ""}`;
+    return "月の出・月の入り時刻方角ナビを使うと、日付・場所を指定して月の出・月の入りの時刻と方角を地図上で確認できます。";
   }
   if (answer === "__TWILIGHT_LINK__") {
     // リッチリザルトには生テキストがそのまま出るため、パス文字列
     // （/article/twilight/）は載せない。誘導は本文リンク側で行う
+    if (labels?.twilightPrefix) {
+      return `${labels.twilightPrefix}${labels.twilightLinkText ?? ""}${labels.twilightSuffix ?? ""}`;
+    }
     return "日没とともに点灯を始めるライトアップが多く、空に夕焼け色が残る「マジックアワー」から深い青に染まる「ブルーアワー」にかけてが夜景鑑賞・撮影の黄金時間です。詳しくは「マジックアワーとは？夜景鑑賞・撮影の黄金時間を解説」をご覧ください。";
   }
   return answer;
@@ -80,7 +112,10 @@ export function buildWebSiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": WEBSITE_ID,
-    name: "nightscape.tokyo",
+    // 検索結果に出る「サイト名」は WebSite.name から決まる。ドメイン名ではなく
+    // 日本語のブランド名を正とし、ドメイン表記は alternateName に回す
+    name: "東京夜景ナビ",
+    alternateName: ["nightscape.tokyo", "Tokyo Night View Guide"],
     // trailingSlash: true のため SITE_URL 単体（末尾スラッシュなし）は
     // 308 リダイレクトになる。構造化データには実体 URL を書く
     url: `${SITE_URL}/`,
@@ -102,10 +137,11 @@ export function buildOrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": ORGANIZATION_ID,
-    name: "nightscape.tokyo",
+    name: "東京夜景ナビ",
+    alternateName: ["nightscape.tokyo", "Tokyo Night View Guide"],
     url: `${SITE_URL}/`,
     description:
-      "Tokyo night view spot guide operated by a night view photographer. 200,000–300,000 monthly visitors.",
+      "夜景フォトグラファーが運営する東京の夜景スポット情報サイト。東京・横浜の夜景スポット200ヶ所以上を実際に訪れて撮影・採点している。月間20〜30万PV。",
     logo: {
       "@type": "ImageObject",
       url: `${SITE_URL}/logo.png`,
@@ -243,9 +279,9 @@ export function buildSiteNavigationJsonLdForLocale(locale: string) {
 /** FAQPage（トップ・エリアページ等で使用） */
 export function buildFaqJsonLd(
   faqs: { question: string; answer: string }[],
-  options: { sunsetTime?: string | null; inLanguage?: string } = {}
+  options: { sunsetTime?: string | null; inLanguage?: string; labels?: FaqAnswerLabels } = {}
 ) {
-  const { sunsetTime = null, inLanguage = "ja" } = options;
+  const { sunsetTime = null, inLanguage = "ja", labels } = options;
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -255,7 +291,7 @@ export function buildFaqJsonLd(
       name: faq.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: resolveFaqAnswerText(faq.answer, sunsetTime),
+        text: resolveFaqAnswerText(faq.answer, sunsetTime, labels),
       },
     })),
   };

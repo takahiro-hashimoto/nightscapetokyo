@@ -23,11 +23,9 @@ import {
 import type { CategoryPageProps as Props } from "@/lib/types";
 import { EQUIPMENT, ABOUT_SNS_LINKS, ACHIEVEMENTS_BASE } from "@/lib/about-content";
 import { ABOUT_LABELS } from "@/lib/about-labels";
+import { notFoundUnlessLocale } from "@/lib/i18n-route-guard";
 
 /* ─── Static params & metadata ─── */
-// ロケール以外の [category]（エリアslug等）で 200 を返さないようにする。
-// これが無いと /chiyoda/about/ 等が英語版を自己canonical付きで返し重複コンテンツになる
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return ALL_LOCALE_SLUGS.map((lang) => ({ category: lang }));
@@ -72,6 +70,7 @@ export const dynamic = "force-static";
 /* ─── Page ─── */
 export default async function AboutPageI18n({ params }: Props) {
   const { category } = await params;
+  notFoundUnlessLocale(category);
   const locale = category;
   const l = ABOUT_LABELS[locale] ?? ABOUT_LABELS.en;
 

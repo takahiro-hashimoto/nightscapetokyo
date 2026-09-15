@@ -180,7 +180,7 @@ export function buildSpotJsonLd(spot: SpotWithRelations, canonicalUrl: string, l
     // 著者・発行元の実体は Organization / Organization.founder 側で
     // 定義済み（レイアウトで全ページに出力）。ここは @id 参照 + 表示名のみ
     author: { "@type": "Person", "@id": AUTHOR_PERSON_ID, name: "タカヒロ" },
-    publisher: { "@type": "Organization", "@id": ORGANIZATION_ID, name: "nightscape.tokyo" },
+    publisher: { "@type": "Organization", "@id": ORGANIZATION_ID, name: "東京夜景ナビ" },
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -30,6 +30,9 @@ npm run deploy:cron   # workers/cron を変更したとき
 - push 前に `npm run build` が通ることを確認する（CLAUDE.md ルール）
 - `build` は css:minify を自動実行する（non-critical.css の反映漏れ防止）
 - 本番稼働ブランチは `cloudflare-poc`（main は Vercel 時代の系譜）
+- Worker のエントリは `custom-worker.ts`（wrangler.jsonc の main）。OpenNext 生成の
+  `.open-next/worker.js` を包み、http → https の 301 だけを先に行う
+  （ゾーンの Always Use HTTPS が OFF でも http で表示させないため）
 
 ## バックアップ
 
@@ -128,8 +131,18 @@ GitHub Actions:
 - Workers Free プランは CPU 10ms 制限で SSR が Error 1102 を吐く。Paid 必須
 - 日付処理は必ず timeZone: "Asia/Tokyo" を明示（ビルド環境のTZで1日ずれる）
 - proxy.ts(middleware) は OpenNext 非対応。認可は (protected)/layout.tsx が担う
+- ビルド前に `.next/cache/turbopack` も消す（`npm run build` に組み込み済み）。Turbopack の
+  永続キャッシュが編集前の globals.css を使い回し、ソースにある CSS がビルド結果から
+  丸ごと抜けたことがある（2026-09、404 ページの CSS で発覚。消して再ビルドで解消）。
+  ビルドは数十秒遅くなるが、古いものが本番に出るよりよい
 - ビルド前に `.next/cache/fetch-cache` を必ず消す（`npm run build` に組み込み済み）。
   ここには unstable_cache / fetch のデータキャッシュが残り、本番で revalidate しても
   手元には伝わらない。消さずにビルドすると、最大で数週間前のデータでページが生成され、
   デプロイのたびに本番の内容が巻き戻る（2026-09 にセール表示で発覚）
+- `export const dynamicParams = false` は使わない。OpenNext では、事前生成分が R2 に
+  無いとき（deploy:quick 後や R2 の14日自動削除後）に Next が NoFallbackError を投げ、
+  OpenNext が次の候補ルートで描き直す。/en/about/ が (site)/[category]/[slug] に回されて
+  「about というスポットは無い」404 がキャッシュされ、多言語の固定ページ 8種×4言語が
+  全滅した（2026-09 に発覚）。不正な params は `lib/i18n-route-guard.ts` のように
+  ページ側で notFound() する
 

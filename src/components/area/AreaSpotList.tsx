@@ -4,7 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "@/components/common/AppLink";
 import { Star } from "lucide-react";
-import type { SpotListItem } from "@/lib/types";
+import type { SpotListCardItem } from "@/lib/spot-list-props";
+import { countRatingAxes } from "@/lib/spot-list-props";
 import { extractTownAddress } from "@/lib/types";
 import { Train } from "lucide-react";
 import AdSenseUnit from "@/components/ads/AdSenseUnit";
@@ -15,7 +16,11 @@ const AD_INTERVAL = 5;
 type SortKey = "rating" | "updated";
 
 type Props = {
-  spots: SpotListItem[];
+  /**
+   * props は RSC ペイロードとして HTML に同梱されるため、呼び出し側で
+   * toSpotListCardItems() により描画に使う値だけへ絞ってから渡す
+   */
+  spots: SpotListCardItem[];
   localeSlug?: string;
   showAds?: boolean;
   labels?: {
@@ -49,7 +54,7 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
     return bDate.localeCompare(aDate);
   });
 
-  const buildHref = (spot: SpotListItem) =>
+  const buildHref = (spot: SpotListCardItem) =>
     localeSlug
       ? `/${localeSlug}/${spot.category.slug}/${spot.slug}`
       : `/${spot.category.slug}/${spot.slug}`;
@@ -107,11 +112,12 @@ export default function AreaSpotList({ spots, localeSlug, showAds = true, labels
                   </div>
                   <div className="spot-card-body">
                     <div className="spot-card-meta">
-                      <span className="badge spot-card-category">{localeSlug ? spot.category.name : extractTownAddress(spot.address, spot.category.name)}</span>
+                      <span className="badge spot-card-category">{localeSlug ? spot.category.name : extractTownAddress(spot.address ?? null, spot.category.name)}</span>
                       <div className={`spot-card-rating${spot.closed ? " spot-card-rating--closed" : ""}`} itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
                         <meta itemProp="ratingValue" content={spot.rating_avg.toFixed(1)} />
                         <meta itemProp="bestRating" content="5" />
-                        <meta itemProp="ratingCount" content={String([spot.rating_beautiful, spot.rating_access, spot.rating_atmosphere, spot.rating_cost].filter(v => v != null).length || 1)} />
+                        {/* 整形済みなら事前集計値、未整形の SpotListItem なら4軸評価から数える */}
+                        <meta itemProp="ratingCount" content={String(spot.rating_count ?? countRatingAxes(spot))} />
                         <Star size={14} fill={spot.closed ? "#aaa" : "#eab308"} stroke="none" aria-hidden="true" />
                         <span aria-label={`評価 ${spot.rating_avg.toFixed(1)}`}>{spot.rating_avg.toFixed(1)}</span>
                       </div>

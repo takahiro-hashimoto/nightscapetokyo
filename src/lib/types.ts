@@ -380,12 +380,16 @@ export function buildHreflangAlternates(
     }
   }
 
+  // x-default は「どの言語設定にも当てはまらない閲覧者」の行き先。仏・独・タイ語などの
+  // 訪日客を日本語ページに送らないよう、英語版があれば英語版にする
+  if (languages.en) languages["x-default"] = languages.en;
+
   return languages;
 }
 
 /**
  * エリアページ用 hreflang alternate links を生成
- * ja: /{category}/, 各locale: /{locale}/{category}/, x-default: ja版
+ * ja: /{category}/, 各locale: /{locale}/{category}/, x-default: 英語版（無ければ ja版）
  */
 export function buildAreaHreflangAlternates(
   siteUrl: string,
@@ -405,12 +409,16 @@ export function buildAreaHreflangAlternates(
     }
   }
 
+  // x-default は「どの言語設定にも当てはまらない閲覧者」の行き先。仏・独・タイ語などの
+  // 訪日客を日本語ページに送らないよう、英語版があれば英語版にする
+  if (languages.en) languages["x-default"] = languages.en;
+
   return languages;
 }
 
 /**
  * トップページ用 hreflang alternate links を生成
- * ja: /, 各locale: /{locale}/, x-default: /
+ * ja: /, 各locale: /{locale}/, x-default: /en/（無ければ /）
  */
 export function buildHomeHreflangAlternates(
   siteUrl: string,
@@ -428,12 +436,16 @@ export function buildHomeHreflangAlternates(
     }
   }
 
+  // x-default は「どの言語設定にも当てはまらない閲覧者」の行き先。仏・独・タイ語などの
+  // 訪日客を日本語ページに送らないよう、英語版があれば英語版にする
+  if (languages.en) languages["x-default"] = languages.en;
+
   return languages;
 }
 
 /**
  * タグページ用 hreflang alternate links を生成
- * ja: /tag/{tagSlug}/, 各locale: /{locale}/tag/{tagSlug}/, x-default: ja版
+ * ja: /tag/{tagSlug}/, 各locale: /{locale}/tag/{tagSlug}/, x-default: 英語版（無ければ ja版）
  */
 export function buildTagHreflangAlternates(
   siteUrl: string,
@@ -451,6 +463,10 @@ export function buildTagHreflangAlternates(
       languages[hreflang] = `${siteUrl}/${urlSlug}/tag/${tagSlug}/`;
     }
   }
+  // x-default は「どの言語設定にも当てはまらない閲覧者」の行き先。仏・独・タイ語などの
+  // 訪日客を日本語ページに送らないよう、英語版があれば英語版にする
+  if (languages.en) languages["x-default"] = languages.en;
+
   return languages;
 }
 

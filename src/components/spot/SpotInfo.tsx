@@ -1,4 +1,4 @@
-import { sanitizeHtml } from "@/lib/sanitize";
+import { sanitizeHtml, sanitizeAffiliateHtml } from "@/lib/sanitize";
 import {
   MapPin,
   Clock,
@@ -92,6 +92,7 @@ export default function SpotInfo({
     hotelInfo: "ホテル情報",
     checkinCheckout: "チェックイン / アウト",
     amenity: "アメニティ",
+    affiliateNote: "【PR】提携先の予約サイトへのリンクです",
   };
 
   const categoryHref =
@@ -279,21 +280,26 @@ export default function SpotInfo({
         </table>
       </div>
 
+      {/* 提携先リンクは広告であることを明示する（2023年10月施行のステマ規制）。
+          rel="sponsored" は sanitizeAffiliateHtml が全リンクに付ける */}
       {(asoview || asoview02) && (
-        <div className="info-ticket-links">
-          {asoview && (
-            <div
-              className="info-ticket-btn"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(asoview) }}
-            />
-          )}
-          {asoview02 && (
-            <div
-              className="info-ticket-btn"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(asoview02) }}
-            />
-          )}
-        </div>
+        <>
+          <div className="info-ticket-links">
+            {asoview && (
+              <div
+                className="info-ticket-btn"
+                dangerouslySetInnerHTML={{ __html: sanitizeAffiliateHtml(asoview) }}
+              />
+            )}
+            {asoview02 && (
+              <div
+                className="info-ticket-btn"
+                dangerouslySetInnerHTML={{ __html: sanitizeAffiliateHtml(asoview02) }}
+              />
+            )}
+          </div>
+          <p className="affiliate-note">{l.affiliateNote}</p>
+        </>
       )}
 
       {hasHotel && (
@@ -331,14 +337,17 @@ export default function SpotInfo({
           </div>
 
           {hotelAffiliates.length > 0 && (
-            <div className="panel-link-grid">
-              {hotelAffiliates.map((link, i) => (
-                <div
-                  key={i}
-                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(localizeAffiliateHtml(link!, localeSlug)) }}
-                />
-              ))}
-            </div>
+            <>
+              <div className="panel-link-grid">
+                {hotelAffiliates.map((link, i) => (
+                  <div
+                    key={i}
+                    dangerouslySetInnerHTML={{ __html: sanitizeAffiliateHtml(localizeAffiliateHtml(link!, localeSlug)) }}
+                  />
+                ))}
+              </div>
+              <p className="affiliate-note">{l.affiliateNote}</p>
+            </>
           )}
         </>
       )}

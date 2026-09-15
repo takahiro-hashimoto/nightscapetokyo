@@ -75,12 +75,17 @@ function buildAlternates(jaPath: string): SitemapUrl["alternates"] {
     }
   }
 
+  // x-default は「どの言語設定にも当てはまらない閲覧者」の行き先。仏・独・タイ語などの
+  // 訪日客を日本語ページに送らないよう、英語版があれば英語版にする
+  const en = alts.find((a) => a.hreflang === "en");
+  if (en) alts[alts.findIndex((a) => a.hreflang === "x-default")] = { hreflang: "x-default", href: en.href };
+
   return alts;
 }
 
 /**
  * Build hreflang alternates for a path that exists only in specific locales.
- * ja + x-default always point to the Japanese URL.
+ * ja points to the Japanese URL; x-default points to the English URL when available.
  * Only the locales in availableUrlSlugs get locale-specific alternates.
  */
 function buildPartialAlternates(
@@ -97,6 +102,11 @@ function buildPartialAlternates(
     const hl = LOCALE_HREFLANG[slug];
     if (hl) alts.push({ hreflang: hl, href: `${SITE_URL}/${slug}${normalizedPath}` });
   }
+  // x-default は「どの言語設定にも当てはまらない閲覧者」の行き先。仏・独・タイ語などの
+  // 訪日客を日本語ページに送らないよう、英語版があれば英語版にする
+  const en = alts.find((a) => a.hreflang === "en");
+  if (en) alts[alts.findIndex((a) => a.hreflang === "x-default")] = { hreflang: "x-default", href: en.href };
+
   return alts;
 }
 
@@ -110,6 +120,11 @@ function buildTopAlternates(): SitemapUrl["alternates"] {
     const hl = LOCALE_HREFLANG[slug];
     if (hl) alts.push({ hreflang: hl, href: `${SITE_URL}/${slug}/` });
   }
+  // x-default は「どの言語設定にも当てはまらない閲覧者」の行き先。仏・独・タイ語などの
+  // 訪日客を日本語ページに送らないよう、英語版があれば英語版にする
+  const en = alts.find((a) => a.hreflang === "en");
+  if (en) alts[alts.findIndex((a) => a.hreflang === "x-default")] = { hreflang: "x-default", href: en.href };
+
   return alts;
 }
 
